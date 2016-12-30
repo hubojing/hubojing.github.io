@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="胡博靖" />
+
+
+
+<meta name="description" content="大三认真学技术打开新世界，常叹为何不早入技术门！I have learned technology to my best in my junior time,and I feel I should step into the technological world earlier!">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux菜鸟初尝鲜 | First try on Linux">
+<meta property="og:url" content="http://hubojing.github.io/en/2016/06/14/Linux菜鸟初尝鲜/index.html">
+<meta property="og:site_name" content="胡博靖的技术博客">
+<meta property="og:description" content="大三认真学技术打开新世界，常叹为何不早入技术门！I have learned technology to my best in my junior time,and I feel I should step into the technological world earlier!">
+<meta property="og:image" content="http://news.mydrivers.com/Img/20110826/2011082609513918.jpg">
+<meta property="og:updated_time" content="2016-10-23T15:26:46.338Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux菜鸟初尝鲜 | First try on Linux">
+<meta name="twitter:description" content="大三认真学技术打开新世界，常叹为何不早入技术门！I have learned technology to my best in my junior time,and I feel I should step into the technological world earlier!">
+<meta name="twitter:image" content="http://news.mydrivers.com/Img/20110826/2011082609513918.jpg">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="胡博靖的技术博客" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/green/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Linux菜鸟初尝鲜 | First try on Linux | 胡博靖的技术博客</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: false,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/images/tx.jpeg" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">胡博靖</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">小清新的工科女旅程　　　　　　　　　　 为中华之崛起而读书</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="true" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/about/">关于</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/en/">en</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:417797456@qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/hubojing" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/hubojing/" title="CSDN"></a>
+                            
+                                <a class="fa 网易云音乐" href="http://music.163.com/#/user/home?id=92203594" title="网易云音乐"></a>
+                            
+                                <a class="fa QQ" href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes" title="QQ"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/1602/">1602</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flash/">Flash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PPT动画/">PPT动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea/">idea</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/matlab/">matlab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/photoshop/">photoshop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/优化/">优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数/">函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/创意/">创意</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/动画/">动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单片机/">单片机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码锁/">密码锁</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/嵌入式系统/">嵌入式系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/思维/">思维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/教程/">教程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字信号处理/">数字信号处理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/显示技术/">显示技术</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂谈/">杂谈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/矩阵键盘/">矩阵键盘</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/说明/">说明</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/问题/">问题</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.domeyi.com/">小艺</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.iwangyu.cn/">WangYu</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://ursb.me/">Airing</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://txiner.top/">Hundred</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.ersaijun.cn/">二赛君</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.yeqianfeng.me/">太阳尚远</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.qiujinfeng.com/">邱锦锋</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.ibertinelym.com/">李玉明</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.waydrow.com/">Waydrow</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://qqdie.com/">Jrotty</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.just666.cn/">Shawn</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://theask.cn/">该问</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.sfantree.com/">水番林</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">钱学森是我敬佩的榜样，愿为中华之崛起而读书。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">胡博靖</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/images/tx.jpeg" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">胡博靖</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">小清新的工科女旅程　　　　　　　　　　 为中华之崛起而读书</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/about/">关于</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/en/">en</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:417797456@qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/hubojing" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/hubojing/" title="CSDN"></a>
+                            
+                                <a class="fa 网易云音乐" target="_blank" href="http://music.163.com/#/user/home?id=92203594" title="网易云音乐"></a>
+                            
+                                <a class="fa QQ" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes" title="QQ"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-Linux菜鸟初尝鲜" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/en/2016/06/14/Linux菜鸟初尝鲜/" class="article-date">
+      <time datetime="2016-06-14T15:10:30.000Z" itemprop="datePublished">2016-06-14</time>
+</a>
+
+ 
+    <a href="/en/2016/06/14/Linux菜鸟初尝鲜/#comments" title="Comments">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+            <span class="ds-thread-count" ></span>
+        
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux菜鸟初尝鲜 | First try on Linux
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/通信工程/">通信工程</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/嵌入式系统/">嵌入式系统</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p><div align="left"><br><img src="http://news.mydrivers.com/Img/20110826/2011082609513918.jpg" width="300" height="180" alt="配图" style="float:right;"></div></p>
+<p><strong>大三认真学技术打开新世界，常叹为何不早入技术门！</strong><br><strong>I have learned technology to my best in my junior time,and I feel I should step into the technological world earlier!</strong></p>
+<p> <br><a id="more"></a><br>奈何大三事务多，惟愿考研考上给我又几年自学的机会……更认真地对待技术！<br>Too busy in the junior,may I can gain another several years to learn in the postgraduate stage.I will be more hard-working!<br>这一年，接触git、css、html，前端知识，尝试java，这学期又选了数据库sql，嵌入式系统Linux，还学了好用的工具Labview，这学期选的课都很实用！只是知识需要消化……</p>
+<p>This year,I get to know git,css,html and fore-end knowledge,try java,and chose sql,linux and labview this semester,which are practical nowadays!Indeed,it takes time to understand them deeply.<br>一直想了解Linux，无从下手，最后还是在课堂上被老师带着走入了linux的世界。<br>Always want to know something about linux,but I just have no idea about it.Luckliy,I become to see you finally,linux.</p>
+<blockquote>
+<p>2016.6.22更新 Update 一要点</p>
+</blockquote>
+<p>昨天考完了嵌入式系统实验考试，get一个简单的要点：<br>I got a small but esstenial point in my linux exam,<br>armv4l-unknown-linux-gcc -o 开发板上的编译 winSCP’s compiler<br>gcc -o 虚拟机上的编译 VM’s compiler<br>分清两种编译器。Please make sure your compiler is right.<br>考试内容是开发板与虚拟机通信。开发板是client，虚拟机是server.（和之前的记录是相反的）<br>My exam is VM communicate with winSCP.The winCSP is client,and the VM is server.</p>
+<blockquote>
+<p>2016.6.14更新 Update 基础实验    熟悉Linux开发环境   Basic experiment      Be familiar with Linux development environment</p>
+</blockquote>
+<p>熟悉Linux开发环境，学会基于S3C2410的Linux开发环境的配置和使用。使用Linux的armv4l-unknown-linux-gcc编译，使用基于NFS方式的下载调试，了解嵌入式开发的基本过程。<br>Be familiar with Linux development environment and learn configuration of Linux development environment based on S3C2410.Use compile of armv41-unknown-linux-gcc，use download and debug based on NFS mode,to learn the embedded development process.</p>
+<h1 id="实验步骤-Experiment-steps"><a href="#实验步骤-Experiment-steps" class="headerlink" title="实验步骤        Experiment steps"></a>实验步骤        Experiment steps</h1><p>1、建立工作目录 Create work directory<br>2、编写程序源代码 Write code<br>3、编写Makefile Write makefile<br>4、编译应用程序    Compile program<br>5、下载调试    Download and debug</p>
+<h1 id="重难点-Important-point"><a href="#重难点-Important-point" class="headerlink" title="重难点 Important point"></a>重难点 Important point</h1><p>Makefile文件定义了一系列的规则，它指明了哪些文件需要编译，哪些文件需要先编译，哪些文件需要重新编译等等更为复杂的命令。使用它带来的好处就是自动编译，你只需要敲一个“make”命令整个工程就可以实现自动编译。<br>Makefile definite a series of rules,and it shows which files need compile,which first to be compiled,and which need recompile.The benefit is a simple “make” can finish automatic compilation.</p>
+<p>mount -t nfs -o nolock 192.168.0.56:/arm2410cl /host //超级终端中执行 carried out under the super terminal<br><strong>注意：IP地址需要根据宿主PC机的实际情况修改成对应arm2410cl目录。</strong><br><strong>Attention:IP should be changed according to the real condition.</strong> </p>
+<p>编译、修改程序都是在宿主机（本地PC机）上进行，不能在超级终端下进行。<br>Compile and modify the program both in the host (local PC), and it can not be carried out under the super terminal.</p>
+<h1 id="课堂笔记备忘"><a href="#课堂笔记备忘" class="headerlink" title="课堂笔记备忘"></a>课堂笔记备忘</h1><h2 id="服务器与客户端通信"><a href="#服务器与客户端通信" class="headerlink" title="服务器与客户端通信"></a>服务器与客户端通信</h2><p>虚拟机上（地址192.168.1.12）VM：<br>cd /arm2410cl/<br>cd exp<br>cd basic<br>cd server（先把server.c和client.c拷入对应文件夹下 into right files）<br>ls<br>gcc -o client client.c //编译compile<br>armv41-unkown-linux-gcc -o server server.c //编译compile<br><strong>注意：修改了源文件记得要编译，保存还不够。</strong><br><strong>Attention:It is vital to compile,not just save file.</strong></p>
+<p>./client<br>123456</p>
+<p>开发板(地址192.168.1.121)winSCP：<br>ifconfig eth0 192.168.1.121<br>mount -t nfs -o nolock 192.168.1.12:/arm2410c1 /host （挂载mount）<br>cd /host<br>cd exp<br>cd basic<br>cd server<br>ls<br>（可以ping 192.168.1.12检查一下是否连通 test if it is linked.）<br>./server<br>123456</p>
+<p>exit退出连接</p>
+<p>程序只能是客户端向服务端发送信息，不能反过来。<br>Information can only be sent to the server from client which can’t be reversed because of the program setting.</p>
+<p>原程序Original program：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div></pre></td><td class="code"><pre><div class="line">int <span class="function"><span class="title">main</span></span>()</div><div class="line">&#123;</div><div class="line">     char buffer[BUFFER_SIZE];</div><div class="line">    struct sockaddr_in client_addr;</div><div class="line">    socklen_t length;</div><div class="line">	   int conn;</div><div class="line">	  int len;</div><div class="line">	//int fork_id;</div><div class="line">///定义sockfd</div><div class="line">   int server_sockfd = socket(AF_INET,SOCK_STREAM, 0);</div><div class="line"> </div><div class="line">   ///定义sockaddr_in</div><div class="line">   struct sockaddr_in server_sockaddr;</div><div class="line">   server_sockaddr.sin_family = AF_INET;</div><div class="line">    server_sockaddr.sin_port = htons(MYPORT);</div><div class="line">    server_sockaddr.sin_addr.s_addr = htonl(INADDR_ANY);</div><div class="line"></div><div class="line">    ///<span class="built_in">bind</span>，成功返回0，出错返回-1</div><div class="line">   <span class="keyword">if</span>(<span class="built_in">bind</span>(server_sockfd,(struct sockaddr *)&amp;server_sockaddr,sizeof(server_sockaddr))==-1)</div><div class="line">    &#123;</div><div class="line">        perror(<span class="string">"bind"</span>);</div><div class="line">        <span class="built_in">exit</span>(1);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ///listen，成功返回0，出错返回-1</div><div class="line">    <span class="keyword">if</span>(listen(server_sockfd,QUEUE) == -1)</div><div class="line">    &#123;</div><div class="line">        perror(<span class="string">"listen"</span>);</div><div class="line">         <span class="built_in">exit</span>(1);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ///客户端套接字</div><div class="line">   </div><div class="line">   length = sizeof(client_addr);</div><div class="line"></div><div class="line">     ///成功返回非负描述字，出错返回-1</div><div class="line">	//<span class="keyword">while</span>(1)</div><div class="line">	//&#123;</div><div class="line">    conn = accept(server_sockfd, (struct sockaddr*)&amp;client_addr, &amp;length);</div><div class="line">    <span class="keyword">if</span>(conn&lt;0)</div><div class="line">     &#123;</div><div class="line">        perror(<span class="string">"connect"</span>);</div><div class="line">         <span class="built_in">exit</span>(1);</div><div class="line">     &#125;</div><div class="line">	fork_id=fork();</div><div class="line">	<span class="keyword">if</span>(fork_id==0)</div><div class="line">	&#123;</div><div class="line">   <span class="keyword">while</span>(1)</div><div class="line">     &#123;</div><div class="line">        memset(buffer,0,sizeof(buffer));</div><div class="line">       len = recv(conn, buffer, sizeof(buffer),0);</div><div class="line">       <span class="keyword">if</span>(strcmp(buffer,<span class="string">"exit\n"</span>)==0)</div><div class="line">           <span class="built_in">break</span>;</div><div class="line">       fputs(buffer, stdout);</div><div class="line">        send(conn, buffer, len, 0);</div><div class="line">    &#125;</div><div class="line">    close(conn);</div><div class="line">    close(server_sockfd);</div><div class="line">	<span class="built_in">return</span>(0);//新程序去掉了这一行</div><div class="line">   //<span class="built_in">exit</span>(0);</div><div class="line">&#125;</div><div class="line">/*<span class="keyword">else</span></div><div class="line">&#123;</div><div class="line"></div><div class="line">&#125;</div><div class="line">&#125;*/</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<p>原程序是一个服务器只能挂载一个客户端。 The original program is a server which can only mount one client.<br>程序修改了下，使一个服务器可以挂载两个客户端（可以构建聊天系统）。 After modifing program,it can mount two clients(which can create a chat system).<br>要先连接服务器，再连接客户端。 Connect the server first,then connect the client.</p>
+<p>rm server 删除server文件 delete server file<br>两端ps -a看一下是否退出。  use”ps -a” to see if the system exits.</p>
+<h2 id="挂载驱动-Mount-the-drive"><a href="#挂载驱动-Mount-the-drive" class="headerlink" title="挂载驱动    Mount the drive"></a>挂载驱动    Mount the drive</h2><p>在开发板上winSCP：<br>mount -t nfs -o nolock 192.168.1.12:/arm2410cl /host<br>cd host<br>cd exp<br>cd basic<br>cd pwm_motor<br>lsmod pwm_ad.o<br>cd pwm_AD<br>insmod pwm_ad.o<br>//rmmod pwm_ad.o 删除<br>cd pwm_test<br>./test_dcm_main</p>
+<p>虚拟机上VM：<br>cd pwm_motor<br>cd pwm_test<br>make clean<br>make<br>cd ..<br>cd pwm_test</p>
+<h1 id="附录-客户端和服务器程序-Appendix-Client-c-amp-Server-c"><a href="#附录-客户端和服务器程序-Appendix-Client-c-amp-Server-c" class="headerlink" title="附录    客户端和服务器程序    Appendix  Client.c &amp; Server.c"></a>附录    客户端和服务器程序    Appendix  Client.c &amp; Server.c</h1><h2 id="server-c"><a href="#server-c" class="headerlink" title="server.c"></a>server.c</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#include &lt;sys/types.h&gt;</span></div><div class="line"> <span class="comment">#include &lt;sys/socket.h&gt;</span></div><div class="line"> <span class="comment">#include &lt;stdio.h&gt;</span></div><div class="line"><span class="comment">#include &lt;netinet/in.h&gt;</span></div><div class="line"> <span class="comment">#include &lt;arpa/inet.h&gt;</span></div><div class="line"><span class="comment">#include &lt;unistd.h&gt;</span></div><div class="line"><span class="comment">#include &lt;string.h&gt;</span></div><div class="line"> <span class="comment">#include &lt;stdlib.h&gt;</span></div><div class="line"> <span class="comment">#include &lt;fcntl.h&gt;</span></div><div class="line"><span class="comment">#include &lt;sys/shm.h&gt;</span></div><div class="line"></div><div class="line"> <span class="comment">#define MYPORT  8887</span></div><div class="line"> <span class="comment">#define QUEUE   20</span></div><div class="line"> <span class="comment">#define BUFFER_SIZE 1024</span></div><div class="line"></div><div class="line">int <span class="function"><span class="title">main</span></span>()</div><div class="line">&#123;</div><div class="line">     char buffer[BUFFER_SIZE];</div><div class="line">    struct sockaddr_in client_addr;</div><div class="line">    socklen_t length;</div><div class="line">	   int conn;</div><div class="line">	  int len;</div><div class="line">///定义sockfd</div><div class="line">   int server_sockfd = socket(AF_INET,SOCK_STREAM, 0);</div><div class="line"> </div><div class="line">   ///定义sockaddr_in</div><div class="line">   struct sockaddr_in server_sockaddr;</div><div class="line">   server_sockaddr.sin_family = AF_INET;</div><div class="line">    server_sockaddr.sin_port = htons(MYPORT);</div><div class="line">    server_sockaddr.sin_addr.s_addr = htonl(INADDR_ANY);</div><div class="line"></div><div class="line">    ///<span class="built_in">bind</span>，成功返回0，出错返回-1</div><div class="line">   <span class="keyword">if</span>(<span class="built_in">bind</span>(server_sockfd,(struct sockaddr *)&amp;server_sockaddr,sizeof(server_sockaddr))==-1)</div><div class="line">    &#123;</div><div class="line">        perror(<span class="string">"bind"</span>);</div><div class="line">        <span class="built_in">exit</span>(1);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ///listen，成功返回0，出错返回-1</div><div class="line">    <span class="keyword">if</span>(listen(server_sockfd,QUEUE) == -1)</div><div class="line">    &#123;</div><div class="line">        perror(<span class="string">"listen"</span>);</div><div class="line">         <span class="built_in">exit</span>(1);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ///客户端套接字</div><div class="line">   </div><div class="line">   length = sizeof(client_addr);</div><div class="line"></div><div class="line">     ///成功返回非负描述字，出错返回-1</div><div class="line">    conn = accept(server_sockfd, (struct sockaddr*)&amp;client_addr, &amp;length);</div><div class="line">    <span class="keyword">if</span>(conn&lt;0)</div><div class="line">     &#123;</div><div class="line">        perror(<span class="string">"connect"</span>);</div><div class="line">         <span class="built_in">exit</span>(1);</div><div class="line">     &#125;</div><div class="line"></div><div class="line">   <span class="keyword">while</span>(1)</div><div class="line">     &#123;</div><div class="line">        memset(buffer,0,sizeof(buffer));</div><div class="line">       len = recv(conn, buffer, sizeof(buffer),0);</div><div class="line">       <span class="keyword">if</span>(strcmp(buffer,<span class="string">"exit\n"</span>)==0)</div><div class="line">           <span class="built_in">break</span>;</div><div class="line">       fputs(buffer, stdout);</div><div class="line">        send(conn, buffer, len, 0);</div><div class="line">    &#125;</div><div class="line">    close(conn);</div><div class="line">    close(server_sockfd);</div><div class="line">   <span class="built_in">return</span> 0;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<h2 id="client-c"><a href="#client-c" class="headerlink" title="client.c"></a>client.c</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">#include &lt;sys/types.h&gt;</span></div><div class="line"> <span class="comment">#include &lt;sys/socket.h&gt;</span></div><div class="line"> <span class="comment">#include &lt;stdio.h&gt;</span></div><div class="line"> <span class="comment">#include &lt;netinet/in.h&gt;</span></div><div class="line"> <span class="comment">#include &lt;arpa/inet.h&gt;</span></div><div class="line"> <span class="comment">#include &lt;unistd.h&gt;</span></div><div class="line"> <span class="comment">#include &lt;string.h&gt;</span></div><div class="line"><span class="comment">#include &lt;stdlib.h&gt;</span></div><div class="line"><span class="comment">#include &lt;fcntl.h&gt;</span></div><div class="line"><span class="comment">#include &lt;sys/shm.h&gt;</span></div><div class="line"></div><div class="line"><span class="comment">#define MYPORT  8887</span></div><div class="line"><span class="comment">#define BUFFER_SIZE 1024</span></div><div class="line"></div><div class="line">int <span class="function"><span class="title">main</span></span>()</div><div class="line">&#123;</div><div class="line">    ///定义sockfd</div><div class="line">   int sock_cli = socket(AF_INET,SOCK_STREAM, 0);</div><div class="line"></div><div class="line">   ///定义sockaddr_in</div><div class="line">    struct sockaddr_in servaddr;</div><div class="line">    memset(&amp;servaddr, 0, sizeof(servaddr));</div><div class="line">    servaddr.sin_family = AF_INET;</div><div class="line">    servaddr.sin_port = htons(MYPORT);  ///服务器端口</div><div class="line">    servaddr.sin_addr.s_addr = inet_addr(<span class="string">"192.168.1.12"</span>);  ///服务器ip</div><div class="line"></div><div class="line">    ///连接服务器，成功返回0，错误返回-1</div><div class="line">    <span class="keyword">if</span> (connect(sock_cli, (struct sockaddr *)&amp;servaddr, sizeof(servaddr)) &lt; 0)</div><div class="line">    &#123;</div><div class="line">        perror(<span class="string">"connect"</span>);</div><div class="line">        <span class="built_in">exit</span>(1);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    char sendbuf[BUFFER_SIZE];</div><div class="line">    char recvbuf[BUFFER_SIZE];</div><div class="line">    <span class="keyword">while</span> (fgets(sendbuf, sizeof(sendbuf), stdin) != NULL)</div><div class="line">    &#123;</div><div class="line">        send(sock_cli, sendbuf, strlen(sendbuf),0); ///发送</div><div class="line">        <span class="keyword">if</span>(strcmp(sendbuf,<span class="string">"exit\n"</span>)==0)</div><div class="line">          <span class="built_in">break</span>;</div><div class="line">        recv(sock_cli, recvbuf, sizeof(recvbuf),0); ///接收</div><div class="line">       fputs(recvbuf, stdout);</div><div class="line"></div><div class="line">       memset(sendbuf, 0, sizeof(sendbuf));</div><div class="line">       memset(recvbuf, 0, sizeof(recvbuf));</div><div class="line">  &#125;</div><div class="line"></div><div class="line">   close(sock_cli);</div><div class="line">    <span class="built_in">return</span> 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><span id="busuanzi_container_page_pv"></span></p>
+<blockquote>
+<p><strong>本文已被阅读 <span id="busuanzi_value_page_pv"></span> 次。感谢您的点击！</strong><br>  <strong>The article has been viewed <span id="busuanzi_value_page_pv"></span> times.Thank you for your visit!</strong><br></p>
+</blockquote>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/en/2016/06/14/Linux菜鸟初尝鲜/">Linux菜鸟初尝鲜 | First try on Linux</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage">胡博靖</a></p>
+        <p><span>Created:</span>2016-06-14, 23:10:30</p>
+        <p><span>Updated:</span>2016-10-23, 23:26:46</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/en/2016/06/14/Linux菜鸟初尝鲜/" title="Linux菜鸟初尝鲜 | First try on Linux">http://hubojing.github.io/2016/06/14/Linux菜鸟初尝鲜/</a>
+            <span class="copy-path" data-clipboard-text="From http://hubojing.github.io/2016/06/14/Linux菜鸟初尝鲜/　　By 胡博靖" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/06/29/P图集/">
+                    P图集 | PS picture album
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/04/06/将hexo-github博客同步托管至coding/">
+                    将hexo+github博客同步托管至coding
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#实验步骤-Experiment-steps"><span class="toc-number">1.</span> <span class="toc-text">实验步骤        Experiment steps</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#重难点-Important-point"><span class="toc-number">2.</span> <span class="toc-text">重难点 Important point</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#课堂笔记备忘"><span class="toc-number">3.</span> <span class="toc-text">课堂笔记备忘</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#服务器与客户端通信"><span class="toc-number">3.1.</span> <span class="toc-text">服务器与客户端通信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#挂载驱动-Mount-the-drive"><span class="toc-number">3.2.</span> <span class="toc-text">挂载驱动    Mount the drive</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#附录-客户端和服务器程序-Appendix-Client-c-amp-Server-c"><span class="toc-number">4.</span> <span class="toc-text">附录    客户端和服务器程序    Appendix  Client.c & Server.c</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#server-c"><span class="toc-number">4.1.</span> <span class="toc-text">server.c</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#client-c"><span class="toc-number">4.2.</span> <span class="toc-text">client.c</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-6 i,
+        .toc-level-6 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+    <script>
+        yiliaConfig.toc = ["Hide", "Show", !!"true"];
+    </script>
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="en/2016/06/14/Linux菜鸟初尝鲜/" data-title="Linux菜鸟初尝鲜 | First try on Linux" data-url="http://hubojing.github.io/en/2016/06/14/Linux菜鸟初尝鲜/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"hubojing"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+            // Add comment count
+            $(function(){ 
+                var jsonUrl = "http://api.duoshuo.com/threads/counts.jsonp?short_name=hubojing&threads=en/2016/06/14/Linux菜鸟初尝鲜/&callback=?";
+                $.getJSON(jsonUrl, function(result){
+                    $.each(result.response, function(i, field){
+                        var value = field.comments;
+                        if (value > 0) {
+                            $(".count-comment").text(value);
+                            return;
+                        }
+                    })
+                })
+            })
+        
+    </script>
+    
+    <aside class="comment-bar">
+        <a href="javascript:void(0);">
+            <i class="fa fa-commenting-o animated infinite pulse"></i>
+            <i class="fa fa-spinner fa-pulse"></i>
+            <span class="count-comment"></span>
+        </a>
+    </aside>
+    <script>
+        var $commentBar = $("#comments aside.comment-bar");
+        var load$hide = function(){
+            $commentBar.find("a > i").toggle();
+            loadComment();
+            $commentBar.fadeOut(800);
+        }
+        $commentBar.click(function(){
+            load$hide();
+        })
+        $commentBar.children("a").hover(function(){
+            load$hide();
+        })
+        if (window.location.hash === "#comments") {
+            load$hide();
+        }
+    </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/06/29/P图集/" title="Pre: P图集 | PS picture album">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/04/06/将hexo-github博客同步托管至coding/" title="Next: 将hexo+github博客同步托管至coding">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/12/26/linux整理笔记/">一天一点linux</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/26/回归/">回归</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/上海决赛之旅/">上海决赛之旅 | the trip for contest in Shanghai</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/16/说明/">说明</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/29/P图集/">P图集 | PS picture album</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/14/Linux菜鸟初尝鲜/">Linux菜鸟初尝鲜 | First try on Linux</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/06/将hexo-github博客同步托管至coding/">将hexo+github博客同步托管至coding</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/22/PPT动画制作之自定义动画/">PPT动画制作之自定义动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/17/显示技术蹭课笔记/">显示技术蹭课笔记 | Display Techique Learning Note</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/14/java自学笔记/">java自学笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/12/靖靖的脑洞大开（一）/">靖靖的脑洞大开 | Jinger's Special Ideas</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/08/PPT动画制作之登录等待/">PPT动画制作之登录等待</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/08/markdown语法简记/">markdown语法简记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/07/1602-24C08-4X4键盘密码锁/">1602+24C08+4X4键盘密码锁</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/04/零碎知识记录/">零碎知识记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/06/Flash动画制作学习心得/">Flash动画制作学习心得</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/17/STC89C52RC单片机学习记录/">STC89C52RC单片机学习记录（1602篇）</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/10/matlab函数杂谈/">matlab函数杂谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/10/hexo优化/">hexo优化·年轻就是折腾 | Promotion of the Blog & Young for Try</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/06/hexo+github博客搭建中出现的问题及解决方法/">hexo+github博客搭建中出现的问题及解决方法 | The Solution of Troubles in Establishing My Blog</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/06/Hello World/">Hello World！</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2015-2016 胡博靖
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 15;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+             post: ".article-entry a[href], .copyright a[href]", 
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+    <script>
+        var originTitle = document.title;
+        var titleTime;
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                document.title = "(つェ⊂) 我藏好了哦~ " + originTitle;
+                clearTimeout(titleTime);
+            }
+            else {
+                document.title = "(づ￣ 3￣)づ被你发现啦~ '" + originTitle;
+                titleTime = setTimeout(function() {
+                    document.title = originTitle;
+                }, 2000);
+            }
+        })
+    </script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
