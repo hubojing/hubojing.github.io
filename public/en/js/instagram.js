@@ -5,13 +5,13 @@ var Instagram = (function(){
 	var preLoad = function(data){
 		for(var em in data){
 			for(var i=0,len=data[em].srclist.length;i<len;i++){ var="" src="data[em].bigSrclist[i];" img="new" image();="" img.src="src;" }="" render="function(data){" for(var="" em="" in="" data){="" litmpl="" ;="" i="0,len=data[em].srclist.length;i<len;i++){" +="<li>\
-								<div class="img-box">\
+								<div class=" img-box"="">\
 									<a class="img-bg" rel="example_group" href="" +data[em].bigsrclist[i]+'"="" title="'+data[em].text[i]+'">\
 									<img lazy-src="'+data[em].srclist[i]+'" alt="">\
 								\
 							';
 			}
-			$('<section class="archives album"><h1 class="year">'+data[em].year+'<em>'+data[em].month+'月</em></h1>\
+			$('<section class="archives album"><h1 class="year" id="dataemyeardataemmonth月">'+data[em].year+'<em>'+data[em].month+'月</em></h1>\
 				<ul class="img-box-ul">'+liTmpl+'</ul>\
 				</section>').appendTo($(".instagram"));
 		}
@@ -40,4 +40,4 @@ var Instagram = (function(){
 
 	var ctrler = function(data){
 		var imgObj = {};
-		for(var i=0,len=data.length;i</len;i++){>
+		for(var i=0,len=data.length;i</a></len;i++){>

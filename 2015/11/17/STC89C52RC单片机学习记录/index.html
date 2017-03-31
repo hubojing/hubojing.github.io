@@ -159,12 +159,12 @@
         
         
         <div class="article-entry" itemprop="articleBody">
-            <h1 id="1-老式51单片机内部没有AD和DA转换模块"><a href="#1-老式51单片机内部没有AD和DA转换模块" class="headerlink" title="1.老式51单片机内部没有AD和DA转换模块"></a>1.老式51单片机内部没有AD和DA转换模块</h1><p>51单片机是一种比较经典的单片机，因此问世时间比avr时间长，它的芯片内部没有集成ad转换，而avr单片机芯片内部集成了ad转换，因此传统的51需要外接ad转换芯片，而avr不需要。不过随着时间的发展，新型的51单片机也有内部集成了ad芯片的，比如stc12c2052ad。<br><strong>这也是为什么我们的课本上学AD、DA转换时，书上的例题都加了一个转换器如DAC0832、ADC0809的原因。</strong><br><a id="more"></a></p>
-<h1 id="2-nop"><a href="#2-nop" class="headerlink" title="2._nop_()"></a>2._nop_()</h1><p>这个函数是延时一个机器周期的意思，它包含在头文件intrins.h中，只要程序应用到_nop_()，就需要有头文件intrins.h的声明。</p>
+            <h1 id="1老式51单片机内部没有ad和da转换模块"><a href="#1-老式51单片机内部没有AD和DA转换模块" class="headerlink" title="1.老式51单片机内部没有AD和DA转换模块"></a>1.老式51单片机内部没有AD和DA转换模块</h1><p>51单片机是一种比较经典的单片机，因此问世时间比avr时间长，它的芯片内部没有集成ad转换，而avr单片机芯片内部集成了ad转换，因此传统的51需要外接ad转换芯片，而avr不需要。不过随着时间的发展，新型的51单片机也有内部集成了ad芯片的，比如stc12c2052ad。<br><strong>这也是为什么我们的课本上学AD、DA转换时，书上的例题都加了一个转换器如DAC0832、ADC0809的原因。</strong><br><a id="more"></a></p>
+<h1 id="2_nop_"><a href="#2-nop" class="headerlink" title="2._nop_()"></a>2._nop_()</h1><p>这个函数是延时一个机器周期的意思，它包含在头文件intrins.h中，只要程序应用到_nop_()，就需要有头文件intrins.h的声明。</p>
 <p><strong>1602液晶相关</strong></p>
-<h1 id="3-几个引脚功能备注"><a href="#3-几个引脚功能备注" class="headerlink" title="3.几个引脚功能备注"></a>3.几个引脚功能备注</h1><p><img src="http://i13.tietuku.com/8693823f522c8700.png" alt=""></p>
+<h1 id="3几个引脚功能备注"><a href="#3-几个引脚功能备注" class="headerlink" title="3.几个引脚功能备注"></a>3.几个引脚功能备注</h1><p><img src="http://i13.tietuku.com/8693823f522c8700.png" alt=""></p>
 <p>第4脚：RS为寄存器选择，高电平1时选择数据寄存器、低电平0时选择指令寄存器。<br>第5脚：RW为读写信号线，高电平(1)时进行读操作，低电平(0)时进行写操作。<br>第6脚：E(或EN)端为使能(enable)端,高电平（1）时读取信息，负跳变时执行指令。</p>
-<h1 id="4-液晶显示程序的几点注释："><a href="#4-液晶显示程序的几点注释：" class="headerlink" title="4.液晶显示程序的几点注释："></a>4.液晶显示程序的几点注释：</h1><p><strong>LCD1602测忙：</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">result = (bit)(P0 &amp; 0x80)</div></pre></td></tr></table></figure></p>
+<h1 id="4液晶显示程序的几点注释"><a href="#4-液晶显示程序的几点注释：" class="headerlink" title="4.液晶显示程序的几点注释："></a>4.液晶显示程序的几点注释：</h1><p><strong>LCD1602测忙：</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">result = (bit)(P0 &amp; 0x80)</div></pre></td></tr></table></figure></p>
 <p>(bit)强制转换成位，P0与0X80：0X80换成二进制就10000000也就是P0口的P0^7位。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">lcd_write(0,pos|0x80);</div></pre></td></tr></table></figure>
 <p>变量pos按位或0x80，也就是取出变量pos的最高位数据，传递给函数lcd_write()。此函数下面应该会有用到变量pos的地方，那里得到的pos不再是原来的数据了，按位或0x80后，就只有最高位是pos原来最高位的数据，其它位全部置位0。这个函数是设定DDRAM地址，也就是设定字符显示的首地址，它只执行了一个指令“向控制器写入0x80|pos的值（这是一个或表达式，表示POS变量与0X80相或，取其结果，0x80是KS0066内部指令的关键字，是表示指定DDRAM首地址的）。</p>
@@ -214,6 +214,9 @@ window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMin
 
         </footer>
     </div>
+
+   
+
 </article>
 
     <section id="comments">
@@ -260,6 +263,8 @@ window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMin
 
     
     </section>
+
+
 
 
                         </div>

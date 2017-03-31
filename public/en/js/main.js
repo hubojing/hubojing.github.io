@@ -68,7 +68,7 @@ require([], function (){
             var isFancy = $(".isFancy");
             if(isFancy.length != 0){
                 var imgArr = $(".article-inner img");
-                for(var i=0,len=imgArr.length;i<len;i++){ var="" src="imgArr.eq(i).attr("src");" title="imgArr.eq(i).attr("alt");" if(typeof(title)="=" "undefined"){="" }="" width="imgArr.eq(i).attr("width");" height="imgArr.eq(i).attr("height");" imgarr.eq(i).replacewith("<a="" href=""+src+"" rel="fancy-group" class="fancy-ctn fancybox"><img src=""+src+"" width="+width+" height="+height+" title=""+title+"" alt=""+title+"">");
+                for(var i=0,len=imgArr.length;i<len;i++){ var="" src="imgArr.eq(i).attr(" src");"="" title="imgArr.eq(i).attr(" alt");"="" if(typeof(title)="=" "undefined"){="" }="" width="imgArr.eq(i).attr(" width");"="" height="imgArr.eq(i).attr(" height");"="" imgarr.eq(i).replacewith("<a="" href="" +src+""="" rel="fancy-group" class="fancy-ctn fancybox"><img src="" +src+""="" width="+width+" height="+height+" title="" +title+""="" alt="">");
                 }
                 $(".article-inner .fancy-ctn").fancybox({ type: "image" });
             }
@@ -91,7 +91,7 @@ require([], function (){
                     if (navigator.userAgent.match(/Safari/i)) {
                         function showArticle(){
                             $(".article").each(function(){
-                                if( $(this).offset().top <= $(window).scrolltop()+$(window).height()="" &&="" !($(this).hasclass('show'))="" )="" {="" $(this).removeclass("hidden").addclass("show");="" $(this).addclass("is-hiddened");="" }="" else="" if(!$(this).hasclass("is-hiddened"))="" $(this).addclass("hidden");="" })="" $(window).on('scroll',="" function(){="" showarticle();="" });="" return;="" var="" animatescope=".body-wrap > article" ;="" $firstarticle="$(".body-wrap"> article:first-child");
+                                if( $(this).offset().top <= $(window).scrolltop()+$(window).height()="" &&="" !($(this).hasclass('show'))="" )="" {="" $(this).removeclass("hidden").addclass("show");="" $(this).addclass("is-hiddened");="" }="" else="" if(!$(this).hasclass("is-hiddened"))="" $(this).addclass("hidden");="" })="" $(window).on('scroll',="" function(){="" showarticle();="" });="" return;="" var="" animatescope=".body-wrap > article" ;="" $firstarticle="$(" .body-wrap"=""> article:first-child");
                 if ($firstArticle.height() > $(window).height()) {
                     var animateScope = ".body-wrap > article:not(:first-child)";
                     $firstArticle.css({opacity: 1});
