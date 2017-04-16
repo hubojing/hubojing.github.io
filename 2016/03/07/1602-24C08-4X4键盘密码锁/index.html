@@ -1,784 +1,385 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    
-    <title>1602+24C08+4X4键盘密码锁 | 胡博靖的技术博客</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    
-        <meta name="keywords" content="单片机,密码锁,矩阵键盘,1602" />
-    
-    <meta name="description" content="【注】我的单片机课程设计选题是单片机密码锁。但是课题并没有要求用存储器存储密码，所以当时我的设计还是比较简陋的。那个设计只能设定一个内部密码，断电后又恢复到初始密码状态。但是实际生活中，必须能够存储密码。并且，在课程设计里我用的是数码管显示密码，在这里我用的是1602液晶显示。于是以下的设计着重于存储与1602相关，且代码是重新编写（参考了网上的案例），没有用课程设计的代码。
-在此提供我课程设计的">
+  <meta charset="utf-8">
+  
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <link rel="dns-prefetch" href="http://hubojing.github.io">
+  <title>1602+24C08+4X4键盘密码锁 | 胡博靖的技术博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="【注】我的单片机课程设计选题是单片机密码锁。但是课题并没有要求用存储器存储密码，所以当时我的设计还是比较简陋的。那个设计只能设定一个内部密码，断电后又恢复到初始密码状态。但是实际生活中，必须能够存储密码。并且，在课程设计里我用的是数码管显示密码，在这里我用的是1602液晶显示。于是以下的设计着重于存储与1602相关，且代码是重新编写（参考了网上的案例），没有用课程设计的代码。在此提供我课程设计的单">
 <meta property="og:type" content="article">
 <meta property="og:title" content="1602+24C08+4X4键盘密码锁">
 <meta property="og:url" content="http://hubojing.github.io/2016/03/07/1602-24C08-4X4键盘密码锁/index.html">
 <meta property="og:site_name" content="胡博靖的技术博客">
-<meta property="og:description" content="【注】我的单片机课程设计选题是单片机密码锁。但是课题并没有要求用存储器存储密码，所以当时我的设计还是比较简陋的。那个设计只能设定一个内部密码，断电后又恢复到初始密码状态。但是实际生活中，必须能够存储密码。并且，在课程设计里我用的是数码管显示密码，在这里我用的是1602液晶显示。于是以下的设计着重于存储与1602相关，且代码是重新编写（参考了网上的案例），没有用课程设计的代码。
-在此提供我课程设计的">
+<meta property="og:description" content="【注】我的单片机课程设计选题是单片机密码锁。但是课题并没有要求用存储器存储密码，所以当时我的设计还是比较简陋的。那个设计只能设定一个内部密码，断电后又恢复到初始密码状态。但是实际生活中，必须能够存储密码。并且，在课程设计里我用的是数码管显示密码，在这里我用的是1602液晶显示。于是以下的设计着重于存储与1602相关，且代码是重新编写（参考了网上的案例），没有用课程设计的代码。在此提供我课程设计的单">
 <meta property="og:image" content="http://7xrn7f.com1.z0.glb.clouddn.com/16-3-8/85097816.jpg">
+<meta property="og:image" content="http://7xrn7f.com1.z0.glb.clouddn.com/16-3-8/39755099.jpg">
+<meta property="og:image" content="http://7xrn7f.com1.z0.glb.clouddn.com/16-3-8/46445685.jpg">
+<meta property="og:image" content="http://7xrn7f.com1.z0.glb.clouddn.com/16-3-8/89430789.jpg">
 <meta property="og:updated_time" content="2016-03-26T13:29:27.311Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="1602+24C08+4X4键盘密码锁">
-<meta name="twitter:description" content="【注】我的单片机课程设计选题是单片机密码锁。但是课题并没有要求用存储器存储密码，所以当时我的设计还是比较简陋的。那个设计只能设定一个内部密码，断电后又恢复到初始密码状态。但是实际生活中，必须能够存储密码。并且，在课程设计里我用的是数码管显示密码，在这里我用的是1602液晶显示。于是以下的设计着重于存储与1602相关，且代码是重新编写（参考了网上的案例），没有用课程设计的代码。
-在此提供我课程设计的">
+<meta name="twitter:description" content="【注】我的单片机课程设计选题是单片机密码锁。但是课题并没有要求用存储器存储密码，所以当时我的设计还是比较简陋的。那个设计只能设定一个内部密码，断电后又恢复到初始密码状态。但是实际生活中，必须能够存储密码。并且，在课程设计里我用的是数码管显示密码，在这里我用的是1602液晶显示。于是以下的设计着重于存储与1602相关，且代码是重新编写（参考了网上的案例），没有用课程设计的代码。在此提供我课程设计的单">
 <meta name="twitter:image" content="http://7xrn7f.com1.z0.glb.clouddn.com/16-3-8/85097816.jpg">
-    
+  
+    <link rel="alternative" href="/atom.xml" title="胡博靖的技术博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" type="text/css" href="/./main.05aabf.css">
+  <style type="text/css">
+  
+    #container.show {
+      background: linear-gradient(200deg,#a0cfe4,#e8c37e);
+    }
+  </style>
+  
 
-    
-        <link rel="alternate" href="/atom.xml" title="胡博靖的技术博客" type="application/atom+xml" />
-    
-
-    
-        <link rel="icon" href="http://p5.qhimg.com/t01a5b53a260b7fddda.jpg" />
-    
-
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
-
-    <link rel="stylesheet" href="/css/style.css">
-
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
-    
-    
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
-    
-    
-    
+  
 
 </head>
 
 <body>
-    <div id="wrap">
-        <header id="header">
-    <div id="header-outer" class="outer">
-        <div class="container">
-            <div class="container-inner">
-                <div id="header-title">
-                    <h1 class="logo-wrap">
-                        <a href="/" class="logo"></a>
-                    </h1>
-                    
-                        <h2 class="subtitle-wrap">
-                            <p class="subtitle">　　小清新的工科女旅程　　　　　　为中华之崛起而读书</p>
-                        </h2>
-                    
-                </div>
-                <div id="header-inner" class="nav-container">
-                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
-                    <div class="nav-container-inner">
-                        <ul id="main-nav">
-                            
-                                <li class="main-nav-list-item" >
-                                    <a class="main-nav-list-link" href="/">主页</a>
-                                </li>
-                            
-                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/互联网/">互联网</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/杂谈/">杂谈</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/软件/">软件</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/通信工程/">通信工程</a></li></ul>
-                                    
-                                <li class="main-nav-list-item" >
-                                    <a class="main-nav-list-link" href="/about/index.html">关于</a>
-                                </li>
-                            
-                        </ul>
-                        <nav id="sub-nav">
-                            <div id="search-form-wrap">
+  <div id="container" q-class="show:isCtnShow">
+    <canvas id="anm-canvas" class="anm-canvas"></canvas>
+    <div class="left-col" q-class="show:isShow">
+      
+<div class="overlay" style="background: #4d4d4d"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img src="http://p5.qhimg.com/t01a5b53a260b7fddda.jpg" class="js-avatar">
+		</a>
+		<hgroup>
+		  <h1 class="header-author"><a href="/">胡博靖</a></h1>
+		</hgroup>
+		
+		<p class="header-subtitle">　小清新的工科女旅程　　　　　　为中华之崛起而读书</p>
+		
 
-    <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
-        <button type="submit" class="search-form-submit"></button>
-    </form>
-    <div class="ins-search">
-    <div class="ins-search-mask"></div>
-    <div class="ins-search-container">
-        <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
-            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-(function (window) {
-    var INSIGHT_CONFIG = {
-        TRANSLATION: {
-            POSTS: '文章',
-            PAGES: '页面',
-            CATEGORIES: '分类',
-            TAGS: '标签',
-            UNTITLED: '(未命名)',
-        },
-        ROOT_URL: '/',
-        CONTENT_URL: '/content.json',
-    };
-    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-})(window);
-</script>
-<script src="/js/insight.js"></script>
-
-</div>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
-        <div class="container">
-            <div class="main-body container-inner">
-                <div class="main-body-inner">
-                    <section id="main">
-                        <div class="main-body-header">
-    <h1 class="header">
-    
-    <a class="page-title-link" href="/categories/通信工程/">通信工程</a>
-    </h1>
-</div>
-                        <div class="main-body-content">
-                            <article id="post-1602-24C08-4X4键盘密码锁" class="article article-single article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-            <header class="article-header">
-                
-    
-        <h1 class="article-title" itemprop="name">
-        1602+24C08+4X4键盘密码锁
-        </h1>
-    
-
-            </header>
-        
-        
-            <div class="article-subtitle">
-                <a href="/2016/03/07/1602-24C08-4X4键盘密码锁/" class="article-date">
-    <time datetime="2016-03-07T00:36:04.000Z" itemprop="datePublished">2016-03-07</time>
-</a>
-                
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/1602/">1602</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/单片机/">单片机</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/密码锁/">密码锁</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/矩阵键盘/">矩阵键盘</a></li></ul>
-
-            </div>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-            <p>【注】我的单片机课程设计选题是单片机密码锁。但是课题并没有要求用存储器存储密码，所以当时我的设计还是比较简陋的。那个设计只能设定一个内部密码，断电后又恢复到初始密码状态。但是实际生活中，必须能够存储密码。并且，在课程设计里我用的是数码管显示密码，在这里我用的是1602液晶显示。于是以下的设计着重于存储与1602相关，且代码是重新编写（参考了网上的案例），没有用课程设计的代码。
-在此提供我课程设计的单片机密码锁链接：<a href="https://github.com/hubojing/simple-keylock" target="_blank" rel="external">胡博靖的单片机课程设计</a>
-&lt;!--more--&gt;</p>
-<h2 id="设计思路">设计思路</h2>
-<p>现在程序内设定一个初始密码，然后用液晶显示提示用户输入密码，通过矩阵键盘输入密码，然后进行比较。如果密码正确，则绿灯亮起，否则红灯亮1S，并提示输入密码错误次数。如果输入错误次数达到三次则蜂鸣器报警并锁定键盘。</p>
-<h2 id="自用笔记">自用笔记</h2>
-<h3 id="数码管编码表0到f">数码管编码表（0到f）</h3>
-<p>共阳：0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,0x88,0x83,0xc6,0xa1,0x86,0x8e
-共阴：0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71</p>
-<h3 id="protues仿真记载">protues仿真记载</h3>
-<p>1602——LM016
-晶振——crystal
-蜂鸣器——buzzer/sounder/speaker
-可调电阻——pot-hg(课本写的是pot-lin,不过protues7.8没有)</p>
-<h2 id="不错的资料和方法">不错的资料和方法</h2>
-<p><a href="http://wenku.baidu.com/link?url=zes1HpZOINL7CQVvqCdr4moFsoXpkEsH-x3QAq4urZ2cTDnSUGH7U2AJD2BsKjhzZ6H3hqE9_AxiJD3MY35hrZfCGnDJC-SX3K-fxoVn3Oi" target="_blank" rel="external">I2C总线简介</a>
-<a href="https://github.com/hubojing/row-reverse" target="_blank" rel="external">矩阵键盘行反转法</a></p>
-<hr>
-<h2 id="过程中所犯的低级错误">过程中所犯的低级错误</h2>
-<p><img src="http://7xrn7f.com1.z0.glb.clouddn.com/16-3-8/85097816.jpg" alt="led">
-如图，LED所连接的电阻阻值太大，电流完全达不到使LED发光的值。
-改正后，LED正常发光。
-<img src="http://7xrn7f.com1.z0.glb.clouddn.com/16-3-8/39755099.jpg" alt="led"></p>
-<h2 id="尚未解决的问题">尚未解决的问题</h2>
-<h3 id="蜂鸣器不响">蜂鸣器不响。</h3>
-<p>程序应该正确，蜂鸣器旁的控制点红蓝色变化正确，改过蜂鸣器电压值，12V、5V、3V、1.5V都试过，但是就是不响。
-<strong>可能的原因：</strong>
-蜂鸣器是用方波驱动的，若仅输出单一的高电平或低电平是没用的。
-蜂鸣器发出的声波也要靠人耳来听取，过高或过低的频率人耳是无法听到的。
-蜂鸣器的仿真模型应选择下图中后面两种，才能听到声音。（然而我并没有听到声音）
-<img src="http://7xrn7f.com1.z0.glb.clouddn.com/16-3-8/46445685.jpg" alt="蜂鸣器"></p>
-<p>Speaker &amp; Sounders</p>
-<p>BUZZER         DEVICE        Generic buzzer symbol
-BUZZER         ACTIVE        DC Operated Buzzer - Outputs Via Sound Card
-SOUNDER        ACTIVE        Piezo Sounder model (Digital) - Outputs Via Sound Card
-SPEAKER        DEVICE        Generic loudspeaker symbol
-SPEAKER        ACTIVE        loudspeaker model (Analog) - Outputs Via Sound Card</p>
-<p>依次解释如下：</p>
-<p>蜂鸣器                      通用蜂鸣器符号               无仿真模型
-蜂鸣器        活动的        阻抗12Ω直流蜂鸣器            仿真时通过声卡发声
-讯响器        活动的        压电讯响器数字模型           仿真时通过声卡发声
-扬声器                      通用扬声器符号
-扬声器        活动的        阻抗8Ω扬声器模拟模型         仿真时通过声卡发声</p>
-<h3 id="存储有问题">存储有问题。</h3>
-<p>程序代码严格按照标准代码写的，常见的delay();的延时问题应该没有。但是明显仿真结果没有存储到新的修改密码，一直是初始密码。
-请各位指教。</p>
-<h2 id="源程序和仿真图">源程序和仿真图</h2>
-<p><img src="http://7xrn7f.com1.z0.glb.clouddn.com/16-3-8/89430789.jpg" alt="仿真图">
-若需要下载，<a href="https://github.com/hubojing/key-lock" target="_blank" rel="external">请点击！</a></p>
-<p>#include&lt;reg52.h&gt;
-#define uint unsigned int
-#define uchar unsigned char
-void key_scan();
-uchar count0,count1,count3,num,n=0,temp,a,j,count4;
-uchar mima[8];							//初始密码存储区
-uchar tab_key[50];						//输入密码存储区
-uchar code table[]={ 0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,0x88,0x83,0xc6,0xa1,0x86,0x8e
-};//led共阳数码管
-/<em>uchar code table[]={
-0x3f,0x06,0x5b,0x4f,
-0x66,0x6d,0x7d,0x07,
-0x7f,0x6f,0x77,0x7c,
-0x39,0x5e,0x79,0x71};	//led共阴数码管	   <em>/
-bit enterflag;							//确认键按下与否的标志
-bit mimaflag;							//密码正确与否的标志
-bit xiugaiflag;							//修改密码标志	
-bit enter1flag;						//修改密码确认键标志	
-sbit red=P2^1;
-sbit green=P2^0;
-sbit bell=P2^2;	
-sbit rs=P2^6;	
-sbit rw=P2^5;	
-sbit lcden=P2^7;
-sbit scl=P3^0;	
-sbit sda=P3^1;	
-uchar code table1[]=&quot;input the passco&quot;;
-uchar code table2[]=&quot;de:     --------&quot;;
-uchar code table3[]=&quot;</em>&quot;;
-uchar code table4[]=&quot;right   (^<em>^)   &quot;;
-uchar code table5[]=&quot;first  error!!!!&quot;;
-uchar code table6[]=&quot;second error!!!!&quot;;
-uchar code table7[]=&quot;third error see &quot;;
-uchar code table8[]=&quot;u tomorrow (^</em>^)&quot;;
-uchar code table9[]=&quot;define the passc&quot;;
-uchar code table10[]=&quot;ode:    --------&quot;;
-uchar code table11[]=&quot;code   is    new&quot;;
-//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>键盘消抖函数</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></em>****************
-void delay1()
-{ ;; }
-void delay2(uchar x)
-{
-	uchar a,b;
-	for(a=x;a&gt;0;a--)
-	 for(b=100;b&gt;0;b--);
-}
-void delay3(uchar x)
-{
-	uchar a,b;
-	for(a=x;a&gt;0;a--)
-	 for(b=200;b&gt;0;b--);
-	 }	
-void delay(uint z)
-{
-	uint x,y;
-	for(x=z;x&gt;0;x--)
-		for(y=110;y&gt;0;y--);
-}</p>
-<p>//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>e^2room的初始化</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>**************
-void start()  //开始信号
-{	
-	sda=1;	 //书P171 时钟SCL线为高电平时，数据线SDA出现由高电平向低电平变化的情形时，启动I^2C总线数据传送。<br>
-	delay1();
-	scl=1;	 //
-	delay1();
-	sda=0;	 //
-	delay1();
-}</p>
-<p>void stop()   //停止
-{
-	sda=0;	  //书P171时钟SCL线为高电平时，数据线SDA出现由低电平到高电平的变化的情形时，将停止I^2C总线数据传送。
-	delay1();
-	scl=1;
-	delay1();
-	sda=1;
-	delay1();
-}
-//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>应答信号</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>*********
-void respond()<br>
-{
-	uchar i;
-	scl=1;
-	delay1();
-	while((sda==1)&amp;&amp;(i&lt;250))i++;	//书P176 应答sda为0，非应答为1
-	scl=0;							//释放总线		？
-	delay1();
-}</p>
-<p>void noack()
-{
-scl=1;
-delay1();
-scl=1;delay1();
-scl=0;delay1();
-sda=0;delay1();
-}
-//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><em>写字节操作函数</em></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>*****
-void write_byte(uchar date)
-{
-	uchar i,temp;
-	temp=date;
-	for(i=0;i&lt;8;i++)
-	{
-		temp=temp&lt;&lt;1;			//保持最高位，左移到进位CY
-		scl=0;				//scl上跳沿写入
-	    delay1();
-		sda=CY;			  //溢出位
-		delay1();
-		scl=1;
-		delay1();
-		scl=0;delay1();
-	}
-	scl=0;
-	delay1();
-	sda=1;//总线释放 ？
-	delay1();
-}
-//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><em>读字节操作函数</em></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>
-uchar read_byte()
-{
-	uchar i,k;
-	scl=0;
-	delay1();
-	sda=1;
-	delay1();
-	for(i=0;i&lt;8;i++)
-	{
-		scl=1;
-		delay1();	
-		k=(k&lt;&lt;1)|sda;    //或运算，放到最低位
-		scl=0;
-		delay1();	
-	}
-	return k;
-}
-//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>写地址函数</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>
-void write_add(uchar address,uchar date)
-{
-	start();
-	write_byte(0xa0);	//设备地址
-	respond();
-	write_byte(address);
-	respond();
-	write_byte(date);
-	respond();
-	stop();
-}
-//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><em>读地址函数</em></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>
-uchar read_add(uchar address)
-{
-	uchar date;
-	start();
-	write_byte(0xa0);
-	respond();
-	write_byte(address);
-	respond();
-	start();
-	write_byte(0xa1);	  //表示接收地址
-	respond();
-	date=read_byte();
-	noack();
-	stop();
-	return date;
-}
-//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><em>LCD1602的初始化</em></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>***
-void write_com(uchar com)		   //书P154   写命令函数
-{
-	rs=0;		 //RS为寄存器选择，高电平1时选择数据寄存器、低电平0时选择指令寄存器。
-	lcden=0;
-	P0=com;
-	delay(5);
-	lcden=1;	 //LCD的使能端高电平有效
-	delay(5);
-	lcden=0;	
-}</p>
-<p>void write_date(uchar date)		 //写数据函数
-{
-	rs=1;
-	lcden=0;
-	P0=date;
-	delay(5);
-	lcden=1;
-	delay(5);
-	lcden=0;	
-}
-//**<em><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>密码比较函数</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>
-bit mimacmp()					
-{
-	bit flag;
-	uchar i;
-	for(i=0;i&lt;8;i++)
-		{
-			if(mima[i]==tab_key[i])
-				flag=1;
-			else
-				{
-				flag=0;
-				i=8;
-				}
-		}
-	return(flag);							//返回flag
-}
-//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>LCD显示函数开始</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>
-void lcd_display()
-{
-uchar i=0;
-write_com(0x80+0x40+8);//液晶操作中的写入，地址是0x80开头的，加0x40为写入第二行，加8则为确定地址。
-for(i=0;i&lt;n;i++)
-{
-write_date(table3[0]);	//uchar code table3[]=&quot;</em>&quot;
-}
-}
-//********<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><em>键盘功能分配函数群开始</em></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>
-// 0          1            2              3<br>
-// 4          5            6              7
-// 8          9           确认（A）       无效（B）
-//取消（C）修改密码键（D）确认修改键（E） 无效（F）
-void key_manage1()
-{
-tab_key[n]=0;	 //数组的存储顺序是从n=0开始的，因此无论是哪个键先按下都会存入tab_key[0]
-n++;
-if(xiugaiflag==1)	//如果按下了修改键
-{
-mima[count4]=0;
-count4++;
-}
-}</p>
-<p>void key_manage2()
-{</p>
-<p>tab_key[n]=1;
-n++;
-if(xiugaiflag==1)
-{
-mima[count4]=1;
-count4++;
-}
-}</p>
-<p>void key_manage3()
-{</p>
-<p>tab_key[n]=2;
-n++;
-if(xiugaiflag==1)
-{
-mima[count4]=2;
-count4++;
-}
-}</p>
-<p>void key_manage4()
-{
-tab_key[n]=3;
-n++;
-if(xiugaiflag==1)
-{
-mima[count4]=3;
-count4++;
-}
-}</p>
-<p>void key_manage5()
-{
-tab_key[n]=4;
-n++;
-if(xiugaiflag==1)
-{
-mima[count4]=4;
-count4++;
-}
-}</p>
-<p>void key_manage6()
-{
-tab_key[n]=5;
-n++;
-if(xiugaiflag==1)
-{
-mima[count4]=5;
-count4++;
-}
-}
-void key_manage7()
-{
-tab_key[n]=6;
-n++;
-if(xiugaiflag==1)
-{
-mima[count4]=6;
-count4++;
-}
-}
-void key_manage8()
-{
-tab_key[n]=7;
-n++;
-if(xiugaiflag==1)
-{
-mima[count4]=7;
-count4++;
-}
-}</p>
-<p>void key_manage9()
-{
-tab_key[n]=8;
-n++;
-if(xiugaiflag==1)
-{
-mima[count4]=8;
-count4++;
-}
-}
-void key_manage10()
-{
-tab_key[n]=9;
-n++;
-if(xiugaiflag==1)
-{
-mima[count4]=9;
-count4++;
-}
-}
-//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>确认键</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>****************************<br>
-void key_manage11()
-{
-	enterflag=1;					//确认键按下
-	if(n==8)					   //只有输入8个密码后按确认才做比较
-	{	mimaflag=mimacmp();
-	}
-	else
-	{	mimaflag=0;
-	 }
-	 if(enterflag==1)
-		{
-			enterflag=0;  //标志位清零
-			n=0;
-			//用FFFFFFFF清除已经输入的密码
-			for(count3=0;count3&lt;8;count3++)
-			{	
-				delay(5);
-				tab_key[count3]=0x0f;		
-			}							
-			TR1=1;									//打开计数器1
-			count1=0;								//定时器1由50MS累计到1S所用的计数器
-			if(mimaflag==1)
-			{	
-				a=0;</p>
-<pre><code>			write_com(0x01);
-			write_com(0x80);
-			for(count3=0;count3&lt;16;count3++)
-			{
-				write_date(table4[count3]);	//密码正确，显示RIGHT，绿灯亮
-			    green=0;red=1;
-				bell=1;
-				delay(5);
-			}
-		}
-		        
-	    else
-		{   
-		 	n=0;
-		 	red=0;
-	    	bell=0;
-			a++;
-			if(a==1)
-			{
-				for(count3=0;count3&lt;8;count3++) //ffffffff清除密码
-				{	
-					delay(5);
-					tab_key[count3]=0x0f;		
-				}
-				write_com(0x01);										
-				write_com(0x80);
-				for(count3=0;count3&lt;16;count3++)
-				{
-					write_date(table5[count3]);	//密码错误，显示 first error，红灯亮
-					green=1;red=0;
-					bell=1;
-					delay(5);
-				}
-					TR1=1;
-			}
-			if(a==2)
-			{	
-				for(count3=0;count3&lt;8;count3++) //ffffffff清除密码
-				{	
-					delay(5);
-					tab_key[count3]=0x0f;		
-				}
-					write_com(0x01);
-					write_com(0x80);
-					for(count3=0;count3&lt;16;count3++)
-					{
-						write_date(table6[count3]);	//密码错误，显示SECOND ERROR，红灯亮
-						green=1;red=0;
-						bell=1;
-						delay(5);
-					}
-						TR1=1;
-			}
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/archives">所有文章</a></li>
+	        
+				<li><a href="/categories/互联网">互联网</a></li>
+	        
+				<li><a href="/categories/通信工程">通信工程</a></li>
+	        
+				<li><a href="/categories/杂谈">杂谈</a></li>
+	        
+				<li><a href="/tags/">标签云</a></li>
+	        
+				<li><a href="/about/">关于</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+    		
+    			
+    			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
+    			
+            
+    			
+    			<a q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友链</a>
+    			
+            
+    			
+    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">格言</a>
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
 				
-			  if(a==3)
-				{	
-					for(count3=0;count3&lt;8;count3++) //ffffffff清除密码
-					{	
-						delay(5);
-						tab_key[count3]=0x0f;		
-					}
-					write_com(0x01);
-					write_com(0x80);
-					for(count3=0;count3&lt;16;count3++)
-					{
-						write_date(table7[count3]);	//密码错误，显示third error see，红灯亮
-						green=1;red=0;
-						bell=0;//蜂鸣器报警
-						delay(5);
-					}
-					write_com(0x80+0x40);
-					for(count3=0;count3&lt;16;count3++)
-					{
-						write_date(table8[count3]);//密码错误，显示 U TOMORROW ,红灯亮
-						green=1;red=0;
-						bell=0;//蜂鸣器报警
-						delay(5);
-					}
-						TR1=0;
-							
-				}
-						
-	}
+					<a class="github" target="_blank" href="https://github.com/hubojing" title="github"><i class="icon-github"></i></a>
+		        
+					<a class="rss" target="_blank" href="/atom.xml" title="rss"><i class="icon-rss"></i></a>
+		        
+					<a class="qq" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes" title="qq"><i class="icon-qq"></i></a>
+		        
+					<a class="mail" target="_blank" href="mailto:hubojing@outlook.com" title="mail"><i class="icon-mail"></i></a>
+		        
+					<a class="CSDN" target="_blank" href="http://blog.csdn.net/hubojing/" title="CSDN"><i class="icon-CSDN"></i></a>
+		        
+					<a class="网易云音乐" target="_blank" href="http://music.163.com/#/user/home?id=92203594" title="网易云音乐"><i class="icon-网易云音乐"></i></a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
+      
+<nav id="mobile-nav">
+  	<div class="overlay js-overlay" style="background: #4d4d4d"></div>
+	<div class="btnctn js-mobile-btnctn">
+  		<div class="slider-trigger list" q-on="click: openSlider(e)"><i class="icon icon-sort"></i></div>
+	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img src="http://p5.qhimg.com/t01a5b53a260b7fddda.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author js-header-author">胡博靖</h1>
+			</hgroup>
+			
+			<p class="header-subtitle"><i class="icon icon-quo-left"></i>　小清新的工科女旅程　　　　　　为中华之崛起而读书<i class="icon icon-quo-right"></i></p>
+			
+			
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+			
+			
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/hubojing" title="github"><i class="icon-github"></i></a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss"><i class="icon-rss"></i></a>
+			        
+						<a class="qq" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes" title="qq"><i class="icon-qq"></i></a>
+			        
+						<a class="mail" target="_blank" href="mailto:hubojing@outlook.com" title="mail"><i class="icon-mail"></i></a>
+			        
+						<a class="CSDN" target="_blank" href="http://blog.csdn.net/hubojing/" title="CSDN"><i class="icon-CSDN"></i></a>
+			        
+						<a class="网易云音乐" target="_blank" href="http://music.163.com/#/user/home?id=92203594" title="网易云音乐"><i class="icon-网易云音乐"></i></a>
+			        
+				</div>
+			</nav>
+
+			<nav class="header-menu js-header-menu">
+				<ul style="width: 70%">
+				
+				
+					<li style="width: 14.285714285714286%"><a href="/">主页</a></li>
+		        
+					<li style="width: 14.285714285714286%"><a href="/archives">所有文章</a></li>
+		        
+					<li style="width: 14.285714285714286%"><a href="/categories/互联网">互联网</a></li>
+		        
+					<li style="width: 14.285714285714286%"><a href="/categories/通信工程">通信工程</a></li>
+		        
+					<li style="width: 14.285714285714286%"><a href="/categories/杂谈">杂谈</a></li>
+		        
+					<li style="width: 14.285714285714286%"><a href="/tags/">标签云</a></li>
+		        
+					<li style="width: 14.285714285714286%"><a href="/about/">关于</a></li>
+		        
+				</ul>
+			</nav>
+		</header>				
+	</div>
+	<div class="mobile-mask" style="display:none" q-show="isShow"></div>
+</nav>
+
+      <div id="wrapper" class="body-wrap">
+        <div class="menu-l">
+          <div class="canvas-wrap">
+            <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
+          </div>
+          <div id="js-content" class="content-ll">
+            <article id="post-1602-24C08-4X4键盘密码锁" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      1602+24C08+4X4键盘密码锁
+    </h1>
+  
+
+        
+        <a href="/2016/03/07/1602-24C08-4X4键盘密码锁/" class="archive-article-date">
+  	<time datetime="2016-03-07T00:36:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-03-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>【注】我的单片机课程设计选题是单片机密码锁。但是课题并没有要求用存储器存储密码，所以当时我的设计还是比较简陋的。那个设计只能设定一个内部密码，断电后又恢复到初始密码状态。但是实际生活中，必须能够存储密码。并且，在课程设计里我用的是数码管显示密码，在这里我用的是1602液晶显示。于是以下的设计着重于存储与1602相关，且代码是重新编写（参考了网上的案例），没有用课程设计的代码。<br>在此提供我课程设计的单片机密码锁链接：<a href="https://github.com/hubojing/simple-keylock" target="_blank" rel="external">胡博靖的单片机课程设计</a><br><a id="more"></a></p>
+<h2 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h2><p>现在程序内设定一个初始密码，然后用液晶显示提示用户输入密码，通过矩阵键盘输入密码，然后进行比较。如果密码正确，则绿灯亮起，否则红灯亮1S，并提示输入密码错误次数。如果输入错误次数达到三次则蜂鸣器报警并锁定键盘。</p>
+<h2 id="自用笔记"><a href="#自用笔记" class="headerlink" title="自用笔记"></a>自用笔记</h2><h3 id="数码管编码表0到f"><a href="#数码管编码表（0到f）" class="headerlink" title="数码管编码表（0到f）"></a>数码管编码表（0到f）</h3><p>共阳：0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,0x88,0x83,0xc6,0xa1,0x86,0x8e<br>共阴：0x3f,0x06,0x5b,0x4f,0x66,0x6d,0x7d,0x07,0x7f,0x6f,0x77,0x7c,0x39,0x5e,0x79,0x71</p>
+<h3 id="protues仿真记载"><a href="#protues仿真记载" class="headerlink" title="protues仿真记载"></a>protues仿真记载</h3><p>1602——LM016<br>晶振——crystal<br>蜂鸣器——buzzer/sounder/speaker<br>可调电阻——pot-hg(课本写的是pot-lin,不过protues7.8没有)</p>
+<h2 id="不错的资料和方法"><a href="#不错的资料和方法" class="headerlink" title="不错的资料和方法"></a>不错的资料和方法</h2><p><a href="http://wenku.baidu.com/link?url=zes1HpZOINL7CQVvqCdr4moFsoXpkEsH-x3QAq4urZ2cTDnSUGH7U2AJD2BsKjhzZ6H3hqE9_AxiJD3MY35hrZfCGnDJC-SX3K-fxoVn3Oi" target="_blank" rel="external">I2C总线简介</a><br><a href="https://github.com/hubojing/row-reverse" target="_blank" rel="external">矩阵键盘行反转法</a></p>
+<hr>
+<h2 id="过程中所犯的低级错误"><a href="#过程中所犯的低级错误" class="headerlink" title="过程中所犯的低级错误"></a>过程中所犯的低级错误</h2><p><img src="http://7xrn7f.com1.z0.glb.clouddn.com/16-3-8/85097816.jpg" alt="led"><br>如图，LED所连接的电阻阻值太大，电流完全达不到使LED发光的值。<br>改正后，LED正常发光。<br><img src="http://7xrn7f.com1.z0.glb.clouddn.com/16-3-8/39755099.jpg" alt="led"></p>
+<h2 id="尚未解决的问题"><a href="#尚未解决的问题" class="headerlink" title="尚未解决的问题"></a>尚未解决的问题</h2><h3 id="蜂鸣器不响"><a href="#蜂鸣器不响。" class="headerlink" title="蜂鸣器不响。"></a>蜂鸣器不响。</h3><p>程序应该正确，蜂鸣器旁的控制点红蓝色变化正确，改过蜂鸣器电压值，12V、5V、3V、1.5V都试过，但是就是不响。<br><strong>可能的原因：</strong><br>蜂鸣器是用方波驱动的，若仅输出单一的高电平或低电平是没用的。<br>蜂鸣器发出的声波也要靠人耳来听取，过高或过低的频率人耳是无法听到的。<br>蜂鸣器的仿真模型应选择下图中后面两种，才能听到声音。（然而我并没有听到声音）<br><img src="http://7xrn7f.com1.z0.glb.clouddn.com/16-3-8/46445685.jpg" alt="蜂鸣器"></p>
+<p>Speaker &amp; Sounders</p>
+<p> BUZZER         DEVICE        Generic buzzer symbol<br> BUZZER         ACTIVE        DC Operated Buzzer - Outputs Via Sound Card<br> SOUNDER        ACTIVE        Piezo Sounder model (Digital) - Outputs Via Sound Card<br> SPEAKER        DEVICE        Generic loudspeaker symbol<br> SPEAKER        ACTIVE        loudspeaker model (Analog) - Outputs Via Sound Card</p>
+<p>依次解释如下：</p>
+<p> 蜂鸣器                      通用蜂鸣器符号               无仿真模型<br> 蜂鸣器        活动的        阻抗12Ω直流蜂鸣器            仿真时通过声卡发声<br> 讯响器        活动的        压电讯响器数字模型           仿真时通过声卡发声<br> 扬声器                      通用扬声器符号<br> 扬声器        活动的        阻抗8Ω扬声器模拟模型         仿真时通过声卡发声</p>
+<h3 id="存储有问题"><a href="#存储有问题。" class="headerlink" title="存储有问题。"></a>存储有问题。</h3><p>程序代码严格按照标准代码写的，常见的delay();的延时问题应该没有。但是明显仿真结果没有存储到新的修改密码，一直是初始密码。<br>请各位指教。</p>
+<h2 id="源程序和仿真图"><a href="#源程序和仿真图" class="headerlink" title="源程序和仿真图"></a>源程序和仿真图</h2><p><img src="http://7xrn7f.com1.z0.glb.clouddn.com/16-3-8/89430789.jpg" alt="仿真图"><br>若需要下载，<a href="https://github.com/hubojing/key-lock" target="_blank" rel="external">请点击！</a></p>
+<p>#include<reg52.h></reg52.h></p>
+<p>#define uint unsigned int</p>
+<p>#define uchar unsigned char<br>void key_scan();<br>uchar count0,count1,count3,num,n=0,temp,a,j,count4;<br>uchar mima[8];                            //初始密码存储区<br>uchar tab<em>key[50];                        //输入密码存储区<br>uchar code table[]={ 0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,0x88,0x83,0xc6,0xa1,0x86,0x8e<br>};//led共阳数码管<br>/<em>uchar code table[]={<br>0x3f,0x06,0x5b,0x4f,<br>0x66,0x6d,0x7d,0x07,<br>0x7f,0x6f,0x77,0x7c,<br>0x39,0x5e,0x79,0x71};    //led共阴数码管       </em>/<br>bit enterflag;                            //确认键按下与否的标志<br>bit mimaflag;                            //密码正确与否的标志<br>bit xiugaiflag;                            //修改密码标志<br>bit enter1flag;                        //修改密码确认键标志<br>sbit red=P2^1;<br>sbit green=P2^0;<br>sbit bell=P2^2;<br>sbit rs=P2^6;<br> sbit rw=P2^5;<br>sbit lcden=P2^7;<br>sbit scl=P3^0;<br>sbit sda=P3^1;<br>uchar code table1[]=”input the passco”;<br>uchar code table2[]=”de:     ——–”;<br>uchar code table3[]=”*”;<br>uchar code table4[]=”right   (^</em>^)   “;<br>uchar code table5[]=”first  error!!!!”;<br>uchar code table6[]=”second error!!!!”;<br>uchar code table7[]=”third error see “;<br>uchar code table8[]=”u tomorrow (^_^)”;<br>uchar code table9[]=”define the passc”;<br>uchar code table10[]=”ode:    ——–”;<br>uchar code table11[]=”code   is    new”;<br>//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>键盘消抖函数<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><em>*</em></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong><br>void delay1()<br>{ ;; }<br>void delay2(uchar x)<br>{<br>    uchar a,b;<br>    for(a=x;a&gt;0;a–)<br>     for(b=100;b&gt;0;b–);<br>}<br>void delay3(uchar x)<br>{<br>    uchar a,b;<br>    for(a=x;a&gt;0;a–)<br>     for(b=200;b&gt;0;b–);<br>     }<br>void delay(uint z)<br>{<br>    uint x,y;<br>    for(x=z;x&gt;0;x–)<br>        for(y=110;y&gt;0;y–);<br>}</p>
+<p>//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>e^2room的初始化<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><em>**</em></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong><br>void start()  //开始信号<br>{<br>    sda=1;     //书P171 时钟SCL线为高电平时，数据线SDA出现由高电平向低电平变化的情形时，启动I^2C总线数据传送。<br>    delay1();<br>    scl=1;     //<br>    delay1();<br>    sda=0;     //<br>    delay1();<br>}</p>
+<p>void stop()   //停止<br>{<br>    sda=0;      //书P171时钟SCL线为高电平时，数据线SDA出现由低电平到高电平的变化的情形时，将停止I^2C总线数据传送。<br>    delay1();<br>    scl=1;<br>    delay1();<br>    sda=1;<br>    delay1();<br>}<br>//<strong><strong><strong><strong><strong><strong><em>**</em></strong></strong></strong></strong></strong></strong>应答信号<strong><strong><strong><strong><strong><strong><strong><strong><strong>*</strong></strong></strong></strong></strong></strong></strong></strong></strong><br>void respond()<br>{<br>    uchar i;<br>    scl=1;<br>    delay1();<br>    while((sda==1)&amp;&amp;(i&lt;250))i++;    //书P176 应答sda为0，非应答为1<br>    scl=0;                            //释放总线        ？<br>    delay1();<br>}</p>
+<p>void noack()<br>{<br>scl=1;<br>delay1();<br>scl=1;delay1();<br>scl=0;delay1();<br>sda=0;delay1();<br>}<br>//<strong><strong><strong><strong><strong><strong><strong>*</strong></strong></strong></strong></strong></strong></strong>写字节操作函数<strong><strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></strong><br>void write_byte(uchar date)<br>{<br>    uchar i,temp;<br>    temp=date;<br>    for(i=0;i&lt;8;i++)<br>    {<br>        temp=temp&lt;&lt;1;            //保持最高位，左移到进位CY<br>        scl=0;                //scl上跳沿写入<br>        delay1();<br>        sda=CY;              //溢出位<br>        delay1();<br>        scl=1;<br>        delay1();<br>        scl=0;delay1();<br>    }<br>    scl=0;<br>    delay1();<br>    sda=1;//总线释放 ？<br>    delay1();<br>}<br>//<strong><strong><strong><strong><strong><strong><strong><em>*</em></strong></strong></strong></strong></strong></strong></strong>读字节操作函数<strong><strong><strong><strong><strong><strong><strong>*</strong></strong></strong></strong></strong></strong></strong><br>uchar read_byte()<br>{<br>    uchar i,k;<br>    scl=0;<br>    delay1();<br>    sda=1;<br>    delay1();<br>    for(i=0;i&lt;8;i++)<br>    {<br>        scl=1;<br>        delay1();<br>        k=(k&lt;&lt;1)|sda;    //或运算，放到最低位<br>        scl=0;<br>        delay1();<br>    }<br>    return k;<br>}<br>//<strong><strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></strong>写地址函数<strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong><br>void write_add(uchar address,uchar date)<br>{<br>    start();<br>    write_byte(0xa0);    //设备地址<br>    respond();<br>    write_byte(address);<br>    respond();<br>    write_byte(date);<br>    respond();<br>    stop();<br>}<br>//<strong><strong><strong><strong><strong><strong><strong><em>*</em></strong></strong></strong></strong></strong></strong></strong>读地址函数<strong><strong><strong><strong><strong><strong><strong><strong><strong>*</strong></strong></strong></strong></strong></strong></strong></strong></strong><br>uchar read_add(uchar address)<br>{<br>    uchar date;<br>    start();<br>    write_byte(0xa0);<br>    respond();<br>    write_byte(address);<br>    respond();<br>    start();<br>    write_byte(0xa1);      //表示接收地址<br>    respond();<br>    date=read_byte();<br>    noack();<br>    stop();<br>    return date;<br>}<br>//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><em>*</em></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>LCD1602的初始化<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong><br>void write_com(uchar com)           //书P154   写命令函数<br>{<br>    rs=0;         //RS为寄存器选择，高电平1时选择数据寄存器、低电平0时选择指令寄存器。<br>    lcden=0;<br>    P0=com;<br>    delay(5);<br>    lcden=1;     //LCD的使能端高电平有效<br>    delay(5);<br>    lcden=0;<br>}</p>
+<p>void write_date(uchar date)         //写数据函数<br>{<br>    rs=1;<br>    lcden=0;<br>    P0=date;<br>    delay(5);<br>    lcden=1;<br>    delay(5);<br>    lcden=0;<br>}<br>//<strong><strong><strong><strong><strong><strong><strong><strong><strong><em>*</em></strong></strong></strong></strong></strong></strong></strong></strong></strong>密码比较函数<strong><strong><strong><strong><strong><strong><strong><em>**</em></strong></strong></strong></strong></strong></strong></strong><br>bit mimacmp()<br>{<br>    bit flag;<br>    uchar i;<br>    for(i=0;i&lt;8;i++)<br>        {<br>            if(mima[i]==tab_key[i])<br>                flag=1;<br>            else<br>                {<br>                flag=0;<br>                i=8;<br>                }<br>        }<br>    return(flag);                            //返回flag<br>}<br>//<strong><strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></strong>LCD显示函数开始<strong><strong><strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></strong></strong><br>void lcd_display()<br>{<br>uchar i=0;<br>write_com(0x80+0x40+8);//液晶操作中的写入，地址是0x80开头的，加0x40为写入第二行，加8则为确定地址。<br>for(i=0;i&lt;n;i++)<br>{<br>write_date(table3[0]);    //uchar code table3[]=”<em>“<br>}<br>}<br>//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></em>键盘功能分配函数群开始<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><em>*</em></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong><br>// 0          1            2              3<br>// 4          5            6              7<br>// 8          9           确认（A）       无效（B）<br>//取消（C）修改密码键（D）确认修改键（E） 无效（F）<br>void key_manage1()<br>{<br>tab_key[n]=0;     //数组的存储顺序是从n=0开始的，因此无论是哪个键先按下都会存入tab_key[0]<br>n++;<br>if(xiugaiflag==1)    //如果按下了修改键<br>{<br>mima[count4]=0;<br>count4++;<br>}<br>}</p>
+<p>void key_manage2()<br>{</p>
+<p>tab_key[n]=1;<br>n++;<br>if(xiugaiflag==1)<br>{<br>mima[count4]=1;<br>count4++;<br>}<br>}</p>
+<p>void key_manage3()<br>{</p>
+<p>tab_key[n]=2;<br>n++;<br>if(xiugaiflag==1)<br>{<br>mima[count4]=2;<br>count4++;<br>}<br>}</p>
+<p>void key_manage4()<br>{<br>tab_key[n]=3;<br>n++;<br>if(xiugaiflag==1)<br>{<br>mima[count4]=3;<br>count4++;<br>}<br>}</p>
+<p>void key_manage5()<br>{<br>tab_key[n]=4;<br>n++;<br>if(xiugaiflag==1)<br>{<br>mima[count4]=4;<br>count4++;<br>}<br>}</p>
+<p>void key_manage6()<br>{<br>tab_key[n]=5;<br>n++;<br>if(xiugaiflag==1)<br>{<br>mima[count4]=5;<br>count4++;<br>}<br>}<br>void key_manage7()<br>{<br>tab_key[n]=6;<br>n++;<br>if(xiugaiflag==1)<br>{<br>mima[count4]=6;<br>count4++;<br>}<br>}<br>void key_manage8()<br>{<br>tab_key[n]=7;<br>n++;<br>if(xiugaiflag==1)<br>{<br>mima[count4]=7;<br>count4++;<br>}<br>}</p>
+<p>void key_manage9()<br>{<br>tab_key[n]=8;<br>n++;<br>if(xiugaiflag==1)<br>{<br>mima[count4]=8;<br>count4++;<br>}<br>}<br>void key_manage10()<br>{<br>tab_key[n]=9;<br>n++;<br>if(xiugaiflag==1)<br>{<br>mima[count4]=9;<br>count4++;<br>}<br>}<br>//<strong><strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></strong>确认键<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong><br>void key_manage11()<br>{<br>    enterflag=1;                    //确认键按下<br>    if(n==8)                       //只有输入8个密码后按确认才做比较<br>    {    mimaflag=mimacmp();<br>    }<br>    else<br>    {    mimaflag=0;<br>     }<br>     if(enterflag==1)<br>        {<br>            enterflag=0;  //标志位清零<br>            n=0;<br>            //用FFFFFFFF清除已经输入的密码<br>            for(count3=0;count3&lt;8;count3++)<br>            {<br>                delay(5);<br>                tab_key[count3]=0x0f;<br>            }<br>            TR1=1;                                    //打开计数器1<br>            count1=0;                                //定时器1由50MS累计到1S所用的计数器<br>            if(mimaflag==1)<br>            {<br>                a=0;</p>
+<pre><code>            write_com(0x01);
+            write_com(0x80);
+            for(count3=0;count3&lt;16;count3++)
+            {
+                write_date(table4[count3]);    //密码正确，显示RIGHT，绿灯亮
+                green=0;red=1;
+                bell=1;
+                delay(5);
+            }
+        }
+
+        else
+        {   
+             n=0;
+             red=0;
+            bell=0;
+            a++;
+            if(a==1)
+            {
+                for(count3=0;count3&lt;8;count3++) //ffffffff清除密码
+                {    
+                    delay(5);
+                    tab_key[count3]=0x0f;        
+                }
+                write_com(0x01);                                        
+                write_com(0x80);
+                for(count3=0;count3&lt;16;count3++)
+                {
+                    write_date(table5[count3]);    //密码错误，显示 first error，红灯亮
+                    green=1;red=0;
+                    bell=1;
+                    delay(5);
+                }
+                    TR1=1;
+            }
+            if(a==2)
+            {    
+                for(count3=0;count3&lt;8;count3++) //ffffffff清除密码
+                {    
+                    delay(5);
+                    tab_key[count3]=0x0f;        
+                }
+                    write_com(0x01);
+                    write_com(0x80);
+                    for(count3=0;count3&lt;16;count3++)
+                    {
+                        write_date(table6[count3]);    //密码错误，显示SECOND ERROR，红灯亮
+                        green=1;red=0;
+                        bell=1;
+                        delay(5);
+                    }
+                        TR1=1;
+            }
+
+              if(a==3)
+                {    
+                    for(count3=0;count3&lt;8;count3++) //ffffffff清除密码
+                    {    
+                        delay(5);
+                        tab_key[count3]=0x0f;        
+                    }
+                    write_com(0x01);
+                    write_com(0x80);
+                    for(count3=0;count3&lt;16;count3++)
+                    {
+                        write_date(table7[count3]);    //密码错误，显示third error see，红灯亮
+                        green=1;red=0;
+                        bell=0;//蜂鸣器报警
+                        delay(5);
+                    }
+                    write_com(0x80+0x40);
+                    for(count3=0;count3&lt;16;count3++)
+                    {
+                        write_date(table8[count3]);//密码错误，显示 U TOMORROW ,红灯亮
+                        green=1;red=0;
+                        bell=0;//蜂鸣器报警
+                        delay(5);
+                    }
+                        TR1=0;
+
+                }
+
+    }
 }
-</code></pre>
-<p>}
-void key_manage12()
-{
-tab_key[n]=11;
-n++;						  //密码计数清零</p>
-<p>}
-//********<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>取消键</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong><br>
-void key_manage13()
-{</p>
-<p>n=0;						  //密码计数清零
-write_com(0x80);						//指针所指位置	   第一行
-for(count3=0;count3&lt;16;count3++)
-{
-	write_date(table1[count3]);		//第一行显示INPUT THE PASSPORD:
-	delay(5);
-}
-write_com(0x80+0x40);				 //第二行
-for(count3=0;count3&lt;16;count3++)
-{
-	write_date(table2[count3]);	//开机显示--------
-	delay(5);
-	tab_key[count3]=0x0f;			//用FFFFFFFF清除已经输入的密码
-}</p>
-<p>}
-//*********<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>修改密码键</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>
-void key_manage14()
-{
-	uchar aa=0;
-	n=0;
-	xiugaiflag=1;
-	write_com(0x01);
-	write_com(0x80);
-for(count3=0;count3&lt;16;count3++)
-{
-	write_date(table9[count3]);	//显示define the password
-	delay(5);
-	tab_key[count3]=0x0f;			//用FFFFFFFF清楚已经输入的密码
-}
-	write_com(0x80+0x40);
-for(count3=0;count3&lt;16;count3++)
-{
-	write_date(table10[count3]);	//显示--------
-	delay(5);
-}
-TR0=1;</p>
-<p>}
-//**********<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>修改密码键的确认键</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>
-void key_manage15()
-{
-n=0;
-enter1flag=1;
-if(enter1flag==1)
-{
-	enter1flag=0;
-	count4=0;
-	for(count3=0;count3&lt;16;count3++)
-	{
-	tab_key[count3]=0x0f;			//用FFFFFFFF清除已经输入的密码
-	}
-	write_com(0x01);
-	write_com(0x80);
-	for(count3=0;count3&lt;16;count3++)
-	{
-		write_date(table11[count3]);
-		delay(100);
-	}
-	TR1=1;
-	count1=0;
-}
-}
-void key_manage16()
-{
-tab_key[n]=15;
-n++;
-}</p>
-<p>//***********<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><em>定时器1的50MS,共延时1秒</em></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>
-void time_1() interrupt 3
-{</p>
+</code></pre><p>}<br>void key_manage12()<br>{<br>tab_key[n]=11;<br>n++;                          //密码计数清零</p>
+<p>}<br>//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><em>**</em></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>取消键<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><em>**</em></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong><br>void key_manage13()<br>{</p>
+<p>n=0;                          //密码计数清零<br>write_com(0x80);                        //指针所指位置       第一行<br>for(count3=0;count3&lt;16;count3++)<br>{<br>    write_date(table1[count3]);        //第一行显示INPUT THE PASSPORD:<br>    delay(5);<br>}<br>write_com(0x80+0x40);                 //第二行<br>for(count3=0;count3&lt;16;count3++)<br>{<br>    write_date(table2[count3]);    //开机显示——–<br>    delay(5);<br>    tab_key[count3]=0x0f;            //用FFFFFFFF清除已经输入的密码<br>}</p>
+<p>}<br>//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><em>*</em></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>修改密码键<strong><strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></strong><br>void key_manage14()<br>{<br>    uchar aa=0;<br>    n=0;<br>    xiugaiflag=1;<br>    write_com(0x01);<br>    write_com(0x80);<br>for(count3=0;count3&lt;16;count3++)<br>{<br>    write_date(table9[count3]);    //显示define the password<br>    delay(5);<br>    tab_key[count3]=0x0f;            //用FFFFFFFF清楚已经输入的密码<br>}<br>    write_com(0x80+0x40);<br>for(count3=0;count3&lt;16;count3++)<br>{<br>    write_date(table10[count3]);    //显示——–<br>    delay(5);<br>}<br>TR0=1;</p>
+<p>}<br>//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>修改密码键的确认键<strong><strong><strong><strong><strong><strong><strong><em>**</em></strong></strong></strong></strong></strong></strong></strong><br>void key_manage15()<br>{<br>n=0;<br>enter1flag=1;<br>if(enter1flag==1)<br>{<br>    enter1flag=0;<br>    count4=0;<br>    for(count3=0;count3&lt;16;count3++)<br>    {<br>    tab_key[count3]=0x0f;            //用FFFFFFFF清除已经输入的密码<br>     }<br>    write_com(0x01);<br>    write_com(0x80);<br>    for(count3=0;count3&lt;16;count3++)<br>    {<br>        write_date(table11[count3]);<br>        delay(100);<br>    }<br>    TR1=1;<br>    count1=0;<br>}<br>}<br>void key_manage16()<br>{<br>tab_key[n]=15;<br>n++;<br>}</p>
+<p>//<strong><strong><strong><strong><strong><strong><strong><strong><strong><em>**</em></strong></strong></strong></strong></strong></strong></strong></strong></strong>定时器1的50MS,共延时1秒<strong><strong><strong><strong><strong><strong><strong>*</strong></strong></strong></strong></strong></strong></strong><br>void time_1() interrupt 3<br>{    </p>
 <pre><code>TH1=(65536-50000)/256;
 TL1=(65536-50000)%256;
 if(count1&lt;20)
 {
-	count1++;
+    count1++;
 }
-else 							//计时到1S
+else                             //计时到1S
 {
-	TR1=0;
-	count1=0;
-	mimaflag=0;
+    TR1=0;
+    count1=0;
+    mimaflag=0;
 
-	red=1;
-	bell=1;
-	//显示FFFFFFFF
-	write_com(0x01);
-	write_com(0x80);
-	for(count3=0;count3&lt;16;count3++)
-		{
-			write_date(table1[count3]);	//显示INPUT THE PASSCODE
-			delay(5);
-		}
-	write_com(0x80+0x40);
-	for(count3=0;count3&lt;16;count3++)
-		{
-			write_date(table2[count3]);	//开机显示FFFFFFFF
-			delay(5);
-		}
+    red=1;
+    bell=1;
+    //显示FFFFFFFF
+    write_com(0x01);
+    write_com(0x80);
+    for(count3=0;count3&lt;16;count3++)
+        {
+            write_date(table1[count3]);    //显示INPUT THE PASSCODE
+            delay(5);
+        }
+    write_com(0x80+0x40);
+    for(count3=0;count3&lt;16;count3++)
+        {
+            write_date(table2[count3]);    //开机显示FFFFFFFF
+            delay(5);
+        }
 }
-</code></pre>
-<p>}
-//*<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>定时0</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>
-void time_0() interrupt 1
-{</p>
+</code></pre><p>}<br>//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><em>*</em></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>定时0<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong><br>void time_0() interrupt 1<br>{    </p>
 <pre><code>TH0=(65536-50000)/256;
 TL0=(65536-50000)%256;
-</code></pre>
-<p>if(count4&lt;8)
-{
-	key_scan();
-}
-else
-{
-	TR0=0;
-	count4=0;
-}
-}</p>
-<p>//初始化函数
-void init()
-{	
-	uchar i;
-	lcden=0;
-	write_com(0x38);					//打开显示模式设置
-	write_com(0x0c);					//打开显示，光标等等设置为零
-	write_com(0x06);					//当读或写一个字符后地址指针加一，且光标加一，当写一个字符后整频显示左移，
-	write_com(0x01);					//清零指令
-	write_com(0x80);					//指针所指位置</p>
+</code></pre><p>if(count4&lt;8)<br>{<br>    key_scan();<br>}<br>else<br>{<br>    TR0=0;<br>    count4=0;<br>}<br>}</p>
+<p>//初始化函数<br>void init()<br>{<br>    uchar i;<br>    lcden=0;<br>    write_com(0x38);                    //打开显示模式设置<br>    write_com(0x0c);                    //打开显示，光标等等设置为零<br>    write_com(0x06);                    //当读或写一个字符后地址指针加一，且光标加一，当写一个字符后整频显示左移，<br>    write_com(0x01);                    //清零指令<br>    write_com(0x80);                    //指针所指位置</p>
 <pre><code>//定时器初始化
-TMOD=0x11;							//T0,T1工作方式1
+TMOD=0x11;                            //T0,T1工作方式1
 TH0=(65536-2000)/256;
-TL0=(65536-2000)%256;				//T0初始化2MS
+TL0=(65536-2000)%256;                //T0初始化2MS
 
 TH1=(65536-50000)/256;
-TL1=(65536-50000)%256;				//T1初始化50MS
+TL1=(65536-50000)%256;                //T1初始化50MS
 
 TR1=0;
 ET1=1;
@@ -786,684 +387,665 @@ EA=1;
 TR0=0;
 ET0=1;
 
-count0=0;							//初始没有密码输入，故为零
-enterflag=0;						//没有确认键按下
-mimaflag=0;							//密码正确与否键先置零
-				
-red=1;								//红灯不亮
-</code></pre>
-<p>//<strong><strong><strong><strong><strong><strong>密码存入EPROM中</strong></strong></strong></strong></strong></strong>**********************
-	sda=1;
-	delay(5);
-	scl=1;// SDA=1,SCL=1,使主从设备处于空闲状态
-	delay(5);
-	for(i=0;i&lt;8;i++)
-	{
-		write_add(i,8);
-		delay3(100);
-	}
-	for(i=0;i&lt;8;i++)
-	{
-		mima[i]=read_add(i);
-		delay(5);
-	}</p>
-<p>}
-void main()
-{	rw=0;		
-	init();
-	write_com(0x80);						//给com一个数值，com连着单片机
-	for(count3=0;count3&lt;16;count3++)
-	{
-		write_date(table1[count3]);		//第一行显示INPUT THE PASSPORD:
-		delay(5);
-	}
-	write_com(0x80+0x40);
-	for(count3=0;count3&lt;16;count3++)
-	{
-		write_date(table2[count3]);		//开机显示FFFFFFFF
-		delay(5);
-	}
-	while(1)
-	{
-		key_scan();	   				   	//调用键盘扫描函数
-		lcd_display();
-	}</p>
-<p>}
-//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>键盘扫描函数开始</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>*
-void key_scan()
-{
-//*<strong><strong><strong><strong><em>扫描第一行</em></strong></strong></strong></strong>
-P1=0xfe;
-temp=P1;
-temp=temp&amp;0xf0;
-if(temp!=0xf0)
-{
-delay(100);
-if(temp!=0xf0)
-{
-temp=P1;
-switch(temp)
-{
-case 0xee:
-key_manage1();
-break;</p>
-<p>case 0xde:
-key_manage2();
-break;</p>
-<p>case 0xbe:
-key_manage3();
-break;</p>
-<p>case 0x7e:
-key_manage4();
-break;
-}
-while(temp!=0xf0)
-{
-temp=P1;
-temp=temp&amp;0xf0;
-}
-}
-}
-//***************<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><em>扫描第二行</em></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>
-P1=0xfd;
-temp=P1;
-temp=temp&amp;0xf0;
-if(temp!=0xf0)
-{
-delay(100);
-if(temp!=0xf0)
-{
-temp=P1;
-switch(temp)
-{
-case 0xed:
-key_manage5();
-break;</p>
-<p>case 0xdd:
-key_manage6();
-break;</p>
-<p>case 0xbd:
-key_manage7();
-break;</p>
-<p>case 0x7d:
-key_manage8();
-break;
-}
-while(temp!=0xf0)
-{
-temp=P1;
-temp=temp&amp;0xf0;
-}
-}
-}
-//**********<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><em>扫描第三行</em></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>
-P1=0xfb;
-temp=P1;
-temp=temp&amp;0xf0;
-if(temp!=0xf0)
-{
-delay(100);
-if(temp!=0xf0)
-{
-temp=P1;
-switch(temp)
-{
-case 0xeb:
-key_manage9();
-break;</p>
-<p>case 0xdb:
-key_manage10();
-break;</p>
-<p>case 0xbb:
-key_manage11();
-break;</p>
-<p>case 0x7b:
-key_manage12();
-break;
-}
-while(temp!=0xf0)
-{
-temp=P1;
-temp=temp&amp;0xf0;
-}
-}
-}</p>
-<p>//***********<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>扫描第四行</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>
-P1=0xf7;
-temp=P1;
-temp=temp&amp;0xf0;
-if(temp!=0xf0)
-{
-delay(100);
-if(temp!=0xf0)
-{
-temp=P1;
-switch(temp)
-{
-case 0xe7:
-key_manage13();
-break;</p>
-<p>case 0xd7:
-key_manage14();
-break;</p>
-<p>case 0xb7:
-key_manage15();
-break;</p>
-<p>case 0x77:
-key_manage16();
-break;
-}
-while(temp!=0xf0)
-{
-temp=P1;
-temp=temp&amp;0xf0;
-}
-}
-}
-}</p>
-<p>&lt;span id=&quot;busuanzi_container_page_pv&quot;&gt;
-本文已被阅读 &lt;span id=&quot;busuanzi_value_page_pv&quot;&gt;&lt;/span&gt; 次。感谢您的点击！
-&lt;/span&gt;</p>
+count0=0;                            //初始没有密码输入，故为零
+enterflag=0;                        //没有确认键按下
+mimaflag=0;                            //密码正确与否键先置零
 
+red=1;                                //红灯不亮
+</code></pre><p>//<strong><strong><em>**</em></strong></strong>密码存入EPROM中<strong><strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></strong><br>    sda=1;<br>    delay(5);<br>    scl=1;// SDA=1,SCL=1,使主从设备处于空闲状态<br>    delay(5);<br>    for(i=0;i&lt;8;i++)<br>    {<br>        write_add(i,8);<br>        delay3(100);<br>    }<br>    for(i=0;i&lt;8;i++)<br>    {<br>        mima[i]=read_add(i);<br>        delay(5);<br>    }</p>
+<p>}<br>void main()<br>{    rw=0;<br>    init();<br>    write_com(0x80);                        //给com一个数值，com连着单片机<br>    for(count3=0;count3&lt;16;count3++)<br>    {<br>        write_date(table1[count3]);        //第一行显示INPUT THE PASSPORD:<br>        delay(5);<br>    }<br>    write_com(0x80+0x40);<br>    for(count3=0;count3&lt;16;count3++)<br>    {<br>        write_date(table2[count3]);        //开机显示FFFFFFFF<br>        delay(5);<br>    }<br>    while(1)<br>    {<br>        key_scan();                              //调用键盘扫描函数<br>        lcd_display();<br>    }</p>
+<p>}<br>//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>键盘扫描函数开始<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><em>*</em></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong><br>void key_scan()<br>{<br>//<strong><strong>**</strong></strong>扫描第一行<strong><strong>*</strong></strong><br>P1=0xfe;<br>temp=P1;<br>temp=temp&0xf0;<br>if(temp!=0xf0)<br>{<br>delay(100);<br>if(temp!=0xf0)<br>{<br>temp=P1;<br>switch(temp)<br>{<br>case 0xee:<br>key_manage1();<br>break;</p>
+<p>case 0xde:<br>key_manage2();<br>break;</p>
+<p>case 0xbe:<br>key_manage3();<br>break;</p>
+<p>case 0x7e:<br>key_manage4();<br>break;<br>}<br>while(temp!=0xf0)<br>{<br>temp=P1;<br>temp=temp&0xf0;<br>}<br>}<br>}<br>//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>**</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>扫描第二行<strong><strong><strong><strong><strong><strong><strong><strong><em>*</em></strong></strong></strong></strong></strong></strong></strong></strong><br>P1=0xfd;<br>temp=P1;<br>temp=temp&0xf0;<br>if(temp!=0xf0)<br>{<br>delay(100);<br>if(temp!=0xf0)<br>{<br>temp=P1;<br>switch(temp)<br>{<br>case 0xed:<br>key_manage5();<br>break;</p>
+<p>case 0xdd:<br>key_manage6();<br>break;</p>
+<p>case 0xbd:<br>key_manage7();<br>break;</p>
+<p>case 0x7d:<br>key_manage8();<br>break;<br>}<br>while(temp!=0xf0)<br>{<br>temp=P1;<br>temp=temp&0xf0;<br>}<br>}<br>}<br>//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>*</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>扫描第三行<strong><strong><strong><strong><strong><strong><strong><strong><em>*</em></strong></strong></strong></strong></strong></strong></strong></strong><br>P1=0xfb;<br>temp=P1;<br>temp=temp&0xf0;<br>if(temp!=0xf0)<br>{<br>delay(100);<br>if(temp!=0xf0)<br>{<br>temp=P1;<br>switch(temp)<br>{<br>case 0xeb:<br>key_manage9();<br>break;</p>
+<p>case 0xdb:<br>key_manage10();<br>break;</p>
+<p>case 0xbb:<br>key_manage11();<br>break;</p>
+<p>case 0x7b:<br>key_manage12();<br>break;<br>}<br>while(temp!=0xf0)<br>{<br>temp=P1;<br>temp=temp&0xf0;<br>}<br>}<br>}</p>
+<p>//<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><em>*</em></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong>扫描第四行<strong><strong><strong><strong><strong><strong><strong><strong><strong><em>**</em></strong></strong></strong></strong></strong></strong></strong></strong></strong><br>P1=0xf7;<br>temp=P1;<br>temp=temp&0xf0;<br>if(temp!=0xf0)<br>{<br>delay(100);<br>if(temp!=0xf0)<br>{<br>temp=P1;<br>switch(temp)<br>{<br>case 0xe7:<br>key_manage13();<br>break;</p>
+<p>case 0xd7:<br>key_manage14();<br>break;</p>
+<p>case 0xb7:<br>key_manage15();<br>break;</p>
+<p>case 0x77:<br>key_manage16();<br>break;<br>}<br>while(temp!=0xf0)<br>{<br>temp=P1;<br>temp=temp&0xf0;<br>}<br>}<br>}<br>} </p>
+<p><span id="busuanzi_container_page_pv"><br>本文已被阅读 <span id="busuanzi_value_page_pv"></span> 次。感谢您的点击！<br></span></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>诶？真的会有人打赏吗？<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/source/images/pay.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <footer class="article-footer">
-            
-
-    <div class="bdsharebuttonbox">
-    <a href="#" class="bds_more" data-cmd="more">分享到：</a>
-    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
-    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
-    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博">腾讯微博</a>
-    <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
-    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
-</div>
-<script>
-window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{"bdSize":16}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
-</script>
-<style>
-    .bdshare_popup_box {
-        border-radius: 4px;
-        border: #e1e1e1 solid 1px;
-    }
-    .bdshare-button-style0-16 a,
-    .bdshare-button-style0-16 .bds_more {
-        padding-left: 20px;
-        margin: 6px 10px 6px 0;
-    }
-    .bdshare_dialog_list a,
-    .bdshare_popup_list a,
-    .bdshare_popup_bottom a {
-        font-family: 'Microsoft Yahei';
-    }
-    .bdshare_popup_top {
-        display: none;
-    }
-    .bdshare_popup_bottom {
-        height: auto;
-        padding: 5px;
-    }
-</style>
-
-
-
-        </footer>
-
-
-
-
-<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-<script>
-  var cloudTieConfig = {
-    url: document.location.href, 
-    sourceId: "",
-    productKey: "53714f5eefce49d681e6b8f4f551437e",
-    target: "cloud-tie-wrapper"
-  };
-
-  
-</script>
-<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-
-
+      
     </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">单片机</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">密码锁</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">矩阵键盘</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">1602</a>
+        		</li>
+      		
+		</ul>
+	</div>
 
-   
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/通信工程/" class="article-tag-list-link color5">通信工程</a>
+        		</li>
+      		
+		</ul>
+	</div>
 
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtklEQVR42u3aQW7cMAwF0Nz/0tNNFwFSez5JceoAz6vA8Mh6CiDRJL++4uv17fp+5/75+/uvH9fVG6+eOXbh4eHhDaZ+Ndz9/aslSGD3v03e9WYJ8PDw8NZ4yYRy6v2hku/hyXzeWPDw8PAewMsD3/xXpwJ6PDw8vN/FyxnVAB0PDw/vmbzqcKeSF3nYvZ5rwcPDw4t5eRXpOX+v1Pfw8PDwxlX1ZNOvjlNtC+i95e+v8PDw8BZ4+Yb7Gl+9d01KaHh4eHgbvF6aIE8Z5EtTTf5GQT8eHh7eMm/e9lQ9GJKpV5egvNJ4eHh4/b6mwsd//nyVcb9w+Wzx8PDwPsPrJV7zpoF8OfKmrkJhDA8PD+8QrzeJJDGRB9O9JY6OLjw8PLwFXnWDzl9TDbiTrb9ZWsPDw8Nb4PVC3nxzz0PkSbnrQK4FDw8Pr8irFquq3/69Db2aAi53cuHh4eG1eL3U7SR9kDcxJG0Kb57Hw8PDW+BVQ9482J0E69UWhObph4eHh9fiVQeaFLTOtixE/xg8PDy8o7x8U54kC6pZgl7f1D+ex8PDw/tPvOqLN8pgzUQzHh4e3gJvAjubbM2Pk14aBQ8PD2+DNyk+9YLm3jiTAB0PDw9vzsubAHoFrQlgcieaIh4eHl6Ll6RK9wpdPUb50MLDw8P7IO/qGMjr8r0WhBzQbLrCw8PDO8TLt+leEat3MFSbBgrfDXh4eHhjXr7139+pBt/z0teb9+Lh4eEd5b2KVy+8zhsF8oJZ9AGAh4eHt8CrbrhJWHxPSn6bj3YAhoeHh9fi9YY+uzWfTVLg4eHhfYaXpGJ7JahJGvdYSgIPDw/vYbwElhwY8ycvQ2o8PDy8B/DyULta/s/TuFFiFw8PD2+N1wt884RCdaOfNCXg4eHhbfOqn/eTon6epJgcPHh4eHhrvD888ZKXcUVxxAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
 </article>
 
-    <section id="comments">
-    
-        
-    <div class="ds-thread" data-thread-key="2016/03/07/1602-24C08-4X4键盘密码锁/" data-title="1602+24C08+4X4键盘密码锁" data-url="http://hubojing.github.io/2016/03/07/1602-24C08-4X4键盘密码锁/"></div>
-    <style>
-        #ds-thread #ds-reset .ds-textarea-wrapper {
-            background: none;
-        }
-        #ds-reset .ds-avatar img {
-            box-shadow: none;
-        }
-        #ds-reset .ds-gradient-bg {
-            background: #f7f7f7;
-        }
-        #ds-thread #ds-reset li.ds-tab a {
-            border-radius: 3px;
-        }
-        #ds-thread #ds-reset .ds-post-button {
-            color: white;
-            border: none;
-            box-shadow: none;
-            background: #d32;
-            text-shadow: none;
-            font-weight: normal;
-            font-family: 'Microsoft Yahei';
-        }
-        #ds-thread #ds-reset .ds-post-button:hover {
-            color: white;
-            background: #DE594C;
-        }
-        #ds-thread #ds-reset .ds-post-button:active {
-            background: #d32;
-        }
-        #ds-smilies-tooltip ul.ds-smilies-tabs li a.ds-current {
-            color: white;
-            background: #d32;
-            box-shadow: none;
-            text-shadow: none;
-            font-weight: normal;
-        }
-    </style>
-
-    
-    </section>
-
-
-
-
-                        </div>
-                    </section>
-                    <aside id="sidebar">
-    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
-    <div class="sidebar-top">
-        <p>关注我 :</p>
-        <ul class="social-links">
-            
-                
-                <li>
-                    <a class="social-tooltip" title="github" href="https://github.com/hubojing" target="_blank">
-                        <i class="icon fa fa-github"></i>
-                    </a>
-                </li>
-                
-            
-                
-                <li>
-                    <a class="social-tooltip" title="book" href="http://blog.csdn.net/hubojing/" target="_blank">
-                        <i class="icon fa fa-book"></i>
-                    </a>
-                </li>
-                
-            
-                
-                <li>
-                    <a class="social-tooltip" title="qq" href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes" target="_blank">
-                        <i class="icon fa fa-qq"></i>
-                    </a>
-                </li>
-                
-            
-                
-                <li>
-                    <a class="social-tooltip" title="music" href="http://music.163.com/#/user/home?id=92203594" target="_blank">
-                        <i class="icon fa fa-music"></i>
-                    </a>
-                </li>
-                
-            
-                
-                <li>
-                    <a class="social-tooltip" title="rss" href="/atom.xml" target="_blank">
-                        <i class="icon fa fa-rss"></i>
-                    </a>
-                </li>
-                
-            
-        </ul>
-    </div>
-    
-        
+  
 <nav id="article-nav">
-    
-        <a href="/2016/03/08/markdown语法简记/" id="article-nav-newer" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">下一篇</strong>
-        <p class="article-nav-title">
+  
+    <a href="/2016/03/08/markdown语法简记/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
         
-            markdown语法简记
+          markdown语法简记
         
-        </p>
-        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+      </div>
     </a>
-    
-    
-        <a href="/2016/01/04/零碎知识记录/" id="article-nav-older" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">上一篇</strong>
-        <p class="article-nav-title">零碎知识记录</p>
-        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
-        </a>
-    
+  
+  
+    <a href="/2016/01/04/零碎知识记录/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">零碎知识记录</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
 </nav>
 
+
+
+
+
+
+  
+  <div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="1602-24C08-4X4键盘密码锁" data-title="1602+24C08+4X4键盘密码锁" data-url="http://hubojing.github.io/2016/03/07/1602-24C08-4X4键盘密码锁/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"hubojing"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+  
+
+
+
+
+          </div>
+        </div>
+      </div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 胡博靖
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    <script>
+	var yiliaConfig = {
+		mathjax: false,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: true,
+		root: "/",
+		innerArchive: true,
+		showTags: false
+	}
+</script>
+
+<script>!function(t){function n(r){if(e[r])return e[r].exports;var o=e[r]={exports:{},id:r,loaded:!1};return t[r].call(o.exports,o,o.exports,n),o.loaded=!0,o.exports}var e={};return n.m=t,n.c=e,n.p="./",n(0)}([function(t,n,e){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}function o(t,n){var e=/\/|index.html/g;return t.replace(e,"")===n.replace(e,"")}function i(){for(var t=document.querySelectorAll(".js-header-menu li a"),n=window.location.pathname,e=0,r=t.length;e<r;e++){var i=t[e];o(n,i.getAttribute("href"))&&(0,d.default)(i,"active")}}function u(t){for(var n=t.offsetLeft,e=t.offsetParent;null!==e;)n+=e.offsetLeft,e=e.offsetParent;return n}function f(t){for(var n=t.offsetTop,e=t.offsetParent;null!==e;)n+=e.offsetTop,e=e.offsetParent;return n}function c(t,n,e,r,o){var i=u(t),c=f(t)-n;if(c-e<=o){var a=t.$newDom;a||(a=t.cloneNode(!0),(0,h.default)(t,a),t.$newDom=a,a.style.position="fixed",a.style.top=(e||c)+"px",a.style.left=i+"px",a.style.zIndex=r||2,a.style.width="100%",a.style.color="#fff"),a.style.visibility="visible",t.style.visibility="hidden"}else{t.style.visibility="visible";var s=t.$newDom;s&&(s.style.visibility="hidden")}}function a(){var t=document.querySelector(".js-overlay"),n=document.querySelector(".js-header-menu");c(t,document.body.scrollTop,-63,2,0),c(n,document.body.scrollTop,1,3,0)}function s(){document.querySelector("#container").addEventListener("scroll",function(t){a()}),window.addEventListener("scroll",function(t){a()}),a()}function l(){x.default.versions.mobile&&window.screen.width<800&&(i(),s())}var p=e(71),d=r(p),v=e(72),y=(r(v),e(84)),h=r(y),b=e(69),x=r(b),g=e(75),m=r(g),w=e(70);l(),(0,w.addLoadEvent)(function(){m.default.init()}),t.exports={}},function(t,n){var e=t.exports="undefined"!=typeof window&&window.Math==Math?window:"undefined"!=typeof self&&self.Math==Math?self:Function("return this")();"number"==typeof __g&&(__g=e)},function(t,n){var e={}.hasOwnProperty;t.exports=function(t,n){return e.call(t,n)}},function(t,n,e){var r=e(49),o=e(15);t.exports=function(t){return r(o(t))}},function(t,n,e){t.exports=!e(8)(function(){return 7!=Object.defineProperty({},"a",{get:function(){return 7}}).a})},function(t,n,e){var r=e(6),o=e(12);t.exports=e(4)?function(t,n,e){return r.f(t,n,o(1,e))}:function(t,n,e){return t[n]=e,t}},function(t,n,e){var r=e(10),o=e(30),i=e(24),u=Object.defineProperty;n.f=e(4)?Object.defineProperty:function(t,n,e){if(r(t),n=i(n,!0),r(e),o)try{return u(t,n,e)}catch(t){}if("get"in e||"set"in e)throw TypeError("Accessors not supported!");return"value"in e&&(t[n]=e.value),t}},function(t,n,e){var r=e(22)("wks"),o=e(13),i=e(1).Symbol,u="function"==typeof i,f=t.exports=function(t){return r[t]||(r[t]=u&&i[t]||(u?i:o)("Symbol."+t))};f.store=r},function(t,n){t.exports=function(t){try{return!!t()}catch(t){return!0}}},function(t,n,e){var r=e(35),o=e(16);t.exports=Object.keys||function(t){return r(t,o)}},function(t,n,e){var r=e(11);t.exports=function(t){if(!r(t))throw TypeError(t+" is not an object!");return t}},function(t,n){t.exports=function(t){return"object"==typeof t?null!==t:"function"==typeof t}},function(t,n){t.exports=function(t,n){return{enumerable:!(1&t),configurable:!(2&t),writable:!(4&t),value:n}}},function(t,n){var e=0,r=Math.random();t.exports=function(t){return"Symbol(".concat(void 0===t?"":t,")_",(++e+r).toString(36))}},function(t,n){var e=t.exports={version:"2.4.0"};"number"==typeof __e&&(__e=e)},function(t,n){t.exports=function(t){if(void 0==t)throw TypeError("Can't call method on  "+t);return t}},function(t,n){t.exports="constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf".split(",")},function(t,n){t.exports={}},function(t,n){t.exports=!0},function(t,n){n.f={}.propertyIsEnumerable},function(t,n,e){var r=e(6).f,o=e(2),i=e(7)("toStringTag");t.exports=function(t,n,e){t&&!o(t=e?t:t.prototype,i)&&r(t,i,{configurable:!0,value:n})}},function(t,n,e){var r=e(22)("keys"),o=e(13);t.exports=function(t){return r[t]||(r[t]=o(t))}},function(t,n,e){var r=e(1),o="__core-js_shared__",i=r[o]||(r[o]={});t.exports=function(t){return i[t]||(i[t]={})}},function(t,n){var e=Math.ceil,r=Math.floor;t.exports=function(t){return isNaN(t=+t)?0:(t>0?r:e)(t)}},function(t,n,e){var r=e(11);t.exports=function(t,n){if(!r(t))return t;var e,o;if(n&&"function"==typeof(e=t.toString)&&!r(o=e.call(t)))return o;if("function"==typeof(e=t.valueOf)&&!r(o=e.call(t)))return o;if(!n&&"function"==typeof(e=t.toString)&&!r(o=e.call(t)))return o;throw TypeError("Can't convert object to primitive value")}},function(t,n,e){var r=e(1),o=e(14),i=e(18),u=e(26),f=e(6).f;t.exports=function(t){var n=o.Symbol||(o.Symbol=i?{}:r.Symbol||{});"_"==t.charAt(0)||t in n||f(n,t,{value:u.f(t)})}},function(t,n,e){n.f=e(7)},function(t,n,e){var r=e(1),o=e(14),i=e(46),u=e(5),f="prototype",c=function(t,n,e){var a,s,l,p=t&c.F,d=t&c.G,v=t&c.S,y=t&c.P,h=t&c.B,b=t&c.W,x=d?o:o[n]||(o[n]={}),g=x[f],m=d?r:v?r[n]:(r[n]||{})[f];d&&(e=n);for(a in e)s=!p&&m&&void 0!==m[a],s&&a in x||(l=s?m[a]:e[a],x[a]=d&&"function"!=typeof m[a]?e[a]:h&&s?i(l,r):b&&m[a]==l?function(t){var n=function(n,e,r){if(this instanceof t){switch(arguments.length){case 0:return new t;case 1:return new t(n);case 2:return new t(n,e)}return new t(n,e,r)}return t.apply(this,arguments)};return n[f]=t[f],n}(l):y&&"function"==typeof l?i(Function.call,l):l,y&&((x.virtual||(x.virtual={}))[a]=l,t&c.R&&g&&!g[a]&&u(g,a,l)))};c.F=1,c.G=2,c.S=4,c.P=8,c.B=16,c.W=32,c.U=64,c.R=128,t.exports=c},function(t,n){var e={}.toString;t.exports=function(t){return e.call(t).slice(8,-1)}},function(t,n,e){var r=e(11),o=e(1).document,i=r(o)&&r(o.createElement);t.exports=function(t){return i?o.createElement(t):{}}},function(t,n,e){t.exports=!e(4)&&!e(8)(function(){return 7!=Object.defineProperty(e(29)("div"),"a",{get:function(){return 7}}).a})},function(t,n,e){"use strict";var r=e(18),o=e(27),i=e(36),u=e(5),f=e(2),c=e(17),a=e(51),s=e(20),l=e(58),p=e(7)("iterator"),d=!([].keys&&"next"in[].keys()),v="@@iterator",y="keys",h="values",b=function(){return this};t.exports=function(t,n,e,x,g,m,w){a(e,n,x);var O,S,_,j=function(t){if(!d&&t in A)return A[t];switch(t){case y:return function(){return new e(this,t)};case h:return function(){return new e(this,t)}}return function(){return new e(this,t)}},P=n+" Iterator",E=g==h,M=!1,A=t.prototype,T=A[p]||A[v]||g&&A[g],L=T||j(g),N=g?E?j("entries"):L:void 0,C="Array"==n?A.entries||T:T;if(C&&(_=l(C.call(new t)),_!==Object.prototype&&(s(_,P,!0),r||f(_,p)||u(_,p,b))),E&&T&&T.name!==h&&(M=!0,L=function(){return T.call(this)}),r&&!w||!d&&!M&&A[p]||u(A,p,L),c[n]=L,c[P]=b,g)if(O={values:E?L:j(h),keys:m?L:j(y),entries:N},w)for(S in O)S in A||i(A,S,O[S]);else o(o.P+o.F*(d||M),n,O);return O}},function(t,n,e){var r=e(10),o=e(55),i=e(16),u=e(21)("IE_PROTO"),f=function(){},c="prototype",a=function(){var t,n=e(29)("iframe"),r=i.length,o="<",u=">";for(n.style.display="none",e(48).appendChild(n),n.src="javascript:",t=n.contentWindow.document,t.open(),t.write(o+"script"+u+"document.F=Object"+o+"/script"+u),t.close(),a=t.F;r--;)delete a[c][i[r]];return a()};t.exports=Object.create||function(t,n){var e;return null!==t?(f[c]=r(t),e=new f,f[c]=null,e[u]=t):e=a(),void 0===n?e:o(e,n)}},function(t,n,e){var r=e(35),o=e(16).concat("length","prototype");n.f=Object.getOwnPropertyNames||function(t){return r(t,o)}},function(t,n){n.f=Object.getOwnPropertySymbols},function(t,n,e){var r=e(2),o=e(3),i=e(45)(!1),u=e(21)("IE_PROTO");t.exports=function(t,n){var e,f=o(t),c=0,a=[];for(e in f)e!=u&&r(f,e)&&a.push(e);for(;n.length>c;)r(f,e=n[c++])&&(~i(a,e)||a.push(e));return a}},function(t,n,e){t.exports=e(5)},function(t,n,e){var r=e(15);t.exports=function(t){return Object(r(t))}},function(t,n,e){t.exports={default:e(41),__esModule:!0}},function(t,n,e){t.exports={default:e(42),__esModule:!0}},function(t,n,e){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}n.__esModule=!0;var o=e(39),i=r(o),u=e(38),f=r(u),c="function"==typeof f.default&&"symbol"==typeof i.default?function(t){return typeof t}:function(t){return t&&"function"==typeof f.default&&t.constructor===f.default&&t!==f.default.prototype?"symbol":typeof t};n.default="function"==typeof f.default&&"symbol"===c(i.default)?function(t){return"undefined"==typeof t?"undefined":c(t)}:function(t){return t&&"function"==typeof f.default&&t.constructor===f.default&&t!==f.default.prototype?"symbol":"undefined"==typeof t?"undefined":c(t)}},function(t,n,e){e(65),e(63),e(66),e(67),t.exports=e(14).Symbol},function(t,n,e){e(64),e(68),t.exports=e(26).f("iterator")},function(t,n){t.exports=function(t){if("function"!=typeof t)throw TypeError(t+" is not a function!");return t}},function(t,n){t.exports=function(){}},function(t,n,e){var r=e(3),o=e(61),i=e(60);t.exports=function(t){return function(n,e,u){var f,c=r(n),a=o(c.length),s=i(u,a);if(t&&e!=e){for(;a>s;)if(f=c[s++],f!=f)return!0}else for(;a>s;s++)if((t||s in c)&&c[s]===e)return t||s||0;return!t&&-1}}},function(t,n,e){var r=e(43);t.exports=function(t,n,e){if(r(t),void 0===n)return t;switch(e){case 1:return function(e){return t.call(n,e)};case 2:return function(e,r){return t.call(n,e,r)};case 3:return function(e,r,o){return t.call(n,e,r,o)}}return function(){return t.apply(n,arguments)}}},function(t,n,e){var r=e(9),o=e(34),i=e(19);t.exports=function(t){var n=r(t),e=o.f;if(e)for(var u,f=e(t),c=i.f,a=0;f.length>a;)c.call(t,u=f[a++])&&n.push(u);return n}},function(t,n,e){t.exports=e(1).document&&document.documentElement},function(t,n,e){var r=e(28);t.exports=Object("z").propertyIsEnumerable(0)?Object:function(t){return"String"==r(t)?t.split(""):Object(t)}},function(t,n,e){var r=e(28);t.exports=Array.isArray||function(t){return"Array"==r(t)}},function(t,n,e){"use strict";var r=e(32),o=e(12),i=e(20),u={};e(5)(u,e(7)("iterator"),function(){return this}),t.exports=function(t,n,e){t.prototype=r(u,{next:o(1,e)}),i(t,n+" Iterator")}},function(t,n){t.exports=function(t,n){return{value:n,done:!!t}}},function(t,n,e){var r=e(9),o=e(3);t.exports=function(t,n){for(var e,i=o(t),u=r(i),f=u.length,c=0;f>c;)if(i[e=u[c++]]===n)return e}},function(t,n,e){var r=e(13)("meta"),o=e(11),i=e(2),u=e(6).f,f=0,c=Object.isExtensible||function(){return!0},a=!e(8)(function(){return c(Object.preventExtensions({}))}),s=function(t){u(t,r,{value:{i:"O"+ ++f,w:{}}})},l=function(t,n){if(!o(t))return"symbol"==typeof t?t:("string"==typeof t?"S":"P")+t;if(!i(t,r)){if(!c(t))return"F";if(!n)return"E";s(t)}return t[r].i},p=function(t,n){if(!i(t,r)){if(!c(t))return!0;if(!n)return!1;s(t)}return t[r].w},d=function(t){return a&&v.NEED&&c(t)&&!i(t,r)&&s(t),t},v=t.exports={KEY:r,NEED:!1,fastKey:l,getWeak:p,onFreeze:d}},function(t,n,e){var r=e(6),o=e(10),i=e(9);t.exports=e(4)?Object.defineProperties:function(t,n){o(t);for(var e,u=i(n),f=u.length,c=0;f>c;)r.f(t,e=u[c++],n[e]);return t}},function(t,n,e){var r=e(19),o=e(12),i=e(3),u=e(24),f=e(2),c=e(30),a=Object.getOwnPropertyDescriptor;n.f=e(4)?a:function(t,n){if(t=i(t),n=u(n,!0),c)try{return a(t,n)}catch(t){}if(f(t,n))return o(!r.f.call(t,n),t[n])}},function(t,n,e){var r=e(3),o=e(33).f,i={}.toString,u="object"==typeof window&&window&&Object.getOwnPropertyNames?Object.getOwnPropertyNames(window):[],f=function(t){try{return o(t)}catch(t){return u.slice()}};t.exports.f=function(t){return u&&"[object Window]"==i.call(t)?f(t):o(r(t))}},function(t,n,e){var r=e(2),o=e(37),i=e(21)("IE_PROTO"),u=Object.prototype;t.exports=Object.getPrototypeOf||function(t){return t=o(t),r(t,i)?t[i]:"function"==typeof t.constructor&&t instanceof t.constructor?t.constructor.prototype:t instanceof Object?u:null}},function(t,n,e){var r=e(23),o=e(15);t.exports=function(t){return function(n,e){var i,u,f=String(o(n)),c=r(e),a=f.length;return c<0||c>=a?t?"":void 0:(i=f.charCodeAt(c),i<55296||i>56319||c+1===a||(u=f.charCodeAt(c+1))<56320||u>57343?t?f.charAt(c):i:t?f.slice(c,c+2):(i-55296<<10)+(u-56320)+65536)}}},function(t,n,e){var r=e(23),o=Math.max,i=Math.min;t.exports=function(t,n){return t=r(t),t<0?o(t+n,0):i(t,n)}},function(t,n,e){var r=e(23),o=Math.min;t.exports=function(t){return t>0?o(r(t),9007199254740991):0}},function(t,n,e){"use strict";var r=e(44),o=e(52),i=e(17),u=e(3);t.exports=e(31)(Array,"Array",function(t,n){this._t=u(t),this._i=0,this._k=n},function(){var t=this._t,n=this._k,e=this._i++;return!t||e>=t.length?(this._t=void 0,o(1)):"keys"==n?o(0,e):"values"==n?o(0,t[e]):o(0,[e,t[e]])},"values"),i.Arguments=i.Array,r("keys"),r("values"),r("entries")},function(t,n){},function(t,n,e){"use strict";var r=e(59)(!0);e(31)(String,"String",function(t){this._t=String(t),this._i=0},function(){var t,n=this._t,e=this._i;return e>=n.length?{value:void 0,done:!0}:(t=r(n,e),this._i+=t.length,{value:t,done:!1})})},function(t,n,e){"use strict";var r=e(1),o=e(2),i=e(4),u=e(27),f=e(36),c=e(54).KEY,a=e(8),s=e(22),l=e(20),p=e(13),d=e(7),v=e(26),y=e(25),h=e(53),b=e(47),x=e(50),g=e(10),m=e(3),w=e(24),O=e(12),S=e(32),_=e(57),j=e(56),P=e(6),E=e(9),M=j.f,A=P.f,T=_.f,L=r.Symbol,N=r.JSON,C=N&&N.stringify,k="prototype",F=d("_hidden"),q=d("toPrimitive"),I={}.propertyIsEnumerable,B=s("symbol-registry"),D=s("symbols"),W=s("op-symbols"),H=Object[k],K="function"==typeof L,R=r.QObject,J=!R||!R[k]||!R[k].findChild,U=i&&a(function(){return 7!=S(A({},"a",{get:function(){return A(this,"a",{value:7}).a}})).a})?function(t,n,e){var r=M(H,n);r&&delete H[n],A(t,n,e),r&&t!==H&&A(H,n,r)}:A,G=function(t){var n=D[t]=S(L[k]);return n._k=t,n},$=K&&"symbol"==typeof L.iterator?function(t){return"symbol"==typeof t}:function(t){return t instanceof L},z=function(t,n,e){return t===H&&z(W,n,e),g(t),n=w(n,!0),g(e),o(D,n)?(e.enumerable?(o(t,F)&&t[F][n]&&(t[F][n]=!1),e=S(e,{enumerable:O(0,!1)})):(o(t,F)||A(t,F,O(1,{})),t[F][n]=!0),U(t,n,e)):A(t,n,e)},Y=function(t,n){g(t);for(var e,r=b(n=m(n)),o=0,i=r.length;i>o;)z(t,e=r[o++],n[e]);return t},Q=function(t,n){return void 0===n?S(t):Y(S(t),n)},X=function(t){var n=I.call(this,t=w(t,!0));return!(this===H&&o(D,t)&&!o(W,t))&&(!(n||!o(this,t)||!o(D,t)||o(this,F)&&this[F][t])||n)},V=function(t,n){if(t=m(t),n=w(n,!0),t!==H||!o(D,n)||o(W,n)){var e=M(t,n);return!e||!o(D,n)||o(t,F)&&t[F][n]||(e.enumerable=!0),e}},Z=function(t){for(var n,e=T(m(t)),r=[],i=0;e.length>i;)o(D,n=e[i++])||n==F||n==c||r.push(n);return r},tt=function(t){for(var n,e=t===H,r=T(e?W:m(t)),i=[],u=0;r.length>u;)!o(D,n=r[u++])||e&&!o(H,n)||i.push(D[n]);return i};K||(L=function(){if(this instanceof L)throw TypeError("Symbol is not a constructor!");var t=p(arguments.length>0?arguments[0]:void 0),n=function(e){this===H&&n.call(W,e),o(this,F)&&o(this[F],t)&&(this[F][t]=!1),U(this,t,O(1,e))};return i&&J&&U(H,t,{configurable:!0,set:n}),G(t)},f(L[k],"toString",function(){return this._k}),j.f=V,P.f=z,e(33).f=_.f=Z,e(19).f=X,e(34).f=tt,i&&!e(18)&&f(H,"propertyIsEnumerable",X,!0),v.f=function(t){return G(d(t))}),u(u.G+u.W+u.F*!K,{Symbol:L});for(var nt="hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables".split(","),et=0;nt.length>et;)d(nt[et++]);for(var nt=E(d.store),et=0;nt.length>et;)y(nt[et++]);u(u.S+u.F*!K,"Symbol",{for:function(t){return o(B,t+="")?B[t]:B[t]=L(t)},keyFor:function(t){if($(t))return h(B,t);throw TypeError(t+" is not a symbol!")},useSetter:function(){J=!0},useSimple:function(){J=!1}}),u(u.S+u.F*!K,"Object",{create:Q,defineProperty:z,defineProperties:Y,getOwnPropertyDescriptor:V,getOwnPropertyNames:Z,getOwnPropertySymbols:tt}),N&&u(u.S+u.F*(!K||a(function(){var t=L();return"[null]"!=C([t])||"{}"!=C({a:t})||"{}"!=C(Object(t))})),"JSON",{stringify:function(t){if(void 0!==t&&!$(t)){for(var n,e,r=[t],o=1;arguments.length>o;)r.push(arguments[o++]);return n=r[1],"function"==typeof n&&(e=n),!e&&x(n)||(n=function(t,n){if(e&&(n=e.call(this,t,n)),!$(n))return n}),r[1]=n,C.apply(N,r)}}}),L[k][q]||e(5)(L[k],q,L[k].valueOf),l(L,"Symbol"),l(Math,"Math",!0),l(r.JSON,"JSON",!0)},function(t,n,e){e(25)("asyncIterator")},function(t,n,e){e(25)("observable")},function(t,n,e){e(62);for(var r=e(1),o=e(5),i=e(17),u=e(7)("toStringTag"),f=["NodeList","DOMTokenList","MediaList","StyleSheetList","CSSRuleList"],c=0;c<5;c++){var a=f[c],s=r[a],l=s&&s.prototype;l&&!l[u]&&o(l,u,a),i[a]=i.Array}},function(t,n){"use strict";var e={versions:function(){var t=window.navigator.userAgent;return{trident:t.indexOf("Trident")>-1,presto:t.indexOf("Presto")>-1,webKit:t.indexOf("AppleWebKit")>-1,gecko:t.indexOf("Gecko")>-1&&t.indexOf("KHTML")==-1,mobile:!!t.match(/AppleWebKit.*Mobile.*/),ios:!!t.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),android:t.indexOf("Android")>-1||t.indexOf("Linux")>-1,iPhone:t.indexOf("iPhone")>-1||t.indexOf("Mac")>-1,iPad:t.indexOf("iPad")>-1,webApp:t.indexOf("Safari")==-1,weixin:t.indexOf("MicroMessenger")==-1}}()};t.exports=e},function(t,n,e){"use strict";function r(t){return t&&t.__esModule?t:{default:t}}var o=e(40),i=r(o),u=function(){function t(t,n,e){return n||e?String.fromCharCode(n||e):o[t]||t}function n(t){return l[t]}var e=/&quot;|&lt;|&gt;|&amp;|&nbsp;|&apos;|&#(\d+);|&#(\d+)/g,r=/['<> "&]/g,o={"&quot;":'"',"&lt;":"<","&gt;":">","&amp;":"&","&nbsp;":" "},f=/\u00a0/g,c=/<br\s*\/?>/gi,a=/\r?\n/g,s=/\s/g,l={};for(var p in o)l[o[p]]=p;return o["&apos;"]="'",l["'"]="&#39;",{encode:function(t){return t?(""+t).replace(r,n).replace(a,"<br/>").replace(s,"&nbsp;"):""},decode:function(n){return n?(""+n).replace(c,"\n").replace(e,t).replace(f," "):""},encodeBase16:function(t){if(!t)return t;t+="";for(var n=[],e=0,r=t.length;r>e;e++)n.push(t.charCodeAt(e).toString(16).toUpperCase());return n.join("")},encodeBase16forJSON:function(t){if(!t)return t;t=t.replace(/[\u4E00-\u9FBF]/gi,function(t){return escape(t).replace("%u","\\u")});for(var n=[],e=0,r=t.length;r>e;e++)n.push(t.charCodeAt(e).toString(16).toUpperCase());return n.join("")},decodeBase16:function(t){if(!t)return t;t+="";for(var n=[],e=0,r=t.length;r>e;e+=2)n.push(String.fromCharCode("0x"+t.slice(e,e+2)));return n.join("")},encodeObject:function(t){if(t instanceof Array)for(var n=0,e=t.length;e>n;n++)t[n]=u.encodeObject(t[n]);else if("object"==("undefined"==typeof t?"undefined":(0,i.default)(t)))for(var r in t)t[r]=u.encodeObject(t[r]);else if("string"==typeof t)return u.encode(t);return t},loadScript:function(t){var n=document.createElement("script");document.getElementsByTagName("body")[0].appendChild(n),n.setAttribute("src",t)},addLoadEvent:function(t){var n=window.onload;"function"!=typeof window.onload?window.onload=t:window.onload=function(){n(),t()}}}}();t.exports=u},function(t,n){function e(t,n){t.classList?t.classList.add(n):t.className+=" "+n}t.exports=e},function(t,n){function e(t,n){if(t.classList)t.classList.remove(n);else{var e=new RegExp("(^|\\b)"+n.split(" ").join("|")+"(\\b|$)","gi");t.className=t.className.replace(e," ")}}t.exports=e},,,function(t,n){"use strict";function e(){var t=document.querySelector("#page-nav");if(t&&!document.querySelector("#page-nav .extend.prev")&&(t.innerHTML='<a class="extend prev disabled" rel="prev">&laquo; Prev</a>'+t.innerHTML),t&&!document.querySelector("#page-nav .extend.next")&&(t.innerHTML=t.innerHTML+'<a class="extend next disabled" rel="next">Next &raquo;</a>'),yiliaConfig&&yiliaConfig.open_in_new){var n=document.querySelectorAll(".article-entry a:not(.article-more-a)");n.forEach(function(t){var n=t.setAttribute("target");n&&""!==n||t.setAttribute("target","_blank")})}var e=document.querySelector("#js-aboutme");e&&0!==e.length&&(e.innerHTML=e.innerText)}t.exports={init:e}},,,,,,,,,function(t,n){function e(t,n){if("string"==typeof n)return t.insertAdjacentHTML("afterend",n);var e=t.nextSibling;return e?t.parentNode.insertBefore(n,e):t.parentNode.appendChild(n)}t.exports=e}])</script><script src="/./main.05aabf.js"></script><script>!function(){var e=function(e){var t=document.createElement("script");document.getElementsByTagName("body")[0].appendChild(t),t.setAttribute("src",e)};e("/slider.885efe.js")}()</script>
+
+
     
-    <div class="widgets-container">
+<div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
+  <div class="tools-nav header-menu">
+    
+    
+      
+      
+      
+    
+      
+      
+      
+    
+      
+      
+      
+    
+    
+
+    <ul style="width: 70%">
+    
+    
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
+      
         
-            
-                
-    <div class="widget-wrap widget-float">
-        <h3 class="widget-title">标签云</h3>
-        <div class="widget tagcloud">
-            <a href="/tags/1602/" style="font-size: 10px;">1602</a> <a href="/tags/C/" style="font-size: 10px;">C++</a> <a href="/tags/DigitalOcean/" style="font-size: 10px;">DigitalOcean</a> <a href="/tags/Flash/" style="font-size: 10px;">Flash</a> <a href="/tags/Github/" style="font-size: 10px;">Github</a> <a href="/tags/Java/" style="font-size: 15px;">Java</a> <a href="/tags/MFC/" style="font-size: 10px;">MFC</a> <a href="/tags/PPT动画/" style="font-size: 12.5px;">PPT动画</a> <a href="/tags/android/" style="font-size: 10px;">android</a> <a href="/tags/blog/" style="font-size: 20px;">blog</a> <a href="/tags/hexo/" style="font-size: 17.5px;">hexo</a> <a href="/tags/idea/" style="font-size: 12.5px;">idea</a> <a href="/tags/java/" style="font-size: 10px;">java</a> <a href="/tags/linux/" style="font-size: 12.5px;">linux</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/matlab/" style="font-size: 12.5px;">matlab</a> <a href="/tags/photoshop/" style="font-size: 10px;">photoshop</a> <a href="/tags/主题/" style="font-size: 10px;">主题</a> <a href="/tags/优化/" style="font-size: 12.5px;">优化</a> <a href="/tags/函数/" style="font-size: 10px;">函数</a> <a href="/tags/创意/" style="font-size: 10px;">创意</a> <a href="/tags/动画/" style="font-size: 10px;">动画</a> <a href="/tags/单片机/" style="font-size: 15px;">单片机</a> <a href="/tags/域名/" style="font-size: 10px;">域名</a> <a href="/tags/多说/" style="font-size: 10px;">多说</a> <a href="/tags/密码锁/" style="font-size: 10px;">密码锁</a> <a href="/tags/嵌入式系统/" style="font-size: 10px;">嵌入式系统</a> <a href="/tags/思维/" style="font-size: 10px;">思维</a> <a href="/tags/思考/" style="font-size: 10px;">思考</a> <a href="/tags/教程/" style="font-size: 12.5px;">教程</a> <a href="/tags/数字信号处理/" style="font-size: 10px;">数字信号处理</a> <a href="/tags/显示技术/" style="font-size: 10px;">显示技术</a> <a href="/tags/服务器/" style="font-size: 10px;">服务器</a> <a href="/tags/杂谈/" style="font-size: 10px;">杂谈</a> <a href="/tags/矩阵键盘/" style="font-size: 10px;">矩阵键盘</a> <a href="/tags/竞赛/" style="font-size: 10px;">竞赛</a> <a href="/tags/说明/" style="font-size: 12.5px;">说明</a> <a href="/tags/问题/" style="font-size: 10px;">问题</a>
-        </div>
-    </div>
-
-
-            
-                
-    <div class="widget-wrap widget-list">
-        <h3 class="widget-title">分类</h3>
-        <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/互联网/">互联网</a><span class="category-list-count">15</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/杂谈/">杂谈</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/软件/">软件</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/通信工程/">通信工程</a><span class="category-list-count">8</span></li></ul>
-        </div>
-    </div>
-
-
-            
-                
-    <div class="widget-wrap">
-        <h3 class="widget-title">最新文章</h3>
-        <div class="widget">
-            <ul id="recent-post" class="">
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2017/04/13/MFC傻瓜式教程/" class="thumbnail">
-    
-    
-        <span style="background-image:url(http://img.blog.csdn.net/20170413231922633?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)" alt="MFC傻瓜式教程" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/软件/">软件</a></p>
-                            <p class="item-title"><a href="/2017/04/13/MFC傻瓜式教程/" class="title">MFC傻瓜式教程</a></p>
-                            <p class="item-date"><time datetime="2017-04-13T14:26:01.000Z" itemprop="datePublished">2017-04-13</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2017/04/05/多说关闭引发的麻烦/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1491392241106&amp;di=d26487a68371b445aa7b604ab2883ce1&amp;imgtype=0&amp;src=http%3A%2F%2Fimage103.360doc.com%2FDownloadImg%2F2017%2F02%2F1715%2F91672979_2.png)" alt="多说关闭引发的麻烦" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/杂谈/">杂谈</a></p>
-                            <p class="item-title"><a href="/2017/04/05/多说关闭引发的麻烦/" class="title">多说关闭引发的麻烦</a></p>
-                            <p class="item-date"><time datetime="2017-04-05T08:44:21.000Z" itemprop="datePublished">2017-04-05</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2017/03/28/DigitalOcean购买服务器教程/" class="thumbnail">
-    
-    
-        <span style="background-image:url(http://img.blog.csdn.net/20170326174446026?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)" alt="DigitalOcean购买服务器教程" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/互联网/">互联网</a></p>
-                            <p class="item-title"><a href="/2017/03/28/DigitalOcean购买服务器教程/" class="title">DigitalOcean购买服务器教程</a></p>
-                            <p class="item-date"><time datetime="2017-03-28T13:50:20.000Z" itemprop="datePublished">2017-03-28</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2017/03/26/更换为.me域名教程/" class="thumbnail">
-    
-    
-        <span style="background-image:url(http://img.blog.csdn.net/20170326164253754?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)" alt="更换为.me域名教程" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/互联网/">互联网</a></p>
-                            <p class="item-title"><a href="/2017/03/26/更换为.me域名教程/" class="title">更换为.me域名教程</a></p>
-                            <p class="item-date"><time datetime="2017-03-26T13:01:21.000Z" itemprop="datePublished">2017-03-26</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/2017/03/25/Github教育礼包/" class="thumbnail">
-    
-    
-        <span style="background-image:url(http://img.blog.csdn.net/20170325152139513?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)" alt="Github教育礼包" class="thumbnail-image"></span>
-    
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/杂谈/">杂谈</a></p>
-                            <p class="item-title"><a href="/2017/03/25/Github教育礼包/" class="title">Github教育礼包</a></p>
-                            <p class="item-date"><time datetime="2017-03-25T03:21:23.000Z" itemprop="datePublished">2017-03-25</time></p>
-                        </div>
-                    </li>
-                
-            </ul>
-        </div>
-    </div>
-
-            
-                
-    <div class="widget-wrap widget-list">
-        <h3 class="widget-title">友链</h3>
-        <div class="widget">
-            <ul>
-                
-                    <li>
-                        <a href="http://moxfive.xyz/">MOxFIVE</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://www.domeyi.com/">小艺</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://blog.iwangyu.cn/">WangYu</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://ursb.me/">Airing</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://txiner.top/">Hundred</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://www.ersaijun.cn/">二赛君</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://blog.yeqianfeng.me/">太阳尚远</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://blog.qiujinfeng.com/">邱锦锋</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://www.ibertinelym.com/">李玉明</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://blog.waydrow.com/">Waydrow</a>
-                    </li>
-                
-                    <li>
-                        <a href="https://qqdie.com/">Jrotty</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://blog.just666.cn/">Shawn</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://theask.cn/">该问</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://www.sfantree.com/">水番林</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://hsmouc.com/">空白</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://www.61mon.com/">刘毅</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://www.pokerboy.cn/">柚子鬼</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://zcheng.ren/">ZeeCoder</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://www.zcmol.cn/">早茶月光</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://rebootcat.com/">Linux之路</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://www.townwang.com/">王振镇</a>
-                    </li>
-                
-                    <li>
-                        <a href="https://shawnzeng.com/">Shawnzeng</a>
-                    </li>
-                
-                    <li>
-                        <a href="http://blog.52itstyle.com/">小柒博客</a>
-                    </li>
-                
-            </ul>
-        </div>
-    </div>
-
-
-            
-                
-    <div class="widget-wrap widget-list">
-        <h3 class="widget-title">归档</h3>
-        <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">三月 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">5</span></li></ul>
-        </div>
-    </div>
-
-
-            
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'friends')"><a href="javascript:void(0)" q-class="active:friends">友链</a></li>
+      
         
-    </div>
-</aside>
+      
+      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">格言</a></li>
+      
+        
+    </ul>
+  </div>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all" q-show="innerArchive">
+        <div class="search-wrap">
+          <input class="search-ipt" q-model="search" type="text" placeholder="find something…">
+          <i class="icon-search icon" q-show="search|isEmptyStr"></i>
+          <i class="icon-close icon" q-show="search|isNotEmptyStr" q-on="click:clearChose(e)"></i>
+        </div>
+        <div class="widget tagcloud search-tag">
+          <p class="search-tag-wording">tag:</p>
+          <label class="search-switch">
+            <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
+          </label>
+          <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">idea</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Github</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">DigitalOcean</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">服务器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Flash</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">动画</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">blog</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">PPT动画</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">单片机</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">密码锁</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">矩阵键盘</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">1602</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">嵌入式系统</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">MFC</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">photoshop</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">优化</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">markdown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">主题</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">matlab</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">函数</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">思考</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">android</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">说明</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">杂谈</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">多说</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">显示技术</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">域名</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">教程</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">竞赛</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">数字信号处理</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">问题</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">创意</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">思维</a>
+              </li>
+            
+            <div class="clearfix"></div>
+          </ul>
+        </div>
+        <ul class="search-ul">
+          <p q-show="jsonFail" style="padding: 20px; font-size: 12px;">
+            缺失模块。<br/>1、在博客根目录（注意不是yilia根目录）执行以下命令：<br/> npm i hexo-generator-json-content --save<br/><br/>
+            2、在根目录_config.yml里添加配置：
+<pre style="font-size: 12px;" q-show="jsonFail">
+  jsonContent:
+    meta: false
+    pages: false
+    posts:
+      title: true
+      date: true
+      path: true
+      text: true
+      raw: false
+      content: false
+      slug: false
+      updated: false
+      comments: false
+      link: false
+      permalink: false
+      excerpt: false
+      categories: false
+      tags: true
+</pre>
+          </p>
+          <li class="search-li" q-repeat="items" q-show="isShow">
+            <a q-attr="href:path|urlformat" class="search-title"><i class="icon-quo-left icon"></i><span q-text="title"></span></a>
+            <p class="search-time">
+              <i class="icon-calendar icon"></i>
+              <span q-text="date|dateformat"></span>
+            </p>
+            <p class="search-tag">
+              <i class="icon-price-tags icon"></i>
+              <span q-repeat="tags" q-on="click:choseTag(e, name)" q-text="name|tagformat"></span>
+            </p>
+          </li>
+        </ul>
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-friends" q-show="friends">
+  		
+        <ul class="search-ul">
+          
+            <li class="search-li">
+              <a href="http://moxfive.xyz/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>MOxFIVE</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://www.domeyi.com/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>小艺</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://blog.iwangyu.cn/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>WangYu</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://ursb.me/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>Airing</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://txiner.top/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>Hundred</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://www.ersaijun.cn/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>二赛君</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://blog.yeqianfeng.me/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>太阳尚远</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://blog.qiujinfeng.com/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>邱锦锋</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://www.ibertinelym.com/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>李玉明</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://blog.waydrow.com/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>Waydrow</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="https://qqdie.com/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>Jrotty</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://blog.just666.cn/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>Shawn</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://theask.cn/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>该问</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://www.sfantree.com/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>水番林</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://hsmouc.com/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>空白</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://www.61mon.com/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>刘毅</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://www.pokerboy.cn/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>柚子鬼</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://zcheng.ren/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>ZeeCoder</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://www.zcmol.cn/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>早茶月光</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://rebootcat.com/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>Linux之路</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://www.townwang.com/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>王振镇</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="https://shawnzeng.com/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>Shawnzeng</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://blog.52itstyle.com/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>小柒博客</a>
+            </li>
+          
+        </ul>
+  		
+    	</section>
+    
+
+    
+    	<section class="tools-section tools-section-me" q-show="aboutme">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">人生如编程，自顶向下，逐步求精。</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <footer id="footer">
-    <div class="container">
-        <div class="container-inner">
-            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
-            <div class="credit">
-                <h1 class="logo-wrap">
-                    <a href="/" class="logo"></a>
-                </h1>
-                <p>&copy; 2015-2017 胡博靖</p>
-               <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-</script>
-                <p>许可协议: "署名-非商用-相同方式共享 3.0" 转载请保留原文链接及作者。 </p>
-                <span id="busuanzi_container_site_uv">
-    <p>原域名访客数3000+人，更换域名后本站访客数<span id="busuanzi_value_site_uv"></span>人次，</p>
-</span>
-<span id="busuanzi_container_site_pv">
-    <p>原域名访问量5000+人次，更换域名后本站访问量<span id="busuanzi_value_site_pv"></span>次，谢谢您的到来！</p>
-</span>
- <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice .</a></p>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
             </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
         </div>
-    </div>
-
-</footer>
-        
-    
-    <script type="text/javascript">
-    var duoshuoQuery = {short_name:'hubojing'};
-    (function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0]
-    || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-    </script>
-
-
-
-
-    
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
-    
-
-
-<!-- Custom Scripts -->
-<script src="/js/main.js"></script>
 
     </div>
+
+</div>
+  </div>
 </body>
 </html>
