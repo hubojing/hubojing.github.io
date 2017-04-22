@@ -74,7 +74,7 @@
         isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
         scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
-        search: undefined
+        search: true
     }
 </script>
 
@@ -108,6 +108,13 @@
         <p class="header-subtitle">小清新工科女旅程　　　为中华之崛起而读书</p>
         
 
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
         
 
 
@@ -329,6 +336,15 @@
       <time datetime="2017-01-03T09:45:10.000Z" itemprop="datePublished">2017-01-03</time>
 </a>
 
+ 
+    <a href="/2017/01/03/hueman主题更换/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+            <span class="ds-thread-count" ></span>
+        
+        
+    </a>
 
     </div>
   
@@ -493,9 +509,46 @@
         }
 
         
+            // Add comment count
+            $(function(){ 
+                var jsonUrl = "http://api.duoshuo.com/threads/counts.jsonp?short_name=hubojing&threads=2017/01/03/hueman主题更换/&callback=?";
+                $.getJSON(jsonUrl, function(result){
+                    $.each(result.response, function(i, field){
+                        var value = field.comments;
+                        if (value > 0) {
+                            $(".count-comment").text(value);
+                            return;
+                        }
+                    })
+                })
+            })
+        
     </script>
     
-    <script> loadComment(); </script>
+    <aside class="comment-bar">
+        <a href="javascript:void(0);">
+            <i class="fa fa-commenting-o animated infinite pulse"></i>
+            <i class="fa fa-spinner fa-pulse"></i>
+            <span class="count-comment"></span>
+        </a>
+    </aside>
+    <script>
+        var $commentBar = $("#comments aside.comment-bar");
+        var load$hide = function(){
+            $commentBar.find("a > i").toggle();
+            loadComment();
+            $commentBar.fadeOut(800);
+        }
+        $commentBar.click(function(){
+            load$hide();
+        })
+        $commentBar.children("a").hover(function(){
+            load$hide();
+        })
+        if (window.location.hash === "#comments") {
+            load$hide();
+        }
+    </script>
 
 </div>
     
