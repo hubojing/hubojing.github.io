@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://hubojing.github.io/"/>
-  <updated>2017-05-05T15:05:43.274Z</updated>
+  <updated>2017-05-08T10:34:54.412Z</updated>
   <id>http://hubojing.github.io/</id>
   
   <author>
@@ -14,6 +14,68 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Socket点对点聊天+文件传输</title>
+    <link href="http://hubojing.github.io/2017/05/07/Socket%E7%82%B9%E5%AF%B9%E7%82%B9%E8%81%8A%E5%A4%A9-%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93/"/>
+    <id>http://hubojing.github.io/2017/05/07/Socket点对点聊天-文件传输/</id>
+    <published>2017-05-07T14:58:30.000Z</published>
+    <updated>2017-05-08T10:34:54.412Z</updated>
+    
+    <content type="html"><![CDATA[<div align="left"><br><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1494249495796&di=6e913a58ff8ec3713e96983683e150b8&imgtype=0&src=http%3A%2F%2Fimg.my.csdn.net%2Fuploads%2F201304%2F08%2F1365431054_1015.png" width="300" height="180" style="float:right;"><br><br><br>　Socket编程。　<br><br><br> </div>
+
+<a id="more"></a>
+<p>socket:<br>设计一个点对点聊天小程序。</p>
+<ol>
+<li>使用原生socket api实现，<strong>即不使用MFC中的socket类</strong>，也不使用其他高级socket框架</li>
+<li>需要先设计一套协议</li>
+<li>有GUI界面</li>
+<li>可互相传递文字和文件</li>
+<li>即时反应对方的在线还是离线</li>
+</ol>
+<h1 id="初级版"><a href="#初级版" class="headerlink" title="初级版"></a>初级版</h1><p>1.在应用程序类重载的InitInstance函数中调用AfxSocketInit()函数，加载套接字。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(!AfxSocketInit())</div><div class="line">&#123;</div><div class="line">    AfxMessageBox(<span class="string">"加载套接字库失败！"</span>);</div><div class="line">    <span class="keyword">return</span> FALSE;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>2.在你的对话框类中添加如下函数InitSocket()，初始化套接字</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">BOOL CChatDlg::InitSocket()</div><div class="line">&#123;</div><div class="line">    m_socket=socket(AF_INET,SOCK_DGRAM,<span class="number">0</span>);</div><div class="line">    <span class="keyword">if</span>(INVALID_SOCKET==m_socket)</div><div class="line">    &#123;</div><div class="line">        MessageBox(<span class="string">"套接字创建失败！"</span>);</div><div class="line">        <span class="keyword">return</span> FALSE;</div><div class="line">    &#125;</div><div class="line">    SOCKADDR_IN addrSock;</div><div class="line">    addrSock.sin_family=AF_INET;</div><div class="line">    addrSock.sin_port=htons(<span class="number">5000</span>);</div><div class="line">    addrSock.sin_addr.S_un.S_addr=htonl(INADDR_ANY);</div><div class="line"> </div><div class="line">    <span class="keyword">int</span> retval;</div><div class="line">    retval=bind(m_socket,(SOCKADDR*)&amp;addrSock,<span class="keyword">sizeof</span>(SOCKADDR));</div><div class="line">    <span class="keyword">if</span>(SOCKET_ERROR==retval)</div><div class="line">    &#123;</div><div class="line">        closesocket(m_socket);</div><div class="line">        MessageBox(<span class="string">"绑定失败!"</span>);</div><div class="line">        <span class="keyword">return</span> FALSE;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> TRUE;</div><div class="line"> </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>3.在对话框类的OnInitDialog()函数中调用上述InitSocket()函数，初始化套接字，同时创建一个线程接收数据：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">RECVPARAM *pRecvParam=<span class="keyword">new</span> RECVPARAM;</div><div class="line">pRecvParam-&gt;sock=m_socket;</div><div class="line">pRecvParam-&gt;hwnd=m_hWnd;</div><div class="line">HANDLE hThread=CreateThread(<span class="literal">NULL</span>,<span class="number">0</span>,RecvProc,(LPVOID)pRecvParam,<span class="number">0</span>,<span class="literal">NULL</span>);</div><div class="line">CloseHandle(hThread);</div></pre></td></tr></table></figure>
+<p>其中</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> RECVPARAM</div><div class="line">&#123;</div><div class="line">    SOCKET sock;</div><div class="line">    HWND hwnd;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>是自定义结构体</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="number">4</span>.接收线程函数RecvProc:</div><div class="line"></div><div class="line">```C++</div><div class="line">DWORD WINAPI CChatDlg::RecvProc(LPVOID lpParameter)</div><div class="line">&#123;</div><div class="line">    SOCKET sock=((RECVPARAM*)lpParameter)-&gt;sock;</div><div class="line">    HWND hwnd=((RECVPARAM*)lpParameter)-&gt;hwnd;</div><div class="line">    delete lpParameter;   </div><div class="line">    SOCKADDR_IN addrFrom;</div><div class="line">    <span class="keyword">int</span> len=<span class="keyword">sizeof</span>(SOCKADDR); </div><div class="line">    <span class="keyword">char</span> recvBuf[<span class="number">200</span>];</div><div class="line">    <span class="keyword">int</span> retval;</div><div class="line">    <span class="keyword">while</span>(TRUE)</div><div class="line">    &#123;</div><div class="line">        retval=recvfrom(sock,recvBuf,<span class="number">200</span>,<span class="number">0</span>,(SOCKADDR*)&amp;addrFrom,&amp;len);</div><div class="line">        <span class="keyword">if</span>(SOCKET_ERROR==retval)</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>recvBuf中就保存了你要的数据。<br><img src="http://img.blog.csdn.net/20170508183259821?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="初级版"></p>
+<h1 id="中级版"><a href="#中级版" class="headerlink" title="中级版"></a>中级版</h1><h2 id="界面"><a href="#界面" class="headerlink" title="界面"></a>界面</h2><p><img src="http://img.blog.csdn.net/20170508181716901?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="原始界面"></p>
+<p>聊天：<br><img src="http://img.blog.csdn.net/20170508181451922?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="TCP"></p>
+<p>传文件：<br>服务器<br><img src="http://img.blog.csdn.net/20170508181526914?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="传文件"></p>
+<p>客户端<br><img src="http://img.blog.csdn.net/20170508181625735?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="传文件2"></p>
+<p>显示文件传输进度：<br><img src="http://img.blog.csdn.net/20170508181907845?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="传输过程"></p>
+<p>传输成功，可以正常打开文件。<br><img src="http://img.blog.csdn.net/20170508181937814?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="传输成功"></p>
+<p>下线：<br><img src="http://img.blog.csdn.net/20170508182031143?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="下线"></p>
+<p>关于：<br><img src="http://img.blog.csdn.net/20170508182628147?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="关于"></p>
+<p>代码我整理一下再发上来……乱乱的<br>即时反应在线嘛……点对点聊天显示一下上线下线就够了吧……</p>
+<hr>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>网上的资料，查到的大部分都是用的MFC的socket类做的……</p>
+<p>高级版→→→→<br>1.<a href="https://wenku.baidu.com/view/69afd693dd88d0d233d46a49.html" target="_blank" rel="external">基于MFC仿QQ聊天程序设计完整实例教程</a><br>2.<a href="http://blog.csdn.net/akof1314/article/details/5983443" target="_blank" rel="external">CRichEditCtrlEx支持静态表情聊天类的使用</a></p>
+<p>……未完待续<br>每天在工作作业和毕设中纠结</p>
+<p><span id="busuanzi_container_page_pv"><br>本文已被阅读 <span id="busuanzi_value_page_pv"></span> 次。感谢您的点击！</span></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1494249495796&amp;di=6e913a58ff8ec3713e96983683e150b8&amp;imgtype=0&amp;src=http%3A%2F%2Fimg.my.csdn.net%2Fuploads%2F201304%2F08%2F1365431054_1015.png&quot; width=&quot;300&quot; height=&quot;180&quot; style=&quot;float:right;&quot;/&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;　Socket编程。　&lt;br&gt;&lt;br&gt;&lt;br&gt; &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="互联网" scheme="http://hubojing.github.io/categories/%E4%BA%92%E8%81%94%E7%BD%91/"/>
+    
+    
+      <category term="MFC" scheme="http://hubojing.github.io/tags/MFC/"/>
+    
+      <category term="C++" scheme="http://hubojing.github.io/tags/C/"/>
+    
+      <category term="socket" scheme="http://hubojing.github.io/tags/socket/"/>
+    
+  </entry>
   
   <entry>
     <title>四大组件之ContentProvider记录</title>
@@ -1054,9 +1116,9 @@
     
       <category term="blog" scheme="http://hubojing.github.io/tags/blog/"/>
     
-      <category term="hexo" scheme="http://hubojing.github.io/tags/hexo/"/>
-    
       <category term="主题" scheme="http://hubojing.github.io/tags/%E4%B8%BB%E9%A2%98/"/>
+    
+      <category term="hexo" scheme="http://hubojing.github.io/tags/hexo/"/>
     
   </entry>
   
@@ -1432,36 +1494,6 @@ d, --max-depth（所查看文件的深度）
     
     
       <category term="说明" scheme="http://hubojing.github.io/tags/%E8%AF%B4%E6%98%8E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>P图集 | PS picture album</title>
-    <link href="http://hubojing.github.io/2016/06/29/P%E5%9B%BE%E9%9B%86/"/>
-    <id>http://hubojing.github.io/2016/06/29/P图集/</id>
-    <published>2016-06-29T11:58:18.000Z</published>
-    <updated>2016-07-06T04:48:06.736Z</updated>
-    
-    <content type="html"><![CDATA[<p><div align="left"><br><img src="http://7xray0.com1.z0.glb.clouddn.com/16-6-29/63527525.jpg" width="300" height="180" alt="配图" style="float:right;"></div></p>
-<p>自从学会Photoshop这个好用的工具后，对照片的处理更得心应手了。<br>这是我的P图集。<br>I use photoshop more effectively after I learned it.<br>This is my PS picture album.</p>
-<p> <br><a id="more"></a><br><strong>1</strong><br><img src="/images/y1.jpg" alt="原图"><br><img src="/images/p1_1.jpg" alt="冷色"><br><img src="/images/p1_2.jpg" alt="暖色"></p>
-<p><strong>2</strong><br><img src="/images/y2.jpg" alt="原图"><br><img src="/images/p2.jpg" alt="修后"></p>
-<p>我是想调成新海诚动漫画风效果的…不过水平还欠佳……<br>I want to do it as Makoto Shinkai’s animation style,but my level just not reachs that high apparently.</p>
-<p><span id="busuanzi_container_page_pv"><br>本文已被阅读 <span id="busuanzi_value_page_pv"></span> 次。感谢您的点击！<br>The article has been viewed <span id="busuanzi_value_page_pv"></span> times.Thank you for your visit!<br></span></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;img src=&quot;http://7xray0.com1.z0.glb.clouddn.com/16-6-29/63527525.jpg&quot; width=&quot;300&quot; height=&quot;180&quot; alt=&quot;配图&quot; style=&quot;float:right;&quot;/&gt;&lt;/p&gt;
-&lt;p&gt;自从学会Photoshop这个好用的工具后，对照片的处理更得心应手了。&lt;br&gt;这是我的P图集。&lt;br&gt;I use photoshop more effectively after I learned it.&lt;br&gt;This is my PS picture album.&lt;/p&gt;
-&lt;p&gt; &lt;/div&gt;&lt;br&gt;
-    
-    </summary>
-    
-      <category term="互联网" scheme="http://hubojing.github.io/categories/%E4%BA%92%E8%81%94%E7%BD%91/"/>
-    
-    
-      <category term="photoshop" scheme="http://hubojing.github.io/tags/photoshop/"/>
     
   </entry>
   
