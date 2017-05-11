@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://img.blog.csdn.net/20170508181937814?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20170508182031143?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 <meta property="og:image" content="http://img.blog.csdn.net/20170508182628147?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:updated_time" content="2017-05-08T10:34:54.412Z">
+<meta property="og:updated_time" content="2017-05-11T07:45:38.672Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Socket点对点聊天+文件传输">
 <meta name="twitter:description" content="Socket编程。">
@@ -265,6 +265,8 @@
                     
                       <a class="main-nav-link switch-friends-link" href="http://blog.52itstyle.com/">小柒博客</a>
                     
+                      <a class="main-nav-link switch-friends-link" href="http://frankchen.xyz/">不正经数据科学家</a>
+                    
                     </div>
                 </section>
                 
@@ -406,7 +408,8 @@
 <p>其中</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> RECVPARAM</div><div class="line">&#123;</div><div class="line">    SOCKET sock;</div><div class="line">    HWND hwnd;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>是自定义结构体</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="number">4</span>.接收线程函数RecvProc:</div><div class="line"></div><div class="line">```C++</div><div class="line">DWORD WINAPI CChatDlg::RecvProc(LPVOID lpParameter)</div><div class="line">&#123;</div><div class="line">    SOCKET sock=((RECVPARAM*)lpParameter)-&gt;sock;</div><div class="line">    HWND hwnd=((RECVPARAM*)lpParameter)-&gt;hwnd;</div><div class="line">    delete lpParameter;   </div><div class="line">    SOCKADDR_IN addrFrom;</div><div class="line">    <span class="keyword">int</span> len=<span class="keyword">sizeof</span>(SOCKADDR); </div><div class="line">    <span class="keyword">char</span> recvBuf[<span class="number">200</span>];</div><div class="line">    <span class="keyword">int</span> retval;</div><div class="line">    <span class="keyword">while</span>(TRUE)</div><div class="line">    &#123;</div><div class="line">        retval=recvfrom(sock,recvBuf,<span class="number">200</span>,<span class="number">0</span>,(SOCKADDR*)&amp;addrFrom,&amp;len);</div><div class="line">        <span class="keyword">if</span>(SOCKET_ERROR==retval)</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>4.接收线程函数RecvProc:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">DWORD WINAPI CChatDlg::RecvProc(LPVOID lpParameter)</div><div class="line">&#123;</div><div class="line">    SOCKET sock=((RECVPARAM*)lpParameter)-&gt;sock;</div><div class="line">    HWND hwnd=((RECVPARAM*)lpParameter)-&gt;hwnd;</div><div class="line">    <span class="keyword">delete</span> lpParameter;   </div><div class="line">    SOCKADDR_IN addrFrom;</div><div class="line">    <span class="keyword">int</span> len=<span class="keyword">sizeof</span>(SOCKADDR); </div><div class="line">    <span class="keyword">char</span> recvBuf[<span class="number">200</span>];</div><div class="line">    <span class="keyword">int</span> retval;</div><div class="line">    <span class="keyword">while</span>(TRUE)</div><div class="line">    &#123;</div><div class="line">        retval=recvfrom(sock,recvBuf,<span class="number">200</span>,<span class="number">0</span>,(SOCKADDR*)&amp;addrFrom,&amp;len);</div><div class="line">        <span class="keyword">if</span>(SOCKET_ERROR==retval)</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>recvBuf中就保存了你要的数据。<br><img src="http://img.blog.csdn.net/20170508183259821?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="初级版"></p>
 <h1 id="中级版"><a href="#中级版" class="headerlink" title="中级版"></a>中级版</h1><h2 id="界面"><a href="#界面" class="headerlink" title="界面"></a>界面</h2><p><img src="http://img.blog.csdn.net/20170508181716901?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="原始界面"></p>
 <p>聊天：<br><img src="http://img.blog.csdn.net/20170508181451922?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="TCP"></p>
@@ -432,9 +435,9 @@
     <div class="copyright">
         <p><span>本文标题:</span><a href="/2017/05/07/Socket点对点聊天-文件传输/">Socket点对点聊天+文件传输</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">胡博靖</a></p>
-        <p><span class="post-count">本文字数:</span>514字</p>
+        <p><span class="post-count">本文字数:</span>513字</p>
         <p><span>发布时间:</span>2017-05-07, 22:58:30</p>
-        <p><span>最后更新:</span>2017-05-08, 18:34:54</p>
+        <p><span>最后更新:</span>2017-05-11, 15:45:38</p>
         
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/05/07/Socket点对点聊天-文件传输/" title="Socket点对点聊天+文件传输">http://hubojing.github.io/2017/05/07/Socket点对点聊天-文件传输/</a>
