@@ -15,18 +15,22 @@
 
 
 
-<meta name="description" content="从头学linux，为后续学习打基础。笔记整理，一天一点linux。">
+<meta name="description" content="&amp;lt;div align=&amp;quot;left&amp;quot;&amp;gt;
+&amp;lt;img src=&amp;quot;http://img.mukewang.com/55ece9d70001fb7f06000375.jpg&amp;quot; width=&amp;quot;300&amp;quot; height=&amp;quot;180&amp;quot;  style=&amp;quot;float:right;&amp;quot;/&amp;gt;
+从头学lin">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一天一点linux">
 <meta property="og:url" content="http://hubojing.github.io/2016/12/26/linux整理笔记/index.html">
 <meta property="og:site_name" content="胡博靖的技术博客">
-<meta property="og:description" content="从头学linux，为后续学习打基础。笔记整理，一天一点linux。">
-<meta property="og:image" content="http://img.mukewang.com/55ece9d70001fb7f06000375.jpg">
+<meta property="og:description" content="&amp;lt;div align=&amp;quot;left&amp;quot;&amp;gt;
+&amp;lt;img src=&amp;quot;http://img.mukewang.com/55ece9d70001fb7f06000375.jpg&amp;quot; width=&amp;quot;300&amp;quot; height=&amp;quot;180&amp;quot;  style=&amp;quot;float:right;&amp;quot;/&amp;gt;
+从头学lin">
 <meta property="og:updated_time" content="2017-01-22T14:16:25.415Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一天一点linux">
-<meta name="twitter:description" content="从头学linux，为后续学习打基础。笔记整理，一天一点linux。">
-<meta name="twitter:image" content="http://img.mukewang.com/55ece9d70001fb7f06000375.jpg">
+<meta name="twitter:description" content="&amp;lt;div align=&amp;quot;left&amp;quot;&amp;gt;
+&amp;lt;img src=&amp;quot;http://img.mukewang.com/55ece9d70001fb7f06000375.jpg&amp;quot; width=&amp;quot;300&amp;quot; height=&amp;quot;180&amp;quot;  style=&amp;quot;float:right;&amp;quot;/&amp;gt;
+从头学lin">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -106,7 +110,7 @@
 
         
         <p class="header-subtitle">小清新IT旅程|为中华崛起读书</p>
-        <p class="post-count">已写74.2k字</p>
+        <p class="post-count">已写75.6k字</p>
         
 
         
@@ -383,187 +387,387 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p><div align="left"><br><img src="http://img.mukewang.com/55ece9d70001fb7f06000375.jpg" width="300" height="180" style="float:right;"><br>从头学linux，为后续学习打基础。<br>笔记整理，一天一点linux。</div></p>
-<p>　　<br> <br><a id="more"></a></p>
-<h1 id="基本概念及操作"><a href="#基本概念及操作" class="headerlink" title="基本概念及操作"></a>基本概念及操作</h1><h2 id="linux-桌面环境介绍"><a href="#Linux-桌面环境介绍" class="headerlink" title="Linux 桌面环境介绍"></a>Linux 桌面环境介绍</h2><p>相对于现在的 Windows 系统，UNIX/Linux 本身是没有图形界面的，我们通常在 Unix/Linux 发行版上看到的图形界面实际都只是运行在 Linux 系统之上的一套软件，类似 Windows95 之前的Windows 的图形界面实则也只是运行在 DOS 环境的一套软件。而 Linux 上的这套软件以前是XFree86，现在则是 xorg（X.Org），而这套软件又是通过 X 窗口系统（X Window System，也常被称为X11或X）实现的，X 本身只是工具包及架构协议，而 xorg 便是 X 架构规范的一个实现体，也就是说它是实现了 X 协议规范的一个提供图形用户界面服务的服务器，就像实现了 http 协议提供 web 服务的 Apache。如果只有服务器也是不能实现一个完整的桌面环境的，当然还需要一个客户端，我们称为 X Client，像如下几个大家熟知也最流行的实现了客户端功能的桌面环境KDE，GNOME，XFCE，LXDE。这也意味着在 Linux 上你可以自己选择安装不同的桌面环境，甚至可以定制自己的专属桌面。</p>
-<h2 id="linux终端"><a href="#Linux终端" class="headerlink" title="Linux终端"></a>Linux终端</h2><h3 id="terminal终端"><a href="#Terminal（终端）" class="headerlink" title="Terminal（终端）"></a>Terminal（终端）</h3><p>通常在我们使用 Linux 时，我们并不是直接与系统打交道，而是通过一个叫做 Shell 的中间程序来完成的，在图形界面下为了实现让我们在一个窗口中完成接受用户输入和显示输出，Linux 系统还提供了一个叫做终端模拟器的程序（Terminal），下面几个比较常见的终端模拟器，例如 gnome-terminal，kconsole，xterm，rxvt，kvt，nxterm 和 eterm。<br>终端本质上是对应着 Linux 上的 /dev/tty 设备，Linux 的多用户登陆就是通过不同的 /dev/tty 设备完成的，Linux 默认提供了 6 个纯命令行界面的 “terminal”（准确的说这里应该是 6 个 virtual consoles）来让用户登录，在物理机系统上你可以通过使用[Ctrl]+[Alt]+[F1]～[F6]进行切换，不过在我们的在线实验环境中可能无法切换，因为特殊功能按键会被你主机系统劫持。当你切换到其中一个终端后想要切换回图形界面，你可以按下[Ctrl]+[Alt]+[F7]来完成。</p>
-<h3 id="shell"><a href="#Shell" class="headerlink" title="Shell"></a>Shell</h3><p>通常在图形界面中对实际体验带来差异的不是上述的不同发行版的各种终端模拟器，而大都是这个 Shell（壳），有壳就有核，这里的核就是指的 UNIX/Linux 内核，Shell 是指“提供给使用者使用界面”的软件（命令解析器），类似于 DOS 下的 command（命令行）和后来的 cmd.exe。普通意义上的 Shell 就是可以接受用户输入命令的程序。它之所以被称作 Shell 是因为它隐藏了操作系统底层的细节。同样的 Unix/Linux 下的图形用户界面 GNOME 和 KDE，有时也被叫做“虚拟 shell”或“图形 shell”。</p>
+        <p>&lt;div align=&quot;left&quot;&gt;
+&lt;img src=&quot;http://img.mukewang.com/55ece9d70001fb7f06000375.jpg&quot; width=&quot;300&quot; height=&quot;180&quot;  style=&quot;float:right;&quot;/&gt;
+从头学linux，为后续学习打基础。
+笔记整理，一天一点linux。</p>
+<p>&lt;/div&gt;
+&lt;!--more--&gt;</p>
+<h1 id="基本概念及操作">基本概念及操作</h1>
+<h2 id="linux-桌面环境介绍">Linux 桌面环境介绍</h2>
+<p>相对于现在的 Windows 系统，UNIX/Linux 本身是没有图形界面的，我们通常在 Unix/Linux 发行版上看到的图形界面实际都只是运行在 Linux 系统之上的一套软件，类似 Windows95 之前的Windows 的图形界面实则也只是运行在 DOS 环境的一套软件。而 Linux 上的这套软件以前是XFree86，现在则是 xorg（X.Org），而这套软件又是通过 X 窗口系统（X Window System，也常被称为X11或X）实现的，X 本身只是工具包及架构协议，而 xorg 便是 X 架构规范的一个实现体，也就是说它是实现了 X 协议规范的一个提供图形用户界面服务的服务器，就像实现了 http 协议提供 web 服务的 Apache。如果只有服务器也是不能实现一个完整的桌面环境的，当然还需要一个客户端，我们称为 X Client，像如下几个大家熟知也最流行的实现了客户端功能的桌面环境KDE，GNOME，XFCE，LXDE。这也意味着在 Linux 上你可以自己选择安装不同的桌面环境，甚至可以定制自己的专属桌面。</p>
+<h2 id="linux终端">Linux终端</h2>
+<h3 id="terminal终端">Terminal（终端）</h3>
+<p>通常在我们使用 Linux 时，我们并不是直接与系统打交道，而是通过一个叫做 Shell 的中间程序来完成的，在图形界面下为了实现让我们在一个窗口中完成接受用户输入和显示输出，Linux 系统还提供了一个叫做终端模拟器的程序（Terminal），下面几个比较常见的终端模拟器，例如 gnome-terminal，kconsole，xterm，rxvt，kvt，nxterm 和 eterm。
+终端本质上是对应着 Linux 上的 /dev/tty 设备，Linux 的多用户登陆就是通过不同的 /dev/tty 设备完成的，Linux 默认提供了 6 个纯命令行界面的 “terminal”（准确的说这里应该是 6 个 virtual consoles）来让用户登录，在物理机系统上你可以通过使用[Ctrl]+[Alt]+[F1]～[F6]进行切换，不过在我们的在线实验环境中可能无法切换，因为特殊功能按键会被你主机系统劫持。当你切换到其中一个终端后想要切换回图形界面，你可以按下[Ctrl]+[Alt]+[F7]来完成。</p>
+<h3 id="shell">Shell</h3>
+<p>通常在图形界面中对实际体验带来差异的不是上述的不同发行版的各种终端模拟器，而大都是这个 Shell（壳），有壳就有核，这里的核就是指的 UNIX/Linux 内核，Shell 是指“提供给使用者使用界面”的软件（命令解析器），类似于 DOS 下的 command（命令行）和后来的 cmd.exe。普通意义上的 Shell 就是可以接受用户输入命令的程序。它之所以被称作 Shell 是因为它隐藏了操作系统底层的细节。同样的 Unix/Linux 下的图形用户界面 GNOME 和 KDE，有时也被叫做“虚拟 shell”或“图形 shell”。</p>
 <p>Unix/Linux 操作系统下的 Shell 既是用户交互的界面，也是控制系统的脚本语言。当然在这点也有别于 Windows 下的命令行，虽然也提供了很简单的控制语句。在Windows 操作系统下，可能有些用户从来都不会直接的使用 Shell，然而在 UNIX 系列操作系统下，Shell 仍然是控制系统启动、X11 启动和很多其他实用工具的脚本解释程序。</p>
 <p>在 UNIX/Linux 中比较流行的常见的 Shell 有 bash，zsh，ksh，csh 等等，Ubuntu 终端默认使用的是 bash，默认的桌面环境是 GNOME 或者 Unity（基于 GNOME）。</p>
-<h2 id="命令行操作"><a href="#命令行操作" class="headerlink" title="命令行操作"></a>命令行操作</h2><h3 id="重要快捷键"><a href="#重要快捷键" class="headerlink" title="重要快捷键"></a>重要快捷键</h3><p>Tab 补全命令、目录、参数<br>Ctrl+c 强行终止当前程序（不会使终端退出）<br>Ctrl+d  键盘输入结束或退出终端<br>Ctrl+s  暂停当前程序，暂停后按下任意键恢复运行<br>Ctrl+z  将当前程序放到后台运行，恢复到前台为命令fg<br>Ctrl+a  将光标移至输入行头，相当于Home键<br>Ctrl+e  将光标移至输入行末，相当于End键<br>Ctrl+k  删除从光标所在位置到行末<br>Alt+Backspace   向前删除一个单词<br>Shift+PgUp  将终端显示向上滚动<br>Shift+PgDn  将终端显示向下滚动</p>
-<h3 id="历史输入命令-方向键-上"><a href="#历史输入命令：-方向键-上" class="headerlink" title="历史输入命令：  方向键 上"></a>历史输入命令：  方向键 上</h3><p>通配符：星号（*）和问号（?），用来对对字符串进行模糊匹配（比如文件名，参数名）。当查找文件夹时，可以使用它来代替一个或多个真正字符；当不知道真正字符或者懒得输入完整名字时，常常使用通配符代替一个或多个真正的字符。</p>
-<h3 id="一次性创建多个文件"><a href="#一次性创建多个文件" class="headerlink" title="一次性创建多个文件"></a>一次性创建多个文件</h3><p>在创建文件的时候，如果需要一次性创建多个文件，比如：“love_1_linux.txt，love_2_linux.txt，… love_10_linux.txt”。在 Linux 中十分方便：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ touch love_&#123;1..10&#125;_linux.txt</div></pre></td></tr></table></figure></p>
-<h3 id="shell-常用通配符"><a href="#Shell-常用通配符" class="headerlink" title="Shell 常用通配符"></a>Shell 常用通配符</h3><p>字符  含义</p>
+<h2 id="命令行操作">命令行操作</h2>
+<h3 id="重要快捷键">重要快捷键</h3>
+<p>Tab 补全命令、目录、参数
+Ctrl+c 强行终止当前程序（不会使终端退出）
+Ctrl+d  键盘输入结束或退出终端
+Ctrl+s  暂停当前程序，暂停后按下任意键恢复运行
+Ctrl+z  将当前程序放到后台运行，恢复到前台为命令fg
+Ctrl+a  将光标移至输入行头，相当于Home键
+Ctrl+e  将光标移至输入行末，相当于End键
+Ctrl+k  删除从光标所在位置到行末
+Alt+Backspace   向前删除一个单词
+Shift+PgUp  将终端显示向上滚动
+Shift+PgDn  将终端显示向下滚动</p>
+<h3 id="历史输入命令-方向键-上">历史输入命令：  方向键 上</h3>
+<p>通配符：星号（*）和问号（?），用来对对字符串进行模糊匹配（比如文件名，参数名）。当查找文件夹时，可以使用它来代替一个或多个真正字符；当不知道真正字符或者懒得输入完整名字时，常常使用通配符代替一个或多个真正的字符。</p>
+<h3 id="一次性创建多个文件">一次性创建多个文件</h3>
+<p>在创建文件的时候，如果需要一次性创建多个文件，比如：“love_1_linux.txt，love_2_linux.txt，... love_10_linux.txt”。在 Linux 中十分方便：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ touch love_&#123;1..10&#125;_linux.txt</div></pre></td></tr></table></figure></p>
+<h3 id="shell-常用通配符">Shell 常用通配符</h3>
+<p>字符  含义</p>
 <ul>
-<li>匹配 0 或多个字符<br>?   匹配任意一个字符<br>[list]  匹配 list 中的任意单一字符<br>[!list]     匹配 除list 中的任意单一字符以外的字符<br>[c1-c2]     匹配 c1-c2 中的任意单一字符 如：[0-9] [a-z]<br>{string1,string2,…}   匹配 sring1 或 string2 (或更多)其一字符串<br>{c1..c2}    匹配 c1-c2 中全部字符 如{1..10}</li>
+<li>匹配 0 或多个字符
+?   匹配任意一个字符
+[list]  匹配 list 中的任意单一字符
+[!list]     匹配 除list 中的任意单一字符以外的字符
+[c1-c2]     匹配 c1-c2 中的任意单一字符 如：[0-9] [a-z]
+{string1,string2,...}   匹配 sring1 或 string2 (或更多)其一字符串
+{c1..c2}    匹配 c1-c2 中全部字符 如{1..10}</li>
 </ul>
-<h3 id="在命令行中获取帮助"><a href="#在命令行中获取帮助" class="headerlink" title="在命令行中获取帮助"></a>在命令行中获取帮助</h3><p>man 命令<br>Manual pages 是在 UNIX 或类 UNIX 操作系统在线软件文档的一种普遍的形式。 内容包括计算机程序（包括库和系统调用），正式的标准和惯例，甚至是抽象的概念。用户可以通过执行 man 命令调用手册页。</p>
+<h3 id="在命令行中获取帮助">在命令行中获取帮助</h3>
+<p>man 命令
+Manual pages 是在 UNIX 或类 UNIX 操作系统在线软件文档的一种普遍的形式。 内容包括计算机程序（包括库和系统调用），正式的标准和惯例，甚至是抽象的概念。用户可以通过执行 man 命令调用手册页。</p>
 <p>你可以使用如下方式来获得某个命令的说明和使用方式的详细介绍：</p>
-<p>$ man <command_name></command_name></p>
+<p>$ man &lt;command_name&gt;</p>
 <p>比如你想查看 man 命令本身的使用方式，你可以输入：</p>
 <p>man man</p>
-<p>通常情况下，man 手册里面的内容都是英文的，这就要求你有一定的英文基础。man 手册的内容很多，涉及了 Linux 使用过程中的方方面面，为了便于查找，是做了分册（分区段）处理的，在Research UNIX、BSD、OS X 和 Linux 中，手册通常被分为8个区段，安排如下：<br>区段  说明<br>1   一般命令<br>2   系统调用<br>3   库函数，涵盖了C标准函数库<br>4   特殊文件（通常是/dev中的设备）和驱动程序<br>5   文件格式和约定<br>6   游戏和屏保<br>7   杂项<br>8   系统管理命令和守护进程</p>
-<p>要查看相应区段的内容，就在 man 后面加上相应区段的数字即可，如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ man 1 ls</div></pre></td></tr></table></figure></p>
+<p>通常情况下，man 手册里面的内容都是英文的，这就要求你有一定的英文基础。man 手册的内容很多，涉及了 Linux 使用过程中的方方面面，为了便于查找，是做了分册（分区段）处理的，在Research UNIX、BSD、OS X 和 Linux 中，手册通常被分为8个区段，安排如下：
+区段  说明
+1   一般命令
+2   系统调用
+3   库函数，涵盖了C标准函数库
+4   特殊文件（通常是/dev中的设备）和驱动程序
+5   文件格式和约定
+6   游戏和屏保
+7   杂项
+8   系统管理命令和守护进程</p>
+<p>要查看相应区段的内容，就在 man 后面加上相应区段的数字即可，如：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ man 1 ls</div></pre></td></tr></table></figure></p>
 <p>会显示第一区段中的ls命令man页面。</p>
 <p>所有的手册页遵循一个常见的布局，其为通过简单的 ASCII 文本展示而优化，而这种情况下可能没有任何形式的高亮或字体控制。一般包括以下部分内容：</p>
 <p>NAME（名称）</p>
 <pre><code>该命令或函数的名称，接着是一行简介。
-</code></pre><p>SYNOPSIS（概要）</p>
+</code></pre>
+<p>SYNOPSIS（概要）</p>
 <pre><code>对于命令，正式的描述它如何运行，以及需要什么样的命令行参数。对于函数，介绍函数所需的参数，以及哪个头文件包含该函数的定义。
-</code></pre><p>DESCRIPTION（说明）</p>
+</code></pre>
+<p>DESCRIPTION（说明）</p>
 <pre><code>命令或函数功能的文本描述。
-</code></pre><p>EXAMPLES（示例）</p>
+</code></pre>
+<p>EXAMPLES（示例）</p>
 <pre><code>常用的一些示例。
-</code></pre><p>SEE ALSO（参见）</p>
+</code></pre>
+<p>SEE ALSO（参见）</p>
 <pre><code>相关命令或函数的列表。
-</code></pre><p>也可能存在其他部分内容，但这些部分没有得到跨手册页的标准化。常见的例子包括：OPTIONS（选项），EXIT STATUS（退出状态），ENVIRONMENT（环境），BUGS（程序漏洞），FILES（文件），AUTHOR（作者），REPORTING BUGS（已知漏洞），HISTORY（历史）和COPYRIGHT（版权）。</p>
+</code></pre>
+<p>也可能存在其他部分内容，但这些部分没有得到跨手册页的标准化。常见的例子包括：OPTIONS（选项），EXIT STATUS（退出状态），ENVIRONMENT（环境），BUGS（程序漏洞），FILES（文件），AUTHOR（作者），REPORTING BUGS（已知漏洞），HISTORY（历史）和COPYRIGHT（版权）。</p>
 <p>通常 man 手册中的内容很多，不容易找到想要的结果，可以在 man 中使用搜索，/&lt;要搜索的关键字&gt;，查找到后使用n键切换到下一个关键字所在处，shift+n为上一个关键字所在处。使用Space(空格键)翻页，Enter(回车键)向下滚动一行，或者使用j,k（vim编辑器的移动键）进行向前向后滚动一行。按下h键为显示使用帮助(因为man使用less作为阅读器，实为less工具的帮助)，按下q退出。</p>
-<p>想要获得更详细的帮助，使用info命令，不过通常使用man足够。如果知道某个命令的作用，只是想快速查看一些它的某个具体参数的作用，使用–help参数，大部分命令都会带有这个参数，如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ls --help</div></pre></td></tr></table></figure></p>
-<h1 id="用户及文件权限管理"><a href="#用户及文件权限管理" class="headerlink" title="用户及文件权限管理"></a>用户及文件权限管理</h1><h2 id="linux-用户管理"><a href="#Linux-用户管理" class="headerlink" title="Linux 用户管理"></a>Linux 用户管理</h2><p>Linux 是一个可以实现多用户登陆的操作系统。</p>
-<h3 id="查看用户"><a href="#查看用户" class="headerlink" title="查看用户"></a>查看用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ who am i</div><div class="line"></div><div class="line">或者</div><div class="line"></div><div class="line">$ who mom likes</div></pre></td></tr></table></figure>
-<h3 id="who-命令其它常用参数"><a href="#who-命令其它常用参数" class="headerlink" title="who 命令其它常用参数"></a>who 命令其它常用参数</h3><p>参数  说明<br>-a  打印能打印的全部<br>-d  打印死掉的进程<br>-m  同am i,mom likes<br>-q  打印当前登录用户数及用户名<br>-u  打印当前登录用户登录信息<br>-r  打印运行等级</p>
-<h3 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h3><p>在 Linux 系统里， root 账户拥有整个系统至高无上的权利，比如 新建/添加 用户。<br>su，su- 与 sudo</p>
-<p>su <user>可以切换到用户user，执行时需要输入目标用户的密码，sudo <cmd>可以以特权级别运行cmd命令，需要当前用户属于sudo组，且需要输入当前用户密码。su - <user>命令也是切换用户，同时环境变量也会跟着改变成目标用户的环境变量。</user></cmd></user></p>
-<p>新建一个叫 lilei 的用户：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo adduser lilei</div></pre></td></tr></table></figure></p>
+<p>想要获得更详细的帮助，使用info命令，不过通常使用man足够。如果知道某个命令的作用，只是想快速查看一些它的某个具体参数的作用，使用--help参数，大部分命令都会带有这个参数，如：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ls --help</div></pre></td></tr></table></figure></p>
+<h1 id="用户及文件权限管理">用户及文件权限管理</h1>
+<h2 id="linux-用户管理">Linux 用户管理</h2>
+<p>Linux 是一个可以实现多用户登陆的操作系统。</p>
+<h3 id="查看用户">查看用户</h3>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ who am i</div><div class="line"></div><div class="line">或者</div><div class="line"></div><div class="line">$ who mom likes</div></pre></td></tr></table></figure></p>
+<h3 id="who-命令其它常用参数">who 命令其它常用参数</h3>
+<p>参数  说明
+-a  打印能打印的全部
+-d  打印死掉的进程
+-m  同am i,mom likes
+-q  打印当前登录用户数及用户名
+-u  打印当前登录用户登录信息
+-r  打印运行等级</p>
+<h3 id="创建用户">创建用户</h3>
+<p>在 Linux 系统里， root 账户拥有整个系统至高无上的权利，比如 新建/添加 用户。
+su，su- 与 sudo</p>
+<p>su &lt;user&gt;可以切换到用户user，执行时需要输入目标用户的密码，sudo &lt;cmd&gt;可以以特权级别运行cmd命令，需要当前用户属于sudo组，且需要输入当前用户密码。su - &lt;user&gt;命令也是切换用户，同时环境变量也会跟着改变成目标用户的环境变量。</p>
+<p>新建一个叫 lilei 的用户：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo adduser lilei</div></pre></td></tr></table></figure></p>
 <p>这个命令不但可以添加用户到系统，同时也会默认为新用户创建 home 目录：</p>
 <p>$ ls /home</p>
 <p>现在你已经创建好一个用户，并且你可以使用你创建的用户登录了，使用如下命令切换登录用户：</p>
 <p>$ su -l lilei</p>
 <p>输入刚刚设置的 lilei 的密码。退出当前用户跟退出终端一样可以使用 exit 命令或者使用快捷键 Ctrl+d。</p>
-<h2 id="用户组"><a href="#用户组" class="headerlink" title="用户组"></a>用户组</h2><p>每个用户都有一个归属（用户组），用户组简单地理解就是一组用户的集合，它们共享一些资源和权限，同时拥有私有资源，就跟家的形式差不多，你的兄弟姐妹（不同的用户）属于同一个家（用户组），你们可以共同拥有这个家（共享资源），爸妈对待你们都一样（共享权限），你偶尔写写日记，其他人未经允许不能查看（私有资源和权限）。当然一个用户是可以属于多个用户组的，正如你既属于家庭，又属于学校或公司。</p>
-<h4 id="知道自己属于哪些用户组的方法"><a href="#知道自己属于哪些用户组的方法" class="headerlink" title="知道自己属于哪些用户组的方法"></a>知道自己属于哪些用户组的方法</h4><p>方法一：使用groups命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ groups nancy</div></pre></td></tr></table></figure></p>
+<h2 id="用户组">用户组</h2>
+<p>每个用户都有一个归属（用户组），用户组简单地理解就是一组用户的集合，它们共享一些资源和权限，同时拥有私有资源，就跟家的形式差不多，你的兄弟姐妹（不同的用户）属于同一个家（用户组），你们可以共同拥有这个家（共享资源），爸妈对待你们都一样（共享权限），你偶尔写写日记，其他人未经允许不能查看（私有资源和权限）。当然一个用户是可以属于多个用户组的，正如你既属于家庭，又属于学校或公司。</p>
+<h4 id="知道自己属于哪些用户组的方法">知道自己属于哪些用户组的方法</h4>
+<p>方法一：使用groups命令
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ groups nancy</div></pre></td></tr></table></figure></p>
 <p>每次新建用户如果不指定用户组的话，默认会自动创建一个与用户名相同的用户组（差不多就相当于家长的意思，或者说是老总）。默认情况下在sudo用户组里的可以使用sudo命令获得root权限。</p>
-<p>方法二：查看/etc/group文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cat /etc/group | sort</div></pre></td></tr></table></figure></p>
-<p>cat 命令用于读取指定文件的内容并打印到终端输出。| sort 表示将读取的文本进行一个字典排序再输出。使用命令过滤掉一些你不想看到的结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cat /etc/group | grep -E <span class="string">"nancy"</span></div></pre></td></tr></table></figure></p>
+<p>方法二：查看/etc/group文件
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cat /etc/group | sort</div></pre></td></tr></table></figure></p>
+<p>cat 命令用于读取指定文件的内容并打印到终端输出。| sort 表示将读取的文本进行一个字典排序再输出。使用命令过滤掉一些你不想看到的结果：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cat /etc/group | grep -E <span class="string">"nancy"</span></div></pre></td></tr></table></figure></p>
 <p>etc/group 文件格式说明</p>
 <p>/etc/group 的内容包括用户组（Group）、用户组口令、GID 及该用户组所包含的用户（User），每个用户组一条记录。格式如下：</p>
 <pre><code>group_name:password:GID:user_list
-</code></pre><p>你看到上面的 password 字段为一个 ‘x’ 并不是说密码就是它，只是表示密码不可见而已。</p>
+</code></pre>
+<p>你看到上面的 password 字段为一个 'x' 并不是说密码就是它，只是表示密码不可见而已。</p>
 <p><strong>将其它用户加入 sudo 用户组</strong></p>
-<p>默认情况下新创建的用户是不具有 root 权限的，也不在 sudo 用户组，可以让其加入sudo用户组从而获取 root 权限。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ su <span class="_">-l</span> lilei</div><div class="line">$ sudo ls</div></pre></td></tr></table></figure></p>
+<p>默认情况下新创建的用户是不具有 root 权限的，也不在 sudo 用户组，可以让其加入sudo用户组从而获取 root 权限。
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ su <span class="_">-l</span> lilei</div><div class="line">$ sudo ls</div></pre></td></tr></table></figure></p>
 <p>使用 usermod 命令可以为用户添加用户组，同样使用该命令你必需有 root 权限，你可以直接使用 root 用户为其它用户添加用户组，或者用其它已经在 sudo 用户组的用户使用 sudo 命令获取权限来执行该命令。</p>
 <p>用 nancy 用户执行 sudo 命令将 lilei 添加到 sudo 用户组，让它也可以使用 sudo 命令获得 root 权限</p>
-<p>$ su nancy # 此处需要输入nancy用户密码，可以点击右侧工具栏中的“SSH直连”查看<br>$ groups lilei<br>$ sudo usermod -G sudo lilei<br>$ groups lilei</p>
+<p>$ su nancy # 此处需要输入nancy用户密码，可以点击右侧工具栏中的“SSH直连”查看
+$ groups lilei
+$ sudo usermod -G sudo lilei
+$ groups lilei</p>
 <p>然后你再切换回 lilei 用户，现在就可以使用 sudo 获取 root 权限了。</p>
-<h3 id="删除用户"><a href="#删除用户" class="headerlink" title="删除用户"></a>删除用户</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo deluser lilei --remove-home</div></pre></td></tr></table></figure>
-<h2 id="linux-文件权限"><a href="#Linux-文件权限" class="headerlink" title="Linux 文件权限"></a>Linux 文件权限</h2><h3 id="查看文件权限"><a href="#查看文件权限" class="headerlink" title="查看文件权限"></a>查看文件权限</h3><p>使用较长格式列出文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ls <span class="_">-l</span></div></pre></td></tr></table></figure></p>
+<h3 id="删除用户">删除用户</h3>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo deluser lilei --remove-home</div></pre></td></tr></table></figure></p>
+<h2 id="linux-文件权限">Linux 文件权限</h2>
+<h3 id="查看文件权限">查看文件权限</h3>
+<p>使用较长格式列出文件：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ls <span class="_">-l</span></div></pre></td></tr></table></figure></p>
 <p>Linux 里面一切皆文件。</p>
 <p>ls 命令的一些其它常用的用法：</p>
-<pre><code>显示除了 &apos;.&apos;(当前目录)，&apos;..&apos; 上一级目录之外的所有包含隐藏文件（Linux 下以 &apos;.&apos; 开头的文件为隐藏文件）
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ls -A</div></pre></td></tr></table></figure>
-<p>可以同时使用 ‘-A’ 和 ‘-l’ 参数：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ls -Al</div></pre></td></tr></table></figure></p>
-<p>查看某一个目录的完整属性，而不是显示目录里面的文件属性：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ls -dl &lt;目录名&gt;</div></pre></td></tr></table></figure></p>
+<pre><code>显示除了 '.'(当前目录)，'..' 上一级目录之外的所有包含隐藏文件（Linux 下以 '.' 开头的文件为隐藏文件）
+</code></pre>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ls -A</div></pre></td></tr></table></figure></p>
+<p>可以同时使用 '-A' 和 '-l' 参数：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ls -Al</div></pre></td></tr></table></figure></p>
+<p>查看某一个目录的完整属性，而不是显示目录里面的文件属性：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ls -dl &lt;目录名&gt;</div></pre></td></tr></table></figure></p>
 <pre><code>显示所有文件大小，并以普通人类能看懂的方式呈现：
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ls -AsSh</div></pre></td></tr></table></figure>
+</code></pre>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ls -AsSh</div></pre></td></tr></table></figure></p>
 <p>其中小 s 为显示文件大小，大 S 为按文件大小排序，若需要知道如何按其它方式排序，使用“man”命令查询。</p>
-<h3 id="变更文件所有者"><a href="#变更文件所有者" class="headerlink" title="变更文件所有者"></a>变更文件所有者</h3><p>假设目前是 lilei 用户登录，新建一个文件，命名为 “iphone6”：</p>
+<h3 id="变更文件所有者">变更文件所有者</h3>
+<p>假设目前是 lilei 用户登录，新建一个文件，命名为 “iphone6”：</p>
 <p>$ touch iphone6</p>
-<p>可见文件所有者是 lilei 。<br>现在，换回到nancy用户身份，使用以下命令变更文件所有者为 nancy ：</p>
-<p>$ cd /home/lilei<br>$ ls iphone6<br>$ sudo chown nancy iphone6<br>$ cp iphone6 /home/nancy</p>
+<p>可见文件所有者是 lilei 。
+现在，换回到nancy用户身份，使用以下命令变更文件所有者为 nancy ：</p>
+<p>$ cd /home/lilei
+$ ls iphone6
+$ sudo chown nancy iphone6
+$ cp iphone6 /home/nancy</p>
 <p>现在查看，发现 文件所有者成功修改为 nancy 。</p>
-<h3 id="修改文件权限"><a href="#修改文件权限" class="headerlink" title="修改文件权限"></a>修改文件权限</h3><p>方式一：二进制数字表示<br>每个文件的三组权限（拥有者，所属用户组，其他用户,记住这个顺序是一定的）就对应这一个 “rwx”，也就是一个 ‘7’。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">echo</span> <span class="string">"echo \"hello nancy\""</span> &gt; iphone6</div></pre></td></tr></table></figure></p>
-<p>然后修改权限：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ chmod 700 iphone6</div></pre></td></tr></table></figure></p>
+<h3 id="修改文件权限">修改文件权限</h3>
+<p>方式一：二进制数字表示
+每个文件的三组权限（拥有者，所属用户组，其他用户,记住这个顺序是一定的）就对应这一个 &quot;rwx&quot;，也就是一个 '7'。
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">echo</span> <span class="string">"echo \"hello nancy\""</span> &gt; iphone6</div></pre></td></tr></table></figure></p>
+<p>然后修改权限：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ chmod 700 iphone6</div></pre></td></tr></table></figure></p>
 <p>现在，其他用户已经不能读这个“iphone6”文件了</p>
-<p>方式二：加减赋值操作<br>完成上述相同的效果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ chmod go-rw iphone6</div></pre></td></tr></table></figure></p>
-<p>‘g’’o’还有’u’，分别表示group，others，user，’+’，’-‘ 就分别表示增加和去掉相应的权限。</p>
-<h1 id="linux-目录结构及文件基本操作"><a href="#Linux-目录结构及文件基本操作" class="headerlink" title="Linux 目录结构及文件基本操作"></a>Linux 目录结构及文件基本操作</h1><h2 id="linux-目录结构"><a href="#Linux-目录结构" class="headerlink" title="Linux 目录结构"></a>Linux 目录结构</h2><p> Linux 是以树形目录结构的形式来构建整个系统的，可以理解为一个用户可操作系统的骨架。虽然本质上无论是目录结构还是操作系统内核都是存储在磁盘上的，但从逻辑上来说 Linux 的磁盘是“挂在”（挂载在）目录上的，每一个目录不仅能使用本地磁盘分区的文件系统，也可以使用网络上的文件系统。举例来说，可以利用网络文件系统（Network File System，NFS）服务器载入某特定目录等。</p>
-<h3 id="fhs-标准"><a href="#FHS-标准" class="headerlink" title="FHS 标准"></a>FHS 标准</h3><p>FHS 定义了两层规范，第一层是， / 下面的各个目录应该要放什么文件数据，例如 /etc 应该要放置设置文件，/bin 与 /sbin 则应该要放置可执行文件等等。</p>
+<p>方式二：加减赋值操作
+完成上述相同的效果：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ chmod go-rw iphone6</div></pre></td></tr></table></figure></p>
+<p>'g''o'还有'u'，分别表示group，others，user，'+'，'-' 就分别表示增加和去掉相应的权限。</p>
+<h1 id="linux-目录结构及文件基本操作">Linux 目录结构及文件基本操作</h1>
+<h2 id="linux-目录结构">Linux 目录结构</h2>
+<p>Linux 是以树形目录结构的形式来构建整个系统的，可以理解为一个用户可操作系统的骨架。虽然本质上无论是目录结构还是操作系统内核都是存储在磁盘上的，但从逻辑上来说 Linux 的磁盘是“挂在”（挂载在）目录上的，每一个目录不仅能使用本地磁盘分区的文件系统，也可以使用网络上的文件系统。举例来说，可以利用网络文件系统（Network File System，NFS）服务器载入某特定目录等。</p>
+<h3 id="fhs-标准">FHS 标准</h3>
+<p>FHS 定义了两层规范，第一层是， / 下面的各个目录应该要放什么文件数据，例如 /etc 应该要放置设置文件，/bin 与 /sbin 则应该要放置可执行文件等等。</p>
 <p>第二层则是针对 /usr 及 /var 这两个目录的子目录来定义。例如 /var/log 放置系统登录文件、/usr/share 放置共享数据等等。</p>
-<h3 id="目录路径"><a href="#目录路径" class="headerlink" title="目录路径"></a>目录路径</h3><p>cd 切换目录， . 表示当前目录，.. 表示上一级目录（以 . 开头的文件都是隐藏文件，所以这两个目录必然也是隐藏的， ls -a 命令查看隐藏文件）, - 表示上一次所在目录，～ 通常表示当前用户的”home”目录。使用 pwd 命令可以获取当前所在路径（绝对路径）。</p>
-<p>进入上一级目录：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> ..</div></pre></td></tr></table></figure></p>
-<p>进入你的“home”目录：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> ~ </div><div class="line"><span class="comment"># 或者 cd /home/&lt;你的用户名&gt;</span></div></pre></td></tr></table></figure></p>
-<p>使用 pwd 获取当前路径：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">pwd</span></div></pre></td></tr></table></figure></p>
-<p><strong>绝对路径</strong><br>以根”/“目录为起点的完整路径，以你所要到的目录为终点，表现形式如： /usr/local/bin，表示根目录下的 usr 目录中的 local 目录中的 bin 目录。</p>
-<p><strong>相对路径</strong><br>相对于当前的目录的路径，相对路径是以当前目录 . 为起点，以所要到的目录为终点，表现形式如： usr/local/bin （这里假设当前目录为根目录）。表示相对路径实际并没有加上表示当前目录的那个 . ，而是直接以目录名开头，因为这个 usr 目录为 / 目录下的子目录，是可以省略 . 的（也有类似不能省略的情况）；如果是当前目录的上一级目录，则需要使用 .. ，比如当前目录为“home”目录，根目录就应该表示为 ../../ ,表示上一级目录（”home”目录）的上一级目录（”/“目录）。</p>
-<p>以”home”目录为起点，分别以绝对路径和相对路径的方式进入 /usr/local/bin 目录：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 绝对路径</span></div><div class="line">$ <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/bin</div><div class="line"><span class="comment"># 相对路径</span></div><div class="line">$ <span class="built_in">cd</span> ../../usr/<span class="built_in">local</span>/bin</div></pre></td></tr></table></figure></p>
+<h3 id="目录路径">目录路径</h3>
+<p>cd 切换目录， . 表示当前目录，.. 表示上一级目录（以 . 开头的文件都是隐藏文件，所以这两个目录必然也是隐藏的， ls -a 命令查看隐藏文件）, - 表示上一次所在目录，～ 通常表示当前用户的&quot;home&quot;目录。使用 pwd 命令可以获取当前所在路径（绝对路径）。</p>
+<p>进入上一级目录：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> ..</div></pre></td></tr></table></figure></p>
+<p>进入你的“home”目录：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> ~ </div><div class="line"><span class="comment"># 或者 cd /home/&lt;你的用户名&gt;</span></div></pre></td></tr></table></figure></p>
+<p>使用 pwd 获取当前路径：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">pwd</span></div></pre></td></tr></table></figure></p>
+<p><strong>绝对路径</strong>
+以根&quot;/&quot;目录为起点的完整路径，以你所要到的目录为终点，表现形式如： /usr/local/bin，表示根目录下的 usr 目录中的 local 目录中的 bin 目录。</p>
+<p><strong>相对路径</strong>
+相对于当前的目录的路径，相对路径是以当前目录 . 为起点，以所要到的目录为终点，表现形式如： usr/local/bin （这里假设当前目录为根目录）。表示相对路径实际并没有加上表示当前目录的那个 . ，而是直接以目录名开头，因为这个 usr 目录为 / 目录下的子目录，是可以省略 . 的（也有类似不能省略的情况）；如果是当前目录的上一级目录，则需要使用 .. ，比如当前目录为“home”目录，根目录就应该表示为 ../../ ,表示上一级目录（&quot;home&quot;目录）的上一级目录（&quot;/&quot;目录）。</p>
+<p>以&quot;home&quot;目录为起点，分别以绝对路径和相对路径的方式进入 /usr/local/bin 目录：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 绝对路径</span></div><div class="line">$ <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/bin</div><div class="line"><span class="comment"># 相对路径</span></div><div class="line">$ <span class="built_in">cd</span> ../../usr/<span class="built_in">local</span>/bin</div></pre></td></tr></table></figure></p>
 <p><strong>在进行目录切换的过程中请多使用 Tab 键自动补全，可避免输入错误，连续按两次Tab可以显示全部候选结果。</strong></p>
-<h2 id="linux-文件的基本操作"><a href="#Linux-文件的基本操作" class="headerlink" title="Linux 文件的基本操作"></a>Linux 文件的基本操作</h2><h3 id="新建"><a href="#新建" class="headerlink" title="新建"></a>新建</h3><p><strong>新建空白文件</strong><br>使用 touch 命令创建空白文件，关于 touch 命令，其主要是来更改已有文件的时间戳的（比如，最近访问时间，最近修改时间），但其在不加任何参数的情况下，只指定一个文件名，则可以创建一个为指定文件名的空白文件（不会覆盖已有同名文件），当然你也可以同时指定该文件的时间戳。<br>创建名为 test 的空白文件，因为在其他目录没有权限，所以需要先 cd ~ 切换回用户的 /home/nancy 目录：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> ~</div><div class="line">$ touch <span class="built_in">test</span></div></pre></td></tr></table></figure></p>
-<p><strong>新建目录</strong><br>使用 mkdir（make directories）命令可以创建一个空目录,也可同时指定创建目录的权限属性</p>
-<p>创建名为”mydir”的空目录：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ mkdir mydir</div></pre></td></tr></table></figure></p>
-<p>使用 -p 参数，同时创建父目录（如果不存在该父目录），如下同时创建一个多级目录（这在有时候安装软件，配置安装路径时非常有用）：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ mkdir -p father/son/grandson</div></pre></td></tr></table></figure></p>
+<h2 id="linux-文件的基本操作">Linux 文件的基本操作</h2>
+<h3 id="新建">新建</h3>
+<p><strong>新建空白文件</strong>
+使用 touch 命令创建空白文件，关于 touch 命令，其主要是来更改已有文件的时间戳的（比如，最近访问时间，最近修改时间），但其在不加任何参数的情况下，只指定一个文件名，则可以创建一个为指定文件名的空白文件（不会覆盖已有同名文件），当然你也可以同时指定该文件的时间戳。
+创建名为 test 的空白文件，因为在其他目录没有权限，所以需要先 cd ~ 切换回用户的 /home/nancy 目录：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> ~</div><div class="line">$ touch <span class="built_in">test</span></div></pre></td></tr></table></figure></p>
+<p><strong>新建目录</strong>
+使用 mkdir（make directories）命令可以创建一个空目录,也可同时指定创建目录的权限属性</p>
+<p>创建名为&quot;mydir&quot;的空目录：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ mkdir mydir</div></pre></td></tr></table></figure></p>
+<p>使用 -p 参数，同时创建父目录（如果不存在该父目录），如下同时创建一个多级目录（这在有时候安装软件，配置安装路径时非常有用）：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ mkdir -p father/son/grandson</div></pre></td></tr></table></figure></p>
 <p>后面的目录路径，以绝对路径的方式表示也是可以的。</p>
-<h3 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h3><p>使用cp（copy）命令复制一个文件或目录到指定目录。将之前创建的”test”文件复制到”/home/nancy/father/son/grandson”目录中：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cp <span class="built_in">test</span> father/son/grandson</div></pre></td></tr></table></figure></p>
-<p><strong>复制目录</strong><br>要成功复制目录需要加上-r或者-R参数，表示递归复制，就是说有点“株连九族”的意思：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cp -r father family</div></pre></td></tr></table></figure></p>
-<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><p><strong>删除文件</strong><br>使用rm（remove files or directories）命令，删除一个文件或目录：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rm <span class="built_in">test</span></div></pre></td></tr></table></figure></p>
-<p>有时候你会遇到想要删除一些为只读权限的文件，直接使用rm删除会显示一个提示,你如果想忽略这提示，直接删除文件，可以使用-f参数强制删除：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rm <span class="_">-f</span> <span class="built_in">test</span></div></pre></td></tr></table></figure></p>
-<p><strong>删除目录</strong><br>跟复制目录一样，要删除一个目录，也需要加上-r或-R参数：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rm -r family</div></pre></td></tr></table></figure></p>
-<h3 id="移动文件与文件重命名"><a href="#移动文件与文件重命名" class="headerlink" title="移动文件与文件重命名"></a>移动文件与文件重命名</h3><p><strong>移动文件</strong><br>使用mv(move or rename files)命令，移动文件（剪切）。将文件”file1”移动到”Documents”目录mv 源目录文件 目的目录：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ mkdir Documents</div><div class="line">$ mv file1 Documents</div></pre></td></tr></table></figure></p>
-<p><strong>重命名文件</strong><br>将文件”file1”重命名为”myfile” mv 旧的文件名 新的文件名：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ mv file1 myfile</div></pre></td></tr></table></figure></p>
-<p><strong>批量重命名</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 使用通配符批量创建 5 个文件</span></div><div class="line">$ touch file&#123;1..5&#125;.txt</div><div class="line"></div><div class="line"><span class="comment"># 批量将这 5 个后缀为 .txt 的文本文件重命名为以 .c 为后缀的文件</span></div><div class="line">$ rename <span class="string">'s/\.txt/\.c/'</span> *.txt</div><div class="line"></div><div class="line"><span class="comment"># 批量将这 5 个文件，文件名改为大写</span></div><div class="line">$ rename <span class="string">'y/a-z/A-Z/'</span> *.c</div></pre></td></tr></table></figure></p>
+<h3 id="复制">复制</h3>
+<p>使用cp（copy）命令复制一个文件或目录到指定目录。将之前创建的&quot;test&quot;文件复制到&quot;/home/nancy/father/son/grandson&quot;目录中：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cp <span class="built_in">test</span> father/son/grandson</div></pre></td></tr></table></figure></p>
+<p><strong>复制目录</strong>
+要成功复制目录需要加上-r或者-R参数，表示递归复制，就是说有点“株连九族”的意思：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cp -r father family</div></pre></td></tr></table></figure></p>
+<h3 id="删除">删除</h3>
+<p><strong>删除文件</strong>
+使用rm（remove files or directories）命令，删除一个文件或目录：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rm <span class="built_in">test</span></div></pre></td></tr></table></figure></p>
+<p>有时候你会遇到想要删除一些为只读权限的文件，直接使用rm删除会显示一个提示,你如果想忽略这提示，直接删除文件，可以使用-f参数强制删除：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rm <span class="_">-f</span> <span class="built_in">test</span></div></pre></td></tr></table></figure></p>
+<p><strong>删除目录</strong>
+跟复制目录一样，要删除一个目录，也需要加上-r或-R参数：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rm -r family</div></pre></td></tr></table></figure></p>
+<h3 id="移动文件与文件重命名">移动文件与文件重命名</h3>
+<p><strong>移动文件</strong>
+使用mv(move or rename files)命令，移动文件（剪切）。将文件&quot;file1&quot;移动到&quot;Documents&quot;目录mv 源目录文件 目的目录：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ mkdir Documents</div><div class="line">$ mv file1 Documents</div></pre></td></tr></table></figure></p>
+<p><strong>重命名文件</strong>
+将文件&quot;file1&quot;重命名为&quot;myfile&quot; mv 旧的文件名 新的文件名：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ mv file1 myfile</div></pre></td></tr></table></figure></p>
+<p><strong>批量重命名</strong>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 使用通配符批量创建 5 个文件</span></div><div class="line">$ touch file&#123;1..5&#125;.txt</div><div class="line"></div><div class="line"><span class="comment"># 批量将这 5 个后缀为 .txt 的文本文件重命名为以 .c 为后缀的文件</span></div><div class="line">$ rename <span class="string">'s/\.txt/\.c/'</span> *.txt</div><div class="line"></div><div class="line"><span class="comment"># 批量将这 5 个文件，文件名改为大写</span></div><div class="line">$ rename <span class="string">'y/a-z/A-Z/'</span> *.c</div></pre></td></tr></table></figure></p>
 <p>简单解释下上面的命令，rename是先使用第二个参数的通配符匹配所有后缀为.txt的文件，然后使用第一个参数提供的正则表达式将匹配的这些文件的.txt后缀替换为.c 。</p>
-<h3 id="查看文件"><a href="#查看文件" class="headerlink" title="查看文件"></a>查看文件</h3><p><strong>使用cat,tac和nl命令查看文件</strong><br>打印文件内容到标准输出（终端）,其中cat为正序显示，tac倒序显示。<br>查看之前从”/etc”目录下拷贝来的passwd文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cat passwd</div></pre></td></tr></table></figure></p>
-<p>可以加上-n参数显示行号：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cat -n passwd</div></pre></td></tr></table></figure></p>
+<h3 id="查看文件">查看文件</h3>
+<p><strong>使用cat,tac和nl命令查看文件</strong>
+打印文件内容到标准输出（终端）,其中cat为正序显示，tac倒序显示。
+查看之前从&quot;/etc&quot;目录下拷贝来的passwd文件：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cat passwd</div></pre></td></tr></table></figure></p>
+<p>可以加上-n参数显示行号：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ cat -n passwd</div></pre></td></tr></table></figure></p>
 <p>nl命令，添加行号并打印，这是个比cat -n更专业的行号打印命令。</p>
-<p>它的常用的几个参数：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">-b : 指定添加行号的方式，主要有两种：</div><div class="line">    -b a:表示无论是否为空行，同样列出行号(<span class="string">"cat -n"</span>就是这种方式)</div><div class="line">    -b t:只列出非空行的编号并列出（默认为这种方式）</div><div class="line">-n : 设置行号的样式，主要有三种：</div><div class="line">    -n ln:在行号字段最左端显示</div><div class="line">    -n rn:在行号字段最右边显示，且不加 0</div><div class="line">    -n rz:在行号字段最右边显示，且加 0</div><div class="line">-w : 行号字段占用的位数(默认为 6 位)</div></pre></td></tr></table></figure></p>
-<p><strong>使用more和less命令分页查看文件</strong><br>其中more命令比较简单，只能向一个方向滚动，而”less”为基于”more”和”vi”(编辑器)开发，功能更强大。less 的使用基本和 more 一致。<br>使用more工具打开passwd文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ more passwd</div></pre></td></tr></table></figure></p>
-<p>打开后默认只显示一屏内容，终端底部显示当前阅读的进度(百分比)。可以使用Enter键向下滚动一行，使用Space键向下滚动一屏，按下h显示帮助，q退出。<br><strong>使用head和tail命令查看文件</strong><br>head是只查看的头几行（默认为10行，不足10行则显示全部），tail是查看尾几行。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tail /etc/passwd</div></pre></td></tr></table></figure></p>
-<p>甚至更直接的只看一行， 加上-n参数，后面紧跟行数：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tail -n 1 /etc/passwd</div></pre></td></tr></table></figure></p>
+<p>它的常用的几个参数：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">-b : 指定添加行号的方式，主要有两种：</div><div class="line">    -b a:表示无论是否为空行，同样列出行号(<span class="string">"cat -n"</span>就是这种方式)</div><div class="line">    -b t:只列出非空行的编号并列出（默认为这种方式）</div><div class="line">-n : 设置行号的样式，主要有三种：</div><div class="line">    -n ln:在行号字段最左端显示</div><div class="line">    -n rn:在行号字段最右边显示，且不加 0</div><div class="line">    -n rz:在行号字段最右边显示，且加 0</div><div class="line">-w : 行号字段占用的位数(默认为 6 位)</div></pre></td></tr></table></figure></p>
+<p><strong>使用more和less命令分页查看文件</strong>
+其中more命令比较简单，只能向一个方向滚动，而&quot;less&quot;为基于&quot;more&quot;和&quot;vi&quot;(编辑器)开发，功能更强大。less 的使用基本和 more 一致。
+使用more工具打开passwd文件：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ more passwd</div></pre></td></tr></table></figure></p>
+<p>打开后默认只显示一屏内容，终端底部显示当前阅读的进度(百分比)。可以使用Enter键向下滚动一行，使用Space键向下滚动一屏，按下h显示帮助，q退出。
+<strong>使用head和tail命令查看文件</strong>
+head是只查看的头几行（默认为10行，不足10行则显示全部），tail是查看尾几行。
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tail /etc/passwd</div></pre></td></tr></table></figure></p>
+<p>甚至更直接的只看一行， 加上-n参数，后面紧跟行数：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tail -n 1 /etc/passwd</div></pre></td></tr></table></figure></p>
 <p>参数-f，这个参数可以实现不停地读取某个文件的内容并显示。这可让我们动态查看日志起到实时监视的作用。</p>
-<h3 id="查看文件类型"><a href="#查看文件类型" class="headerlink" title="查看文件类型"></a>查看文件类型</h3><p>在 Linux 下面文件的类型不是根据文件后缀来判断的，我们通常使用file命令可以查看文件的类型：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ file /bin/ls</div></pre></td></tr></table></figure></p>
-<h3 id="编辑文件"><a href="#编辑文件" class="headerlink" title="编辑文件"></a>编辑文件</h3><p>Linux 内部的 vim 学习教程，输入如下命令即可开始：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ vimtutor</div></pre></td></tr></table></figure></p>
-<h1 id="环境变量与文件查找"><a href="#环境变量与文件查找" class="headerlink" title="环境变量与文件查找"></a>环境变量与文件查找</h1><h2 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h2><h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>准确的说应该是 Shell 变量，所谓变量就是计算机中用于记录一个值（不一定是数值，也可以是字符或字符串）的符号，而这些符号将用于不同的运算处理中。<br>在 Shell 中如何创建一个变量，如何给变量赋值和如何读取变量的值呢？<br>使用declare命令创建一个变量名为 tmp 的变量：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">declare</span> tmp</div></pre></td></tr></table></figure></p>
-<p>使用=号赋值运算符为变量 tmp 赋值为 nancy：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tmp=nancy</div></pre></td></tr></table></figure></p>
-<p>读取变量的值，使用echo命令和$符号（$符号用于表示引用一个变量的值，初学易忘）：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">echo</span> <span class="variable">$tmp</span></div></pre></td></tr></table></figure></p>
+<h3 id="查看文件类型">查看文件类型</h3>
+<p>在 Linux 下面文件的类型不是根据文件后缀来判断的，我们通常使用file命令可以查看文件的类型：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ file /bin/ls</div></pre></td></tr></table></figure></p>
+<h3 id="编辑文件">编辑文件</h3>
+<p>Linux 内部的 vim 学习教程，输入如下命令即可开始：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ vimtutor</div></pre></td></tr></table></figure></p>
+<h1 id="环境变量与文件查找">环境变量与文件查找</h1>
+<h2 id="环境变量">环境变量</h2>
+<h3 id="变量">变量</h3>
+<p>准确的说应该是 Shell 变量，所谓变量就是计算机中用于记录一个值（不一定是数值，也可以是字符或字符串）的符号，而这些符号将用于不同的运算处理中。
+在 Shell 中如何创建一个变量，如何给变量赋值和如何读取变量的值呢？
+使用declare命令创建一个变量名为 tmp 的变量：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">declare</span> tmp</div></pre></td></tr></table></figure></p>
+<p>使用=号赋值运算符为变量 tmp 赋值为 nancy：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tmp=nancy</div></pre></td></tr></table></figure></p>
+<p>读取变量的值，使用echo命令和$符号（$符号用于表示引用一个变量的值，初学易忘）：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">echo</span> <span class="variable">$tmp</span></div></pre></td></tr></table></figure></p>
 <p><strong>注意:关于变量名，并不是任何形式的变量名都是可用的，变量名只能是英文字母,数字或者下划线，且不能以数字作为开头。</strong></p>
-<h3 id="环境变量"><a href="#环境变量-1" class="headerlink" title="环境变量"></a>环境变量</h3><p>环境变量就是作用域比自定义变量要大，如Shell 的环境变量作用于自身和它的子进程。在所有的 UNIX 和类 UNIX 系统中，每个进程都有其各自的环境变量设置，且默认情况下，当一个进程被创建时，处理创建过程中明确指定的话，它将继承其父进程的绝大部分环境设置。Shell 程序也作为一个进程运行在操作系统之上，而在 Shell中运行的大部分命令都将以 Shell 的子进程的方式运行。</p>
+<h3 id="环境变量">环境变量</h3>
+<p>环境变量就是作用域比自定义变量要大，如Shell 的环境变量作用于自身和它的子进程。在所有的 UNIX 和类 UNIX 系统中，每个进程都有其各自的环境变量设置，且默认情况下，当一个进程被创建时，处理创建过程中明确指定的话，它将继承其父进程的绝大部分环境设置。Shell 程序也作为一个进程运行在操作系统之上，而在 Shell中运行的大部分命令都将以 Shell 的子进程的方式运行。</p>
 <p>通常会涉及到的环境变量有三种：</p>
 <ul>
 <li>当前 Shell 进程私有用户自定义变量，如上面我们创建的 temp 变量，只在当前 Shell 中有效。</li>
 <li>Shell 本身内建的变量。</li>
 <li>从自定义变量导出的环境变量。</li>
 </ul>
-<p>也有三个与上述三种环境变量相关的命令，set，env，export。这三个命令都可用于打印相关环境变量,区别在于涉及的是不同范围的环境变量，详见下表：<br>命令  说明<br>set     显示当前 Shell 所有环境变量，包括其内建环境变量（与 Shell 外观等相关），用户自定义变量及导出的环境变量<br>env     显示与当前用户相关的环境变量，还可以让命令在指定环境中运行<br>export  显示从 Shell 中导出成环境变量的变量，也能通过它将自定义变量导出为环境变量</p>
+<p>也有三个与上述三种环境变量相关的命令，set，env，export。这三个命令都可用于打印相关环境变量,区别在于涉及的是不同范围的环境变量，详见下表：
+命令  说明
+set     显示当前 Shell 所有环境变量，包括其内建环境变量（与 Shell 外观等相关），用户自定义变量及导出的环境变量
+env     显示与当前用户相关的环境变量，还可以让命令在指定环境中运行
+export  显示从 Shell 中导出成环境变量的变量，也能通过它将自定义变量导出为环境变量</p>
 <p>关于环境变量，可以简单的理解成在当前进程的子进程是否有效，有效则为环境变量，否则不是（有人也将所有变量统称为环境变量，只是以全局环境变量和局部环境变量进行区分，只要理解它们的实质区别即可）。</p>
 <p><strong>注意：为了与普通变量区分，通常我们习惯将环境变量名设为大写。</strong></p>
-<h3 id="命令的查找路径与顺序"><a href="#命令的查找路径与顺序" class="headerlink" title="命令的查找路径与顺序"></a>命令的查找路径与顺序</h3><p>Shell 中输入一个命令，Shell 是通过环境变量PATH来进行搜索去找到这个命令然后执行的。Windows 中的也是有这么一个 PATH 环境变量。这个PATH里面就保存了Shell中执行的命令的搜索路径。<br>查看PATH环境变量的内容：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">echo</span> <span class="variable">$PATH</span></div></pre></td></tr></table></figure></p>
-<p>默认情况下有输出：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/<span class="built_in">local</span>/sbin:/usr/<span class="built_in">local</span>/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/<span class="built_in">local</span>/games</div></pre></td></tr></table></figure></p>
+<h3 id="命令的查找路径与顺序">命令的查找路径与顺序</h3>
+<p>Shell 中输入一个命令，Shell 是通过环境变量PATH来进行搜索去找到这个命令然后执行的。Windows 中的也是有这么一个 PATH 环境变量。这个PATH里面就保存了Shell中执行的命令的搜索路径。
+查看PATH环境变量的内容：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">echo</span> <span class="variable">$PATH</span></div></pre></td></tr></table></figure></p>
+<p>默认情况下有输出：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/<span class="built_in">local</span>/sbin:/usr/<span class="built_in">local</span>/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/<span class="built_in">local</span>/games</div></pre></td></tr></table></figure></p>
 <p>通常这一类目录下放的都是可执行文件，当我们在 Shell 中执行一个命令时，系统就会按照 PATH 中设定的路径按照顺序依次到目录中去查找，如果存在同名的命令，则执行先找到的那个。</p>
-<p>练习创建一个最简单的可执行 Shell 脚本和一个使用 C 语言创建的”hello world”程序。<br>创建一个 Shell 脚本文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ vim hello_shell.sh</div></pre></td></tr></table></figure></p>
-<p>在脚本中添加如下内容，保存并退出（注意不要省掉第一行）：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/zsh</span></div><div class="line"></div><div class="line"><span class="keyword">for</span> ((i=0; i&lt;10; i++));<span class="keyword">do</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"hello shell"</span></div><div class="line"><span class="keyword">done</span></div><div class="line"></div><div class="line"><span class="built_in">exit</span> 0</div></pre></td></tr></table></figure></p>
-<p>为文件添加可执行权限：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ chmod 755 hello_shell.sh</div></pre></td></tr></table></figure></p>
-<p>执行脚本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./hello_shell.sh</div></pre></td></tr></table></figure></p>
-<p>创建一个 C 语言”hello world”程序：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ vim hello_world.c</div></pre></td></tr></table></figure></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#include &lt;stdio.h&gt;</span></div><div class="line"></div><div class="line">int main(void)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"hello world!\n"</span>);</div><div class="line">    <span class="built_in">return</span> 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>使用 gcc 生成可执行文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ gcc -o hello_world hello_world.c</div></pre></td></tr></table></figure></p>
+<p>练习创建一个最简单的可执行 Shell 脚本和一个使用 C 语言创建的&quot;hello world&quot;程序。
+创建一个 Shell 脚本文件：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ vim hello_shell.sh</div></pre></td></tr></table></figure></p>
+<p>在脚本中添加如下内容，保存并退出（注意不要省掉第一行）：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/zsh</span></div><div class="line"></div><div class="line"><span class="keyword">for</span> ((i=0; i&lt;10; i++));<span class="keyword">do</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"hello shell"</span></div><div class="line"><span class="keyword">done</span></div><div class="line"></div><div class="line"><span class="built_in">exit</span> 0</div></pre></td></tr></table></figure></p>
+<p>为文件添加可执行权限：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ chmod 755 hello_shell.sh</div></pre></td></tr></table></figure></p>
+<p>执行脚本
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./hello_shell.sh</div></pre></td></tr></table></figure></p>
+<p>创建一个 C 语言&quot;hello world&quot;程序：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ vim hello_world.c</div></pre></td></tr></table></figure></p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#include &lt;stdio.h&gt;</span></div><div class="line"></div><div class="line">int main(void)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"hello world!\n"</span>);</div><div class="line">    <span class="built_in">return</span> 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>使用 gcc 生成可执行文件：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ gcc -o hello_world hello_world.c</div></pre></td></tr></table></figure></p>
 <pre><code>gcc 生成二进制文件默认具有可执行权限，不需要修改
-</code></pre><p>在 nancy 家目录创建一个mybin目录，并将上述 hello_shell.sh 和 hello_world 文件移动到其中：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ mkdir mybin</div><div class="line">$ mv hello_shell.sh hello_world mybin/</div></pre></td></tr></table></figure></p>
-<p>在mybin目录中分别运行刚刚创建的两个程序：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> mybin</div><div class="line">$ ./hello_shell.sh</div><div class="line">$ ./hello_world</div></pre></td></tr></table></figure></p>
+</code></pre>
+<p>在 nancy 家目录创建一个mybin目录，并将上述 hello_shell.sh 和 hello_world 文件移动到其中：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ mkdir mybin</div><div class="line">$ mv hello_shell.sh hello_world mybin/</div></pre></td></tr></table></figure></p>
+<p>在mybin目录中分别运行刚刚创建的两个程序：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">cd</span> mybin</div><div class="line">$ ./hello_shell.sh</div><div class="line">$ ./hello_world</div></pre></td></tr></table></figure></p>
 <p>回到上一级目录，也就是nancy家目录，当再想运行那两个程序时，会发现提示命令找不到，除非加上命令的完整路径，但那样很不方便，要做到想使用系统命令一样执行自己创建的脚本文件或者程序，那就要将命令所在路径添加到PATH环境变量了。</p>
-<h3 id="添加自定义路径到path环境变量"><a href="#添加自定义路径到“PATH”环境变量" class="headerlink" title="添加自定义路径到“PATH”环境变量"></a>添加自定义路径到“PATH”环境变量</h3><p>PATH里面的路径是以：作为分割符，可这样添加自定义路径：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ PATH=<span class="variable">$PATH</span>:/home/shiyanlou/mybin</div></pre></td></tr></table></figure></p>
+<h3 id="添加自定义路径到path环境变量">添加自定义路径到“PATH”环境变量</h3>
+<p>PATH里面的路径是以：作为分割符，可这样添加自定义路径：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ PATH=<span class="variable">$PATH</span>:/home/shiyanlou/mybin</div></pre></td></tr></table></figure></p>
 <p><strong>注意这里一定要使用绝对路径。</strong></p>
-<p>可以在其他任意目录执行那两个命令了（注意需要去掉前面的./）。这给 PATH 环境变量追加了一个路径，它也只是在当前 Shell 有效，一旦退出终端，再打开就会发现又失效了。<br>让添加的环境变量全局有效或者每次启动 Shell 时自动执行上面添加自定义路径到 PATH 的命令——后一种方式——让它自动执行。</p>
+<p>可以在其他任意目录执行那两个命令了（注意需要去掉前面的./）。这给 PATH 环境变量追加了一个路径，它也只是在当前 Shell 有效，一旦退出终端，再打开就会发现又失效了。
+让添加的环境变量全局有效或者每次启动 Shell 时自动执行上面添加自定义路径到 PATH 的命令——后一种方式——让它自动执行。</p>
 <p>在每个用户的 home 目录中有一个 Shell 每次启动时会默认执行一个配置脚本，以初始化环境，包括添加一些用户自定义环境变量等等。zsh 的配置文件是.zshrc，相应 Bash 的配置文件为.bashrc。它们在etc下还都有一个或多个全局的配置文件，不过一般只修改用户目录下的配置文件。</p>
-<p>简单的使用下面命令直接添加内容到.zshrc中：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">echo</span> <span class="string">"PATH=<span class="variable">$PATH</span>:/home/shiyanlou/mybin"</span> &gt;&gt; .zshrc</div></pre></td></tr></table></figure></p>
+<p>简单的使用下面命令直接添加内容到.zshrc中：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">echo</span> <span class="string">"PATH=<span class="variable">$PATH</span>:/home/shiyanlou/mybin"</span> &gt;&gt; .zshrc</div></pre></td></tr></table></figure></p>
 <p>上述命令中&gt;&gt;表示将标准输出以追加的方式重定向到一个文件中，注意前面用到的&gt;是以覆盖的方式重定向到一个文件中，使用的时候一定要注意分辨。在指定文件不存在的情况下都会创建新的文件。</p>
-<h3 id="修改和删除已有变量"><a href="#修改和删除已有变量" class="headerlink" title="修改和删除已有变量"></a>修改和删除已有变量</h3><p>变量修改</p>
-<p>变量的修改有以下几种方式：<br>变量设置方式  说明<br>${变量名#匹配字串}     从头向后开始匹配，删除符合匹配字串的最短数据<br>${变量名##匹配字串}    从头向后开始匹配，删除符合匹配字串的最长数据<br>${变量名%匹配字串}     从尾向前开始匹配，删除符合匹配字串的最短数据<br>${变量名%%匹配字串}    从尾向前开始匹配，删除符合匹配字串的最长数据<br>${变量名/旧的字串/新的字串}    将符合旧字串的第一个字串替换为新的字串<br>${变量名//旧的字串/新的字串}   将符合旧字串的全部字串替换为新的字串</p>
-<p>比如要修改前面添加到 PATH 的环境变量。为了避免操作失误导致命令找不到，先将 PATH 赋值给一个新的自定义变量 path：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ path=<span class="variable">$PATH</span></div><div class="line">$ <span class="built_in">echo</span> <span class="variable">$path</span></div><div class="line">$ path=<span class="variable">$&#123;path%/home/shiyanlou/mybin&#125;</span></div><div class="line"><span class="comment"># 或使用通配符,*表示任意多个任意字符</span></div><div class="line">$ path=<span class="variable">$&#123;path%*/mybin&#125;</span></div></pre></td></tr></table></figure></p>
-<p><strong>变量删除</strong><br>可以使用unset命令删除一个环境变量：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">unset</span> temp</div></pre></td></tr></table></figure></p>
-<h3 id="如何让环境变量立即生效"><a href="#如何让环境变量立即生效" class="headerlink" title="如何让环境变量立即生效"></a>如何让环境变量立即生效</h3><p>上面在Shell 中修改了一个配置脚本文件之后（比如 zsh 的配置文件 home 目录下的.zshrc），每次都要退出终端重新打开甚至重启主机之后其才能生效，很麻烦，使用source命令来让其立即生效，如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">source</span> .zshrc</div></pre></td></tr></table></figure></p>
-<p>source命令还有一个别名就是.，注意与表示当前路径的那个点区分开，虽然形式一样，但作用和使用方式一样，上面的命令如果替换成.的方式就该是<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ . ./.zshrc</div></pre></td></tr></table></figure></p>
+<h3 id="修改和删除已有变量">修改和删除已有变量</h3>
+<p>变量修改</p>
+<p>变量的修改有以下几种方式：
+变量设置方式  说明
+${变量名#匹配字串}     从头向后开始匹配，删除符合匹配字串的最短数据
+${变量名##匹配字串}    从头向后开始匹配，删除符合匹配字串的最长数据
+${变量名%匹配字串}     从尾向前开始匹配，删除符合匹配字串的最短数据
+${变量名%%匹配字串}    从尾向前开始匹配，删除符合匹配字串的最长数据
+${变量名/旧的字串/新的字串}    将符合旧字串的第一个字串替换为新的字串
+${变量名//旧的字串/新的字串}   将符合旧字串的全部字串替换为新的字串</p>
+<p>比如要修改前面添加到 PATH 的环境变量。为了避免操作失误导致命令找不到，先将 PATH 赋值给一个新的自定义变量 path：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ path=<span class="variable">$PATH</span></div><div class="line">$ <span class="built_in">echo</span> <span class="variable">$path</span></div><div class="line">$ path=<span class="variable">$&#123;path%/home/shiyanlou/mybin&#125;</span></div><div class="line"><span class="comment"># 或使用通配符,*表示任意多个任意字符</span></div><div class="line">$ path=<span class="variable">$&#123;path%*/mybin&#125;</span></div></pre></td></tr></table></figure></p>
+<p><strong>变量删除</strong>
+可以使用unset命令删除一个环境变量：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">unset</span> temp</div></pre></td></tr></table></figure></p>
+<h3 id="如何让环境变量立即生效">如何让环境变量立即生效</h3>
+<p>上面在Shell 中修改了一个配置脚本文件之后（比如 zsh 的配置文件 home 目录下的.zshrc），每次都要退出终端重新打开甚至重启主机之后其才能生效，很麻烦，使用source命令来让其立即生效，如：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">source</span> .zshrc</div></pre></td></tr></table></figure></p>
+<p>source命令还有一个别名就是.，注意与表示当前路径的那个点区分开，虽然形式一样，但作用和使用方式一样，上面的命令如果替换成.的方式就该是
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ . ./.zshrc</div></pre></td></tr></table></figure></p>
 <p>注意第一个点后面有一个空格，而且后面的文件必须指定完整的绝对或相对路径名，source 则不需要。</p>
-<h2 id="搜索文件"><a href="#搜索文件" class="headerlink" title="搜索文件"></a>搜索文件</h2><p>与搜索相关的命令常用的有如下几个whereis,which,find,locate。</p>
+<h2 id="搜索文件">搜索文件</h2>
+<p>与搜索相关的命令常用的有如下几个whereis,which,find,locate。</p>
 <ul>
-<li>whereis简单快速<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$whereis</span> who</div></pre></td></tr></table></figure>
-</li>
+<li>whereis简单快速
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$whereis</span> who</div></pre></td></tr></table></figure></li>
 </ul>
 <p>whereis只能搜索二进制文件(-b)，man帮助文件(-m)和源代码文件(-s)。如果想要获得更全面的搜索结果可用locate命令。</p>
 <ul>
-<li>locate快而全<br>通过”/var/lib/mlocate/mlocate.db”数据库查找，不过这个数据库也不是实时更新的，系统会使用定时任务每天自动执行updatedb命令更新一次，所以有时刚添加的文件，它可能会找不到，需要手动执行一次updatedb命令（在我们的环境中必须先执行一次该命令）。它可以用来查找指定目录下的不同文件类型，如查找 /etc 下所有以 sh 开头的文件：<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ locate /etc/sh</div></pre></td></tr></table></figure>
-</li>
+<li>locate快而全
+通过&quot;/var/lib/mlocate/mlocate.db&quot;数据库查找，不过这个数据库也不是实时更新的，系统会使用定时任务每天自动执行updatedb命令更新一次，所以有时刚添加的文件，它可能会找不到，需要手动执行一次updatedb命令（在我们的环境中必须先执行一次该命令）。它可以用来查找指定目录下的不同文件类型，如查找 /etc 下所有以 sh 开头的文件：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ locate /etc/sh</div></pre></td></tr></table></figure></li>
 </ul>
-<p><strong>注意,它不只是在 etc 目录下查找并会自动递归子目录进行查找。</strong><br>查找 /usr/share/ 下所有 jpg 文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ locate /usr/share/\*.jpg</div></pre></td></tr></table></figure></p>
-<p><strong>注意要添加*号前面的反斜杠转义，否则会无法找到。</strong></p>
+<p><strong>注意,它不只是在 etc 目录下查找并会自动递归子目录进行查找。</strong>
+查找 /usr/share/ 下所有 jpg 文件：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ locate /usr/share/\*.jpg</div></pre></td></tr></table></figure></p>
+<p><em><em>注意要添加</em>号前面的反斜杠转义，否则会无法找到。</em>*</p>
 <p>如果想只统计数目可以加上-c参数，-i参数可以忽略大小写进行查找，whereis 的-b,-m，-s同样可以是使用。</p>
 <ul>
 <li>which小而精</li>
 </ul>
-<p>which本身是 Shell 内建的一个命令，通常使用which来确定是否安装了某个指定的软件，因为它只从PATH环境变量指定的路径中去搜索命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">which</span> man</div></pre></td></tr></table></figure></p>
+<p>which本身是 Shell 内建的一个命令，通常使用which来确定是否安装了某个指定的软件，因为它只从PATH环境变量指定的路径中去搜索命令：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">which</span> man</div></pre></td></tr></table></figure></p>
 <ul>
 <li>find精而细</li>
 </ul>
-<p>find应该是这几个命令中最强大的了，它不但可以通过文件类型、文件名进行查找而且可以根据文件的属性（如文件的时间戳，文件的权限等）进行搜索。<br>在指定目录下搜索指定文件名的文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ find /etc/ -name interfaces</div></pre></td></tr></table></figure></p>
-<p><strong>注意 find 命令的路径是作为第一个参数的， 基本命令格式为 find [path] [option] [action] </strong><br>与时间相关的命令参数：<br>参数  说明<br>-atime  最后访问时间<br>-ctime  创建时间<br>-mtime  最后修改时间</p>
+<p>find应该是这几个命令中最强大的了，它不但可以通过文件类型、文件名进行查找而且可以根据文件的属性（如文件的时间戳，文件的权限等）进行搜索。
+在指定目录下搜索指定文件名的文件：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ find /etc/ -name interfaces</div></pre></td></tr></table></figure></p>
+<p>**注意 find 命令的路径是作为第一个参数的， 基本命令格式为 find [path] [option] [action] **
+与时间相关的命令参数：
+参数  说明
+-atime  最后访问时间
+-ctime  创建时间
+-mtime  最后修改时间</p>
 <p>下面以-mtime参数举例：</p>
 <ul>
 <li>-mtime n: n 为数字，表示为在n天之前的”一天之内“修改过的文件</li>
@@ -571,79 +775,138 @@
 <li>-mtime -n: 列出在n天之内（包含n天本身）被修改过的文件</li>
 <li>newer file: file为一个已存在的文件，列出比file还要新的文件名</li>
 </ul>
-<p>列出 home 目录中，当天（24 小时之内）有改动的文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ find ~ -mtime 0</div></pre></td></tr></table></figure></p>
-<p>列出用户家目录下比Code文件夹新的文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ find ~ -newer /home/shiyanlou/Code</div></pre></td></tr></table></figure></p>
-<p>《黑客帝国》电影里满屏幕代码的“数字雨”，在 Linux 里面也可以轻松实现这样的效果，只需要一个命令cmatrix。<br>需要先安装，因为 Ubuntu 没有预装：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get update;sudo apt-get install cmatrix</div></pre></td></tr></table></figure></p>
-<h1 id="文件打包与解压缩"><a href="#文件打包与解压缩" class="headerlink" title="文件打包与解压缩"></a>文件打包与解压缩</h1><h2 id="文件打包和解压缩"><a href="#文件打包和解压缩" class="headerlink" title="文件打包和解压缩"></a>文件打包和解压缩</h2><p>在 Windows 上最常见的不外乎这三种<em>.zip,</em>.rar,<em>.7z后缀的压缩文件，而在 Linux 上面常见常用的除了以上这三种外，还有</em>.gz,<em>.xz,</em>.bz2,<em>.tar,</em>.tar.gz,<em>.tar.xz,</em>tar.bz2，简单介绍如下：<br>文件后缀名   说明<br><em>.zip   zip程序打包压缩的文件
-</em>.rar   rar程序压缩的文件<br><em>.7z    7zip程序压缩的文件
-</em>.tar   tar程序打包，未压缩的文件<br><em>.gz    gzip程序(GNU zip)压缩的文件
-</em>.xz    xz程序压缩的文件<br><em>.bz2   bzip2程序压缩的文件
-</em>.tar.gz    tar打包，gzip程序压缩的文件<br><em>.tar.xz    tar打包，xz程序压缩的文件
-</em>tar.bz2    tar打包，bzip2程序压缩的文件<br>*.tar.7z    tar打包，7z程序压缩的文件</p>
-<h2 id="zip压缩打包程序"><a href="#zip压缩打包程序" class="headerlink" title="zip压缩打包程序"></a>zip压缩打包程序</h2><pre><code>使用zip打包文件夹：
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ zip -r -q -o nancy.zip /home/nancy</div><div class="line">$ du -h nancy.zip</div><div class="line">$ file nancy.zip</div></pre></td></tr></table></figure>
+<p>列出 home 目录中，当天（24 小时之内）有改动的文件：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ find ~ -mtime 0</div></pre></td></tr></table></figure></p>
+<p>列出用户家目录下比Code文件夹新的文件：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ find ~ -newer /home/shiyanlou/Code</div></pre></td></tr></table></figure></p>
+<p>《黑客帝国》电影里满屏幕代码的“数字雨”，在 Linux 里面也可以轻松实现这样的效果，只需要一个命令cmatrix。
+需要先安装，因为 Ubuntu 没有预装：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get update;sudo apt-get install cmatrix</div></pre></td></tr></table></figure></p>
+<h1 id="文件打包与解压缩">文件打包与解压缩</h1>
+<h2 id="文件打包和解压缩">文件打包和解压缩</h2>
+<p>在 Windows 上最常见的不外乎这三种*.zip,<em>.rar,</em>.7z后缀的压缩文件，而在 Linux 上面常见常用的除了以上这三种外，还有*.gz,<em>.xz,</em>.bz2,<em>.tar,</em>.tar.gz,*.tar.xz,*tar.bz2，简单介绍如下：
+文件后缀名   说明
+*.zip   zip程序打包压缩的文件
+*.rar   rar程序压缩的文件
+*.7z    7zip程序压缩的文件
+*.tar   tar程序打包，未压缩的文件
+*.gz    gzip程序(GNU zip)压缩的文件
+*.xz    xz程序压缩的文件
+*.bz2   bzip2程序压缩的文件
+*.tar.gz    tar打包，gzip程序压缩的文件
+*.tar.xz    tar打包，xz程序压缩的文件
+*tar.bz2    tar打包，bzip2程序压缩的文件
+*.tar.7z    tar打包，7z程序压缩的文件</p>
+<h2 id="zip压缩打包程序">zip压缩打包程序</h2>
+<pre><code>使用zip打包文件夹：
+</code></pre>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ zip -r -q -o nancy.zip /home/nancy</div><div class="line">$ du -h nancy.zip</div><div class="line">$ file nancy.zip</div></pre></td></tr></table></figure></p>
 <p>上面命令将 nancy 的 home 目录打包成一个文件，并查看了打包后文件的大小和类型。-r参数表示递归打包包含子目录的全部内容，-q参数表示为安静模式，即不向屏幕输出信息，-o，表示输出文件，需在其后紧跟打包输出文件名。后面使用du命令查看打包后文件的大小。</p>
 <pre><code>设置压缩级别为9和1（9最大,1最小），重新打包：
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ zip -r -9 -q -o nancy_9.zip /home/nancy -x ~/*.zip</div><div class="line">$ zip -r -1 -q -o nancy_1.zip /home/nancy -x ~/*.zip</div></pre></td></tr></table></figure>
+</code></pre>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ zip -r -9 -q -o nancy_9.zip /home/nancy -x ~/*.zip</div><div class="line">$ zip -r -1 -q -o nancy_1.zip /home/nancy -x ~/*.zip</div></pre></td></tr></table></figure></p>
 <p>这里添加了一个参数用于设置压缩级别-[1-9]，1表示最快压缩但体积大，9表示体积最小但耗时最久。最后那个-x是为了排除我们上一次创建的 zip 文件，否则又会被打包进这一次的压缩文件中，<strong>注意:这里只能使用绝对路径，否则不起作用。</strong></p>
-<p>我们再用du命令分别查看默认压缩级别、最低、最高压缩级别及未压缩的文件的大小：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ du -h <span class="_">-d</span> 0 *.zip ~ | sort</div></pre></td></tr></table></figure></p>
+<p>我们再用du命令分别查看默认压缩级别、最低、最高压缩级别及未压缩的文件的大小：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ du -h <span class="_">-d</span> 0 *.zip ~ | sort</div></pre></td></tr></table></figure></p>
 <p>通过man 手册可知：</p>
 <pre><code>h, --human-readable（顾名思义，你可以试试不加的情况）
 
 d, --max-depth（所查看文件的深度）
-</code></pre><p>在环境中操作之后看到的大小可能跟图上的有些不同，因为在使用过程中，会随时还生成一些缓存文件在当前用户的家目录中，这对于学习命令使用来说，是无关紧要的，可以忽略这些不同。</p>
+</code></pre>
+<p>在环境中操作之后看到的大小可能跟图上的有些不同，因为在使用过程中，会随时还生成一些缓存文件在当前用户的家目录中，这对于学习命令使用来说，是无关紧要的，可以忽略这些不同。</p>
 <pre><code>创建加密zip包
-</code></pre><p>使用-e参数可以创建加密压缩包：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ zip -r <span class="_">-e</span> -o nancy_encryption.zip /home/nancy</div></pre></td></tr></table></figure></p>
-<p><strong>注意</strong>: 关于zip命令，因为 Windows 系统与 Linux/Unix 在文本文件格式上的一些兼容问题，比如换行符（为不可见字符），在 Windows 为 CR+LF（Carriage-Return+Line-Feed：回车加换行），而在 Linux/Unix 上为 LF（换行），所以如果在不加处理的情况下，在 Linux 上编辑的文本，在 Windows 系统上打开可能看起来是没有换行的。如果你想让你在 Linux 创建的 zip 压缩文件在 Windows 上解压后没有任何问题，那么你还需要对命令做一些修改：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ zip -r <span class="_">-l</span> -o nancy.zip /home/nancy</div></pre></td></tr></table></figure></p>
+</code></pre>
+<p>使用-e参数可以创建加密压缩包：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ zip -r <span class="_">-e</span> -o nancy_encryption.zip /home/nancy</div></pre></td></tr></table></figure></p>
+<p><strong>注意</strong>: 关于zip命令，因为 Windows 系统与 Linux/Unix 在文本文件格式上的一些兼容问题，比如换行符（为不可见字符），在 Windows 为 CR+LF（Carriage-Return+Line-Feed：回车加换行），而在 Linux/Unix 上为 LF（换行），所以如果在不加处理的情况下，在 Linux 上编辑的文本，在 Windows 系统上打开可能看起来是没有换行的。如果你想让你在 Linux 创建的 zip 压缩文件在 Windows 上解压后没有任何问题，那么你还需要对命令做一些修改：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ zip -r <span class="_">-l</span> -o nancy.zip /home/nancy</div></pre></td></tr></table></figure></p>
 <p>需要加上-l参数将LF转换为CR+LF来达到以上目的。</p>
-<h2 id="使用unzip命令解压缩zip文件"><a href="#使用unzip命令解压缩zip文件" class="headerlink" title="使用unzip命令解压缩zip文件"></a>使用unzip命令解压缩zip文件</h2><p>将shiyanlou.zip解压到当前目录：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ unzip shiyanlou.zip</div></pre></td></tr></table></figure></p>
-<p>使用安静模式，将文件解压到指定目录：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ unzip -q shiyanlou.zip <span class="_">-d</span> ziptest</div></pre></td></tr></table></figure></p>
-<p>上述指定目录不存在，将会自动创建。如果不想解压只想查看压缩包的内容可以使用-l参数：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ unzip <span class="_">-l</span> shiyanlou.zip</div></pre></td></tr></table></figure></p>
+<h2 id="使用unzip命令解压缩zip文件">使用unzip命令解压缩zip文件</h2>
+<p>将shiyanlou.zip解压到当前目录：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ unzip shiyanlou.zip</div></pre></td></tr></table></figure></p>
+<p>使用安静模式，将文件解压到指定目录：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ unzip -q shiyanlou.zip <span class="_">-d</span> ziptest</div></pre></td></tr></table></figure></p>
+<p>上述指定目录不存在，将会自动创建。如果不想解压只想查看压缩包的内容可以使用-l参数：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ unzip <span class="_">-l</span> shiyanlou.zip</div></pre></td></tr></table></figure></p>
 <p><strong>注意</strong>： 使用unzip解压文件时我们同样应该注意兼容问题，不过这里我们关心的不再是上面的问题，而是中文编码的问题，通常 Windows 系统上面创建的压缩文件，如果有有包含中文的文档或以中文作为文件名的文件时默认会采用 GBK 或其它编码，而 Linux 上面默认使用的是 UTF-8 编码，如果不加任何处理，直接解压的话可能会出现中文乱码的问题（有时候它会自动帮你处理），为了解决这个问题，我们可以在解压时指定编码类型。</p>
-<p>使用-O（英文字母，大写o）参数指定编码类型：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">unzip -O GBK 中文压缩文件.zip</div></pre></td></tr></table></figure></p>
-<h2 id="rar打包压缩命令"><a href="#rar打包压缩命令" class="headerlink" title="rar打包压缩命令"></a>rar打包压缩命令</h2><p>rar也是 Windows 上常用的一种压缩文件格式，在 Linux 上可以使用rar和unrar工具分别创建和解压 rar 压缩包。</p>
+<p>使用-O（英文字母，大写o）参数指定编码类型：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">unzip -O GBK 中文压缩文件.zip</div></pre></td></tr></table></figure></p>
+<h2 id="rar打包压缩命令">rar打包压缩命令</h2>
+<p>rar也是 Windows 上常用的一种压缩文件格式，在 Linux 上可以使用rar和unrar工具分别创建和解压 rar 压缩包。</p>
 <pre><code>安装rar和unrar工具：
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install rar unrar</div></pre></td></tr></table></figure>
+</code></pre>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get update</div><div class="line">$ sudo apt-get install rar unrar</div></pre></td></tr></table></figure></p>
 <pre><code>从指定文件或目录创建压缩包或添加文件到压缩包：
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ rm *.zip</div><div class="line">$ rar a nancy.rar .</div></pre></td></tr></table></figure>
-<p>上面的命令使用a参数添加一个目录～到一个归档文件中，如果该文件不存在就会自动创建。<br><strong>注意：rar 的命令参数没有-，如果加上会报错。</strong></p>
+</code></pre>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ rm *.zip</div><div class="line">$ rar a nancy.rar .</div></pre></td></tr></table></figure></p>
+<p>上面的命令使用a参数添加一个目录～到一个归档文件中，如果该文件不存在就会自动创建。
+<strong>注意：rar 的命令参数没有-，如果加上会报错。</strong></p>
 <pre><code>从指定压缩包文件中删除某个文件：
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rar d nancy.rar .zshrc</div></pre></td></tr></table></figure>
+</code></pre>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rar d nancy.rar .zshrc</div></pre></td></tr></table></figure></p>
 <pre><code>查看不解压文件：
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rar l nancy.rar</div></pre></td></tr></table></figure>
+</code></pre>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rar l nancy.rar</div></pre></td></tr></table></figure></p>
 <pre><code>使用unrar解压rar文件
-</code></pre><p>全路径解压：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ unrar x nancy.rar</div></pre></td></tr></table></figure></p>
-<p>去掉路径解压：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ mkdir tmp</div><div class="line">$ unrar e nancy.rar tmp/</div></pre></td></tr></table></figure></p>
+</code></pre>
+<p>全路径解压：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ unrar x nancy.rar</div></pre></td></tr></table></figure></p>
+<p>去掉路径解压：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ mkdir tmp</div><div class="line">$ unrar e nancy.rar tmp/</div></pre></td></tr></table></figure></p>
 <p>rar命令参数非常多，上面只涉及了一些基本操作。</p>
-<h2 id="tar打包工具"><a href="#tar打包工具" class="headerlink" title="tar打包工具"></a>tar打包工具</h2><pre><code>创建一个 tar 包：
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tar -cf nancy.tar ~</div></pre></td></tr></table></figure>
+<h2 id="tar打包工具">tar打包工具</h2>
+<pre><code>创建一个 tar 包：
+</code></pre>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tar -cf nancy.tar ~</div></pre></td></tr></table></figure></p>
 <p>-c表示创建一个 tar 包文件，-f用于指定创建的文件名，注意文件名必须紧跟在-f参数之后，比如不能写成tar -fc nancy.tar，可以写成tar -f nancy.tar -c ~。你还可以加上-v参数以可视的的方式输出打包的文件。上面会自动去掉表示绝对路径的/，你也可以使用-P保留绝对路径符。</p>
 <pre><code>解包一个文件(-x参数)到指定路径的已存在目录(-C参数)：
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ mkdir tardir</div><div class="line">$ tar -xf nancy.tar -C tardir</div></pre></td></tr></table></figure>
+</code></pre>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ mkdir tardir</div><div class="line">$ tar -xf nancy.tar -C tardir</div></pre></td></tr></table></figure></p>
 <pre><code>只查看不解包文件-t参数：
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tar -tf nancy.tar</div></pre></td></tr></table></figure>
+</code></pre>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tar -tf nancy.tar</div></pre></td></tr></table></figure></p>
 <pre><code>保留文件属性和跟随链接（符号链接或软链接），有时候我们使用tar备份文件当你在其他主机还原时希望保留文件的属性(-p参数)和备份链接指向的源文件而不是链接本身(-h参数)：
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tar -cphf etc.tar /etc</div></pre></td></tr></table></figure>
+</code></pre>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tar -cphf etc.tar /etc</div></pre></td></tr></table></figure></p>
 <p>对于创建不同的压缩格式的文件，对于tar来说是相当简单的，需要的只是换一个参数，这里我们就以使用gzip工具创建*.tar.gz文件为例来说明。</p>
 <pre><code>我们只需要在创建 tar 文件的基础上添加-z参数，使用gzip来压缩文件：
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tar -czf nancy.tar.gz ~</div></pre></td></tr></table></figure>
+</code></pre>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tar -czf nancy.tar.gz ~</div></pre></td></tr></table></figure></p>
 <pre><code>解压*.tar.gz文件：
-</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tar -xzf nancy.tar.gz</div></pre></td></tr></table></figure>
-<p>要使用其他的压缩工具创建或解压相应文件只需要更改一个参数即可：<br>压缩文件格式  参数<br><em>.tar.gz    -z
-</em>.tar.xz    -J<br>*tar.bz2    -j</p>
-<p>趣味程序（火炉）：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install libaa-bin </div><div class="line">$ aafire</div></pre></td></tr></table></figure></p>
-<h1 id="文件系统操作与磁盘管理"><a href="#文件系统操作与磁盘管理" class="headerlink" title="文件系统操作与磁盘管理"></a>文件系统操作与磁盘管理</h1><h2 id="简单文件系统操作"><a href="#简单文件系统操作" class="headerlink" title="简单文件系统操作"></a>简单文件系统操作</h2><p><strong>使用 df 命令查看磁盘的容量</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ df</div></pre></td></tr></table></figure></p>
+</code></pre>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tar -xzf nancy.tar.gz</div></pre></td></tr></table></figure></p>
+<p>要使用其他的压缩工具创建或解压相应文件只需要更改一个参数即可：
+压缩文件格式  参数
+*.tar.gz    -z
+*.tar.xz    -J
+*tar.bz2    -j</p>
+<p>趣味程序（火炉）：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install libaa-bin </div><div class="line">$ aafire</div></pre></td></tr></table></figure></p>
+<h1 id="文件系统操作与磁盘管理">文件系统操作与磁盘管理</h1>
+<h2 id="简单文件系统操作">简单文件系统操作</h2>
+<p><strong>使用 df 命令查看磁盘的容量</strong>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ df</div></pre></td></tr></table></figure></p>
 <p>物理主机上的 /dev/sda2 是对应着主机硬盘的分区，后面的数字表示分区号，数字前面的字母 a 表示第几块硬盘（也可能是可移动磁盘），如果主机上有多块硬盘则可能还会出现 /dev/sdb，/dev/sdc 这些磁盘设备都会在 /dev 目录下以文件的存在形式。</p>
-<p>还会看到”1k-blocks”，它表示以磁盘块大小的方式显示容量，后面为相应的以块大小表示的已用和可用容量。<br><strong>使用 du 命令查看目录的容量</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 默认同样以 blocks 的大小展示</span></div><div class="line">$ du </div><div class="line"><span class="comment"># 加上`-h`参数，以更易读的方式展示</span></div><div class="line">$ du -h</div></pre></td></tr></table></figure></p>
-<p>-d参数指定查看目录的深度<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 只查看1级目录的信息</span></div><div class="line">$ du -h <span class="_">-d</span> 0 ~</div><div class="line"><span class="comment"># 查看2级</span></div><div class="line">$ du -h <span class="_">-d</span> 1 ~</div></pre></td></tr></table></figure></p>
-<h2 id="简单的磁盘管理"><a href="#简单的磁盘管理" class="headerlink" title="简单的磁盘管理"></a>简单的磁盘管理</h2><p><strong>下面涉及的命令具有一定的危险性，操作不当可能会丢失你的个人数据，初学者建议在虚拟环境中进行操作</strong></p>
-<h3 id="创建虚拟磁盘"><a href="#创建虚拟磁盘" class="headerlink" title="创建虚拟磁盘"></a>创建虚拟磁盘</h3><p>dd 命令简介<br>dd命令用于转换和复制文件，不过它的复制不同于cp。之前提到过关于 Linux 的很重要的一点，一切即文件，在 Linux 上，硬件的设备驱动（如硬盘）和特殊设备文件（如/dev/zero和/dev/random）都像普通文件一样，只要在各自的驱动程序中实现了对应的功能，dd 也可以读取自和/或写入到这些文件。这样，dd也可以用在备份硬件的引导扇区、获取一定数量的随机数据或者空数据等任务中。dd程序也可以在复制时处理数据，例如转换字节序、或在 ASCII 与 EBCDIC 编码间互换。</p>
-<p>dd的命令行语句与其他的 Linux 程序不同，因为它的命令行选项格式为选项=值，而不是更标准的–选项 值或-选项=值。dd默认从标准输入中读取，并写入到标准输出中，但可以用选项if（input file，输入文件）和of（output file，输出文件）改变。</p>
-<p>我们先来试试用dd命令从标准输入读入用户输入到标准输出或者一个文件：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 输出到文件</span></div><div class="line">$ dd of=<span class="built_in">test</span> bs=10 count=1 <span class="comment"># 或者 dd if=/dev/stdin of=test bs=10 count=1</span></div><div class="line"><span class="comment"># 输出到标准输出</span></div><div class="line">$ dd <span class="keyword">if</span>=/dev/stdin of=/dev/stdout bs=10 count=1</div></pre></td></tr></table></figure></p>
+<p>还会看到&quot;1k-blocks&quot;，它表示以磁盘块大小的方式显示容量，后面为相应的以块大小表示的已用和可用容量。
+<strong>使用 du 命令查看目录的容量</strong>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 默认同样以 blocks 的大小展示</span></div><div class="line">$ du </div><div class="line"><span class="comment"># 加上`-h`参数，以更易读的方式展示</span></div><div class="line">$ du -h</div></pre></td></tr></table></figure></p>
+<p>-d参数指定查看目录的深度
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 只查看1级目录的信息</span></div><div class="line">$ du -h <span class="_">-d</span> 0 ~</div><div class="line"><span class="comment"># 查看2级</span></div><div class="line">$ du -h <span class="_">-d</span> 1 ~</div></pre></td></tr></table></figure></p>
+<h2 id="简单的磁盘管理">简单的磁盘管理</h2>
+<p><strong>下面涉及的命令具有一定的危险性，操作不当可能会丢失你的个人数据，初学者建议在虚拟环境中进行操作</strong></p>
+<h3 id="创建虚拟磁盘">创建虚拟磁盘</h3>
+<p>dd 命令简介
+dd命令用于转换和复制文件，不过它的复制不同于cp。之前提到过关于 Linux 的很重要的一点，一切即文件，在 Linux 上，硬件的设备驱动（如硬盘）和特殊设备文件（如/dev/zero和/dev/random）都像普通文件一样，只要在各自的驱动程序中实现了对应的功能，dd 也可以读取自和/或写入到这些文件。这样，dd也可以用在备份硬件的引导扇区、获取一定数量的随机数据或者空数据等任务中。dd程序也可以在复制时处理数据，例如转换字节序、或在 ASCII 与 EBCDIC 编码间互换。</p>
+<p>dd的命令行语句与其他的 Linux 程序不同，因为它的命令行选项格式为选项=值，而不是更标准的--选项 值或-选项=值。dd默认从标准输入中读取，并写入到标准输出中，但可以用选项if（input file，输入文件）和of（output file，输出文件）改变。</p>
+<p>我们先来试试用dd命令从标准输入读入用户输入到标准输出或者一个文件：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 输出到文件</span></div><div class="line">$ dd of=<span class="built_in">test</span> bs=10 count=1 <span class="comment"># 或者 dd if=/dev/stdin of=test bs=10 count=1</span></div><div class="line"><span class="comment"># 输出到标准输出</span></div><div class="line">$ dd <span class="keyword">if</span>=/dev/stdin of=/dev/stdout bs=10 count=1</div></pre></td></tr></table></figure></p>
 <p>明天继续。</p>
 <hr>
 <p>感谢实验楼。</p>
-<p><span id="busuanzi_container_page_pv"><br>本文已被阅读 <span id="busuanzi_value_page_pv"></span> 次。感谢您的点击！<br>The article has been viewed <span id="busuanzi_value_page_pv"></span> times.Thank you for your visit!<br></span></p>
+<p>&lt;span id=&quot;busuanzi_container_page_pv&quot;&gt;
+本文已被阅读 &lt;span id=&quot;busuanzi_value_page_pv&quot;&gt;&lt;/span&gt; 次。感谢您的点击！
+The article has been viewed &lt;span id=&quot;busuanzi_value_page_pv&quot;&gt;&lt;/span&gt; times.Thank you for your visit!
+&lt;/span&gt;</p>
 
       
     </div>
@@ -657,7 +920,7 @@ d, --max-depth（所查看文件的深度）
     <div class="copyright">
         <p><span>本文标题:</span><a href="/2016/12/26/linux整理笔记/">一天一点linux</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">胡博靖</a></p>
-        <p><span class="post-count">本文字数:</span>11,055字</p>
+        <p><span class="post-count">本文字数:</span>11,087字</p>
         <p><span>发布时间:</span>2016-12-26, 23:31:29</p>
         <p><span>最后更新:</span>2017-01-22, 22:16:25</p>
         
