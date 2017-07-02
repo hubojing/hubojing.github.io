@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="胡博靖" />
+
+
+
+<meta name="description" content="使用GDI接口在视图上绘制一个时钟。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MFC绘制时钟">
+<meta property="og:url" content="http://hubojing.github.io/2017/04/23/MFC绘制时钟/index.html">
+<meta property="og:site_name" content="胡博靖的技术博客">
+<meta property="og:description" content="使用GDI接口在视图上绘制一个时钟。">
+<meta property="og:image" content="http://img.blog.csdn.net/20170424220400837?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170423165107245?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170423180359516?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170423202811199?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170424220400837?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2017-04-27T12:31:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MFC绘制时钟">
+<meta name="twitter:description" content="使用GDI接口在视图上绘制一个时钟。">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20170424220400837?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="胡博靖的技术博客" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/green/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>MFC绘制时钟 | 胡博靖的技术博客</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: false,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1498247776150&amp;di=a1fdc0869f65da377118893dfe708f5e&amp;imgtype=0&amp;src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201508%2F24%2F20150824132210_HjBJC.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">胡博靖</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">小清新IT旅程|为中华崛起读书</p>
+        <p class="post-count">已写74.9k字</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/categories/互联网">互联网</a></li>
+                        
+                            <li><a href="/categories/通信工程">通信工程</a></li>
+                        
+                            <li><a href="/categories/杂谈">杂谈</a></li>
+                        
+                            <li><a href="/about/">关于</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:hubojing@outlook.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/hubojing" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/hubojing/" title="CSDN"></a>
+                            
+                                <a class="fa 网易云音乐" href="http://music.163.com/#/user/home?id=92203594" title="网易云音乐"></a>
+                            
+                                <a class="fa QQ" href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes" title="QQ"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/1602/">1602</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DigitalOcean/">DigitalOcean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flash/">Flash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HOOPS-3D/">HOOPS 3D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MFC/">MFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MFC-多线程/">MFC 多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MFC-爬虫/">MFC 爬虫</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PPT动画/">PPT动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eclipse/">eclipse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea/">idea</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/matlab/">matlab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/photoshop/">photoshop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/socket/">socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/主题/">主题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/优化/">优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数/">函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/创意/">创意</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/动画/">动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单片机/">单片机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/域名/">域名</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多说/">多说</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码锁/">密码锁</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/嵌入式系统/">嵌入式系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/思维/">思维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/教程/">教程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字信号处理/">数字信号处理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/显示技术/">显示技术</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务器/">服务器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂谈/">杂谈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/病毒/">病毒</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/矩阵键盘/">矩阵键盘</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/竞赛/">竞赛</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/说明/">说明</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/问题/">问题</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.iiwo.vip/">小忆</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.iwangyu.cn/">WangYu</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://ursb.me/">Airing</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://txiner.top/">Hundred</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.ersaijun.cn/">二赛君</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.yeqianfeng.me/">太阳尚远</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.qiujinfeng.com/">邱锦锋</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.ibertinelym.com/">李玉明</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.waydrow.com/">Waydrow</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://qqdie.com/">Jrotty</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.just666.cn/">Shawn</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://theask.cn/">该问</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.sfantree.com/">水番林</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://hsmouc.com/">空白</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.61mon.com/">刘毅</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.pokerboy.cn/">柚子鬼</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://zcheng.ren/">ZeeCoder</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.zcmol.cn/">早茶月光</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://rebootcat.com/">Linux之路</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.townwang.com/">王振镇</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://shawnzeng.com/">Shawnzeng</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.52itstyle.com/">小柒博客</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://frankchen.xyz/">不正经数据科学家</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://nolongerwait.com/">秦简</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://xiaowiba.com/">小尾巴</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://sopuy.com/">sopuy</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">人生如编程，自顶向下，逐步求精。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">胡博靖</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1498247776150&amp;di=a1fdc0869f65da377118893dfe708f5e&amp;imgtype=0&amp;src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201508%2F24%2F20150824132210_HjBJC.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">胡博靖</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">小清新IT旅程|为中华崛起读书</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/categories/互联网">互联网</a></li>
+                
+                    <li><a href="/categories/通信工程">通信工程</a></li>
+                
+                    <li><a href="/categories/杂谈">杂谈</a></li>
+                
+                    <li><a href="/about/">关于</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:hubojing@outlook.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/hubojing" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/hubojing/" title="CSDN"></a>
+                            
+                                <a class="fa 网易云音乐" target="_blank" href="http://music.163.com/#/user/home?id=92203594" title="网易云音乐"></a>
+                            
+                                <a class="fa QQ" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes" title="QQ"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-MFC绘制时钟" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/04/23/MFC绘制时钟/" class="article-date">
+      <time datetime="2017-04-23T08:14:07.000Z" itemprop="datePublished">2017-04-23</time>
+</a>
+
+ 
+    <a href="/2017/04/23/MFC绘制时钟/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+        
+            <span class="disqus-comment-count" data-disqus-identifier="2017/04/23/MFC绘制时钟/"></span>
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MFC绘制时钟
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/互联网/">互联网</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MFC/">MFC</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <div align="left"><br><img src="http://img.blog.csdn.net/20170424220400837?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" width="300" height="180" style="float:right;"><br><br> 　　使用GDI接口在视图上绘制一个时钟。<br>　　<br><br><br> </div>
+
+<a id="more"></a>
+<blockquote>
+<p>　　GDI是Graphics Device Interface的缩写，含义是图形设备接口，它的主要任务是负责系统与绘图程序之间的信息交换，处理所有Windows程序的图形输出。<br>　　在Windows操作系统下，绝大多数具备图形界面的应用程序都离不开GDI，我们利用GDI所提供的众多函数就可以方便的在屏幕、打印机及其它输出设备上输出图形，文本等操作。<br>GDI函数大致可分类为：<br>　　设备上下文函数(如GetDC、CreateDC、DeleteDC)、 画线函数(如LineTo、Polyline、Arc)、填充画图函数(如Ellipse、FillRect、Pie)、画图属性函数(如SetBkColor、SetBkMode、SetTextColor)、文本、字体函数(如TextOut、GetFontData)、位图函数(如SetPixel、BitBlt、StretchBlt)、坐标函数(如DPtoLP、LPtoDP、ScreenToClient、ClientToScreen)、映射函数(如SetMapMode、SetWindowExtEx、SetViewportExtEx)、元文件函数(如PlayMetaFile、SetWinMetaFileBits)、区域函数(如FillRgn、FrameRgn、InvertRgn)、路径函数(如BeginPath、EndPath、StrokeAndFillPath)、裁剪函数(如SelectClipRgn、SelectClipPath)等。<br>                                            　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　——百度百科</p>
+</blockquote>
+<p>最初想法：<br>建立一个单文档工程，在OnDraw利用<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function">CClientDC <span class="title">dc</span><span class="params">(<span class="keyword">this</span>)</span></span>;</div><div class="line">dc.Ellipse(CRect(<span class="number">100</span>,<span class="number">100</span>,<span class="number">500</span>,<span class="number">500</span>));</div></pre></td></tr></table></figure></p>
+<p>画圆，但是打开的窗口太大了。于是，想初始化窗口，在CMainFrame里的PreCreateWindow设置窗口大小：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">BOOL CMainFrame::PreCreateWindow(CREATESTRUCT&amp; cs)</div><div class="line">&#123;</div><div class="line">	<span class="keyword">if</span>( !CFrameWnd::PreCreateWindow(cs) )</div><div class="line">		<span class="keyword">return</span> FALSE;</div><div class="line">	<span class="comment">// <span class="doctag">TODO:</span> Modify the Window class or styles here by modifying</span></div><div class="line">	<span class="comment">//  the CREATESTRUCT cs</span></div><div class="line">	cs.cx = <span class="number">630</span>;</div><div class="line">	cs.cy = <span class="number">680</span>;</div><div class="line"></div><div class="line">	<span class="keyword">return</span> TRUE;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>接下来画钟面上的格子。用MoveTo和LineTo确定线段起始点和终点。我用了一个比较蠢的方法：手算坐标！于是，产生了这样的代码：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> CClockView::OnDraw(CDC* pDC)</div><div class="line">&#123;</div><div class="line">	CClockDoc* pDoc = GetDocument();</div><div class="line">	ASSERT_VALID(pDoc);</div><div class="line">	<span class="comment">// <span class="doctag">TODO:</span> add draw code for native data here</span></div><div class="line">	<span class="function">CClientDC <span class="title">dc</span><span class="params">(<span class="keyword">this</span>)</span></span>;</div><div class="line">	dc.Ellipse(CRect(<span class="number">100</span>,<span class="number">100</span>,<span class="number">500</span>,<span class="number">500</span>));</div><div class="line">	<span class="comment">//上</span></div><div class="line">	dc.MoveTo(<span class="number">300</span>,<span class="number">140</span>);</div><div class="line">	dc.LineTo(<span class="number">300</span>,<span class="number">100</span>);</div><div class="line">	<span class="comment">//下</span></div><div class="line">	dc.MoveTo(<span class="number">300</span>,<span class="number">460</span>);</div><div class="line">	dc.LineTo(<span class="number">300</span>,<span class="number">500</span>);</div><div class="line">	<span class="comment">//左</span></div><div class="line">	dc.MoveTo(<span class="number">140</span>,<span class="number">300</span>);</div><div class="line">	dc.LineTo(<span class="number">100</span>,<span class="number">300</span>);</div><div class="line">	<span class="comment">//右</span></div><div class="line">	dc.MoveTo(<span class="number">460</span>,<span class="number">300</span>);</div><div class="line">	dc.LineTo(<span class="number">500</span>,<span class="number">300</span>);</div><div class="line">	<span class="comment">//第一区间第二点</span></div><div class="line">	dc.MoveTo(<span class="number">380</span>,<span class="number">300</span><span class="number">-80</span>*<span class="number">1.73</span>);</div><div class="line">	dc.LineTo(<span class="number">400</span>,<span class="number">300</span><span class="number">-100</span>*<span class="number">1.73</span>);</div><div class="line">	<span class="comment">//第一区间第三点</span></div><div class="line">	dc.MoveTo(<span class="number">300</span>+<span class="number">80</span>*<span class="number">1.73</span>,<span class="number">220</span>);</div><div class="line">	dc.LineTo(<span class="number">300</span>+<span class="number">100</span>*<span class="number">1.73</span>,<span class="number">200</span>);</div><div class="line">	<span class="comment">//第二区间第二点</span></div><div class="line">	dc.MoveTo(<span class="number">300</span>+<span class="number">80</span>*<span class="number">1.73</span>,<span class="number">380</span>);</div><div class="line">	dc.LineTo(<span class="number">300</span>+<span class="number">100</span>*<span class="number">1.73</span>,<span class="number">400</span>);</div><div class="line">	<span class="comment">//第二区间第三点</span></div><div class="line">	dc.MoveTo(<span class="number">380</span>,<span class="number">300</span>+<span class="number">80</span>*<span class="number">1.73</span>);</div><div class="line">	dc.LineTo(<span class="number">400</span>,<span class="number">300</span>+<span class="number">100</span>*<span class="number">1.73</span>);</div><div class="line">	<span class="comment">//第三区间第二点</span></div><div class="line">	dc.MoveTo(<span class="number">220</span>,<span class="number">300</span>+<span class="number">80</span>*<span class="number">1.73</span>);</div><div class="line">	dc.LineTo(<span class="number">200</span>,<span class="number">300</span>+<span class="number">100</span>*<span class="number">1.73</span>);</div><div class="line">	<span class="comment">//第三区间第三点</span></div><div class="line">	dc.MoveTo(<span class="number">300</span><span class="number">-80</span>*<span class="number">1.73</span>,<span class="number">380</span>);</div><div class="line">	dc.LineTo(<span class="number">300</span><span class="number">-100</span>*<span class="number">1.73</span>,<span class="number">400</span>);</div><div class="line">	<span class="comment">//第四区间第二点</span></div><div class="line">	dc.MoveTo(<span class="number">300</span><span class="number">-80</span>*<span class="number">1.73</span>,<span class="number">220</span>);</div><div class="line">	dc.LineTo(<span class="number">300</span><span class="number">-100</span>*<span class="number">1.73</span>,<span class="number">200</span>);</div><div class="line">	<span class="comment">//第四区间第三点</span></div><div class="line">	dc.MoveTo(<span class="number">220</span>,<span class="number">300</span><span class="number">-80</span>*<span class="number">1.73</span>);</div><div class="line">	dc.LineTo(<span class="number">200</span>,<span class="number">300</span><span class="number">-100</span>*<span class="number">1.73</span>);</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>[连三角函数都近似等于的我……等会儿会谈优化问题]</p>
+<p>效果是这样：<br><img src="http://img.blog.csdn.net/20170423165107245?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>在视类添加ＷＭ_CREATE响应函数，设置一个定时器，1秒发送一次消息。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> CClockView::OnCreate(LPCREATESTRUCT lpCreateStruct) </div><div class="line">&#123;</div><div class="line">	<span class="keyword">if</span> (CView::OnCreate(lpCreateStruct) == <span class="number">-1</span>)</div><div class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</div><div class="line">	</div><div class="line">	<span class="comment">// <span class="doctag">TODO:</span> Add your specialized creation code here</span></div><div class="line">	SetTimer(<span class="number">1</span>, <span class="number">1000</span>, <span class="literal">NULL</span>);</div><div class="line"></div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>因为指针是在动的，所以要及时刷新页面，在视类添加WM_TIMER响应函数：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> CClockView::OnTimer(UINT nIDEvent) </div><div class="line">&#123;</div><div class="line">	<span class="comment">// <span class="doctag">TODO:</span> Add your message handler code here and/or call default</span></div><div class="line">	InvalidateRect(<span class="literal">NULL</span>, TRUE);</div><div class="line">	UpdateWindow();</div><div class="line"></div><div class="line">	CView::OnTimer(nIDEvent);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>为了和系统时间一致，就要获取时间，在OnDraw中加入：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CTime Time = CTime::GetCurrentTime();</div></pre></td></tr></table></figure></p>
+<p>接下来就是创建三个指针：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">double</span> Radians;</div><div class="line"></div><div class="line"><span class="comment">//时针</span></div><div class="line">Radians = Time.GetHour() + Time.GetMinute()/<span class="number">60.0</span> + Time.GetSecond()/<span class="number">3600.0</span>;</div><div class="line">Radians *= <span class="number">2</span> * <span class="number">3.14</span> / <span class="number">12.0</span>;</div><div class="line">dc.MoveTo(<span class="number">300</span>, <span class="number">300</span>);</div><div class="line">dc.LineTo(<span class="number">300</span> + (<span class="keyword">int</span>)((<span class="keyword">double</span>)<span class="number">100</span> * <span class="built_in">sin</span>(Radians)), <span class="number">300</span> - (<span class="keyword">int</span>)((<span class="keyword">double</span>)<span class="number">100</span> * <span class="built_in">cos</span>(Radians)));  <span class="comment">//取半径的1/2</span></div><div class="line"></div><div class="line"><span class="comment">//分针</span></div><div class="line">Radians = Time.GetMinute() + Time.GetSecond()/<span class="number">60</span>;</div><div class="line">Radians *= <span class="number">2</span> * <span class="number">3.14</span> / <span class="number">60.0</span>;</div><div class="line">dc.MoveTo(<span class="number">300</span>, <span class="number">300</span>);</div><div class="line">dc.LineTo(<span class="number">300</span> + (<span class="keyword">int</span>)((<span class="keyword">double</span>)<span class="number">150</span> * <span class="built_in">sin</span>(Radians)), <span class="number">300</span> - (<span class="keyword">int</span>)((<span class="keyword">double</span>)<span class="number">150</span> * <span class="built_in">cos</span>(Radians)));	<span class="comment">//取半径的3/4</span></div><div class="line"></div><div class="line"><span class="comment">//秒针</span></div><div class="line">Radians = Time.GetSecond();</div><div class="line">Radians *= <span class="number">2</span> * <span class="number">3.14</span> / <span class="number">60.0</span>;</div><div class="line">dc.MoveTo(<span class="number">300</span>, <span class="number">300</span>);</div><div class="line">dc.LineTo(<span class="number">300</span> + (<span class="keyword">int</span>)((<span class="keyword">double</span>)<span class="number">190</span> * <span class="built_in">sin</span>(Radians)), <span class="number">300</span> - (<span class="keyword">int</span>)((<span class="keyword">double</span>)<span class="number">190</span> * <span class="built_in">cos</span>(Radians))); <span class="comment">//取半径的19/20</span></div></pre></td></tr></table></figure></p>
+<p>为了三角函数能用，在函数头部添加<code>#include &quot;math.h&quot;</code>。<br><img src="http://img.blog.csdn.net/20170423180359516?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>美化界面：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">BOOL CClockApp::InitInstance()</div><div class="line">&#123;</div><div class="line">…</div><div class="line">	m_pMainWnd-&gt;SetWindowText(<span class="string">"博靖牌时钟 V1.0"</span>);</div><div class="line"></div><div class="line">	<span class="keyword">return</span> TRUE;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>隐藏菜单、状态栏、工具条：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)</div><div class="line">&#123;</div><div class="line">	…</div><div class="line">	</div><div class="line">	SetMenu(<span class="literal">NULL</span>); <span class="comment">//隐藏菜单  </span></div><div class="line">    ShowControlBar(&amp;m_wndToolBar,FALSE,FALSE); <span class="comment">//隐藏工具条  </span></div><div class="line">    ShowControlBar(&amp;m_wndStatusBar,FALSE,FALSE); <span class="comment">//隐藏状态栏  </span></div><div class="line"></div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>效果：<br><img src="http://img.blog.csdn.net/20170423202811199?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>详解：<br>InvalidateRect是一个函数，该函数向指定的窗体更新区域添加一个矩形，然后窗口客户区域的这一部分将被重新绘制。</p>
+<p>ShowControlBar：<br>void ShowControlBar(CControlBar* pBar,BOOL bShow,Bool bDelay);<br>参数：<br>pBar 指向要显示或隐含的控件条<br>bShow 如果为TRUE ,指定控件条将显示；如果为FALSE，则隐藏。<br>bDelay 如果为TRUE，延迟显示控件条；如果为FALSE,则立即显示<br>说明：<br>调用该函数显示或隐藏一个控件条。</p>
+<p>缺点：1.不能修改指针和线条样式（例如颜色、粗细等）。<br>2.窗口拉伸后，钟面不能随窗口拉伸。</p>
+<p>改进版：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div></pre></td><td class="code"><pre><div class="line">void CClock2View::OnDraw(CDC* pDC)</div><div class="line">&#123;</div><div class="line">	CClock2Doc* pDoc = GetDocument();</div><div class="line">	ASSERT_VALID(pDoc);</div><div class="line">	// TODO: add draw code for native data here</div><div class="line">	CRect r1;  </div><div class="line">    GetClientRect(&amp;r1);</div><div class="line">	</div><div class="line">	CTime Time = CTime::GetCurrentTime();  </div><div class="line">	</div><div class="line">	//创建画笔</div><div class="line">	CPen pen(PS_SOLID, 10, RGB(139, 115, 8));  </div><div class="line">	CPen *pOldPen = pDC-&gt;SelectObject(&amp;pen);  </div><div class="line">	</div><div class="line">	//创建钟面</div><div class="line">	pDC-&gt;Ellipse(CRect(30, 30, r1.right-30, r1.bottom-30));</div><div class="line">	CPoint pt = r1.CenterPoint();</div><div class="line">	pDC-&gt;SetTextColor(RGB(255,0,0));  </div><div class="line">	CString strNumber;</div><div class="line">	CSize size;</div><div class="line">	double Radians;</div><div class="line"></div><div class="line">	//设置钟面数字</div><div class="line">	 for (int i = 1; i &lt;= 12; i++)  </div><div class="line">    &#123;  </div><div class="line">        strNumber.Format("%d",i);</div><div class="line">		Radians = (double)i*2*3.14/12.0; </div><div class="line">        size = pDC-&gt;GetTextExtent(strNumber,strNumber.GetLength());  </div><div class="line">		//计算钟点放置位置 </div><div class="line">		//x = CenterX - (size.cx/2) + (int)((double)(CenterX - 20) * sin(Radians));  </div><div class="line">        //y = CenterY - (size.cy/2) - (int)((double)(CenterY - 20) * cos(Radians));  </div><div class="line"></div><div class="line">		double x = pt.x - (size.cx/2) + (int)((double)(pt.x - 70) * sin(Radians));  </div><div class="line">		double y = pt.y - (size.cy/2) - (int)((double)(pt.y - 70) * cos(Radians));  </div><div class="line"></div><div class="line">         </div><div class="line">       //double x = pt.x + (double)(r1.right - 50 - pt.x) * sin(Radians);  </div><div class="line">       //double y = pt.y - (double)(r1.bottom - 60 - pt.y) * cos(Radians);  </div><div class="line">        pDC-&gt;TextOut(x, y, strNumber);</div><div class="line"></div><div class="line">    &#125;  </div><div class="line"> 		</div><div class="line">	//设置钟面上的格子</div><div class="line">		</div><div class="line">	 for (int j = 1; j &lt;= 12; j++)  </div><div class="line">    &#123;  </div><div class="line">		Radians = (double)j*2*3.14/12.0; 	</div><div class="line">        int x = pt.x  + (int)((double)(pt.x - 30) * sin(Radians));  </div><div class="line">		int y = pt.y  - (int)((double)(pt.y - 30) * cos(Radians));  </div><div class="line">		int m = pt.x  + (int)((double)(pt.x - 50) * sin(Radians));  </div><div class="line">		int n = pt.y  - (int)((double)(pt.y - 50) * cos(Radians));  </div><div class="line">		pDC-&gt;MoveTo(m, n);</div><div class="line">		pDC-&gt;LineTo(x, y);</div><div class="line">		</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	//时针</div><div class="line">	 CPen HourPen(PS_SOLID, 6, RGB(255, 20, 147));  </div><div class="line">    pDC-&gt;SelectObject(&amp;HourPen);  </div><div class="line">	Radians = Time.GetHour() + Time.GetMinute()/60.0 + Time.GetSecond()/3600.0;</div><div class="line">	Radians *= 2 * 3.14 / 12.0;</div><div class="line">	pDC-&gt;MoveTo(pt.x, pt.y);  </div><div class="line">    pDC-&gt;LineTo(pt.x + (int)((double)(pt.x/3) * sin(Radians)), pt.y - (int)((double)(pt.y/3) * cos(Radians)));  </div><div class="line"></div><div class="line">	//分针</div><div class="line">	CPen MinPen(PS_SOLID, 4, RGB(78, 238, 148));  </div><div class="line">    pDC-&gt;SelectObject(&amp;MinPen);  </div><div class="line">	Radians = Time.GetMinute() + Time.GetSecond()/60;</div><div class="line">	Radians *= 2 * 3.14 / 60.0;</div><div class="line">	pDC-&gt;MoveTo(pt.x, pt.y);  </div><div class="line">    pDC-&gt;LineTo(pt.x + (int)((double)(pt.y*1/2) * sin(Radians)), pt.y - (int)((double)(pt.y*1/2) * cos(Radians)));  </div><div class="line"></div><div class="line">	//秒针</div><div class="line">	CPen SecPen(PS_SOLID, 2, RGB(0, 0, 205));  </div><div class="line">    pDC-&gt;SelectObject(&amp;SecPen); </div><div class="line">	Radians = Time.GetSecond();</div><div class="line">	Radians *= 2 * 3.14 / 60.0;</div><div class="line">	pDC-&gt;MoveTo(pt.x, pt.y);  </div><div class="line">    pDC-&gt;LineTo(pt.x + (int)((double)(pt.x*2/3) * sin(Radians)), pt.y - (int)((double)(pt.y*2/3) * cos(Radians)));  </div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>详解：<br>弧长公式：时针：α=l/r=(2πr/12)/r=2π/12  分针、秒针同理。<br>GetTextExtent<br>函数功能：使用该函数获得所选字体中指定字符串的高度和宽度<br>函数原型一：CSize GetTextExtent(LPCTSTR lpszString, int nCount) const；<br>参数：<br>lpszString是字符串的指针，也可以用CString 对象<br>nCount是指字符串的长度<br>函数原型二： CSize GetTextExtent( const CString&amp; str) const;<br>参数：<br>str是一个字符串对象，包含指定的字符。<br>返回值：<br>以逻辑单位返回字符串的尺寸，保存在一个CSize对象中。</p>
+<p>TextOut，函数名。该函数用当前选择的字体、背景颜色和正文颜色将一个字符串写到指定位置。</p>
+<p>效果：<br><img src="http://img.blog.csdn.net/20170424220400837?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="这里写图片描述"></p>
+<p>值得改进处：<br>1.每秒刷新时整个频幕闪动较大。<br>2.可以突出12、3、6、9的格子长度。<br>3.调整数字的大小和字体。<br>4.指针做的更美观，考虑用位图或图片替代。</p>
+
+      
+    </div>
+    
+	
+
+
+  
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/04/23/MFC绘制时钟/">MFC绘制时钟</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">胡博靖</a></p>
+        <p><span class="post-count">本文字数:</span>1,825字</p>
+        <p><span>发布时间:</span>2017-04-23, 16:14:07</p>
+        <p><span>最后更新:</span>2017-04-27, 20:31:16</p>
+        
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/04/23/MFC绘制时钟/" title="MFC绘制时钟">http://hubojing.github.io/2017/04/23/MFC绘制时钟/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://hubojing.github.io/2017/04/23/MFC绘制时钟/　　作者: 胡博靖" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/05/01/Service记录/">
+                    四大组件之Service记录
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/04/21/折腾才是人生/">
+                    折腾才是人生
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-6 i,
+        .toc-level-6 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"true"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"MFC绘制时钟　| 胡博靖的技术博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+	
+	<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: document.location.href, 
+    sourceId: "",
+    productKey: "53714f5eefce49d681e6b8f4f551437e",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+	
+        <section id="comments">
+    <style> aside.comment-bar { margin: auto 30px; }</style>
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function(){
+            this.page.url = 'http://hubojing.github.io/2017/04/23/MFC绘制时钟/';
+            this.page.identifier = '2017/04/23/MFC绘制时钟/';
+        };
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = '//hubojing.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <aside class="comment-bar">
+        <a href="javascript:void(0);">
+            <i class="fa fa-commenting-o animated infinite pulse"></i>
+            <i class="fa fa-spinner fa-pulse"></i>
+            <span class="count-comment"></span>
+        </a>
+    </aside>
+    <script>
+        var $commentBar = $("#comments aside.comment-bar");
+        var load$hide = function(){
+            $commentBar.find("a > i").toggle();
+            loadComment();
+            $commentBar.fadeOut(800);
+        }
+        $commentBar.click(function(){
+            load$hide();
+        })
+        $commentBar.children("a").hover(function(){
+            load$hide();
+        })
+        if (window.location.hash === "#comments") {
+            load$hide();
+        }
+    </script>
+
+</section>
+
+
+     　　若您可以科学上网，请在disqus中评论。网易云跟帖是考虑到墙内朋友而设置的。怀念多说，但多说无益必自毙~可惜。
+    <script id="dsq-count-scr" src="//hubojing.disqus.com/count.js" async></script>
+    <span class="disqus-comment-count" data-disqus-identifier="2017/04/23/MFC绘制时钟/"></span>
+    <span class="disqus-comment-count" data-disqus-url="http://hubojing.github.io/2017/04/23/MFC绘制时钟/"></span>
+    <script>
+        $(".disqus-comment-count").hide();
+        var $disqusCount = $(".disqus-comment-count");
+        $disqusCount.bind("DOMNodeInserted", function(e) {
+            $(".count-comment").text(
+                $(this).text().replace(/[^0-9]/ig,"")
+            )
+            DISQUSWIDGETS.getCount({reset: true});
+        })
+    </script>
+
+
+	
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/05/01/Service记录/" title="上一篇: 四大组件之Service记录">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/04/21/折腾才是人生/" title="下一篇: 折腾才是人生">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/06/29/勒索病毒/">新闻杂谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/25/HOOPS记录/">HOOPS记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/15/MFC-多线程-进度条-复制文件（夹）/">MFC+多线程+进度条+复制文件（夹）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/14/MFC网页分析程序/">MFC网页分析程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/07/Socket点对点聊天-文件传输/">Socket点对点聊天+文件传输</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/05/ContentProvider记录/">四大组件之ContentProvider记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/01/Service记录/">四大组件之Service记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/23/MFC绘制时钟/">MFC绘制时钟</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/21/折腾才是人生/">折腾才是人生</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/13/MFC傻瓜式教程/">MFC傻瓜式教程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/05/多说关闭引发的麻烦/">多说关闭引发的麻烦</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/28/DigitalOcean购买服务器教程/">DigitalOcean购买服务器教程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/26/更换为.me域名教程/">更换为.me域名教程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/25/Github教育礼包/">Github教育礼包</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/22/制作简易计算器APP（线性结构）/">简易计算器（Android）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/模拟借书系统（java异常机制实现）/">模拟借书系统（Java异常机制实现）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/达达租车系统（Java实现）/">达达租车系统（Java实现）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/06/反省/">别做井底之蛙</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/10/虚拟实验平台/">虚拟实验平台比赛项目记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/03/hueman主题更换/">yelee --> hueman主题更换</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/26/linux整理笔记/">一天一点linux</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/26/回归/">回归</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/上海决赛之旅/">上海决赛之旅 | the trip for contest in Shanghai</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/16/说明/">说明</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/29/P图集/">P图集 | PS picture album</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/14/Linux菜鸟初尝鲜/">Linux菜鸟初尝鲜 | First try on Linux</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/06/将hexo-github博客同步托管至coding/">将hexo+github博客同步托管至coding</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/22/PPT动画制作之自定义动画/">PPT动画制作之自定义动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/17/显示技术蹭课笔记/">显示技术蹭课笔记 | Display Techique Learning Note</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/14/java自学笔记/">java自学笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/12/靖靖的脑洞大开（一）/">靖靖的脑洞大开 | Jinger's Special Ideas</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/08/PPT动画制作之登录等待/">PPT动画制作之登录等待</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/08/markdown语法简记/">markdown语法简记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/07/1602-24C08-4X4键盘密码锁/">1602+24C08+4X4键盘密码锁</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/04/零碎知识记录/">零碎知识记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/06/Flash动画制作学习心得/">Flash动画制作学习心得</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/17/STC89C52RC单片机学习记录/">STC89C52RC单片机学习记录（1602篇）</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/10/matlab函数杂谈/">matlab函数杂谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/10/hexo优化/">hexo优化·年轻就是折腾 | Promotion of the Blog & Young for Try</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/06/hexo+github博客搭建中出现的问题及解决方法/">hexo+github博客搭建中出现的问题及解决方法 | The Solution of Troubles in Establishing My Blog</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/06/Hello World/">Hello World！</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2015-2017 胡博靖
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span> | </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit" title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 19;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+    <script>
+        var originTitle = document.title;
+        var titleTime;
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                document.title = "(つェ⊂) 我藏好了哦~ " + originTitle;
+                clearTimeout(titleTime);
+            }
+            else {
+                document.title = "(*´∇｀*) 被你发现啦~ " + originTitle;
+                titleTime = setTimeout(function() {
+                    document.title = originTitle;
+                }, 2000);
+            }
+        })
+    </script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

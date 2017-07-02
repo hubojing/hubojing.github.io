@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="胡博靖" />
+
+
+
+<meta name="description" content="写了两篇正儿八经的技术文，我觉得这好像不是我的风格，我是小清新啊小清新[微笑]我是大家的开心果啊[微笑]  所以，学技术也要感受到快乐。来来，回归自己。
+浅谈最近用matlab遇到的几个函数：1.num2str   str2num对于一个刚学matlab不久的人，看到回调函数里满篇num2str、str2num内心满满的问号……这感觉就和十年前学英语一样……然而这个2，让我觉得这个函数很有意思……">
+<meta property="og:type" content="article">
+<meta property="og:title" content="matlab函数杂谈">
+<meta property="og:url" content="http://hubojing.github.io/2015/11/10/matlab函数杂谈/index.html">
+<meta property="og:site_name" content="胡博靖的技术博客">
+<meta property="og:description" content="写了两篇正儿八经的技术文，我觉得这好像不是我的风格，我是小清新啊小清新[微笑]我是大家的开心果啊[微笑]  所以，学技术也要感受到快乐。来来，回归自己。
+浅谈最近用matlab遇到的几个函数：1.num2str   str2num对于一个刚学matlab不久的人，看到回调函数里满篇num2str、str2num内心满满的问号……这感觉就和十年前学英语一样……然而这个2，让我觉得这个函数很有意思……">
+<meta property="og:updated_time" content="2016-03-26T13:27:11.771Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="matlab函数杂谈">
+<meta name="twitter:description" content="写了两篇正儿八经的技术文，我觉得这好像不是我的风格，我是小清新啊小清新[微笑]我是大家的开心果啊[微笑]  所以，学技术也要感受到快乐。来来，回归自己。
+浅谈最近用matlab遇到的几个函数：1.num2str   str2num对于一个刚学matlab不久的人，看到回调函数里满篇num2str、str2num内心满满的问号……这感觉就和十年前学英语一样……然而这个2，让我觉得这个函数很有意思……">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="胡博靖的技术博客" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/green/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>matlab函数杂谈 | 胡博靖的技术博客</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: false,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1498247776150&amp;di=a1fdc0869f65da377118893dfe708f5e&amp;imgtype=0&amp;src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201508%2F24%2F20150824132210_HjBJC.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">胡博靖</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">小清新IT旅程|为中华崛起读书</p>
+        <p class="post-count">已写74.9k字</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/categories/互联网">互联网</a></li>
+                        
+                            <li><a href="/categories/通信工程">通信工程</a></li>
+                        
+                            <li><a href="/categories/杂谈">杂谈</a></li>
+                        
+                            <li><a href="/about/">关于</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:hubojing@outlook.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/hubojing" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/hubojing/" title="CSDN"></a>
+                            
+                                <a class="fa 网易云音乐" href="http://music.163.com/#/user/home?id=92203594" title="网易云音乐"></a>
+                            
+                                <a class="fa QQ" href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes" title="QQ"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/1602/">1602</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DigitalOcean/">DigitalOcean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flash/">Flash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HOOPS-3D/">HOOPS 3D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MFC/">MFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MFC-多线程/">MFC 多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MFC-爬虫/">MFC 爬虫</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PPT动画/">PPT动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eclipse/">eclipse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea/">idea</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/matlab/">matlab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/photoshop/">photoshop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/socket/">socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/主题/">主题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/优化/">优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数/">函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/创意/">创意</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/动画/">动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单片机/">单片机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/域名/">域名</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多说/">多说</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码锁/">密码锁</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/嵌入式系统/">嵌入式系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/思维/">思维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/教程/">教程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字信号处理/">数字信号处理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/显示技术/">显示技术</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务器/">服务器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂谈/">杂谈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/病毒/">病毒</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/矩阵键盘/">矩阵键盘</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/竞赛/">竞赛</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/说明/">说明</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/问题/">问题</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.iiwo.vip/">小忆</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.iwangyu.cn/">WangYu</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://ursb.me/">Airing</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://txiner.top/">Hundred</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.ersaijun.cn/">二赛君</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.yeqianfeng.me/">太阳尚远</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.qiujinfeng.com/">邱锦锋</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.ibertinelym.com/">李玉明</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.waydrow.com/">Waydrow</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://qqdie.com/">Jrotty</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.just666.cn/">Shawn</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://theask.cn/">该问</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.sfantree.com/">水番林</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://hsmouc.com/">空白</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.61mon.com/">刘毅</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.pokerboy.cn/">柚子鬼</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://zcheng.ren/">ZeeCoder</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.zcmol.cn/">早茶月光</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://rebootcat.com/">Linux之路</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.townwang.com/">王振镇</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://shawnzeng.com/">Shawnzeng</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.52itstyle.com/">小柒博客</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://frankchen.xyz/">不正经数据科学家</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://nolongerwait.com/">秦简</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://xiaowiba.com/">小尾巴</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://sopuy.com/">sopuy</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">人生如编程，自顶向下，逐步求精。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">胡博靖</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1498247776150&amp;di=a1fdc0869f65da377118893dfe708f5e&amp;imgtype=0&amp;src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201508%2F24%2F20150824132210_HjBJC.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">胡博靖</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">小清新IT旅程|为中华崛起读书</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/categories/互联网">互联网</a></li>
+                
+                    <li><a href="/categories/通信工程">通信工程</a></li>
+                
+                    <li><a href="/categories/杂谈">杂谈</a></li>
+                
+                    <li><a href="/about/">关于</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:hubojing@outlook.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/hubojing" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/hubojing/" title="CSDN"></a>
+                            
+                                <a class="fa 网易云音乐" target="_blank" href="http://music.163.com/#/user/home?id=92203594" title="网易云音乐"></a>
+                            
+                                <a class="fa QQ" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes" title="QQ"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-matlab函数杂谈" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/11/10/matlab函数杂谈/" class="article-date">
+      <time datetime="2015-11-10T08:39:08.000Z" itemprop="datePublished">2015-11-10</time>
+</a>
+
+ 
+    <a href="/2015/11/10/matlab函数杂谈/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+        
+            <span class="disqus-comment-count" data-disqus-identifier="2015/11/10/matlab函数杂谈/"></span>
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      matlab函数杂谈
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/通信工程/">通信工程</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/matlab/">matlab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/函数/">函数</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>写了两篇正儿八经的技术文，我觉得这好像不是我的风格，我是小清新啊小清新[微笑]<br>我是大家的开心果啊[微笑]  所以，学技术也要感受到快乐。来来，回归自己。</p>
+<h1 id="浅谈最近用matlab遇到的几个函数"><a href="#浅谈最近用matlab遇到的几个函数：" class="headerlink" title="浅谈最近用matlab遇到的几个函数："></a>浅谈最近用matlab遇到的几个函数：</h1><p>1.num2str   str2num<br>对于一个刚学matlab不久的人，看到回调函数里满篇num2str、str2num内心满满的问号……这感觉就和十年前学英语一样……<br>然而这个2，让我觉得这个函数很有意思……<br>是的，2就是two啊！two音同to啊！<br>num2str，顾名思义，number to string，把数值转化成字符串。同理str2num我就不解释了。<br>嗯，程序员都是懒人，能省就省必须的。<br><a id="more"></a><br>2.ezplot<br>Easy to use function plotter！E Z PLOT 懒人的智慧<br>翻译：易用的一元函数绘图函数<br><strong>使用之前要定义！要定义！要定义！</strong><br>符号函数定义法则：syms x;<br>那么问题来了，syms是什么鬼？<br>syms是定义符号变量。哦，我们就记得了，进行符号运算前要定义它，就用syms。</p>
+<p>3.conv<br>数字信号处理，嗯哼，眼熟是不是？<br>卷积卷积卷积！</p>
+<p><strong>辨析：filter、conv、impz函数的区别</strong><br>在MATLAB中，可以用函数y=filter(p,d,x)实现差分方程的仿真，也可以用函数 y=conv(x,h)计算卷积，用y=impz(p,d,N)求系统的冲激响应。具体例子百度一大推。</p>
+<p>4.stem<br>同样数字信号处理里出现的。Stem函数用于绘图，它是绘制针状图的好手。<br>调用格式都为stem(n,x,’filled’);<br>只需要将需要绘制的数据存放在一个数组中，然后将这个数组作为参数传递给“stem”函数就可以得到输出图形。例如，下面的代码可以绘制正弦函数的图形：<br>n=1:50; %定义序列的长度是50<br>x=zeros(1,50); %注意：MATLAB中数组下标从1开始<br>x(1)=1; %冲击函数<br>stem(x); %绘制函数图形</p>
+<p>5.impulse<br>函数impulse（）将绘出由向量 a 和 b 表示的连续系统在指定时间范围内的冲激响应h(t)的时域波形图，并能求出指定时间范围内冲激响应的数值解。<br>impulse（）函数有如下四种调用格式：<br>（1）impulse(b,a)：该调用格式以默认方式绘出向量 A和B定义的连续系统的冲激响应的时域波形。<br>（2）impulse(b,a,t)：绘出系统在 0～t 时间范围内冲激响应的时域波形。<br>（3）impulse(b,a,t1:p:t2)：绘出在 t1~t2 时间范围内，且以时间间隔 p均匀取样的冲激响应波形。<br>（4）y=impulse(b,a,t1:p:t2)：不绘出波形，而是求出系统冲激响应的数值解。</p>
+<p>6.step<br>step（）函数可绘出连续系统的阶跃响应 g(t)在指定时间范围的时域波形并能求出其数值解，和impulse（）函数一样也有四种调用格式。<br>（1）step(b,a)：该调用格式以默认方式绘出向量 A和B定义的连续系统的阶跃响应的时域波形。<br>（2）step(b,a,t)：绘出系统在 0～t 时间范围内阶跃响应的时域波形。<br>（3）step(b,a,t1:p:t2)：绘出在 t1~t2 时间范围内，且以时间间隔p均匀取样的阶跃响应波形。<br>（4）y=step(b,a,t1:p:t2)：不绘出波形，而是求出系统阶跃响应的数值解。</p>
+<p>惊人相似有木有！impulse 和 step 一定是一家人~~</p>
+<p>先说这么多。最近比较忙。</p>
+<p><span id="busuanzi_container_page_pv"><br>本文已被阅读 <span id="busuanzi_value_page_pv"></span> 次。感谢您的点击！<br></span></p>
+
+      
+    </div>
+    
+	
+
+
+  
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2015/11/10/matlab函数杂谈/">matlab函数杂谈</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">胡博靖</a></p>
+        <p><span class="post-count">本文字数:</span>932字</p>
+        <p><span>发布时间:</span>2015-11-10, 16:39:08</p>
+        <p><span>最后更新:</span>2016-03-26, 21:27:11</p>
+        
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2015/11/10/matlab函数杂谈/" title="matlab函数杂谈">http://hubojing.github.io/2015/11/10/matlab函数杂谈/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://hubojing.github.io/2015/11/10/matlab函数杂谈/　　作者: 胡博靖" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2015/11/17/STC89C52RC单片机学习记录/">
+                    STC89C52RC单片机学习记录（1602篇）
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2015/11/10/hexo优化/">
+                    hexo优化·年轻就是折腾 | Promotion of the Blog &amp; Young for Try
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#浅谈最近用matlab遇到的几个函数"><span class="toc-number">1.</span> <span class="toc-text">浅谈最近用matlab遇到的几个函数：</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-6 i,
+        .toc-level-6 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"true"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"matlab函数杂谈　| 胡博靖的技术博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+	
+	<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: document.location.href, 
+    sourceId: "",
+    productKey: "53714f5eefce49d681e6b8f4f551437e",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+	
+        <section id="comments">
+    <style> aside.comment-bar { margin: auto 30px; }</style>
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function(){
+            this.page.url = 'http://hubojing.github.io/2015/11/10/matlab函数杂谈/';
+            this.page.identifier = '2015/11/10/matlab函数杂谈/';
+        };
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = '//hubojing.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <aside class="comment-bar">
+        <a href="javascript:void(0);">
+            <i class="fa fa-commenting-o animated infinite pulse"></i>
+            <i class="fa fa-spinner fa-pulse"></i>
+            <span class="count-comment"></span>
+        </a>
+    </aside>
+    <script>
+        var $commentBar = $("#comments aside.comment-bar");
+        var load$hide = function(){
+            $commentBar.find("a > i").toggle();
+            loadComment();
+            $commentBar.fadeOut(800);
+        }
+        $commentBar.click(function(){
+            load$hide();
+        })
+        $commentBar.children("a").hover(function(){
+            load$hide();
+        })
+        if (window.location.hash === "#comments") {
+            load$hide();
+        }
+    </script>
+
+</section>
+
+
+     　　若您可以科学上网，请在disqus中评论。网易云跟帖是考虑到墙内朋友而设置的。怀念多说，但多说无益必自毙~可惜。
+    <script id="dsq-count-scr" src="//hubojing.disqus.com/count.js" async></script>
+    <span class="disqus-comment-count" data-disqus-identifier="2015/11/10/matlab函数杂谈/"></span>
+    <span class="disqus-comment-count" data-disqus-url="http://hubojing.github.io/2015/11/10/matlab函数杂谈/"></span>
+    <script>
+        $(".disqus-comment-count").hide();
+        var $disqusCount = $(".disqus-comment-count");
+        $disqusCount.bind("DOMNodeInserted", function(e) {
+            $(".count-comment").text(
+                $(this).text().replace(/[^0-9]/ig,"")
+            )
+            DISQUSWIDGETS.getCount({reset: true});
+        })
+    </script>
+
+
+	
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2015/11/17/STC89C52RC单片机学习记录/" title="上一篇: STC89C52RC单片机学习记录（1602篇）">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2015/11/10/hexo优化/" title="下一篇: hexo优化·年轻就是折腾 | Promotion of the Blog &amp; Young for Try">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/06/29/勒索病毒/">新闻杂谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/25/HOOPS记录/">HOOPS记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/15/MFC-多线程-进度条-复制文件（夹）/">MFC+多线程+进度条+复制文件（夹）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/14/MFC网页分析程序/">MFC网页分析程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/07/Socket点对点聊天-文件传输/">Socket点对点聊天+文件传输</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/05/ContentProvider记录/">四大组件之ContentProvider记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/01/Service记录/">四大组件之Service记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/23/MFC绘制时钟/">MFC绘制时钟</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/21/折腾才是人生/">折腾才是人生</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/13/MFC傻瓜式教程/">MFC傻瓜式教程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/05/多说关闭引发的麻烦/">多说关闭引发的麻烦</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/28/DigitalOcean购买服务器教程/">DigitalOcean购买服务器教程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/26/更换为.me域名教程/">更换为.me域名教程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/25/Github教育礼包/">Github教育礼包</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/22/制作简易计算器APP（线性结构）/">简易计算器（Android）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/模拟借书系统（java异常机制实现）/">模拟借书系统（Java异常机制实现）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/达达租车系统（Java实现）/">达达租车系统（Java实现）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/06/反省/">别做井底之蛙</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/10/虚拟实验平台/">虚拟实验平台比赛项目记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/03/hueman主题更换/">yelee --> hueman主题更换</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/26/linux整理笔记/">一天一点linux</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/26/回归/">回归</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/上海决赛之旅/">上海决赛之旅 | the trip for contest in Shanghai</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/16/说明/">说明</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/29/P图集/">P图集 | PS picture album</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/14/Linux菜鸟初尝鲜/">Linux菜鸟初尝鲜 | First try on Linux</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/06/将hexo-github博客同步托管至coding/">将hexo+github博客同步托管至coding</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/22/PPT动画制作之自定义动画/">PPT动画制作之自定义动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/17/显示技术蹭课笔记/">显示技术蹭课笔记 | Display Techique Learning Note</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/14/java自学笔记/">java自学笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/12/靖靖的脑洞大开（一）/">靖靖的脑洞大开 | Jinger's Special Ideas</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/08/PPT动画制作之登录等待/">PPT动画制作之登录等待</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/08/markdown语法简记/">markdown语法简记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/07/1602-24C08-4X4键盘密码锁/">1602+24C08+4X4键盘密码锁</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/04/零碎知识记录/">零碎知识记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/06/Flash动画制作学习心得/">Flash动画制作学习心得</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/17/STC89C52RC单片机学习记录/">STC89C52RC单片机学习记录（1602篇）</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/10/matlab函数杂谈/">matlab函数杂谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/10/hexo优化/">hexo优化·年轻就是折腾 | Promotion of the Blog & Young for Try</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/06/hexo+github博客搭建中出现的问题及解决方法/">hexo+github博客搭建中出现的问题及解决方法 | The Solution of Troubles in Establishing My Blog</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/06/Hello World/">Hello World！</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2015-2017 胡博靖
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span> | </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit" title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 19;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+    <script>
+        var originTitle = document.title;
+        var titleTime;
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                document.title = "(つェ⊂) 我藏好了哦~ " + originTitle;
+                clearTimeout(titleTime);
+            }
+            else {
+                document.title = "(*´∇｀*) 被你发现啦~ " + originTitle;
+                titleTime = setTimeout(function() {
+                    document.title = originTitle;
+                }, 2000);
+            }
+        })
+    </script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

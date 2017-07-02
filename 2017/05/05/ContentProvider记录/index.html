@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="胡博靖" />
+
+
+
+<meta name="description" content="ContentProvider记录。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="四大组件之ContentProvider记录">
+<meta property="og:url" content="http://hubojing.github.io/2017/05/05/ContentProvider记录/index.html">
+<meta property="og:site_name" content="胡博靖的技术博客">
+<meta property="og:description" content="ContentProvider记录。">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1493829797406&di=c1112aa632e463c9a69b23a84b37c681&imgtype=0&src=http%3A%2F%2Fs15.sinaimg.cn%2Fmiddle%2F448dd084gaa5d8b13a09e%26690">
+<meta property="og:image" content="http://img.blog.csdn.net/20170505230346413?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170505230425672?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170505230442148?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2017-05-05T15:05:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="四大组件之ContentProvider记录">
+<meta name="twitter:description" content="ContentProvider记录。">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1493829797406&di=c1112aa632e463c9a69b23a84b37c681&imgtype=0&src=http%3A%2F%2Fs15.sinaimg.cn%2Fmiddle%2F448dd084gaa5d8b13a09e%26690">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="胡博靖的技术博客" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/green/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>四大组件之ContentProvider记录 | 胡博靖的技术博客</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: false,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1498247776150&amp;di=a1fdc0869f65da377118893dfe708f5e&amp;imgtype=0&amp;src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201508%2F24%2F20150824132210_HjBJC.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">胡博靖</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">小清新IT旅程|为中华崛起读书</p>
+        <p class="post-count">已写74.9k字</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/categories/互联网">互联网</a></li>
+                        
+                            <li><a href="/categories/通信工程">通信工程</a></li>
+                        
+                            <li><a href="/categories/杂谈">杂谈</a></li>
+                        
+                            <li><a href="/about/">关于</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:hubojing@outlook.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/hubojing" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa CSDN" href="http://blog.csdn.net/hubojing/" title="CSDN"></a>
+                            
+                                <a class="fa 网易云音乐" href="http://music.163.com/#/user/home?id=92203594" title="网易云音乐"></a>
+                            
+                                <a class="fa QQ" href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes" title="QQ"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/1602/">1602</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DigitalOcean/">DigitalOcean</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flash/">Flash</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Github/">Github</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HOOPS-3D/">HOOPS 3D</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MFC/">MFC</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MFC-多线程/">MFC 多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MFC-爬虫/">MFC 爬虫</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PPT动画/">PPT动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/blog/">blog</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eclipse/">eclipse</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea/">idea</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/markdown/">markdown</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/matlab/">matlab</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/photoshop/">photoshop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/socket/">socket</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/主题/">主题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/优化/">优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/函数/">函数</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/创意/">创意</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/动画/">动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单片机/">单片机</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/域名/">域名</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多说/">多说</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/密码锁/">密码锁</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/嵌入式系统/">嵌入式系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/思维/">思维</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/教程/">教程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数字信号处理/">数字信号处理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/显示技术/">显示技术</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/服务器/">服务器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂谈/">杂谈</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/病毒/">病毒</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/矩阵键盘/">矩阵键盘</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/竞赛/">竞赛</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/说明/">说明</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/问题/">问题</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.iiwo.vip/">小忆</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.iwangyu.cn/">WangYu</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://ursb.me/">Airing</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://txiner.top/">Hundred</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.ersaijun.cn/">二赛君</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.yeqianfeng.me/">太阳尚远</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.qiujinfeng.com/">邱锦锋</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.ibertinelym.com/">李玉明</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.waydrow.com/">Waydrow</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://qqdie.com/">Jrotty</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.just666.cn/">Shawn</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://theask.cn/">该问</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.sfantree.com/">水番林</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://hsmouc.com/">空白</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.61mon.com/">刘毅</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.pokerboy.cn/">柚子鬼</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://zcheng.ren/">ZeeCoder</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.zcmol.cn/">早茶月光</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://rebootcat.com/">Linux之路</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://www.townwang.com/">王振镇</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://shawnzeng.com/">Shawnzeng</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://blog.52itstyle.com/">小柒博客</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://frankchen.xyz/">不正经数据科学家</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://nolongerwait.com/">秦简</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://xiaowiba.com/">小尾巴</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://sopuy.com/">sopuy</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">人生如编程，自顶向下，逐步求精。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">胡博靖</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1498247776150&amp;di=a1fdc0869f65da377118893dfe708f5e&amp;imgtype=0&amp;src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201508%2F24%2F20150824132210_HjBJC.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">胡博靖</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">小清新IT旅程|为中华崛起读书</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/categories/互联网">互联网</a></li>
+                
+                    <li><a href="/categories/通信工程">通信工程</a></li>
+                
+                    <li><a href="/categories/杂谈">杂谈</a></li>
+                
+                    <li><a href="/about/">关于</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:hubojing@outlook.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/hubojing" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa CSDN" target="_blank" href="http://blog.csdn.net/hubojing/" title="CSDN"></a>
+                            
+                                <a class="fa 网易云音乐" target="_blank" href="http://music.163.com/#/user/home?id=92203594" title="网易云音乐"></a>
+                            
+                                <a class="fa QQ" target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes" title="QQ"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-ContentProvider记录" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/05/05/ContentProvider记录/" class="article-date">
+      <time datetime="2017-05-05T14:00:42.000Z" itemprop="datePublished">2017-05-05</time>
+</a>
+
+ 
+    <a href="/2017/05/05/ContentProvider记录/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+        
+            <span class="disqus-comment-count" data-disqus-identifier="2017/05/05/ContentProvider记录/"></span>
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      四大组件之ContentProvider记录
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/互联网/">互联网</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <div align="left"><br><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1493829797406&di=c1112aa632e463c9a69b23a84b37c681&imgtype=0&src=http%3A%2F%2Fs15.sinaimg.cn%2Fmiddle%2F448dd084gaa5d8b13a09e%26690" width="300" height="180" style="float:right;"><br><br><br>ContentProvider记录。<br><br><br> </div>
+
+<a id="more"></a>
+<p>数据存储方式：</p>
+<ul>
+<li>Shared Preferences</li>
+<li>文件存储</li>
+<li>SQLite</li>
+<li>其他还有网络存储等</li>
+</ul>
+<p>上述不可完成的任务：都只是在单独的一个应用程序之中达到一个数据的共享</p>
+<p><img src="http://img.blog.csdn.net/20170505230346413?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="ContentProvider"><br><img src="http://img.blog.csdn.net/20170505230425672?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="Uri"><br><img src="http://img.blog.csdn.net/20170505230442148?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="UriMatcher类"></p>
+<h1 id="contentprovider"><a href="#ContentProvider" class="headerlink" title="ContentProvider"></a>ContentProvider</h1><ol>
+<li>使用 ContentResolver 操作 ContentProvider 中的数据：<br>当外部应用需要对 ContentProvider 中的数据进行增删改查的时候，可以使用 ContentResolver 类来完成。</li>
+<li>使用 Activity 提供的 getContentResolver() 方法获取 ContentResolver 对象。</li>
+<li>ContentResolver 类提供了与 ContentProvider 类相同签名的四个方法：</li>
+</ol>
+<ul>
+<li>public Uri insert(Uri uri,ContentValues values)<br>该方法用于往ContentProvider里面添加数据</li>
+<li>public int delete(Uri uri,String selection,String[] selectionArgs)<br>该方法从ContentProvider中删除数据</li>
+<li>public int update(Uri uri,ContentValues values,String selection,String[] selectionArgs)<br>该方法用于更新ContentProvider里面的数据</li>
+<li>public Cursor query(Uri uri,String[] projection,String selection,String[] selectionArgs,String sortOrder)<br>该方法用于从ContentProvider中获取数据</li>
+</ul>
+<h1 id="使用系统提供的contentprovider"><a href="#使用系统提供的ContentProvider" class="headerlink" title="使用系统提供的ContentProvider"></a>使用系统提供的ContentProvider</h1><h2 id="查询联系人"><a href="#查询联系人" class="headerlink" title="查询联系人"></a>查询联系人</h2><p>MyContentProvider.java</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">package com<span class="selector-class">.abc</span><span class="selector-class">.contentproviderdemo1</span>;</div><div class="line"></div><div class="line">import android<span class="selector-class">.content</span><span class="selector-class">.ContentProvider</span>;</div><div class="line">import android<span class="selector-class">.content</span><span class="selector-class">.ContentValues</span>;</div><div class="line">import android<span class="selector-class">.database</span><span class="selector-class">.Cursor</span>;</div><div class="line">import android<span class="selector-class">.net</span><span class="selector-class">.Uri</span>;</div><div class="line"></div><div class="line"><span class="selector-tag">public</span> <span class="selector-tag">class</span> <span class="selector-tag">MyContentProvider</span> <span class="selector-tag">extends</span> <span class="selector-tag">ContentProvider</span> &#123;</div><div class="line"></div><div class="line">	<span class="variable">@Override</span> <span class="comment">// 在ContentProvider创建后被调用</span></div><div class="line">	public boolean onCreate() &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line">		return false;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="variable">@Override</span> <span class="comment">// 根据uri查询出selection指定的条件所匹配的全部记录，并且可以指定查询哪些列 以什么方式（order）排序</span></div><div class="line">	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line">		return null;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="variable">@Override</span> <span class="comment">// 返回当前uri的MIME类型，如果该URI对应的数据可能包括多条记录</span></div><div class="line">	<span class="comment">// 如果该URI对应的数据只有一条记录 该MIME类型字符串 就是以vnd.android.cursor.item/开头</span></div><div class="line">	public String getType(Uri uri) &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line">		return null;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="variable">@Override</span> <span class="comment">// 根据uri插入Values对应的数据</span></div><div class="line">	public Uri insert(Uri uri, ContentValues values) &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line">		return null;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="variable">@Override</span> <span class="comment">// 根据Uri删除selection指定的条件所匹配的全部记录</span></div><div class="line">	public int delete(Uri uri, String selection, String[] selectionArgs) &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line">		return 0;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="variable">@Override</span> <span class="comment">// 根据uri修改selection指定的条件所匹配的全部记录</span></div><div class="line">	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) &#123;</div><div class="line">		<span class="comment">// TODO Auto-generated method stub</span></div><div class="line">		return 0;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>MainActivity.java</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.abc.contentproviderdemo1;</div><div class="line"></div><div class="line"><span class="keyword">import</span> android.app.<span class="type">Activity</span>;</div><div class="line"><span class="keyword">import</span> android.content.<span class="type">ContentResolver</span>;</div><div class="line"><span class="keyword">import</span> android.database.<span class="type">Cursor</span>;</div><div class="line"><span class="keyword">import</span> android.os.<span class="type">Bundle</span>;</div><div class="line"><span class="keyword">import</span> android.provider.<span class="type">ContactsContract</span>.<span class="type">CommonDataKinds</span>.<span class="type">Email</span>;</div><div class="line"><span class="keyword">import</span> android.provider.<span class="type">ContactsContract</span>.<span class="type">CommonDataKinds</span>.<span class="type">Phone</span>;</div><div class="line"><span class="keyword">import</span> android.provider.<span class="type">ContactsContract</span>.<span class="type">Contacts</span>;</div><div class="line"><span class="keyword">import</span> android.util.<span class="type">Log</span>;</div><div class="line"></div><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="keyword">protected</span> void onCreate(<span class="type">Bundle</span> savedInstanceState) &#123;</div><div class="line">		<span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">		setContentView(<span class="type">R</span>.layout.activity_main);</div><div class="line"></div><div class="line">		<span class="type">ContentResolver</span> cr = getContentResolver();</div><div class="line">		<span class="type">Cursor</span> c = cr.query(<span class="type">Contacts</span>.<span class="type">CONTENT_URI</span>, <span class="keyword">new</span> <span class="type">String</span>[] &#123; <span class="type">Contacts</span>._ID, <span class="type">Contacts</span>.<span class="type">DISPLAY_NAME</span> &#125;, <span class="literal">null</span>, <span class="literal">null</span>,</div><div class="line">				<span class="literal">null</span>);</div><div class="line">		<span class="keyword">if</span> (c != <span class="literal">null</span>) &#123;</div><div class="line">			<span class="keyword">while</span> (c.moveToNext()) &#123;</div><div class="line">				int id = c.getInt(c.getColumnIndex(<span class="string">"_id"</span>));</div><div class="line">				<span class="type">Log</span>.i(<span class="string">"info"</span>, <span class="string">"_id"</span> + id);</div><div class="line">				<span class="type">Log</span>.i(<span class="string">"info"</span>, <span class="string">"name:"</span> + c.getString(c.getColumnIndex(<span class="string">"display_name"</span>)));</div><div class="line">				<span class="type">Cursor</span> c1 = cr.query(<span class="type">Phone</span>.<span class="type">CONTENT_URI</span>, <span class="keyword">new</span> <span class="type">String</span>[] &#123; <span class="type">Phone</span>.<span class="type">NUMBER</span>, <span class="type">Phone</span>.<span class="type">TYPE</span> &#125;,</div><div class="line">						<span class="type">Phone</span>.<span class="type">CONTACT_ID</span> + <span class="string">"="</span> + id, <span class="literal">null</span>, <span class="literal">null</span>);</div><div class="line">				<span class="comment">// 根据联系人ID查询出联系人的电话号码</span></div><div class="line">				<span class="keyword">if</span> (c1 != <span class="literal">null</span>) &#123;</div><div class="line">					<span class="keyword">while</span> (c1.moveToNext()) &#123;</div><div class="line">						int <span class="class"><span class="keyword">type</span> </span>= c1.getInt(c1.getColumnIndex(<span class="type">Phone</span>.<span class="type">TYPE</span>));</div><div class="line">						<span class="keyword">if</span> (<span class="class"><span class="keyword">type</span> <span class="title">==</span> <span class="title">Phone</span>.<span class="title">TYPE_HOME</span>) </span>&#123;</div><div class="line">							<span class="type">Log</span>.i(<span class="string">"info"</span>, <span class="string">"家庭电话："</span> + c1.getString(c1.getColumnIndex(<span class="type">Phone</span>.<span class="type">NUMBER</span>)));</div><div class="line">						&#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="class"><span class="keyword">type</span> <span class="title">==</span> <span class="title">Phone</span>.<span class="title">TYPE_MOBILE</span>) </span>&#123;</div><div class="line">							<span class="type">Log</span>.i(<span class="string">"info"</span>, <span class="string">"手机"</span> + c1.getString(c1.getColumnIndex(<span class="type">Phone</span>.<span class="type">NUMBER</span>)));</div><div class="line">						&#125;</div><div class="line">					&#125;</div><div class="line">					c1.close();</div><div class="line">				&#125;</div><div class="line">				<span class="comment">// 根据联系人的ID去查询出联系人的邮箱地址</span></div><div class="line">				<span class="type">Cursor</span> c2 = cr.query(<span class="type">Email</span>.<span class="type">CONTENT_URI</span>, <span class="keyword">new</span> <span class="type">String</span>[] &#123; <span class="type">Email</span>.<span class="type">DATA</span>, <span class="type">Email</span>.<span class="type">TYPE</span> &#125;,</div><div class="line">						<span class="type">Email</span>.<span class="type">CONTACT_ID</span> + <span class="string">"="</span> + id, <span class="literal">null</span>, <span class="literal">null</span>);</div><div class="line"></div><div class="line">				<span class="keyword">if</span> (c2 != <span class="literal">null</span>) &#123;</div><div class="line">					<span class="keyword">while</span> (c2.moveToNext()) &#123;</div><div class="line">						int <span class="class"><span class="keyword">type</span> </span>= c2.getInt(c2.getColumnIndex(<span class="type">Email</span>.<span class="type">TYPE</span>));</div><div class="line">						<span class="keyword">if</span> (<span class="class"><span class="keyword">type</span> <span class="title">==</span> <span class="title">Email</span>.<span class="title">TYPE_WORK</span>) </span>&#123;</div><div class="line">							<span class="type">Log</span>.i(<span class="string">"info"</span>, <span class="string">"工作邮箱："</span> + c2.getString(c2.getColumnIndex(<span class="type">Email</span>.<span class="type">DATA</span>)));</div><div class="line">						&#125;</div><div class="line">					&#125;</div><div class="line">					c2.close();</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">			c.close();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>AndroidManifest.xml注册</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;uses-permission android:<span class="built_in">name</span>=<span class="string">"android.permission.READ_CONTACTS"</span>/&gt;</div></pre></td></tr></table></figure>
+<h2 id="增加联系人"><a href="#增加联系人" class="headerlink" title="增加联系人"></a>增加联系人</h2><p>MainActivity.java</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">package com<span class="selector-class">.abc</span><span class="selector-class">.contentproviderdemo2</span>;</div><div class="line"></div><div class="line">import android<span class="selector-class">.app</span><span class="selector-class">.Activity</span>;</div><div class="line">import android<span class="selector-class">.content</span><span class="selector-class">.ContentResolver</span>;</div><div class="line">import android<span class="selector-class">.content</span><span class="selector-class">.ContentUris</span>;</div><div class="line">import android<span class="selector-class">.content</span><span class="selector-class">.ContentValues</span>;</div><div class="line">import android<span class="selector-class">.net</span><span class="selector-class">.Uri</span>;</div><div class="line">import android<span class="selector-class">.os</span><span class="selector-class">.Bundle</span>;</div><div class="line">import android<span class="selector-class">.provider</span><span class="selector-class">.ContactsContract</span><span class="selector-class">.CommonDataKinds</span><span class="selector-class">.Phone</span>;</div><div class="line">import android<span class="selector-class">.provider</span><span class="selector-class">.ContactsContract</span><span class="selector-class">.CommonDataKinds</span><span class="selector-class">.StructuredName</span>;</div><div class="line">import android<span class="selector-class">.provider</span><span class="selector-class">.ContactsContract</span><span class="selector-class">.Data</span>;</div><div class="line">import android<span class="selector-class">.provider</span><span class="selector-class">.ContactsContract</span><span class="selector-class">.RawContacts</span>;</div><div class="line"></div><div class="line"><span class="selector-tag">public</span> <span class="selector-tag">class</span> <span class="selector-tag">MainActivity</span> <span class="selector-tag">extends</span> <span class="selector-tag">Activity</span> &#123;</div><div class="line"></div><div class="line">	<span class="variable">@Override</span></div><div class="line">	protected void onCreate(Bundle savedInstanceState) &#123;</div><div class="line">		super<span class="selector-class">.onCreate</span>(savedInstanceState);</div><div class="line">		setContentView(R<span class="selector-class">.layout</span><span class="selector-class">.activity_main</span>);</div><div class="line">		ContentResolver cr = getContentResolver();</div><div class="line">		<span class="comment">// 向联系人中插入一行数据</span></div><div class="line">		ContentValues values = new ContentValues();</div><div class="line">		Uri uri = cr<span class="selector-class">.insert</span>(RawContacts.CONTENT_URI, values);</div><div class="line">		Long raw_contact_id = ContentUris<span class="selector-class">.parseId</span>(uri);</div><div class="line">		values<span class="selector-class">.clear</span>();</div><div class="line">		values<span class="selector-class">.put</span>(StructuredName.RAW_CONTACT_ID, raw_contact_id);</div><div class="line">		values<span class="selector-class">.put</span>(StructuredName.DISPLAY_NAME, <span class="string">"胡博靖"</span>);</div><div class="line">		values<span class="selector-class">.put</span>(StructuredName.MIMETYPE, StructuredName.CONTENT_ITEM_TYPE);</div><div class="line">		uri = cr<span class="selector-class">.insert</span>(Data.CONTENT_URI, values);</div><div class="line">		<span class="comment">// 插入电话信息</span></div><div class="line">		values<span class="selector-class">.clear</span>();</div><div class="line">		values<span class="selector-class">.put</span>(Phone.RAW_CONTACT_ID, raw_contact_id);</div><div class="line">		values<span class="selector-class">.put</span>(Phone.NUMBER, <span class="string">"12345678910"</span>);</div><div class="line">		values<span class="selector-class">.put</span>(Phone.MIMETYPE, Phone.CONTENT_ITEM_TYPE);</div><div class="line">		uri = cr<span class="selector-class">.insert</span>(Data.CONTENT_URI, values);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在AndroidManifest.xml中注册</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;uses-permission android:<span class="built_in">name</span>=<span class="string">"android.permission.WRITE_CONTACTS"</span>/&gt;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+	
+
+
+  
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/05/05/ContentProvider记录/">四大组件之ContentProvider记录</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">胡博靖</a></p>
+        <p><span class="post-count">本文字数:</span>956字</p>
+        <p><span>发布时间:</span>2017-05-05, 22:00:42</p>
+        <p><span>最后更新:</span>2017-05-05, 23:05:43</p>
+        
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/05/05/ContentProvider记录/" title="四大组件之ContentProvider记录">http://hubojing.github.io/2017/05/05/ContentProvider记录/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://hubojing.github.io/2017/05/05/ContentProvider记录/　　作者: 胡博靖" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/05/07/Socket点对点聊天-文件传输/">
+                    Socket点对点聊天+文件传输
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/05/01/Service记录/">
+                    四大组件之Service记录
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#contentprovider"><span class="toc-number">1.</span> <span class="toc-text">ContentProvider</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用系统提供的contentprovider"><span class="toc-number">2.</span> <span class="toc-text">使用系统提供的ContentProvider</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#查询联系人"><span class="toc-number">2.1.</span> <span class="toc-text">查询联系人</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#增加联系人"><span class="toc-number">2.2.</span> <span class="toc-text">增加联系人</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-6 i,
+        .toc-level-6 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"true"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"四大组件之ContentProvider记录　| 胡博靖的技术博客　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+	
+	<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: document.location.href, 
+    sourceId: "",
+    productKey: "53714f5eefce49d681e6b8f4f551437e",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+	
+        <section id="comments">
+    <style> aside.comment-bar { margin: auto 30px; }</style>
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function(){
+            this.page.url = 'http://hubojing.github.io/2017/05/05/ContentProvider记录/';
+            this.page.identifier = '2017/05/05/ContentProvider记录/';
+        };
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = '//hubojing.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <aside class="comment-bar">
+        <a href="javascript:void(0);">
+            <i class="fa fa-commenting-o animated infinite pulse"></i>
+            <i class="fa fa-spinner fa-pulse"></i>
+            <span class="count-comment"></span>
+        </a>
+    </aside>
+    <script>
+        var $commentBar = $("#comments aside.comment-bar");
+        var load$hide = function(){
+            $commentBar.find("a > i").toggle();
+            loadComment();
+            $commentBar.fadeOut(800);
+        }
+        $commentBar.click(function(){
+            load$hide();
+        })
+        $commentBar.children("a").hover(function(){
+            load$hide();
+        })
+        if (window.location.hash === "#comments") {
+            load$hide();
+        }
+    </script>
+
+</section>
+
+
+     　　若您可以科学上网，请在disqus中评论。网易云跟帖是考虑到墙内朋友而设置的。怀念多说，但多说无益必自毙~可惜。
+    <script id="dsq-count-scr" src="//hubojing.disqus.com/count.js" async></script>
+    <span class="disqus-comment-count" data-disqus-identifier="2017/05/05/ContentProvider记录/"></span>
+    <span class="disqus-comment-count" data-disqus-url="http://hubojing.github.io/2017/05/05/ContentProvider记录/"></span>
+    <script>
+        $(".disqus-comment-count").hide();
+        var $disqusCount = $(".disqus-comment-count");
+        $disqusCount.bind("DOMNodeInserted", function(e) {
+            $(".count-comment").text(
+                $(this).text().replace(/[^0-9]/ig,"")
+            )
+            DISQUSWIDGETS.getCount({reset: true});
+        })
+    </script>
+
+
+	
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/05/07/Socket点对点聊天-文件传输/" title="上一篇: Socket点对点聊天+文件传输">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/05/01/Service记录/" title="下一篇: 四大组件之Service记录">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/06/29/勒索病毒/">新闻杂谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/25/HOOPS记录/">HOOPS记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/15/MFC-多线程-进度条-复制文件（夹）/">MFC+多线程+进度条+复制文件（夹）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/06/14/MFC网页分析程序/">MFC网页分析程序</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/07/Socket点对点聊天-文件传输/">Socket点对点聊天+文件传输</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/05/ContentProvider记录/">四大组件之ContentProvider记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/05/01/Service记录/">四大组件之Service记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/23/MFC绘制时钟/">MFC绘制时钟</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/21/折腾才是人生/">折腾才是人生</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/13/MFC傻瓜式教程/">MFC傻瓜式教程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/05/多说关闭引发的麻烦/">多说关闭引发的麻烦</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/28/DigitalOcean购买服务器教程/">DigitalOcean购买服务器教程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/26/更换为.me域名教程/">更换为.me域名教程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/25/Github教育礼包/">Github教育礼包</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/22/制作简易计算器APP（线性结构）/">简易计算器（Android）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/19/模拟借书系统（java异常机制实现）/">模拟借书系统（Java异常机制实现）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/18/达达租车系统（Java实现）/">达达租车系统（Java实现）</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/06/反省/">别做井底之蛙</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/10/虚拟实验平台/">虚拟实验平台比赛项目记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/03/hueman主题更换/">yelee --> hueman主题更换</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/26/linux整理笔记/">一天一点linux</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/12/26/回归/">回归</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/27/上海决赛之旅/">上海决赛之旅 | the trip for contest in Shanghai</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/16/说明/">说明</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/29/P图集/">P图集 | PS picture album</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/14/Linux菜鸟初尝鲜/">Linux菜鸟初尝鲜 | First try on Linux</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/06/将hexo-github博客同步托管至coding/">将hexo+github博客同步托管至coding</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/22/PPT动画制作之自定义动画/">PPT动画制作之自定义动画</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/17/显示技术蹭课笔记/">显示技术蹭课笔记 | Display Techique Learning Note</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/14/java自学笔记/">java自学笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/12/靖靖的脑洞大开（一）/">靖靖的脑洞大开 | Jinger's Special Ideas</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/08/PPT动画制作之登录等待/">PPT动画制作之登录等待</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/08/markdown语法简记/">markdown语法简记</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/03/07/1602-24C08-4X4键盘密码锁/">1602+24C08+4X4键盘密码锁</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/04/零碎知识记录/">零碎知识记录</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/06/Flash动画制作学习心得/">Flash动画制作学习心得</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/17/STC89C52RC单片机学习记录/">STC89C52RC单片机学习记录（1602篇）</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/10/matlab函数杂谈/">matlab函数杂谈</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/10/hexo优化/">hexo优化·年轻就是折腾 | Promotion of the Blog & Young for Try</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/06/hexo+github博客搭建中出现的问题及解决方法/">hexo+github博客搭建中出现的问题及解决方法 | The Solution of Troubles in Establishing My Blog</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/06/Hello World/">Hello World！</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2015-2017 胡博靖
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span> | </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit" title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 19;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+    <script>
+        var originTitle = document.title;
+        var titleTime;
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                document.title = "(つェ⊂) 我藏好了哦~ " + originTitle;
+                clearTimeout(titleTime);
+            }
+            else {
+                document.title = "(*´∇｀*) 被你发现啦~ " + originTitle;
+                titleTime = setTimeout(function() {
+                    document.title = originTitle;
+                }, 2000);
+            }
+        })
+    </script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
