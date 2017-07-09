@@ -195,7 +195,7 @@
 
         
         <p class="header-subtitle">小清新IT旅程|为中华崛起读书</p>
-        <p class="post-count">已写76.8k字</p>
+        <p class="post-count">已写77.1k字</p>
         
 
         
@@ -818,6 +818,12 @@
 <h3 id="利用_declspecdllimport声明外部函数"><a href="#利用-declspec-dllimport-声明外部函数" class="headerlink" title="利用_declspec(dllimport)声明外部函数"></a>利用_declspec(dllimport)声明外部函数</h3><p>除了使用extern关键字表明函数是外部定义的之外，还可以使用标识符：_declspec(dllimport)来表明函数是从动态链接库中引入的。将之前的extern声明注释起来。添加：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="number">_</span>declspec(dllimport) <span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>;</div><div class="line"><span class="number">_</span>declspec(dllimport) <span class="function"><span class="keyword">int</span> <span class="title">subtract</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>;</div></pre></td></tr></table></figure></p>
 <p>若调用的函数来自于动态链接库，应采用这种方式声明外部函数，编译器可以生成运行效率更高的代码。</p>
 <h2 id="完善win32-dll例子"><a href="#完善Win32-DLL例子" class="headerlink" title="完善Win32 DLL例子"></a>完善Win32 DLL例子</h2><p>为知道DLL有哪些导出函数，通常在编写动态链接库时，会提供一个头文件，在此提供DLL导出函数原型的声明，以及函数有关注释文档。</p>
+<p>为DLL1工程添加一个头文件：Dll1.h，并添加代码<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="number">_</span>declspec(dllimport) <span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>;</div><div class="line"><span class="number">_</span>declspec(dllimport) <span class="function"><span class="keyword">int</span> <span class="title">subtract</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>然后将DllTestDlg.cpp先前添加的声明语句注释起来，并在前部添加下面的语句：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"dll1.h"</span></span></div></pre></td></tr></table></figure></p>
+<p>Build并运行，结果和之前一样。</p>
+<p>所以在发布Dll1.dll动态链接库时，可将Dll1.h头文件一起提供给使用者。</p>
+<p>下面对Dll.h进行改造，使其不仅能为调用动态链接库的客户端程序服务，也能由动态链接库程序自身来使用。修改头文件：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> DLL1_API</span></div><div class="line"><span class="meta">#<span class="meta-keyword">else</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> DLL1_API _declspec(dllimport)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div><div class="line"></div><div class="line"><span class="number">_</span>declspec(dllimport) <span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>;</div><div class="line"><span class="number">_</span>declspec(dllimport) <span class="function"><span class="keyword">int</span> <span class="title">subtract</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>修改Dll1.cpp<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> DLL1_API _declspec(dllexport)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Dll1.h"</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">return</span> a + b;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">subtract</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">return</span> a - b;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>To be continued…<br>听听那冷雨</p>
 
       
@@ -832,7 +838,7 @@
     <div class="copyright">
         <p><span>本文标题:</span><a href="/2017/04/13/MFC傻瓜式教程/">MFC傻瓜式教程</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">胡博靖</a></p>
-        <p><span class="post-count">本文字数:</span>15,755字</p>
+        <p><span class="post-count">本文字数:</span>15,966字</p>
         <p><span>发布时间:</span>2017-04-13, 22:26:01</p>
         <p><span>最后更新:</span>2017-07-09, 12:30:49</p>
         
