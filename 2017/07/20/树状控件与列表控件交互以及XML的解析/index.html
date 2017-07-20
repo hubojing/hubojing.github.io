@@ -22,7 +22,7 @@
 <meta property="og:site_name" content="胡博靖的技术博客">
 <meta property="og:description" content="300多M即将维持十天工作生活">
 <meta property="og:image" content="http://images.cnitblog.com/i/227236/201405/121542044687776.jpg">
-<meta property="og:updated_time" content="2017-07-20T16:11:22.327Z">
+<meta property="og:updated_time" content="2017-07-20T16:14:15.851Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="树状控件与列表控件交互以及XML的解析">
 <meta name="twitter:description" content="300多M即将维持十天工作生活">
@@ -388,12 +388,12 @@
         <div align="left"><br><img src="http://images.cnitblog.com/i/227236/201405/121542044687776.jpg" width="300" height="180" style="float:right;"><br><br><br>300多M即将维持十天工作生活　　<br><br><br> </div>
 
 <a id="more"></a>
-<h1 id="重要参考"><a href="#重要参考" class="headerlink" title="重要参考"></a>重要参考</h1><h2 id="msxml"><a href="#MSXML" class="headerlink" title="MSXML"></a>MSXML</h2><p><a href="https://msdn.microsoft.com/zh-cn/library/ms762314(v=vs.85" target="_blank" rel="external">MSXML API 历史记录</a>.aspx )</p>
+<h1 id="重要参考"><a href="#重要参考" class="headerlink" title="重要参考"></a>重要参考</h1><h2 id="msxml"><a href="#MSXML" class="headerlink" title="MSXML"></a>MSXML</h2><p>MSXML API 历史记录 <a href="https://msdn.microsoft.com/zh-cn/library/ms762314(v=vs.85).aspx" target="_blank" rel="external">https://msdn.microsoft.com/zh-cn/library/ms762314(v=vs.85).aspx</a> </p>
 <p>有C++示例  感人肺腑</p>
-<p><a href="https://msdn.microsoft.com/zh-cn/library/ms760399(v=vs.85" target="_blank" rel="external">MSXML SDK 概述</a>.aspx )</p>
+<p>MSXML SDK 概述 <a href="https://msdn.microsoft.com/zh-cn/library/ms760399(v=vs.85).aspx" target="_blank" rel="external">https://msdn.microsoft.com/zh-cn/library/ms760399(v=vs.85).aspx</a> </p>
 <p>机翻水平已经不错了 虽然仔细看还是略扎心</p>
-<h2 id="treecontrol控件"><a href="#TreeControl控件" class="headerlink" title="TreeControl控件"></a>TreeControl控件</h2><p><a href="https://msdn.microsoft.com/zh-cn/library/8ws6dh1y(v=vs.120" target="_blank" rel="external">使用 CTreeCtrl</a>.aspx )</p>
-<h2 id="listcontrol控件"><a href="#ListControl控件" class="headerlink" title="ListControl控件"></a>ListControl控件</h2><p><a href="https://msdn.microsoft.com/zh-cn/library/cc468276(v=vs.71" target="_blank" rel="external">使用 CListCtrl</a>.aspx )<br><a href="https://msdn.microsoft.com/zh-cn/library/cc451545(v=vs.71" target="_blank" rel="external">创建列表控件 (List Control)</a>.aspx )</p>
+<h2 id="treecontrol控件"><a href="#TreeControl控件" class="headerlink" title="TreeControl控件"></a>TreeControl控件</h2><p>使用 CTreeCtrl <a href="https://msdn.microsoft.com/zh-cn/library/8ws6dh1y(v=vs.120).aspx" target="_blank" rel="external">https://msdn.microsoft.com/zh-cn/library/8ws6dh1y(v=vs.120).aspx</a> </p>
+<h2 id="listcontrol控件"><a href="#ListControl控件" class="headerlink" title="ListControl控件"></a>ListControl控件</h2><p>使用 CListCtrl <a href="https://msdn.microsoft.com/zh-cn/library/cc468276(v=vs.71).aspx" target="_blank" rel="external">https://msdn.microsoft.com/zh-cn/library/cc468276(v=vs.71).aspx</a><br>创建列表控件 (List Control) <a href="https://msdn.microsoft.com/zh-cn/library/cc451545(v=vs.71).aspx" target="_blank" rel="external">https://msdn.microsoft.com/zh-cn/library/cc451545(v=vs.71).aspx</a> </p>
 <p>明明都是msdn，网页版就是亲切一些…</p>
 <p>现有一个XML文档如下：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&lt;root&gt;</div><div class="line">	&lt;Node world = "生命"&gt;</div><div class="line">		&lt;Node animal = “动物"&gt;</div><div class="line">			&lt;Node aniname = "熊猫"&gt;</div><div class="line">			&lt;/Node&gt;</div><div class="line">			&lt;Node aniname = "兔子"&gt;</div><div class="line">			&lt;/Node&gt;</div><div class="line">		&lt;/Node&gt;</div><div class="line">		&lt;Node plant = "植物"&gt;</div><div class="line">			&lt;Node planame = "仙人掌"&gt;</div><div class="line">			&lt;/Node&gt;</div><div class="line">			&lt;Node planame = "玫瑰"&gt;</div><div class="line">			&lt;/Node&gt;</div><div class="line">		&lt;/Node&gt;</div><div class="line">	&lt;/Node&gt;</div><div class="line">&lt;/root&gt;</div></pre></td></tr></table></figure></p>
 <p>要求在树状控件上显示如下：<br>–root<br>—-动物<br>—-植物</p>
@@ -415,9 +415,9 @@
     <div class="copyright">
         <p><span>本文标题:</span><a href="/2017/07/20/树状控件与列表控件交互以及XML的解析/">树状控件与列表控件交互以及XML的解析</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">胡博靖</a></p>
-        <p><span class="post-count">本文字数:</span>636字</p>
+        <p><span class="post-count">本文字数:</span>691字</p>
         <p><span>发布时间:</span>2017-07-20, 23:04:43</p>
-        <p><span>最后更新:</span>2017-07-21, 00:11:22</p>
+        <p><span>最后更新:</span>2017-07-21, 00:14:15</p>
         
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/07/20/树状控件与列表控件交互以及XML的解析/" title="树状控件与列表控件交互以及XML的解析">http://hubojing.github.io/2017/07/20/树状控件与列表控件交互以及XML的解析/</a>
