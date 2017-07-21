@@ -108,7 +108,7 @@
 
         
         <p class="header-subtitle">小清新IT旅程|为中华崛起读书</p>
-        <p class="post-count">已写80.9k字</p>
+        <p class="post-count">已写82.3k字</p>
         
 
         
@@ -374,9 +374,55 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <p>写了两篇正儿八经的技术文，我觉得这好像不是我的风格，我是小清新啊小清新[微笑]<br>我是大家的开心果啊[微笑]  所以，学技术也要感受到快乐。来来，回归自己。</p>
-<h1 id="浅谈最近用matlab遇到的几个函数："><a href="#浅谈最近用matlab遇到的几个函数：" class="headerlink" title="浅谈最近用matlab遇到的几个函数："></a>浅谈最近用matlab遇到的几个函数：</h1><p>1.num2str   str2num<br>对于一个刚学matlab不久的人，看到回调函数里满篇num2str、str2num内心满满的问号……这感觉就和十年前学英语一样……<br>然而这个2，让我觉得这个函数很有意思……<br>是的，2就是two啊！two音同to啊！<br>num2str，顾名思义，number to string，把数值转化成字符串。同理str2num我就不解释了。<br>嗯，程序员都是懒人，能省就省必须的。<br>
-          
+        <p>写了两篇正儿八经的技术文，我觉得这好像不是我的风格，我是小清新啊小清新[微笑]
+我是大家的开心果啊[微笑]  所以，学技术也要感受到快乐。来来，回归自己。</p>
+<h1 id="浅谈最近用matlab遇到的几个函数">浅谈最近用matlab遇到的几个函数：</h1>
+<p>1.num2str   str2num
+对于一个刚学matlab不久的人，看到回调函数里满篇num2str、str2num内心满满的问号……这感觉就和十年前学英语一样……
+然而这个2，让我觉得这个函数很有意思……
+是的，2就是two啊！two音同to啊！
+num2str，顾名思义，number to string，把数值转化成字符串。同理str2num我就不解释了。
+嗯，程序员都是懒人，能省就省必须的。
+&lt;!--more--&gt;
+2.ezplot
+Easy to use function plotter！E Z PLOT 懒人的智慧
+翻译：易用的一元函数绘图函数
+<strong>使用之前要定义！要定义！要定义！</strong>
+符号函数定义法则：syms x;
+那么问题来了，syms是什么鬼？
+syms是定义符号变量。哦，我们就记得了，进行符号运算前要定义它，就用syms。</p>
+<p>3.conv
+数字信号处理，嗯哼，眼熟是不是？
+卷积卷积卷积！</p>
+<p><strong>辨析：filter、conv、impz函数的区别</strong>
+在MATLAB中，可以用函数y=filter(p,d,x)实现差分方程的仿真，也可以用函数 y=conv(x,h)计算卷积，用y=impz(p,d,N)求系统的冲激响应。具体例子百度一大推。</p>
+<p>4.stem
+同样数字信号处理里出现的。Stem函数用于绘图，它是绘制针状图的好手。
+调用格式都为stem(n,x,'filled');
+只需要将需要绘制的数据存放在一个数组中，然后将这个数组作为参数传递给“stem”函数就可以得到输出图形。例如，下面的代码可以绘制正弦函数的图形：
+n=1:50; %定义序列的长度是50
+x=zeros(1,50); %注意：MATLAB中数组下标从1开始
+x(1)=1; %冲击函数
+stem(x); %绘制函数图形</p>
+<p>5.impulse
+函数impulse（）将绘出由向量 a 和 b 表示的连续系统在指定时间范围内的冲激响应h(t)的时域波形图，并能求出指定时间范围内冲激响应的数值解。
+impulse（）函数有如下四种调用格式：
+（1）impulse(b,a)：该调用格式以默认方式绘出向量 A和B定义的连续系统的冲激响应的时域波形。
+（2）impulse(b,a,t)：绘出系统在 0～t 时间范围内冲激响应的时域波形。
+（3）impulse(b,a,t1:p:t2)：绘出在 t1~t2 时间范围内，且以时间间隔 p均匀取样的冲激响应波形。
+（4）y=impulse(b,a,t1:p:t2)：不绘出波形，而是求出系统冲激响应的数值解。</p>
+<p>6.step
+step（）函数可绘出连续系统的阶跃响应 g(t)在指定时间范围的时域波形并能求出其数值解，和impulse（）函数一样也有四种调用格式。
+（1）step(b,a)：该调用格式以默认方式绘出向量 A和B定义的连续系统的阶跃响应的时域波形。
+（2）step(b,a,t)：绘出系统在 0～t 时间范围内阶跃响应的时域波形。
+（3）step(b,a,t1:p:t2)：绘出在 t1~t2 时间范围内，且以时间间隔p均匀取样的阶跃响应波形。
+（4）y=step(b,a,t1:p:t2)：不绘出波形，而是求出系统阶跃响应的数值解。</p>
+<p>惊人相似有木有！impulse 和 step 一定是一家人~~</p>
+<p>先说这么多。最近比较忙。</p>
+<p>&lt;span id=&quot;busuanzi_container_page_pv&quot;&gt;
+本文已被阅读 &lt;span id=&quot;busuanzi_value_page_pv&quot;&gt;&lt;/span&gt; 次。感谢您的点击！
+&lt;/span&gt;</p>
+
       
     </div>
     
@@ -393,10 +439,6 @@
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/matlab/">matlab</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/函数/">函数</a></li></ul>
     </div>
 
-      
-        <p class="article-more-link">
-          <a href="/2015/11/10/matlab函数杂谈/#more">阅读全文 >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -453,8 +495,25 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <div align="left"><br><img src="http://7xray0.com1.z0.glb.clouddn.com/16-5-13/17269536.jpg" width="300" height="180" alt="配图" style="float:right;"/><br><br><br><strong>利用一周零零碎碎的时间搭建起来，使用hexo在github上的个人独立博客初见雏形。</strong><br><br><br> </div>
-          
+        <p>&lt;div align=&quot;left&quot;&gt;
+&lt;img src=&quot;http://7xray0.com1.z0.glb.clouddn.com/16-5-13/17269536.jpg&quot; width=&quot;300&quot; height=&quot;180&quot; alt=&quot;配图&quot; style=&quot;float:right;&quot;/&gt;</p>
+<p><strong>利用一周零零碎碎的时间搭建起来，使用hexo在github上的个人独立博客初见雏形。</strong></p>
+<p>&lt;/div&gt;</p>
+<p>&lt;!--more--&gt;
+作为一名通信人，始终要记住科学技术是第一生产力！
+大三已至，也算入了互联网+通信领域的门。入门不难，深造不易。将把自己在学习中和实践中的技术经验以及点滴收获记录下来，作为自己在技术之路的见证和成长。
+读者可以随时在文章下方评论，以及与我联系，欢迎学术交流，难题沟通，批评指正，尤其是专业相关（比如数模电）、数学方面（数学虐我千百遍，我待数学如初恋[笑]）。自觉天资不高，但对于技术，心向往之，但愿各位指点一二。</p>
+<p>I manage to find time to build this blog for a week,which used hexo static frame on the github,and it is finished preliminarily.
+As a Communication man,we should always keep in mind that science and technology are primary productive force!
+I'm already learn elementary courses since I'm a junior student today. To cross the threshold is not difficult, but mastery is another question.Therefore,I will take notes on the blog through the learning and practice process,to witness my growth on the way.
+Readers can commit on the bottom of the article,and contact with me.Welcome academic exchange and question communication.You can oblige me with your valuable comments about major related(digital electronic technology or analog electronic technology,for instance),especially math problem(^_^I am fond of mathematic).I'm not talent,but I'm adore of IT.I would appreciate it if you give me some guidance.</p>
+<p><strong>Talk is cheap,show me the code!</strong>
+<strong>Just do IT！</strong></p>
+<p>&lt;!--more--&gt;
+&lt;span id=&quot;busuanzi_container_page_pv&quot;&gt;
+本文已被阅读 &lt;span id=&quot;busuanzi_value_page_pv&quot;&gt;&lt;/span&gt; 次。感谢您的点击！
+&lt;/span&gt;</p>
+
       
     </div>
     
@@ -471,10 +530,6 @@
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/idea/">idea</a></li></ul>
     </div>
 
-      
-        <p class="article-more-link">
-          <a href="/2015/11/06/Hello World/#more">阅读全文 >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>
