@@ -12,7 +12,7 @@
 <h1 id="重要参考"><a href="#重要参考" class="headerlink" title="重要参考"></a>重要参考</h1><h2 id="msxml"><a href="#MSXML" class="headerlink" title="MSXML"></a>MSXML</h2><p>MSXML API 历史记录 <a href="https://msdn.microsoft.com/zh-cn/library/ms762314(v=vs.85).aspx" target="_blank" rel="external">https://msdn.microsoft.com/zh-cn/library/ms762314(v=vs.85).aspx</a> </p>
 <p>有C++示例  感人肺腑</p>
 <p>MSXML SDK 概述 <a href="https://msdn.microsoft.com/zh-cn/library/ms760399(v=vs.85).aspx" target="_blank" rel="external">https://msdn.microsoft.com/zh-cn/library/ms760399(v=vs.85).aspx</a> </p>
-<p>机翻水平已经不错了 虽然仔细看还是略扎心</p>
+<p><del>机翻水平已经不错了 虽然仔细看还是略扎心</del><br>心炸穿了……机翻不如看英文系列</p>
 <h2 id="treecontrol控件"><a href="#TreeControl控件" class="headerlink" title="TreeControl控件"></a>TreeControl控件</h2><p>使用 CTreeCtrl <a href="https://msdn.microsoft.com/zh-cn/library/8ws6dh1y(v=vs.120).aspx" target="_blank" rel="external">https://msdn.microsoft.com/zh-cn/library/8ws6dh1y(v=vs.120).aspx</a> </p>
 <h2 id="listcontrol控件"><a href="#ListControl控件" class="headerlink" title="ListControl控件"></a>ListControl控件</h2><p>使用 CListCtrl <a href="https://msdn.microsoft.com/zh-cn/library/cc468276(v=vs.71).aspx" target="_blank" rel="external">https://msdn.microsoft.com/zh-cn/library/cc468276(v=vs.71).aspx</a><br>创建列表控件 (List Control) <a href="https://msdn.microsoft.com/zh-cn/library/cc451545(v=vs.71).aspx" target="_blank" rel="external">https://msdn.microsoft.com/zh-cn/library/cc451545(v=vs.71).aspx</a> </p>
 <p>明明都是msdn，网页版就是亲切一些…</p>
@@ -21,8 +21,11 @@
 <p>在树状控件上点击“动物”，在列表控件上出现<br>1 熊猫<br>2 兔子</p>
 <p>同理，点击“植物”，在列表控件上出现<br>1 仙人掌<br>2 玫瑰</p>
 <p>之前的思路：先SelectedSingleNode(“/Node/Node”)，定位到动物这一层。然后获得该节点的属性即aniname，插入树状控件。接着指向其兄弟节点，将兄弟节点（植物）的属性同样插入树状控件。如果新插入节点，可能需递归（但都是在动物同层面）。<br>因为并没有将“熊猫”“兔子”插入树状控件，因此无法使用m_tree.GetChildItem(ht)获取。所以我想通过“动物”植物“的aniname和planame来反过来查找对应xml里的节点pNode（这里存在问题how to find it?遍历xml找同样的名字？Item能和node存在对应关系么）。找到后，只需GetChildNode之类获取孩子节点，再插入到列表控件中（也就是和列表控件交互实际是列表控件在和xml直接交互，树控件只起到选择某个item，对应到xml中）。<br>简单说来：选择树节点-&gt;获得该xml对应节点-&gt;获得每一个孩子结点-&gt;获得孩子节点的文本和其他路径属性-&gt;通过列表插入</p>
-<p>就算是为树状控件和列表控件设置一个类或者一个结构，先要把xml所需的信息全部放入。毕竟投射到树状控件的节点并非全部节点，最重要的是<strong>列表控件所需节点不在树状控件中</strong>。那么添加删除时，对应的类或结构也应相应操作，是否繁琐。但感觉之前用树控件用错了，只是获取了文本，数据并没传入。</p>
-<p>当连问题都表达不清楚时，说明很多东西压根就没懂。明天好好看MSDN…还得看看DOM树</p>
+<p>就算是为树状控件和列表控件设置一个类或者一个结构，先要把xml所需的信息全部放入。毕竟投射到树状控件的节点并非全部节点，最重要的是<strong>列表控件所需节点不在树状控件中</strong>。那么添加删除时，对应的类或结构也应相应操作，<del>是否繁琐</del>。但感觉之前用树控件用错了，只是获取了文本，数据并没传入。</p>
+<p>当连问题都表达不清楚时，说明很多东西压根就没懂。<del>明天好好看MSDN…还得看看DOM树</del></p>
+<p>又过了一天。思路变为：为不直接操作XML，应创建一个结构体，利用MSXML解析XML将信息放入结构体中，在后续树状控件和列表控件操作时都调用该结构体而非XML。</p>
+<p>所以当务之急是如何传数据给结构体。</p>
+<p>想给脑袋植入MSDN芯片…</p>
 ]]></content>
       
         <categories>
@@ -383,9 +386,9 @@
             
             <tag> MFC </tag>
             
-            <tag> C++ </tag>
-            
             <tag> socket </tag>
+            
+            <tag> C++ </tag>
             
         </tags>
         
