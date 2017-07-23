@@ -4,12 +4,63 @@
   
     
     <entry>
+      <title><![CDATA[树]]></title>
+      <url>http://hubojing.github.io/2017/07/23/%E6%A0%91/</url>
+      <content type="html"><![CDATA[<div align="left"><br><img src="" width="300" height="180" style="float:right;"><br><br><br>大热天敲代码与看书更配哦　　<br><br><br> </div>
+
+<a id="more"></a>
+<p>最近更新频繁的原因如下：<br>上周<br><img src="http://img.blog.csdn.net/20170723212235401?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="上周"></p>
+<p>未来一周<br><img src="http://img.blog.csdn.net/20170723212159371?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="未来一周"></p>
+<p>热成熟透的咸鱼  不如宅着做咸鱼</p>
+<hr>
+<p>伪代码。</p>
+<h1 id="二叉树的链式存储结构"><a href="#二叉树的链式存储结构" class="headerlink" title="二叉树的链式存储结构"></a>二叉树的链式存储结构</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> BiTNode&#123;</div><div class="line">	ElemType data;<span class="comment">//数据域</span></div><div class="line">	<span class="keyword">struct</span> BiTNode *lchild, *rchild;<span class="comment">//左、右孩子指针</span></div><div class="line">&#125;BiTNode, *BiTree;</div></pre></td></tr></table></figure>
+<h1 id="二叉树的遍历"><a href="#二叉树的遍历" class="headerlink" title="二叉树的遍历"></a>二叉树的遍历</h1><p>例：1<br> 2      3<br>   4       5<br> 6  </p>
+<h2 id="先序遍历preorder"><a href="#先序遍历（PreOrder）" class="headerlink" title="先序遍历（PreOrder）"></a>先序遍历（PreOrder）</h2><p>根-&gt;左-&gt;右<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">PreOrder</span><span class="params">(BiTree T)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span> (T != <span class="literal">NULL</span>)&#123;</div><div class="line">		visit(T);<span class="comment">//访问根节点</span></div><div class="line">		PreOrder(T-&gt;lchild);<span class="comment">//递归遍历左子树</span></div><div class="line">		PreOrder(T-&gt;rchild);<span class="comment">//递归遍历右子树</span></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>124635</p>
+<h2 id="中序遍历inorder"><a href="#中序遍历（InOrder）" class="headerlink" title="中序遍历（InOrder）"></a>中序遍历（InOrder）</h2><p>左-&gt;根-&gt;右<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">InOrder</span><span class="params">(BiTree T)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span> (T != <span class="literal">NULL</span>)&#123;</div><div class="line">		InOrder(T-&gt;lchild);<span class="comment">//递归遍历左子树</span></div><div class="line">		visit(T);<span class="comment">//访问根节点</span></div><div class="line">		InOrder(T-&gt;rchild);<span class="comment">//递归遍历右子树</span></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>264135</p>
+<h2 id="后序遍历postorder"><a href="#后序遍历（PostOrder）" class="headerlink" title="后序遍历（PostOrder）"></a>后序遍历（PostOrder）</h2><p>左-&gt;右-&gt;根<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">PostOrder</span><span class="params">(BiTree T)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span> (T != <span class="literal">NULL</span>)</div><div class="line">	&#123;</div><div class="line">		PostOrder(T-&gt;lchild);<span class="comment">//递归遍历左子树</span></div><div class="line">		PostOrder(T-&gt;rchild);<span class="comment">//递归遍历右子树</span></div><div class="line">		visit(T);<span class="comment">//访问根节点</span></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>642531</p>
+<p>时间复杂度都是O(n)，空间复杂度为O(n)。</p>
+<h1 id="中序遍历的非递归算法"><a href="#中序遍历的非递归算法" class="headerlink" title="中序遍历的非递归算法"></a>中序遍历的非递归算法</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">InOrder2</span><span class="params">(BiTree T)</span></span>&#123;</div><div class="line">	<span class="comment">//二叉树中序遍历的非递归算法，算法需要借助一个栈</span></div><div class="line">	InitStack(S);</div><div class="line">	BiTree p = T;				<span class="comment">//初始化栈；p是遍历指针</span></div><div class="line">	<span class="keyword">while</span> (p || !IsEmpty(S))&#123;		<span class="comment">//栈不空或p不空时循环</span></div><div class="line">		<span class="keyword">if</span> (p)&#123;						<span class="comment">//根指针进展，遍历左子树</span></div><div class="line">			Push(S, p);					<span class="comment">//每遇到非空二叉树先向左走</span></div><div class="line">			p = p-&gt;lchild;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span>&#123;						<span class="comment">//根指针退栈，访问根节点，遍历右子树</span></div><div class="line">			Pop(S, p); visit(p);		<span class="comment">//退栈，访问根节点</span></div><div class="line">			p = p-&gt;rchild;			<span class="comment">//再向右子树走</span></div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="二叉树的层次遍历"><a href="#二叉树的层次遍历" class="headerlink" title="二叉树的层次遍历"></a>二叉树的层次遍历</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">LevelOrder</span><span class="params">(BiTree T)</span></span>&#123;</div><div class="line">	InitQueue(Q);<span class="comment">//初始化辅助队列</span></div><div class="line">	BiTree p;</div><div class="line">	EnQueue(Q, T);<span class="comment">//将根结点入队</span></div><div class="line">	<span class="keyword">while</span> (!IsEmpty(Q))&#123;<span class="comment">//队列不空循环</span></div><div class="line">		DeQueue(Q, p);<span class="comment">//队头元素出队</span></div><div class="line">		visit(p);<span class="comment">//访问当前p所指向结点</span></div><div class="line">		<span class="keyword">if</span> (p-&gt;lchild != <span class="literal">NULL</span>)</div><div class="line">		&#123;</div><div class="line">			EnQueue(Q, p-&gt;lchild);<span class="comment">//左子树不空，则左子树入队列</span></div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> (p-&gt;rchild != <span class="literal">NULL</span>)</div><div class="line">		&#123;</div><div class="line">			EnQueue(Q, p-&gt;rchild);<span class="comment">//右子树不空，则右子树入队列</span></div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="树的存储结构"><a href="#树的存储结构" class="headerlink" title="树的存储结构"></a>树的存储结构</h1><h2 id="双亲表示法"><a href="#双亲表示法" class="headerlink" title="双亲表示法"></a>双亲表示法</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX_TREE_SIZE 100	<span class="comment">//树中最多结点数</span></span></div><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span>&#123;		<span class="comment">//树的结点定义</span></div><div class="line">	ElemType data;	<span class="comment">//数据元素</span></div><div class="line">	<span class="keyword">int</span> parent;	<span class="comment">//双亲位置域</span></div><div class="line">&#125;PTNode;</div><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span>&#123;		<span class="comment">//树的类型定义</span></div><div class="line">	PTNode nodes[MAX_TREE_SIZE];	<span class="comment">//双亲表示</span></div><div class="line">	<span class="keyword">int</span> n;		<span class="comment">//结点数</span></div><div class="line">&#125;PTree;</div></pre></td></tr></table></figure>
+<p>求结点的孩子时需遍历整个结构。</p>
+<h2 id="孩子表示法"><a href="#孩子表示法" class="headerlink" title="孩子表示法"></a>孩子表示法</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> CTNode	<span class="comment">//孩子结点</span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">int</span> child;</div><div class="line">	<span class="keyword">struct</span> CTNode *next;</div><div class="line">&#125;*ChildPtr;</div><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></div><div class="line">&#123;</div><div class="line">	TElemType data;</div><div class="line">	ChildPtr firstchild;<span class="comment">//孩子链表头指针</span></div><div class="line">&#125;CTBox;</div><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></div><div class="line">&#123;</div><div class="line">	CTBox nodes[MAX_TREE_SIZE];</div><div class="line">	<span class="keyword">int</span> n, r;	<span class="comment">//结点数和根的位置</span></div><div class="line">&#125;CTree;</div></pre></td></tr></table></figure>
+<p>求结点的双亲时需遍历N个结点中孩子链表指针域所指向的N个孩子链表。</p>
+<h2 id="孩子兄弟表示法二叉树表示法"><a href="#孩子兄弟表示法（二叉树表示法）" class="headerlink" title="孩子兄弟表示法（二叉树表示法）"></a>孩子兄弟表示法（二叉树表示法）</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> CSNode</div><div class="line">&#123;</div><div class="line">	ElemType data;	<span class="comment">//数据域</span></div><div class="line">	<span class="keyword">struct</span> CSNode *firstchild, *nextsibling;	<span class="comment">//第一个孩子和右兄弟指针</span></div><div class="line">&#125;CSNode, *CSTree;</div></pre></td></tr></table></figure>
+<p>易查找结点的孩子，若为每个结点增设一个parent域指向其父节点，则查找结点的父结点也很方便。</p>
+<p>树转换为二叉树的规则：每个结点左指针指向它的第一个孩子结点，右指针指向它在树中的相邻兄弟结点，可表示为“左孩子右兄弟”。由于根节点没有兄弟，所以由树转换而得的二叉树没有右子树。</p>
+<p>例：<br><img src="http://img.blog.csdn.net/20160405115409687" alt="一颗具体的树"><br><img src="http://img.blog.csdn.net/20160405121851681" alt="转换后"></p>
+<h1 id="c实现"><a href="#C-实现" class="headerlink" title="C++实现"></a>C++实现</h1><p>由于博主不允许转载，因此详见参考。<br>为防止程序一闪而过，在main程序末尾添加system(“pause”);使画面停留。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p>数据结构教材<br><a href="http://blog.csdn.net/linux_ever/article/details/51063795" target="_blank" rel="external">数据结构与算法——普通树的定义与C++实现</a><br><a href="http://blog.csdn.net/jkay_wong/article/details/6635984" target="_blank" rel="external">C++树（兄弟孩子结构实现）</a><br><a href="http://www.educity.cn/develop/478944.html" target="_blank" rel="external">VC++ 树的孩子兄弟表示法</a><br><a href="http://blog.csdn.net/insistgogo/article/details/6876867" target="_blank" rel="external">使用C++ 和 孩子兄弟表示法实现树</a><br><a href="http://blog.csdn.net/htyurencaotang/article/details/7781920" target="_blank" rel="external">孩子兄弟表示法实现树</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 互联网 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 树 </tag>
+            
+            <tag> 数据结构 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[树状控件与列表控件交互以及XML的解析]]></title>
       <url>http://hubojing.github.io/2017/07/20/%E6%A0%91%E7%8A%B6%E6%8E%A7%E4%BB%B6%E4%B8%8E%E5%88%97%E8%A1%A8%E6%8E%A7%E4%BB%B6%E4%BA%A4%E4%BA%92%E4%BB%A5%E5%8F%8AXML%E7%9A%84%E8%A7%A3%E6%9E%90/</url>
       <content type="html"><![CDATA[<div align="left"><br><img src="http://images.cnitblog.com/i/227236/201405/121542044687776.jpg" width="300" height="180" style="float:right;"><br><br><br>300多M即将维持十天工作生活　　<br><br><br> </div>
 
 <a id="more"></a>
-<h1 id="重要参考"><a href="#重要参考" class="headerlink" title="重要参考"></a>重要参考</h1><h2 id="msxml"><a href="#MSXML" class="headerlink" title="MSXML"></a>MSXML</h2><p>MSXML API 历史记录 <a href="https://msdn.microsoft.com/zh-cn/library/ms762314(v=vs.85).aspx" target="_blank" rel="external">https://msdn.microsoft.com/zh-cn/library/ms762314(v=vs.85).aspx</a> </p>
+<h1 id="msdn参考"><a href="#MSDN参考" class="headerlink" title="MSDN参考"></a>MSDN参考</h1><h2 id="msxml"><a href="#MSXML" class="headerlink" title="MSXML"></a>MSXML</h2><p>MSXML API 历史记录 <a href="https://msdn.microsoft.com/zh-cn/library/ms762314(v=vs.85).aspx" target="_blank" rel="external">https://msdn.microsoft.com/zh-cn/library/ms762314(v=vs.85).aspx</a> </p>
 <p>有C++示例  感人肺腑</p>
 <p>MSXML SDK 概述 <a href="https://msdn.microsoft.com/zh-cn/library/ms760399(v=vs.85).aspx" target="_blank" rel="external">https://msdn.microsoft.com/zh-cn/library/ms760399(v=vs.85).aspx</a> </p>
 <p><del>机翻水平已经不错了 虽然仔细看还是略扎心</del><br>心扎穿了……机翻不如看英文系列</p>
@@ -20,14 +71,16 @@
 <p>要求在树状控件上显示如下：<br>–root<br>—-动物<br>—-植物</p>
 <p>在树状控件上点击“动物”，在列表控件上出现<br>1 熊猫<br>2 兔子</p>
 <p>同理，点击“植物”，在列表控件上出现<br>1 仙人掌<br>2 玫瑰</p>
-<p>之前的思路：先SelectedSingleNode(“/Node/Node”)，定位到动物这一层。然后获得该节点的属性即aniname，插入树状控件。接着指向其兄弟节点，将兄弟节点（植物）的属性同样插入树状控件。如果新插入节点，可能需递归（但都是在动物同层面）。<br>因为并没有将“熊猫”“兔子”插入树状控件，因此无法使用m_tree.GetChildItem(ht)获取。所以我想通过“动物”植物“的aniname和planame来反过来查找对应xml里的节点pNode（这里存在问题how to find it?遍历xml找同样的名字？Item能和node存在对应关系么）。找到后，只需GetChildNode之类获取孩子节点，再插入到列表控件中（也就是和列表控件交互实际是列表控件在和xml直接交互，树控件只起到选择某个item，对应到xml中）。<br>简单说来：选择树节点-&gt;获得该xml对应节点-&gt;获得每一个孩子结点-&gt;获得孩子节点的文本和其他路径属性-&gt;通过列表插入</p>
-<p>就算是为树状控件和列表控件设置一个类或者一个结构，先要把xml所需的信息全部放入。毕竟投射到树状控件的节点并非全部节点，最重要的是<strong>列表控件所需节点不在树状控件中</strong>。那么添加删除时，对应的类或结构也应相应操作，<del>是否繁琐</del>。但感觉之前用树控件用错了，只是获取了文本，数据并没传入。</p>
+<p>之前的思路：先SelectedSingleNode(“/Node/Node”)，定位到动物这一层。然后获得该结点的属性即aniname，插入树状控件。接着指向其兄弟结点，将兄弟结点（植物）的属性同样插入树状控件。如果新插入结点，可能需递归（但都是在动物同层面）。<br>因为并没有将“熊猫”“兔子”插入树状控件，因此无法使用m_tree.GetChildItem(ht)获取。所以我想通过“动物”植物“的aniname和planame来反过来查找对应xml里的结点pNode（这里存在问题how to find it?遍历xml找同样的名字？Item能和node存在对应关系么）。找到后，只需GetChildNode之类获取孩子结点，再插入到列表控件中（也就是和列表控件交互实际是列表控件在和xml直接交互，树控件只起到选择某个item，对应到xml中）。<br>简单说来：选择树结点-&gt;获得该xml对应结点-&gt;获得每一个孩子结点-&gt;获得孩子结点的文本和其他路径属性-&gt;通过列表插入</p>
+<p>就算是为树状控件和列表控件设置一个类或者一个结构，先要把xml所需的信息全部放入。毕竟投射到树状控件的结点并非全部结点，最重要的是<strong>列表控件所需结点不在树状控件中</strong>。那么添加删除时，对应的类或结构也应相应操作，<del>是否繁琐</del>。但感觉之前用树控件用错了，只是获取了文本，数据并没传入。</p>
 <p>当连问题都表达不清楚时，说明很多东西压根就没懂。<del>明天好好看MSDN…还得看看DOM树</del></p>
 <p>又过了一天。思路变为：为不直接操作XML，应创建一个结构体，利用MSXML解析XML将信息放入结构体中，在后续树状控件和列表控件操作时都调用该结构体而非XML。</p>
 <p><del>所以当务之急是如何传数据给结构体，好像会用到std::map映射，</del><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">~~<span class="built_in">std</span>::<span class="built_in">map</span>&lt;CString, <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;信息&gt;&gt;~~</div></pre></td></tr></table></figure></p>
 <p><del>学习下怎么用…</del></p>
-<p>嗯……就说看起来没那么复杂才对………卡了几天的问题  明天终于可以实现这个demo</p>
+<p><del>嗯……就说看起来没那么复杂才对………卡了几天的问题  明天终于可以实现这个demo</del> 还没实现</p>
+<p>前面那么多废话，其实说白了就是要<strong>自己生成一棵树</strong>，数据来源是xml，通过MSXML获得每个结点信息，自己生成的树中只包含所需要的xml片段信息，之后树控件根据指针来获得选择结点的孩子结点。<br>xml解析的最关键之处，就是如何将xml文件内容解析成内存中的可用、易用的程序数据—DOM(Document Object Model)树。DOM其实就是多叉树，每个节点只需知道自己的第一个子节点（first child）和下一个兄弟节点（next sibling），即可实现元素数据的解析。</p>
 <p>想给脑袋植入MSDN芯片…</p>
+<h1 id="xml其他参考"><a href="#xml其他参考" class="headerlink" title="xml其他参考"></a>xml其他参考</h1><p><a href="http://blog.csdn.net/dsw846169600/article/details/6713324" target="_blank" rel="external">VC++读取XML文件生成树</a><br><a href="http://www.cnblogs.com/areliang/archive/2011/11/23/2260566.html" target="_blank" rel="external">C++中使用DOM写XML文档</a><br><a href="https://wenku.baidu.com/view/d4ecfe14b8f67c1cfbd6b801.html" target="_blank" rel="external">C++中如何遍历XML</a><br><a href="http://www.cppblog.com/kongque/archive/2010/01/16/105829.aspx" target="_blank" rel="external">C++库–使用TinyXML库遍历XML文件</a>  方法可学习<br><a href="http://blog.csdn.net/aasmfox/article/details/50863738" target="_blank" rel="external">msxml dom 全解析</a></p>
 ]]></content>
       
         <categories>
@@ -54,7 +107,7 @@
     <entry>
       <title><![CDATA[≧∇≦]]></title>
       <url>http://hubojing.github.io/2017/07/18/%E6%B1%82%E8%B4%AD/</url>
-      <content type="html"><![CDATA[<div align="left"><br><img src="http://img3.duitang.com/uploads/item/201507/25/20150725014419_as3cW.jpeg" width="300" height="180" style="float:right;"><br><br> </div>
+      <content type="html"><![CDATA[<div align="left"><br><img src="http://b-ssl.duitang.com/uploads/item/201510/12/20151012094245_twKjA.jpeg" width="300" height="180" style="float:right;"><br><br> </div>
 
 <p> 　　　　<br>　　<br>这贴适合又不适合卡吧老司机进来<br>　　<br>　　<br>　　<br> <a id="more"></a></p>
 <p> <strong>不是组装电脑！让你失望了[微笑]</strong></p>
@@ -1456,9 +1509,9 @@
             
             <tag> blog </tag>
             
-            <tag> hexo </tag>
-            
             <tag> 主题 </tag>
+            
+            <tag> hexo </tag>
             
         </tags>
         
@@ -2298,9 +2351,9 @@ d, --max-depth（所查看文件的深度）
         
         <tags>
             
-            <tag> PPT动画 </tag>
-            
             <tag> blog </tag>
+            
+            <tag> PPT动画 </tag>
             
         </tags>
         
