@@ -77,12 +77,12 @@
 <p>又过了一天。思路变为：为不直接操作XML，应创建一个结构体，利用MSXML解析XML将信息放入结构体中，在后续树状控件和列表控件操作时都调用该结构体而非XML。</p>
 <p><del>所以当务之急是如何传数据给结构体，好像会用到std::map映射，</del><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">~~<span class="built_in">std</span>::<span class="built_in">map</span>&lt;CString, <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;信息&gt;&gt;~~</div></pre></td></tr></table></figure></p>
 <p><del>学习下怎么用…</del></p>
-<p><del>嗯……就说看起来没那么复杂才对………卡了几天的问题  明天终于可以实现这个demo</del> 还没实现</p>
+<p><del>嗯……就说看起来没那么复杂才对………卡了几天的问题  明天终于可以实现这个demo</del> 还没实现 少立flag多做事…</p>
 <p>前面那么多废话，其实说白了就是要<strong>自己生成一棵树</strong>，数据来源是xml，通过MSXML获得每个结点信息，自己生成的树中只包含所需要的xml片段信息，之后树控件根据指针来获得选择结点的孩子结点。<br>xml解析的最关键之处，就是如何将xml文件内容解析成内存中的可用、易用的程序数据—DOM(Document Object Model)树。DOM其实就是多叉树，每个节点只需知道自己的第一个子节点（first child）和下一个兄弟节点（next sibling），即可实现元素数据的解析。</p>
 <p>想给脑袋植入MSDN芯片…</p>
 <p>理一理六层结构：<br>map-&gt;分类节点-&gt;vector-&gt;n个小节点-&gt;结构体-&gt;xml</p>
 <p>如果要求分类节点就一层，是完全OK的。但如果要求分类下面还需要小分类，这就很不ok了。换为<br>两个结构体：1）小节点结构体-&gt;xml<br>2)分类节点结构体-&gt;vector-&gt;1)<br>(比map还简单些…)</p>
-<p>发现六层结构办不到时，仿佛阿米诺骨牌立到最后几块，突然看到最开始的一段里有一块距离放远了……<br>但换成双结构体其实改动也没太多，又好像把那块出差错的给换了块适合长度的，整个链条还是能补完整的。<br>思维过山车  跌宕起伏</p>
+<p>发现六层结构办不到时，仿佛多米诺骨牌立到最后几块，突然看到最开始的一段里有一块距离放远了……<br>但换成双结构体其实改动也没太多，又好像把那块出差错的给换了块适合长度的，整个链条还是能补完整的。<br>思维过山车  跌宕起伏</p>
 <h1 id="方法记录"><a href="#方法记录" class="headerlink" title="方法记录"></a>方法记录</h1><h2 id="元素遍历"><a href="#元素遍历" class="headerlink" title="元素遍历"></a>元素遍历</h2><p>for循环取出每一个元素进行相应比较。(递归不如遍历)</p>
 <h2 id="父对话框给自对话框传值"><a href="#父对话框给自对话框传值" class="headerlink" title="父对话框给自对话框传值"></a>父对话框给自对话框传值</h2><p>父对话框 BookDlg  子对话框TitleDlg<br>在父对话框中 TitleDlg dlg(this);<br>在子对话框中 CBookDlg <em>parent = (CBookDlg</em>)GetParent();<br>然后就可以使用了：<br>CString text=pParent-&gt;m_sentence;<br>m_sentence是父对话框类的成员变量</p>
 <h2 id="在子对话框显示图片"><a href="#在子对话框显示图片" class="headerlink" title="在子对话框显示图片"></a>在子对话框显示图片</h2><p>给自对话框添加OnInitDlg()<br>添加OnPaint()<br>(记得加WM_ONPAINT消息)<br>在OnInitDlg中加载图片，在OnPanint()中重绘图片。（在初始化里重绘是不行的）</p>
@@ -1540,9 +1540,9 @@
             
             <tag> blog </tag>
             
-            <tag> 主题 </tag>
-            
             <tag> hexo </tag>
+            
+            <tag> 主题 </tag>
             
         </tags>
         
