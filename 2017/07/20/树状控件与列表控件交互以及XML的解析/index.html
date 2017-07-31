@@ -22,7 +22,7 @@
 <meta property="og:site_name" content="胡博靖的技术博客">
 <meta property="og:description" content="300多M即将维持十天工作生活">
 <meta property="og:image" content="http://images.cnitblog.com/i/227236/201405/121542044687776.jpg">
-<meta property="og:updated_time" content="2017-07-31T14:47:12.458Z">
+<meta property="og:updated_time" content="2017-07-31T15:03:03.475Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="树状控件与列表控件交互以及XML的解析">
 <meta name="twitter:description" content="300多M即将维持十天工作生活">
@@ -106,7 +106,7 @@
 
         
         <p class="header-subtitle">小清新IT旅程|为中华崛起读书</p>
-        <p class="post-count">已写83.5k字</p>
+        <p class="post-count">已写83.6k字</p>
         
 
         
@@ -413,12 +413,16 @@
 <p>理一理六层结构：<br>map-&gt;分类节点-&gt;vector-&gt;n个小节点-&gt;结构体-&gt;xml</p>
 <p>如果要求分类节点就一层，是完全OK的。但如果要求分类下面还需要小分类，这就很不ok了。换为<br>两个结构体：1）小节点结构体-&gt;xml<br>2)分类节点结构体-&gt;vector-&gt;1)<br>(比map还简单些…)</p>
 <p>发现六层结构办不到时，仿佛阿米诺骨牌立到最后几块，突然看到最开始的一段里有一块距离放远了……<br>但换成双结构体其实改动也没太多，又好像把那块出差错的给换了块适合长度的，整个链条还是能补完整的。<br>思维过山车  跌宕起伏</p>
-<h1 id="方法记录"><a href="#方法记录" class="headerlink" title="方法记录"></a>方法记录</h1><h2 id="元素遍历"><a href="#元素遍历" class="headerlink" title="元素遍历"></a>元素遍历</h2><p>for循环取出每一个元素进行相应比较。</p>
+<h1 id="方法记录"><a href="#方法记录" class="headerlink" title="方法记录"></a>方法记录</h1><h2 id="元素遍历"><a href="#元素遍历" class="headerlink" title="元素遍历"></a>元素遍历</h2><p>for循环取出每一个元素进行相应比较。(递归不如遍历)</p>
 <h2 id="父对话框给自对话框传值"><a href="#父对话框给自对话框传值" class="headerlink" title="父对话框给自对话框传值"></a>父对话框给自对话框传值</h2><p>父对话框 BookDlg  子对话框TitleDlg<br>在父对话框中 TitleDlg dlg(this);<br>在子对话框中 CBookDlg <em>parent = (CBookDlg</em>)GetParent();<br>然后就可以使用了：<br>CString text=pParent-&gt;m_sentence;<br>m_sentence是父对话框类的成员变量</p>
 <h2 id="在子对话框显示图片"><a href="#在子对话框显示图片" class="headerlink" title="在子对话框显示图片"></a>在子对话框显示图片</h2><p>给自对话框添加OnInitDlg()<br>添加OnPaint()<br>(记得加WM_ONPAINT消息)<br>在OnInitDlg中加载图片，在OnPanint()中重绘图片。（在初始化里重绘是不行的）</p>
-<h2 id="vector"><a href="#vector" class="headerlink" title="vector"></a>vector</h2><p>vector容器，push_back添加元素。<br>遍历元素使用迭代器iterator，for循环</p>
-<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><p>std::map<cstring, std::vector<信息="">&gt;<br>一个CString对应一个vector。查询时也是先遍历（迭代器）再比较，it-&gt;first指代返回关键字，it-&gt;second指代数据。</cstring,></p>
+<h2 id="vector"><a href="#vector" class="headerlink" title="vector"></a>vector</h2><p>添加头文件#include <vector><br>vector容器，std::vector&lt;类型*&gt; name;  push_back添加元素。<br>遍历元素使用迭代器iterator，for循环</vector></p>
+<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><p>添加头文件#include <map><br>std::map<cstring, std::vector<信息="">&gt;<br>一个CString对应一个vector。查询时也是先遍历（迭代器）再比较，it-&gt;first指代返回关键字，it-&gt;second指代数据。</cstring,></map></p>
 <h2 id="父子循环"><a href="#父子循环" class="headerlink" title="父子循环"></a>父子循环</h2><p>父子循环遍历时避免使用相同的变量名。</p>
+<h2 id="树控件相关"><a href="#树控件相关" class="headerlink" title="树控件相关"></a>树控件相关</h2><h3 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h3><p>m_tree.InsertItem((_bstr_t)variantValue, 1, 1, ht, TVI_LAST);<br>依次是：插入的数据，树前图标点击前，树前图标点击后，父节点，插在最后。</p>
+<h2 id="列表控件相关"><a href="#列表控件相关" class="headerlink" title="列表控件相关"></a>列表控件相关</h2><h3 id="在列表最后插入"><a href="#在列表最后插入" class="headerlink" title="在列表最后插入"></a>在列表最后插入</h3><p>int iRow = m_list.GetItemCount();<br>m_list.InsertItem(iRow, text, 0);<br>text 插入的文本 0表示imagelist中的第一个图片<br>imagelist是由一幅幅image拼起来的长图列表</p>
+<h2 id="xml操作"><a href="#xml操作" class="headerlink" title="xml操作"></a>xml操作</h2><h3 id="取属性"><a href="#取属性" class="headerlink" title="取属性"></a>取属性</h3><p>pNode-&gt;get_attributes(&amp;pAttrMap);<br>pAttrMap-&gt;get_item(0, &amp;pAttrItem);<br>pAttrItem-&gt;get_nodeTypedValue(&amp;VariantValue);</p>
+<p>To be continued…</p>
 
       
     </div>
@@ -432,9 +436,9 @@
     <div class="copyright">
         <p><span>本文标题:</span><a href="/2017/07/20/树状控件与列表控件交互以及XML的解析/">树状控件与列表控件交互以及XML的解析</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">胡博靖</a></p>
-        <p><span class="post-count">本文字数:</span>1,427字</p>
+        <p><span class="post-count">本文字数:</span>1,565字</p>
         <p><span>发布时间:</span>2017-07-20, 23:04:43</p>
-        <p><span>最后更新:</span>2017-07-31, 22:47:12</p>
+        <p><span>最后更新:</span>2017-07-31, 23:03:03</p>
         
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/07/20/树状控件与列表控件交互以及XML的解析/" title="树状控件与列表控件交互以及XML的解析">http://hubojing.github.io/2017/07/20/树状控件与列表控件交互以及XML的解析/</a>
@@ -471,7 +475,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#msdn参考"><span class="toc-number">1.</span> <span class="toc-text">MSDN参考</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#msxml"><span class="toc-number">1.1.</span> <span class="toc-text">MSXML</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#treecontrol控件"><span class="toc-number">1.2.</span> <span class="toc-text">TreeControl控件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#listcontrol控件"><span class="toc-number">1.3.</span> <span class="toc-text">ListControl控件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#思维碰撞"><span class="toc-number">2.</span> <span class="toc-text">思维碰撞</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#方法记录"><span class="toc-number">3.</span> <span class="toc-text">方法记录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#元素遍历"><span class="toc-number">3.1.</span> <span class="toc-text">元素遍历</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#父对话框给自对话框传值"><span class="toc-number">3.2.</span> <span class="toc-text">父对话框给自对话框传值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在子对话框显示图片"><span class="toc-number">3.3.</span> <span class="toc-text">在子对话框显示图片</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vector"><span class="toc-number">3.4.</span> <span class="toc-text">vector</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#map"><span class="toc-number">3.5.</span> <span class="toc-text">map</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#父子循环"><span class="toc-number">3.6.</span> <span class="toc-text">父子循环</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#msdn参考"><span class="toc-number">1.</span> <span class="toc-text">MSDN参考</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#msxml"><span class="toc-number">1.1.</span> <span class="toc-text">MSXML</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#treecontrol控件"><span class="toc-number">1.2.</span> <span class="toc-text">TreeControl控件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#listcontrol控件"><span class="toc-number">1.3.</span> <span class="toc-text">ListControl控件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#思维碰撞"><span class="toc-number">2.</span> <span class="toc-text">思维碰撞</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#方法记录"><span class="toc-number">3.</span> <span class="toc-text">方法记录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#元素遍历"><span class="toc-number">3.1.</span> <span class="toc-text">元素遍历</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#父对话框给自对话框传值"><span class="toc-number">3.2.</span> <span class="toc-text">父对话框给自对话框传值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#在子对话框显示图片"><span class="toc-number">3.3.</span> <span class="toc-text">在子对话框显示图片</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vector"><span class="toc-number">3.4.</span> <span class="toc-text">vector</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#map"><span class="toc-number">3.5.</span> <span class="toc-text">map</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#父子循环"><span class="toc-number">3.6.</span> <span class="toc-text">父子循环</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#树控件相关"><span class="toc-number">3.7.</span> <span class="toc-text">树控件相关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#插入"><span class="toc-number">3.7.1.</span> <span class="toc-text">插入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#列表控件相关"><span class="toc-number">3.8.</span> <span class="toc-text">列表控件相关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#在列表最后插入"><span class="toc-number">3.8.1.</span> <span class="toc-text">在列表最后插入</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#xml操作"><span class="toc-number">3.9.</span> <span class="toc-text">xml操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#取属性"><span class="toc-number">3.9.1.</span> <span class="toc-text">取属性</span></a></li></ol></li></ol></li></ol>
         
     </div>
     <style>
