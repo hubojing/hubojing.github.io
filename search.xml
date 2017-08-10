@@ -4,6 +4,40 @@
   
     
     <entry>
+      <title><![CDATA[古风自动造句器]]></title>
+      <url>http://hubojing.github.io/2017/08/10/%E5%8F%A4%E9%A3%8E%E8%87%AA%E5%8A%A8%E9%80%A0%E5%8F%A5%E5%99%A8/</url>
+      <content type="html"><![CDATA[<div align="left"><br><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1502388565373&di=aa762211c7ac084b1942735633c9b050&imgtype=0&src=http%3A%2F%2Fimgup01.dumanhua.com%2Fdumanhua%2F2017-07%2F03%2F14%2F14990632766702_1.jpg" width="300" height="180" style="float:right;"><br><br><br>小桥流水肯定有人家，<br>两人对坐必须在饮茶。<br>为何提笔再难描绘出风雅。　　<br><br>一个C++古风自动写诗器。<br><br> </div>
+
+<a id="more"></a>
+<p>灵感来自<br><img src="http://img.blog.csdn.net/20170810230338826?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="古风"></p>
+<p>今天看到这个，突然就想到文中提到的这个想法不难实现哇~那自己实现一个玩玩儿吧，主要就是个产生随机数的问题嘛~</p>
+<p>上代码：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> CPoetryDlg::OnBnClickedOk()</div><div class="line">&#123;</div><div class="line">	<span class="comment">// <span class="doctag">TODO:</span>  在此添加控件通知处理程序代码</span></div><div class="line">	CStdioFile file;</div><div class="line">	CString strLine, strtemp;</div><div class="line">	<span class="keyword">char</span> *single[<span class="number">68</span>];</div><div class="line">	<span class="keyword">char</span> *wanted[<span class="number">8</span>];</div><div class="line">	<span class="keyword">if</span> (!file.Open(<span class="number">_</span>T(<span class="string">"d:\\1.txt "</span>), CFile::modeRead))</div><div class="line">	&#123;</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">int</span> row = <span class="number">0</span>; </div><div class="line">	<span class="keyword">while</span> (file.ReadString(strLine))</div><div class="line">	&#123;</div><div class="line">		<span class="keyword">char</span> *str = strLine.GetBufferSetLength(strLine.GetLength());</div><div class="line">		<span class="keyword">char</span> *p;</div><div class="line">		</div><div class="line">		<span class="keyword">int</span> i = <span class="number">0</span>, k = <span class="number">0</span>;</div><div class="line">		<span class="keyword">char</span> *buf;</div><div class="line">		<span class="keyword">if</span> (strLine != <span class="string">""</span>)</div><div class="line">		&#123;</div><div class="line">			<span class="keyword">for</span> (p = strtok_s(str, <span class="string">"、"</span>, &amp;buf); p != <span class="literal">NULL</span>; p = strtok_s(<span class="literal">NULL</span>, <span class="string">"、"</span>, &amp;buf))</div><div class="line">			&#123;</div><div class="line">				single[i] = p;</div><div class="line">				i++;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line"></div><div class="line">			CString strSum = <span class="string">""</span>;</div><div class="line">			srand((<span class="keyword">unsigned</span>)time(<span class="literal">NULL</span>));</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> m = <span class="number">0</span>; m &lt; <span class="number">6</span>; m++)</div><div class="line">			&#123;</div><div class="line">				<span class="keyword">int</span> j = random(<span class="number">68</span>);</div><div class="line">				wanted[m] = single[j];</div><div class="line">				strtemp = wanted[m];</div><div class="line">				strSum= strSum + strtemp;</div><div class="line">			&#125;</div><div class="line">			strSum = strSum + <span class="string">"\r\n"</span>;</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> m = <span class="number">0</span>; m &lt; <span class="number">4</span>; m++)</div><div class="line">			&#123;</div><div class="line">				<span class="keyword">int</span> j = random(<span class="number">68</span>);</div><div class="line">				wanted[m] = single[j];</div><div class="line">				strtemp = wanted[m];</div><div class="line">				strSum = strSum + strtemp;</div><div class="line">			&#125;</div><div class="line">			strSum = strSum + <span class="string">"\r\n"</span>;</div><div class="line"></div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> m = <span class="number">0</span>; m &lt; <span class="number">5</span>; m++)</div><div class="line">			&#123;</div><div class="line">				<span class="keyword">int</span> j = random(<span class="number">68</span>);</div><div class="line">				wanted[m] = single[j];</div><div class="line">				strtemp = wanted[m];</div><div class="line">				strSum = strSum + strtemp;</div><div class="line">			&#125;</div><div class="line">			strSum = strSum + <span class="string">"\r\n"</span>;</div><div class="line"></div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> m = <span class="number">0</span>; m &lt; <span class="number">4</span>; m++)</div><div class="line">			&#123;</div><div class="line">				<span class="keyword">int</span> j = random(<span class="number">68</span>);</div><div class="line">				wanted[m] = single[j];</div><div class="line">				strtemp = wanted[m];</div><div class="line">				strSum = strSum + strtemp;</div><div class="line">			&#125;</div><div class="line">			SetDlgItemText(IDC_EDIT2,strSum);</div><div class="line">			SetDlgItemText(IDC_EDIT1, <span class="string">"烟、倾、萧、墨、歌、弦、痴、泠、幽、离、覆、寂、情、思、恋、醉、浅、尘、念、葬、负、梦、韶、陌、落、琴、夜、君、殇、朱砂、韶华、江南、烟雨、迷离、红尘、寂寞、繁华、风华、苍老、红颜、天下、彼岸、伊人、青丝、白首、陌上、千年、倾城、断弦、长歌、悲欢、沧海、天涯、尘缘、情殇、忘川、碧落、奈何、指尖、长安、青鸾、凤凰、桃花、海棠、红妆、婆娑、轻狂、未央"</span>);</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	file.Close();</div><div class="line"></div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>当然了，这个代码写的非常的粗糙，很多可以改进之处，我就是特别想先看到一个能运行的结果，后续再来慢慢改咯~丑陋的V1.0<br><img src="http://img.blog.csdn.net/20170810230733878?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="1"></p>
+<p><img src="http://img.blog.csdn.net/20170810230810726?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="2"></p>
+<p>P.S.哈哈哈哈哈哈好想笑这自动生成的诗句  这个时候背景音乐应该是浮夸</p>
+<p>可以改进的地方：<br>1.分成动词、名词 单字、双字  放在多个txt中读取<br>2.四个暴力循环可以改一改……看着太扎心了<br>3.可以增加重复词审查过滤<br>4.扩大词库<br>5.按现代诗、古诗字数韵律等分配每个循环里的约束条件</p>
+<p>附上一首吐槽古风乱象的歌：</p>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=34152526&auto=1&height=66"></iframe>
+]]></content>
+      
+        <categories>
+            
+            <category> 互联网 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> MFC </tag>
+            
+            <tag> C++ </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[树]]></title>
       <url>http://hubojing.github.io/2017/07/23/%E6%A0%91/</url>
       <content type="html"><![CDATA[<div align="left"><br><img src="http://images.cnitblog.com/i/609598/201404/072129507785920.jpg" width="300" height="180" style="float:right;"><br><br><br>大热天敲代码与看书更配哦　　<br><br><br> </div>
@@ -2400,9 +2434,9 @@ d, --max-depth（所查看文件的深度）
         
         <tags>
             
-            <tag> blog </tag>
-            
             <tag> PPT动画 </tag>
+            
+            <tag> blog </tag>
             
         </tags>
         
