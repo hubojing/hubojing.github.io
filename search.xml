@@ -459,7 +459,66 @@
 <h5 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h5><p>单纯添加一项的话：    m_list.InsertItem(项的索引, 数据);<br>但要指定列的话：<br>m_list.InsertItem(项的索引, “”);<br>m_list.SetItemText(行, 列, 数据);</p>
 <h5 id="onlvnitemchangedlist"><a href="#OnLvnItemchangedList" class="headerlink" title="OnLvnItemchangedList"></a>OnLvnItemchangedList</h5><p>试了多种方法，只有这一种成功了：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> CGetWebDlg::OnLvnItemchangedList1(NMHDR *pNMHDR, LRESULT *pResult)</div><div class="line">&#123;</div><div class="line">	LPNMLISTVIEW pNMLV = <span class="keyword">reinterpret_cast</span>&lt;LPNMLISTVIEW&gt;(pNMHDR);</div><div class="line">	<span class="comment">// <span class="doctag">TODO:</span>  在此添加控件通知处理程序代码</span></div><div class="line"><span class="comment">// 	m_edit.SetWindowText("");</span></div><div class="line"><span class="comment">// 	int index = m_list.GetNextItem(-1, LVNI_ALL | LVNI_SELECTED);</span></div><div class="line"><span class="comment">// 	Blog *pStructure = (Blog*)m_list.GetItemData(index);</span></div><div class="line"><span class="comment">// 	m_edit.SetWindowText(pStructure-&gt;article);</span></div><div class="line">	<span class="keyword">if</span> (pNMLV-&gt;uNewState == (LVIS_SELECTED | LVIS_FOCUSED))</div><div class="line">	&#123;</div><div class="line">		m_edit.SetWindowText(<span class="string">""</span>);</div><div class="line">		Blog *pStructure = (Blog*)m_list.GetItemData(pNMLV-&gt;iItem);</div><div class="line">		m_edit.SetWindowText(pStructure-&gt;article);</div><div class="line">	&#125;</div><div class="line">	*pResult = <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>实现列表和编辑框交互后，可以说这已经是一个可以完整运行的程序了，V1.0版本出炉。<br>实测解析时间：1分41秒<br>能够成功获取该博客111篇文章，能够正确显示正文（包括清晰显示代码）。现在的运行图：<br><img src="http://img.blog.csdn.net/20170805145839785?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="V1.0"><br>该版本未添加多线程、未和数据库关联。</p>
-<p>V2.0实现多线程<br>V3.0实现数据库操作</p>
+<p>V2.0实现数据库操作</p>
+<h1 id="使用sqlite数据库"><a href="#使用sqlite数据库" class="headerlink" title="使用sqlite数据库"></a>使用sqlite数据库</h1><h2 id="下载导入"><a href="#下载导入" class="headerlink" title="下载导入"></a>下载导入</h2><p>官网下载sqlite<br>Source Code  sqlite-amalgamation-3200000.zip  有三个东西  shell.c  sqlite3.c  sqlite3.h<br>根据<a href="http://blog.csdn.net/sunnyloves/article/details/39010831" target="_blank" rel="external">VS2010下SQLite3生成lib库文件</a> 文章方法生成sqlite3.lib</p>
+<p>Precompiled Binaries for Windows  sqlite-dll-win32-x86-3200000.zip  有一个所需 sqlite3.dll</p>
+<p>将lib和dll放入项目工程里，在.cpp开头加上<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"sqlite3.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"sqlite3.lib"</span>)</span></div></pre></td></tr></table></figure></p>
+<h2 id="sqlite在vc中的操作"><a href="#sqlite在VC中的操作" class="headerlink" title="sqlite在VC中的操作"></a>sqlite在VC中的操作</h2><pre><code class="C++"><span class="keyword">int</span> CGetWebDlg::Database(CString title, CString article)
+{
+    sqlite3 * pDB;
+    <span class="keyword">char</span>* errMsg;
+    <span class="comment">// 连接SQLite数据库</span>
+    <span class="keyword">int</span> res = sqlite3_open(<span class="string">"datebase.db"</span>, &amp;pDB);
+    <span class="keyword">if</span> (res != SQLITE_OK){
+        MessageBox(_T(<span class="string">"数据库打开失败，请检查后再操作！"</span>), <span class="literal">NULL</span>, MB_ICONSTOP);
+        sqlite3_close(pDB);
+        <span class="keyword">return</span> <span class="number">-1</span>;
+    }
+<span class="comment">//     // 创建表</span>
+    <span class="built_in">string</span> strSQL = <span class="string">"create table test (title text, article text);"</span>;
+    res = sqlite3_exec(pDB, strSQL.c_str(), <span class="number">0</span>, <span class="number">0</span>, &amp;errMsg);
+    <span class="keyword">if</span> (res != SQLITE_OK)
+    {
+        MessageBox(_T(<span class="string">"数据库打开失败，请检查后再操作！"</span>), <span class="literal">NULL</span>, MB_ICONSTOP);
+        <span class="comment">//return -1;</span>
+    }
+    <span class="comment">// 插入数据</span>
+    <span class="built_in">string</span> strSQL = <span class="string">"INSERT INTO \"blog\" VALUES(title, article); "</span>;
+    sqlite3_exec(pDB, strSQL.c_str(), <span class="number">0</span>, <span class="number">0</span>, &amp;errMsg);
+
+<span class="comment">//     int nrow = 0, ncolumn = 0;</span>
+<span class="comment">//     char **azResult; //二维数组存放结果</span>
+
+
+    <span class="comment">//查询数据</span>
+    strSQL = <span class="string">"select * from test;"</span>;
+    sqlite3_exec(pDB, strSQL.c_str(), SelectCallback, <span class="number">0</span>, &amp;errMsg);
+
+
+    sqlite3_close(pDB); <span class="comment">//关闭数据库</span>
+
+}
+
+
+<span class="keyword">int</span> CGetWebDlg::SelectCallback(<span class="keyword">void</span> *notUsed, <span class="keyword">int</span> argc, <span class="keyword">char</span> **argv, <span class="keyword">char</span> **azColName)
+{
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; argc; i++)
+    {
+        <span class="built_in">printf</span>(<span class="string">"%s = %s"</span>, azColName[i], (argv[i] ? argv[i] : <span class="string">"NULL"</span>));
+        <span class="keyword">if</span> (i != argc - <span class="number">1</span>)
+        {
+                <span class="built_in">printf</span>(<span class="string">", "</span>);
+        }
+    }
+    <span class="built_in">printf</span>(<span class="string">"\n"</span>);
+    <span class="keyword">return</span> <span class="number">0</span>;
+}
+</code></pre>
+<p>还是事先把数据库和表创建好了方便……<br><img src="http://img.blog.csdn.net/20170812235933407?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="创建数据库和表"></p>
+<p>思路是解析完每一篇正文后就将标题和正文数据存入数据库，添加为表中的一项。</p>
+<p>1.好像和ADO没啥关系<br>2.能不能保存结构体到sqlite<br>3.数据怎么查看……没数据库管理系统可视化界面反而……<br>4.考虑用不用sqlite的封装类<br>5.select回调函数怎么用<br>6.怎么存变量到数据库<br>7.查询后怎么显示到列表控件上<br>8.从列表控件点击怎么获取正文显示到编辑框，因为数据来自数据库，就不是直接获取列表点击项的结构体了。</p>
+<p>。。。白学的数据库</p>
+<p><a href="http://blog.csdn.net/langxm2006/article/details/55685173" target="_blank" rel="external">MFC中使用sqlite3操作数据库 创建，插入数据，查询数据</a><br><a href="http://www.jb51.net/article/50982.htm" target="_blank" rel="external">C++操作SQLite简明教程</a><br><a href="http://blog.csdn.net/lp310018931/article/details/28706439" target="_blank" rel="external">在vc中使用sqlite3数据库</a><br><a href="http://blog.csdn.net/segen_jaa/article/details/7938959" target="_blank" rel="external">C++使用SQLite步骤及示例</a><br><a href="http://www.cnblogs.com/sunniflyer/p/4118956.html" target="_blank" rel="external">MFC中使用ADO进行数据库操作</a><br><a href="http://blog.csdn.net/auauxxx/article/details/7462410" target="_blank" rel="external">VC连接SQLite3的方法(MFC封装类)</a><br><a href="https://yq.aliyun.com/ziliao/145275" target="_blank" rel="external">VC++操作SQLite简单实例_C语言</a></p>
 <p>To be continued…</p>
 ]]></content>
       
@@ -2440,9 +2499,9 @@ d, --max-depth（所查看文件的深度）
         
         <tags>
             
-            <tag> blog </tag>
-            
             <tag> PPT动画 </tag>
+            
+            <tag> blog </tag>
             
         </tags>
         
