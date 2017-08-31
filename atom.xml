@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://hubojing.github.io/"/>
-  <updated>2017-08-29T16:01:17.123Z</updated>
+  <updated>2017-08-31T16:18:16.890Z</updated>
   <id>http://hubojing.github.io/</id>
   
   <author>
@@ -14,6 +14,43 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>三维坐标旋转</title>
+    <link href="http://hubojing.github.io/2017/08/31/%E4%B8%89%E7%BB%B4%E5%9D%90%E6%A0%87%E6%97%8B%E8%BD%AC/"/>
+    <id>http://hubojing.github.io/2017/08/31/三维坐标旋转/</id>
+    <published>2017-08-31T15:53:44.000Z</published>
+    <updated>2017-08-31T16:18:16.890Z</updated>
+    
+    <content type="html"><![CDATA[<div align="left"><br><img src="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1504196242&di=148a19814e3d8e2bc96751304edf53ba&src=http://a4.att.hudong.com/13/71/01300542856671145949714084001_s.jpg" width="300" height="180" style="float:right;"><br><br><br>由上一篇引发的续问。　　<br><br><br> </div>
+
+<a id="more"></a>
+<p>其实上一篇的想法都是为了这个问题进行铺垫：<br>已知任意三维坐标系中一条线上两点坐标AB，及该线绕A点任意方向旋转后B’的坐标，求B点经过怎样的变换（如先绕x轴旋转多少度，再绕y轴转多少度，再绕z轴绕多少度）得到B’。</p>
+<p>弄清楚这个问题前，首先需要声明一点：<br><strong>三维空间中，旋转角不能单纯的认为是某点关于x、y、z轴的旋转角度的线性叠加。</strong></p>
+<p>认清这一点后，就应老实放弃向每个平面做投影算旋转角的错误方法。</p>
+<p>旋转说穿了是矩阵的相乘。</p>
+<p>然后从特殊情况入手，再从特殊到一般。</p>
+<p>特殊情况：<br>1.旋转轴是x轴<br>2.旋转轴是y轴<br>3.旋转轴是z轴</p>
+<p>一般情况：<br>旋转轴是任意直线</p>
+<p>推导过程网上很多资料，其中，绕x、y、z轴的公式见<a href="http://blog.miskcoo.com/2016/12/rotation-in-3d-space" target="_blank" rel="external">三维空间中的旋转</a> ，markdown写数学公式太麻烦了。</p>
+<p>旋转角轴是任意直线，参考<a href="http://blog.sina.cn/dpool/blog/s/blog_6541e59a0101kukr.html" target="_blank" rel="external">三维旋转矩阵的计算</a></p>
+<p>回到开头问题，既然已知B和B’，和A三点组成一个面，求出它的法向量，结合BB’中垂线，可算出该点的旋转轴向量。将该向量平移到原点处，再使用欧拉角计算旋转向量，进而得到所需要的x、y、z轴旋转角度（这是有顺序的）。这种方法得到的角度如果旋转顺序不同，则得到的解不同。当然最后别忘了反平移回去。<br>四元数的形式看起来简单些，可惜四元数里的角度不是所希望的关于x、y、z轴的三个角度值。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&amp;quality=100&amp;size=b4000_4000&amp;sec=1504196242&amp;di=148a19814e3d8e2bc96751304edf53ba&amp;src=http://a4.att.hudong.com/13/71/01300542856671145949714084001_s.jpg&quot; width=&quot;300&quot; height=&quot;180&quot; style=&quot;float:right;&quot;/&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;由上一篇引发的续问。　　&lt;br&gt;&lt;br&gt;&lt;br&gt; &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="互联网" scheme="http://hubojing.github.io/categories/%E4%BA%92%E8%81%94%E7%BD%91/"/>
+    
+    
+      <category term="3D" scheme="http://hubojing.github.io/tags/3D/"/>
+    
+      <category term="线代" scheme="http://hubojing.github.io/tags/%E7%BA%BF%E4%BB%A3/"/>
+    
+  </entry>
   
   <entry>
     <title>三维坐标系变换</title>
@@ -55,9 +92,9 @@
       <category term="互联网" scheme="http://hubojing.github.io/categories/%E4%BA%92%E8%81%94%E7%BD%91/"/>
     
     
-      <category term="线代" scheme="http://hubojing.github.io/tags/%E7%BA%BF%E4%BB%A3/"/>
-    
       <category term="3D" scheme="http://hubojing.github.io/tags/3D/"/>
+    
+      <category term="线代" scheme="http://hubojing.github.io/tags/%E7%BA%BF%E4%BB%A3/"/>
     
   </entry>
   
@@ -1499,72 +1536,6 @@
       <category term="教程" scheme="http://hubojing.github.io/tags/%E6%95%99%E7%A8%8B/"/>
     
       <category term="域名" scheme="http://hubojing.github.io/tags/%E5%9F%9F%E5%90%8D/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Github教育礼包</title>
-    <link href="http://hubojing.github.io/2017/03/25/Github%E6%95%99%E8%82%B2%E7%A4%BC%E5%8C%85/"/>
-    <id>http://hubojing.github.io/2017/03/25/Github教育礼包/</id>
-    <published>2017-03-25T03:21:23.000Z</published>
-    <updated>2017-04-16T09:13:21.975Z</updated>
-    
-    <content type="html"><![CDATA[<div align="left"><br><img src="http://img.blog.csdn.net/20170325152139513?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" width="300" height="180" style="float:right;"><br><br><br>　<br>感谢小伙伴让我知道github教育礼包，并教我怎么申请：<br><br><br> </div>
-
-
-<a id="more"></a>
-<ol>
-<li>到教育优惠页面申请：<a href="https://education.github.com/" target="_blank" rel="external">https://education.github.com/</a></li>
-<li>填写学校信息及申请理由，如果有edu邮箱一般很快就通过了；如果没有，需要提供证件来证明。</li>
-<li>一般来说一小时到几天就申请成功了。（我当天晚上收到了邮件）<br>有用的主要三个东西：</li>
-<li>me域名免费一年</li>
-<li>DO的免费VPS代金券50美金（有效期1年），可以使用最低配置11个月</li>
-<li>免费SSL证书</li>
-</ol>
-<p>收到的邮件（截取片段）：<br>If you need help getting started with Git and GitHub, check out:</p>
-<p><a href="https://help.github.com/articles/good-resources-for-learning-git-and-github" target="_blank" rel="external">https://help.github.com/articles/good-resources-for-learning-git-and-github</a></p>
-<p>We’ve also given you access to the Student Developer Pack, available at:</p>
-<p><a href="https://education.github.com/pack" target="_blank" rel="external">https://education.github.com/pack</a></p>
-<p>If you have any questions, contact us:</p>
-<p><a href="https://education.github.com/contact" target="_blank" rel="external">https://education.github.com/contact</a></p>
-<p>Spread the word: we love giving educational discounts to students, teachers, administrators, and researchers! Please send them to:</p>
-<p><a href="https://education.github.com" target="_blank" rel="external">https://education.github.com</a></p>
-<p>Have an Octotastic day!（这个 Octotastic 我不造是什么意思……词典也没这个词 望大神解答）</p>
-<p>My Pack:<br><img src="http://img.blog.csdn.net/20170325152139513?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="ATOM"><br>A hackable text editor for the 21st Century<br>来自21世纪的可定制文本编辑器<br>免费使用</p>
-<p><img src="http://img.blog.csdn.net/20170325152259545?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="aws educate"><br>Access to the AWS cloud, free training, and collaboration resources<br>AWS云，免费教程和资源。</p>
-<p><img src="http://img.blog.csdn.net/20170325152452545?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="bitnami"><br>Install cloud applications in a single click<br>轻松安装云应用</p>
-<p><img src="http://img.blog.csdn.net/20170325152601503?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="CARTO"><br>An open and powerful platform for spatial data analysis, visualization, and application creation.<br>一个开放有力的空间、视觉、应用创建数据分析平台。</p>
-<p><img src="http://img.blog.csdn.net/20170325152759640?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="CrowdFlower"><br>Crowdsourcing and data enrichment platform<br>众包与数据富集平台</p>
-<p><img src="http://img.blog.csdn.net/20170325152955501?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="DATADOG"><br>Cloud-based infrastructure monitoring<br>云基础设施监控</p>
-<p><img src="http://img.blog.csdn.net/20170325153132065?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="DigitalOcean"><br>Simple cloud hosting, built for developers<br>简单云托管，为开发者而生</p>
-<p><img src="http://img.blog.csdn.net/20170325153307467?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="dnsimple"><br>Simple DNS management with one-click services and a robust API<br>简单的DNS管理，包括一键服务和强大的API</p>
-<p><img src="http://img.blog.csdn.net/20170325153539661?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="FLATIRON SCHOOL"><br>Learn Web Development from the premier coding bootcamp for launching developers.<br>从最开始的代码集训营开始学习Web开发成为开发者。</p>
-<p><img src="http://img.blog.csdn.net/20170325153827865?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="Github"><br>Powerful collaboration, code review, and code management<br>强大的协作、代码审查和代码管理</p>
-<p><img src="http://img.blog.csdn.net/20170325153937663?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="GitKraken"><br>The downright luxurious Git client for Windows, Mac and Linux<br>Windows，Mac和Linux上的超级豪华Git客户端</p>
-<p><img src="http://img.blog.csdn.net/20170325154114898?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="HACKHANDS"><br>Live programming help available 24/7<br>编程帮助</p>
-<p><img src="http://img.blog.csdn.net/20170325154256511?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="Microsoft Imagine"><br>A suite of Microsoft Azure cloud services and developer tools, including the Visual Studio IDE<br>一套微软Azure的云服务和开发工具，包括Visual Studio IDE</p>
-<p><img src="http://img.blog.csdn.net/20170325154446405?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="namecheap"><br>Affordable registration, hosting, and domain management<br>便宜的注册，托管和域管理</p>
-<p><img src="http://img.blog.csdn.net/20170325154612806?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="SendGrid"><br>Email infrastructure as a service<br>电子邮件基础设施服务</p>
-<p><img src="http://img.blog.csdn.net/20170325154722190?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="stripe"><br>Web and mobile payments, built for developers<br>网络和移动支付，为开发者而生</p>
-<p><img src="http://img.blog.csdn.net/20170325154820863?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="TAPLYTICS"><br>Dynamic A/B testing, smart push notifications and custom analytics for native mobile apps<br>动态A / B测试，智能推送通知和自定义分析本地移动应用程序</p>
-<p><img src="http://img.blog.csdn.net/20170325155641561?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="transifex"><br>Localization platform that easily integrates with your code base<br>易于与代码库集成的本地化平台</p>
-<p><img src="http://img.blog.csdn.net/20170325155750954?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="Travis CI"><br>Continuous integration platform for open source and private projects<br>开源和私有项目的连续集成平台</p>
-<p><img src="http://img.blog.csdn.net/20170325155909190?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="UDACITY"><br>Enroll in a Nanodegree program, and launch your career in Web and Mobile Development, Machine Learning, Data Science, and more.</p>
-<p>Enroll in a Nanodegree program, and launch your career in Web and Mobile Development, Machine Learning, Data Science, and more.<br>报名参加一个nanodegree项目，在Web、移动开发、机器学习、数据科学以及等多方面，开启你的职业生涯。</p>
-<p><img src="http://img.blog.csdn.net/20170325162245096?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="UNREAL"><br>A complete suite of game development tools for PC, console, mobile, web and VR<br>一套完整的游戏开发工具，用于PC，控制台，移动，网络和虚拟现实</p>
-<p>正在学习其中一些工具的使用中……未完待续。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;img src=&quot;http://img.blog.csdn.net/20170325152139513?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast&quot; width=&quot;300&quot; height=&quot;180&quot;  style=&quot;float:right;&quot;/&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;　&lt;br&gt;感谢小伙伴让我知道github教育礼包，并教我怎么申请：&lt;br&gt;&lt;br&gt;&lt;br&gt; &lt;/div&gt;
-    
-    </summary>
-    
-      <category term="杂谈" scheme="http://hubojing.github.io/categories/%E6%9D%82%E8%B0%88/"/>
-    
-    
-      <category term="Github" scheme="http://hubojing.github.io/tags/Github/"/>
     
   </entry>
   
