@@ -108,7 +108,7 @@
 
         
         <p class="header-subtitle">小清新IT旅程|为中华崛起读书</p>
-        <p class="post-count">已写93.1k字</p>
+        <p class="post-count">已写94.7k字</p>
         
 
         
@@ -386,14 +386,243 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <div align="left"><br><img src="http://img.blog.csdn.net/20170805145839785?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" width="300" height="180" style="float:right;"/><br>  </div>
+        <p>&lt;div align=&quot;left&quot;&gt;
+&lt;img src=&quot;http://img.blog.csdn.net/20170805145839785?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast&quot; width=&quot;300&quot; height=&quot;180&quot; style=&quot;float:right;&quot;/&gt;
+&lt;/div&gt;</p>
+<p>开发一个网页分析程序，可以抓取特定网页的内容，加以分析之后将结果保存至数据库。</p>
+<p>V1.0版本出炉，实测解析时间1分41秒。</p>
+<p>&lt;!--more--&gt;</p>
+<p>网页分析程序具体要求描述如下：
+1.使用http技术获取一个博客的首页http://blog.csdn.net/jiangsheng
+2.分析这个网页的内容，从中找到博客中每一篇文章的链接。
+3.通过这些链接，获取文章的正文网页，从内容中提取文章的标题和文章的内容。
+4.将文章的标题与内容分别保存至数据库。
+5.布局要求：提供一个列表框和一个多行文本框。列表框中显示从数据库中获取的文章标题列表；当点击列表框中的某一篇文章时，在文本框中显示该文章的内容。</p>
+<h1 id="获取源码">获取源码</h1>
+<p>因为需多次调用获取源码功能，将它放入一个函数中。</p>
+<p><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">CString CGetWebDlg::DownloadCodes(CString path)</div><div class="line">&#123;</div><div class="line">	CInternetSession session;</div><div class="line">	CHttpFile *file = <span class="literal">NULL</span>;</div><div class="line">	CString strURL = path;</div><div class="line">	CString strHtml = <span class="number">_</span>T(<span class="string">""</span>); <span class="comment">//存放网页数据</span></div><div class="line">	<span class="keyword">try</span></div><div class="line">	&#123;</div><div class="line">		file = (CHttpFile*)session.OpenURL(strURL);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">catch</span> (CInternetException *m_pException)</div><div class="line">	&#123;</div><div class="line">		file = <span class="literal">NULL</span>;</div><div class="line">		m_pException-&gt;m_dwError;</div><div class="line">		m_pException-&gt;Delete();</div><div class="line">		session.Close();</div><div class="line">		MessageBox(<span class="string">"网络连接错误！"</span>, <span class="string">"提示"</span>);</div><div class="line">	&#125;</div><div class="line">	CString strLine;</div><div class="line">	<span class="keyword">char</span> sRecived[<span class="number">1024</span>];</div><div class="line">	<span class="keyword">if</span> (file != <span class="literal">NULL</span>)</div><div class="line">	&#123;</div><div class="line">		<span class="keyword">while</span> (file-&gt;ReadString((LPTSTR)sRecived, <span class="number">1024</span>) != <span class="literal">NULL</span>)</div><div class="line">		&#123;</div><div class="line">			strHtml += sRecived;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">else</span></div><div class="line">	&#123;</div><div class="line">		AfxMessageBox(<span class="number">_</span>T(<span class="string">"失败！"</span>));</div><div class="line">	&#125;</div><div class="line">	session.Close();</div><div class="line">	file-&gt;Close();</div><div class="line">	<span class="keyword">delete</span> file;</div><div class="line">	file = <span class="literal">NULL</span>;</div><div class="line"></div><div class="line">	strHtml = ConvertUtf8ToGBK(strHtml);<span class="comment">//源码转换</span></div><div class="line"></div><div class="line">	<span class="keyword">return</span> strHtml;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="编码问题">编码问题</h2>
+<p>注意网页编码问题，因此需要格式转换，编写一个函数：
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span>  <span class="title">ConvertUtf8ToGBK</span><span class="params">(CString &amp;strUtf8)</span></span></div><div class="line">&#123;</div><div class="line">          </div><div class="line">    <span class="keyword">int</span> len=MultiByteToWideChar(CP_UTF8, <span class="number">0</span>, (LPCTSTR)strUtf8, <span class="number">-1</span>, <span class="literal">NULL</span>,<span class="number">0</span>);</div><div class="line">	<span class="keyword">unsigned</span> <span class="keyword">short</span> * wszGBK = <span class="keyword">new</span> <span class="keyword">unsigned</span> <span class="keyword">short</span>[len+<span class="number">1</span>];</div><div class="line">	<span class="built_in">memset</span>(wszGBK, <span class="number">0</span>, len * <span class="number">2</span> + <span class="number">2</span>);</div><div class="line">	MultiByteToWideChar(CP_UTF8, <span class="number">0</span>, (LPCTSTR)strUtf8, <span class="number">-1</span>, (LPWSTR)wszGBK, len);</div><div class="line"> </div><div class="line">	len = WideCharToMultiByte(CP_ACP, <span class="number">0</span>, (LPCWSTR)wszGBK, <span class="number">-1</span>, <span class="literal">NULL</span>, <span class="number">0</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>); </div><div class="line">	<span class="keyword">char</span> *szGBK=<span class="keyword">new</span> <span class="keyword">char</span>[len + <span class="number">1</span>];</div><div class="line">	<span class="built_in">memset</span>(szGBK, <span class="number">0</span>, len + <span class="number">1</span>);</div><div class="line">	WideCharToMultiByte (CP_ACP, <span class="number">0</span>, (LPCWSTR)wszGBK, <span class="number">-1</span>, szGBK, len, <span class="literal">NULL</span>,<span class="literal">NULL</span>);</div><div class="line"> </div><div class="line">	strUtf8 = szGBK;</div><div class="line">	 <span class="keyword">delete</span>[] szGBK;</div><div class="line">	 <span class="keyword">delete</span>[] wszGBK;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><img src="http://img.blog.csdn.net/20170614232311302?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="显示源码"></p>
+<p>有些类似网页爬虫的感觉。</p>
+<p>由于我刚开始是用VC6.0创建项目，现在用VS2013打开，因此，提示报错：
+error MSB8031: Building an MFC project for a non-Unicode character set is deprecated. You must change the project property to Unicode or download an additional library. See http://go.microsoft.com/fwlink/p/?LinkId=286820 for more information.</p>
+<p>解决：用于多字节字符编码 (MBCS) 的 MFC 库 (DLL) 不再包含于 Visual Studio 中，但是可用作插件，可以在任何装有 Visual Studio Professional、Visual Studio Premium 或 Visual Studio Ultimate 的计算机上下载和安装。下载地址：https://www.microsoft.com/zh-cn/download/details.aspx?id=40770</p>
+<h1 id="解析">解析</h1>
+<p><s>为了接下来的操作，我去学正则表达式了……</s>
+还是学习html解析库 htmlcxx
+<a href="http://htmlcxx.sourceforge.net/" target="_blank" rel="external">官方</a>
+<a href="http://blog.csdn.net/youfangyuan/article/details/7816518" target="_blank" rel="external">HtmlCxx用户手册</a></p>
+<h2 id="htmlcxx">HTMLCXX</h2>
+<h3 id="下载htmlcxx库">下载htmlcxx库</h3>
+<p>http://sourceforge.net/projects/htmlcxx/
+并解压。</p>
+<h3 id="编译">编译</h3>
+<p>打开htmlcxx.vcproj，右键属性，配置属性-C/C++-代码生成-运行库：多线程调试 DLL (/ MDd)进行编译。编译会报错，将
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">char</span> *signature = <span class="string">"﻿"</span>;</div></pre></td></tr></table></figure></p>
+<p>改为
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">char</span> *signature = <span class="string">"﻿\xEF\xBB\xBF"</span>;</div></pre></td></tr></table></figure></p>
+<p>即可编译成功。</p>
+<h3 id="导入">导入</h3>
+<p>把生成的htmlcxx.lib和html文件夹拷贝到所需的工程中。即：
+在所开发项目文件夹中，新建”htmlcxx“文件，里面添加两个子文件夹”lib“和”include“。将编译好的htmlcxx.lib拷贝到lib文件夹，将html文件夹中所有的.h头文件和ParserSax.tcc添加到include文件夹。添加库文件htmlcxx.lib到项目中，具体说来：</p>
+<blockquote>
+<p>在VS工程中，添加c/c++工程中外部头文件及库的基本步骤：
+1、添加工程的头文件目录：工程---属性---配置属性---c/c++---常规---附加包含目录：加上头文件存放目录。
+2、添加文件引用的lib静态库路径：工程---属性---配置属性---链接器---常规---附加库目录：加上lib文件存放目录。
+然后添加工程引用的lib文件名：工程---属性---配置属性---链接器---输入---附加依赖项：加上lib文件名。
+3、添加工程引用的dll动态库：把引用的dll放到工程的可执行文件所在的目录下。
+注意：第一步可以不用，直接在工程里加入动态库的头文件，在使用代码处引用这个头文件。</p>
+</blockquote>
+<p>所开发的项目的头文件中添加以下内容：
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"htmlcxx/include/ParserDom.h"</span></span></div><div class="line"> </div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> htmlcxx;</div><div class="line"> </div><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"htmlcxx.lib"</span>)</span></div></pre></td></tr></table></figure></p>
+<h3 id="测试">测试</h3>
+<p>官方测试代码：
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;htmlcxx/html/ParserDom.h&gt;</span></span></div><div class="line"> ...</div><div class="line"> </div><div class="line"> <span class="comment">//Parse some html code</span></div><div class="line"> <span class="built_in">string</span> html = <span class="string">"&lt;html&gt;&lt;body&gt;hey&lt;/body&gt;&lt;/html&gt;"</span>;</div><div class="line"> HTML::ParserDom parser;</div><div class="line"> tree&lt;HTML::Node&gt; dom = parser.parseTree(html);</div><div class="line"> </div><div class="line"> <span class="comment">//Print whole DOM tree</span></div><div class="line"> <span class="built_in">cout</span> &lt;&lt; dom &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"> </div><div class="line"> <span class="comment">//Dump all links in the tree</span></div><div class="line"> tree&lt;HTML::Node&gt;::iterator it = dom.begin();</div><div class="line"> tree&lt;HTML::Node&gt;::iterator end = dom.end();</div><div class="line"> <span class="keyword">for</span> (; it != end; ++it)</div><div class="line"> &#123;</div><div class="line"> 	<span class="keyword">if</span> (it-&gt;tagName() == <span class="string">"A"</span>)</div><div class="line"> 	&#123;</div><div class="line"> 		it-&gt;parseAttributes();</div><div class="line"> 		<span class="built_in">cout</span> &lt;&lt; it-&gt;attributes(<span class="string">"href"</span>);</div><div class="line"> 	&#125;</div><div class="line"> &#125;</div><div class="line"> </div><div class="line"> <span class="comment">//Dump all text of the document</span></div><div class="line"> it = dom.begin();</div><div class="line"> end = dom.end();</div><div class="line"> <span class="keyword">for</span> (; it != end; ++it)</div><div class="line"> &#123;</div><div class="line"> 	<span class="keyword">if</span> ((!it-&gt;isTag()) &amp;&amp; (!it-&gt;isComment()))</div><div class="line"> 	&#123;</div><div class="line"> 		<span class="built_in">cout</span> &lt;&lt; it-&gt;text();</div><div class="line"> 	&#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<p>然而……</p>
+<p><img src="http://img.blog.csdn.net/20170709011136986?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="报错1"></p>
+<p>加入#include&quot;iostream&quot;头文件即可。</p>
+<p><img src="http://img.blog.csdn.net/20170709011240176?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="报错2"></p>
+<p>修改为：
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (it-&gt;tagName() == <span class="string">"A"</span>)</div><div class="line">			&#123;</div><div class="line">				it-&gt;parseAttributes();</div><div class="line">				<span class="built_in">std</span>::pair&lt;<span class="keyword">bool</span>, <span class="built_in">std</span>::<span class="built_in">string</span>&gt; pa = it-&gt;attribute(<span class="string">"href"</span>);</div><div class="line">				<span class="built_in">cout</span> &lt;&lt; pa.second;</div><div class="line">			&#125;</div></pre></td></tr></table></figure></p>
+<p>编译通过。</p>
+<p>还有其他的库也可以用，比如<a href="http://blog.csdn.net/lanuage/article/details/72825878" target="_blank" rel="external">使用MSHTML解析HTML页面</a>
+比如<a href="http://www.oschina.net/question/565065_67992" target="_blank" rel="external">LIBXML2库使用指南</a>
+还可以用正则表达式写库……</p>
+<p>突然发现 原来的计划里有COM组件 XML和HTML 数据库访问技术
+都没怎么接触过  补补补
+在填坑的路上不能止步…</p>
+<h3 id="参考">参考</h3>
+<p><a href="http://www.cnblogs.com/striver-zhu/p/4451781.html" target="_blank" rel="external">C++ 使用Htmlcxx解析Html内容(VS编译库文件)</a>
+<a href="http://blog.csdn.net/farcall/article/details/20378475" target="_blank" rel="external">html与xml解析库htmlcxx使用过程中的若干问题及解决方案</a>
+<a href="http://www.cnblogs.com/learning-lzj2014/p/3928346.html" target="_blank" rel="external">c++ hmtlcxx 学习之旅</a></p>
+<h2 id="mshtml">MSHTML</h2>
+<p>因为最近用过MSXML，就试试MSHTML。学有余力的话，htmlcxx之后还是想玩一下…
+https://msdn.microsoft.com/en-us/library/aa741317(v=vs.85).aspx
+<a href="http://blog.csdn.net/jiangsheng/article/details/3793" target="_blank" rel="external">蒋晟-关于MSHTML</a>
+https://msdn.microsoft.com/zh-cn/library/mshtml(v=vs.110).aspx</p>
+<h3 id="mshtml导入">MSHTML导入</h3>
+<p>系统中自带了mshtml，和msxml一样，在C盘windows/system32中可找到。</p>
+<p><a href="http://blog.csdn.net/mimica247706624/article/details/6128239" target="_blank" rel="external">如何导入</a></p>
+<p>先看MSDN……
+<a href="https://msdn.microsoft.com/en-us/library/aa741317%28v=vs.85%29.aspx?f=255&amp;MSPPError=-2147217396" target="_blank" rel="external">MSDN-MSHTML</a></p>
+<p>再看各种搜集的文章
+http://bbs.csdn.net/topics/330214041
+http://www.cnblogs.com/speedmancs/archive/2010/08/11/1797442.html
+http://blog.csdn.net/jinyaba/article/details/17097323
+https://social.msdn.microsoft.com/Search/zh-CN?query=MSHTML&amp;pgArea=header&amp;emptyWatermark=true&amp;ac=4#refinementChanges=117&amp;pageNumber=1&amp;showMore=false
+https://wenku.baidu.com/view/d571abc4ec3a87c24028c4bb.html
+http://www.codeguru.com/cpp/i-n/ieprogram/article.php/c4385/Lightweight-HTML-Parsing-Using-MSHTML.htm
+http://www.yesky.com/403/1938403.shtml?qq-pf-to=pcqq.c2c
+http://www.bianceng.cn/Programming/vc/201411/46771.htm
+https://wenku.baidu.com/view/299bba4a336c1eb91a375df5.html</p>
+<p><s>思路：下载源码和获取链接是两个独立函数，会被多次调用。先获取首页源码，div id=&quot;archive_list&quot; 遍历该div获取各月份归档链接，再使用多线程（48个线程？？？）进入每个归档链接里下载源码，获取源码中h1的每篇文章标题,保存到数据库。</s></p>
+<p>虽然有两种方法，一种通过归档获得链接，一种通过翻页获得链接，但根据本html特点，明显通过翻页要简洁方便一些，因为翻页的链接是有规律的，可通过循环搞定。每页5篇直接获得正文链接，比从归档获得少一层。<s>两核4个逻辑处理器，所以是开2个线程好还是4个好呢……</s></p>
+<p>获取每篇正文链接，下载源码，解析得正文，保存到数据库。最后从数据库中提取标题和正文显示到对应窗口(使用ADO)。</p>
+<h3 id="解析过程">解析过程</h3>
+<h4 id="创建">创建</h4>
+<p>1.使用CoCreateInstance创建一个接口
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">HRESULT hr = CoCreateInstance(<span class="name">CLSID_HTMLDocument</span>, NULL, CLSCTX_INPROC_SERVER, IID_IHTMLDocument2, (<span class="name">void**</span>)<span class="symbol">&amp;pDoc</span>)<span class="comment">;</span></div></pre></td></tr></table></figure></p>
+<p>2.创建一个COM中的数组，将HTML字符串写到数组中</p>
+<p>a）SafeArrayCreateVector:函数用来创建一个对应的数组结构。函数有三个参数，第一个参数表示数组中元素类型，一般给VT_VARIANT表示它是一个自动类型，第二个参数数组元素起始位置的下标，对于VC来说，数组元素总是从0开始，所以这个位置一般给0，第三个参数是数组的维数，在这将它作为一个字符数组，所以是一个一维数组。
+b）SafeArrayAccessData：允许用户操作这个数组，在需要读写这个数组时都需要调用这个函数，以便获取这个数组的操作权。它有两个参数，第一个参数是数组变量，第二个参数是一个输出参数，当调用这个函数成功，会提供一个缓冲区，操作这个缓冲区就相当于操作了这个数组。
+c）SafeArrayUnaccessData：每当操作数组完成时需要调用这个函数，函数与SafeArrayAccessData配套使用，用来回收这个权限，并使对数组的操作生效。</p>
+<ol start="3">
+<li>调用接口的write方法，将接口与HTML字符串绑定
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">SAFEARRAY* psa = SafeArrayCreateVector(VT_VARIANT, <span class="number">0</span>, <span class="number">1</span>);</div><div class="line">VARIANT *param;</div><div class="line"><span class="keyword">bstr_t</span> bsData = (LPCTSTR)strHtml;</div><div class="line">hr = SafeArrayAccessData(psa, (LPVOID*)&amp;param);</div><div class="line">param-&gt;vt = VT_BSTR;</div><div class="line">param-&gt;bstrVal = (BSTR)bsData;</div><div class="line">hr = pDoc-&gt;write(psa);</div><div class="line">hr = SafeArrayUnaccessData(psa);</div></pre></td></tr></table></figure></li>
+</ol>
+<p>目标：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;span <span class="class"><span class="keyword">class</span></span>=<span class="string">"link_title"</span>&gt;<span class="xml"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/jiangsheng/article/details/9870241"</span>&gt;</span></span></div><div class="line">选择剪贴板格式顺序            </div><div class="line"><span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line">&lt;<span class="regexp">/span&gt;</span></div></pre></td></tr></table></figure></p>
+<p>整个 &lt;span&gt; &lt;/span&gt;  是元素， &lt;span&gt;  是标签，class是属性名，link_title是属性值，“选择剪贴板格式顺序”是文本。</p>
+<h4 id="元素遍历">元素遍历</h4>
+<p>至少两种方法：
+法一：
+获取了HTML文档的IID_IHTMLDocument2接口后，开始遍历：
+1.get_all方法获取所有标签节点，这个函数通过一个输出参数输出IHTMLElementCollection类型的接口指针
+2.用IHTMLElementCollection接口的get_length方法获取标签的总数量，据此写一个循环，在循环进行元素的遍历
+3.循环中用IHTMLElementCollection接口的item方法进行迭代，获取各元素对应的IDispatch接口指针
+4.调用IDispatch接口指针的QueryInterface方法生成对应的IHTMLElement接口。通过这个接口获取元素的各种信息</p>
+<p>以下已能成功获取标题：
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">void CGetWebDlg::EnumElements(IHTMLDocument2* pDoc)</div><div class="line">&#123;</div><div class="line">	CComPtr&lt;IHTMLElementCollection&gt; pCollection<span class="comment">;</span></div><div class="line">	pDoc-&gt;get_all(&amp;pCollection)<span class="comment">;</span></div><div class="line">	if (NULL == pCollection)</div><div class="line">	&#123;</div><div class="line">		return<span class="comment">;</span></div><div class="line">	&#125;</div><div class="line">	VARIANT varName<span class="comment">;</span></div><div class="line">	CString strText<span class="comment">;</span></div><div class="line">	long len = <span class="number">0</span><span class="comment">;</span></div><div class="line">	pCollection-&gt;get_length(&amp;len)<span class="comment">;</span></div><div class="line">	for (int i = <span class="number">0</span><span class="comment">; i &lt; len; i++)</span></div><div class="line">	&#123;</div><div class="line">		varName.vt = VT_I4<span class="comment">;</span></div><div class="line">		varName.lVal = i<span class="comment">;</span></div><div class="line">		CComPtr&lt;IHTMLElement&gt; pElement<span class="comment">;</span></div><div class="line">		CComPtr&lt;IDispatch&gt; pDisp<span class="comment">;</span></div><div class="line">		pCollection-&gt;item(varName, varName, &amp;pDisp)<span class="comment">;</span></div><div class="line">		if (NULL == pDisp)</div><div class="line">		&#123;</div><div class="line">			continue<span class="comment">;</span></div><div class="line">		&#125;</div><div class="line"></div><div class="line">		pDisp-&gt;QueryInterface(IID_IHTMLElement, (LPVOID*)&amp;pElement)<span class="comment">;</span></div><div class="line">		if (NULL != pElement)</div><div class="line">		&#123;</div><div class="line">			<span class="keyword">BSTR </span><span class="keyword">bstrClass;	</span></div><div class="line">			pElement-&gt;get_className(&amp;<span class="keyword">bstrClass);</span></div><div class="line">			CString strClass = _com_util::ConvertBSTRToString(<span class="keyword">bstrClass);</span></div><div class="line">			if (strClass.Compare(<span class="string">"link_title"</span>) == <span class="number">0</span>)</div><div class="line">			&#123;</div><div class="line">					<span class="keyword">BSTR </span><span class="keyword">bstrText </span>= NULL<span class="comment">;</span></div><div class="line">					pElement-&gt;get_innerText(&amp;<span class="keyword">bstrText);</span></div><div class="line">					strText = <span class="keyword">bstrText;</span></div><div class="line">					m_list.<span class="keyword">InsertItem(i, </span>strText)<span class="comment">;</span></div><div class="line">			&#125;			</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>法二：
+利用IHTMLDocument2将字符串形式的HTML转换为DOM对象，利用IHTMLDocument3的getElementByTagName等方法来操作DOM对象。
+以下已能成功获取标题：
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">MSHTML:</span>:IHTMLDocument3Ptr pDoc3<span class="comment">;</span></div><div class="line"><span class="symbol"> 	MSHTML:</span>:IHTMLElementCollectionPtr pCollection<span class="comment">;</span></div><div class="line"><span class="symbol"> 	MSHTML:</span>:IHTMLElementPtr pElement<span class="comment">;</span></div><div class="line"></div><div class="line">pDoc3 = pDoc<span class="comment">;</span></div><div class="line">pCollection = pDoc3-&gt;getElementsByTagName(L<span class="string">"span"</span>)<span class="comment">;</span></div><div class="line">for (long i = <span class="number">0</span><span class="comment">; i &lt; pCollection-&gt;length; i++)</span></div><div class="line">&#123;</div><div class="line">	pElement = pCollection-&gt;item(i, (long)<span class="number">0</span>)<span class="comment">;</span></div><div class="line">	if (pElement != NULL)</div><div class="line">	&#123;</div><div class="line">		<span class="keyword">BSTR </span><span class="keyword">bstrClass;</span></div><div class="line">		pElement-&gt;get_className(&amp;<span class="keyword">bstrClass);</span></div><div class="line">		CString strClass = _com_util::ConvertBSTRToString(<span class="keyword">bstrClass);</span></div><div class="line">		if (strClass.Compare(<span class="string">"link_title"</span>) == <span class="number">0</span>)</div><div class="line">		&#123;</div><div class="line">			<span class="keyword">BSTR </span><span class="keyword">bstrText </span>= NULL<span class="comment">;</span></div><div class="line">			pElement-&gt;get_innerText(&amp;<span class="keyword">bstrText);</span></div><div class="line">			CString strText = <span class="keyword">bstrText;</span></div><div class="line">			m_list.<span class="keyword">InsertItem(i, </span>strText)<span class="comment">;</span></div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>其实两种方法大同小异，相较而言可能数据量大的话，法二效率高些吧。因为法一是直接遍历所有的元素寻找class相同的，而法二是先定位span，然后在span中找寻class。（getElementsByTagName只有IHTMLDocument3Ptr）</p>
+<p><a href="http://blog.csdn.net/lanuage/article/details/72825878" target="_blank" rel="external">使用MSHTML解析HTML页面</a>
+<a href="http://www.2cto.com/kf/201305/214730.html" target="_blank" rel="external">变体VARIANT</a>
+MSDN-DOM	https://msdn.microsoft.com/en-us/library/ms766487(v=vs.85).aspx
+<a href="http://www.360doc.com/content/12/0427/19/8006573_207099529.shtml" target="_blank" rel="external">使用MSHTML接口获取链接</a></p>
+<p>晚上几个小时做完了一半，抵了之前一两个月。
+数据库这块没来得及做，没加多线程，很多细节还得调。但比起之前心有余而力不足的感觉还是好多了。  学过msxml后，学习mshtml确实强一点，比一个月前完全不知道怎么下手好很多了。</p>
+<p>今晚总算做出来个半成品
+<img src="http://img.blog.csdn.net/20170802003740628?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="半成品"></p>
+<h4 id="正文解析">正文解析</h4>
+<p><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> CGetWebDlg::ArticleParse(CString strArticle, Blog* blog, <span class="keyword">int</span> iRow)</div><div class="line">&#123;</div><div class="line">	IHTMLDocument2* pDoc;</div><div class="line">	MSHTML::IHTMLDocument3Ptr pDoc3;</div><div class="line">	MSHTML::IHTMLElementCollectionPtr pCollection;</div><div class="line">	MSHTML::IHTMLElementPtr pElement;</div><div class="line"></div><div class="line">	HRESULT hr = CoCreateInstance(CLSID_HTMLDocument, <span class="literal">NULL</span>, CLSCTX_INPROC_SERVER, IID_IHTMLDocument2, (<span class="keyword">void</span>**)&amp;pDoc);</div><div class="line"></div><div class="line"></div><div class="line">	<span class="comment">//将代码放入安全数组并写入文档</span></div><div class="line">	SAFEARRAY* psa = SafeArrayCreateVector(VT_VARIANT, <span class="number">0</span>, <span class="number">1</span>);</div><div class="line">	<span class="keyword">if</span> (psa == <span class="literal">NULL</span> || pDoc == <span class="literal">NULL</span>)</div><div class="line">	&#123;</div><div class="line">		MessageBox(<span class="number">_</span>T(<span class="string">"创建Document2对象失败！"</span>));</div><div class="line">	&#125;</div><div class="line">	VARIANT *param;</div><div class="line">	<span class="keyword">bstr_t</span> bsData = (LPCTSTR)strArticle;</div><div class="line">	hr = SafeArrayAccessData(psa, (LPVOID*)&amp;param);</div><div class="line">	param-&gt;vt = VT_BSTR;</div><div class="line">	param-&gt;bstrVal = (BSTR)bsData;</div><div class="line">	hr = pDoc-&gt;write(psa);</div><div class="line">	<span class="comment">//hr = pDoc-&gt;close();</span></div><div class="line"></div><div class="line">	<span class="comment">//SafeArrayDestroy(psa);</span></div><div class="line">	hr = SafeArrayUnaccessData(psa);</div><div class="line">	<span class="keyword">_bstr_t</span> href;</div><div class="line">	pDoc3 = pDoc;</div><div class="line">	pCollection = pDoc3-&gt;getElementsByTagName(<span class="string">L"div"</span>);</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">long</span> k = <span class="number">0</span>; k &lt; pCollection-&gt;length; k++)</div><div class="line">	&#123;</div><div class="line">		pElement = pCollection-&gt;item(k, (<span class="keyword">long</span>)<span class="number">0</span>);</div><div class="line">		<span class="keyword">if</span> (pElement != <span class="literal">NULL</span>)</div><div class="line">		&#123;</div><div class="line">			BSTR bstrClass;</div><div class="line">			pElement-&gt;get_id(&amp;bstrClass);</div><div class="line">			CString strClass = <span class="number">_</span>com_util::ConvertBSTRToString(bstrClass);</div><div class="line">			<span class="keyword">if</span> (strClass.CompareNoCase(<span class="string">"article_content"</span>) == <span class="number">0</span>)</div><div class="line">			&#123;</div><div class="line">				BSTR bstrText = <span class="literal">NULL</span>;</div><div class="line">				pElement-&gt;get_innerText(&amp;bstrText);</div><div class="line">				CString strText = bstrText;</div><div class="line">				blog-&gt;article = strText;</div><div class="line">				m_list.SetItemData(iRow, (DWORD_PTR)blog);							</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>建立了一个结构体用来存放每篇文章的标题和正文，方便点击列表控件项时读取对应的结构体。</p>
+<p><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> Blog</div><div class="line">	&#123;</div><div class="line">		CString title;</div><div class="line">		CString article;</div><div class="line">	&#125;;</div></pre></td></tr></table></figure></p>
+<h4 id="列表控件和编辑框交互">列表控件和编辑框交互</h4>
+<h5 id="列表控件初始化">列表控件初始化</h5>
+<p><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">CRect rectLocal;</div><div class="line">m_list.GetClientRect(rectLocal); <span class="comment">//获得当前客户区信息</span></div><div class="line">m_list.InsertColumn(<span class="number">0</span>, <span class="string">"序号"</span>, LVCFMT_LEFT, rectLocal.Width() / <span class="number">6</span>, <span class="number">0</span>);</div><div class="line">m_list.InsertColumn(<span class="number">1</span>, <span class="string">"文章列表"</span>, LVCFMT_LEFT, rectLocal.Width() / <span class="number">6</span> * <span class="number">5</span>, <span class="number">1</span>);</div></pre></td></tr></table></figure></p>
+<p>添加多列后，单击只能选中第一列，这时需要修改风格 LVS_EX_FULLROWSELECT   表示整行。
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">m_list.SetExtendedStyle(LVS_EX_FULLROWSELECT);</div></pre></td></tr></table></figure></p>
+<h5 id="添加数据">添加数据</h5>
+<p>单纯添加一项的话：	m_list.InsertItem(项的索引, 数据);
+但要指定列的话：
+m_list.InsertItem(项的索引, &quot;&quot;);
+m_list.SetItemText(行, 列, 数据);</p>
+<h5 id="onlvnitemchangedlist">OnLvnItemchangedList</h5>
+<p>试了多种方法，只有这一种成功了：
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> CGetWebDlg::OnLvnItemchangedList1(NMHDR *pNMHDR, LRESULT *pResult)</div><div class="line">&#123;</div><div class="line">	LPNMLISTVIEW pNMLV = <span class="keyword">reinterpret_cast</span>&lt;LPNMLISTVIEW&gt;(pNMHDR);</div><div class="line">	<span class="comment">// <span class="doctag">TODO:</span>  在此添加控件通知处理程序代码</span></div><div class="line"><span class="comment">// 	m_edit.SetWindowText("");</span></div><div class="line"><span class="comment">// 	int index = m_list.GetNextItem(-1, LVNI_ALL | LVNI_SELECTED);</span></div><div class="line"><span class="comment">// 	Blog *pStructure = (Blog*)m_list.GetItemData(index);</span></div><div class="line"><span class="comment">// 	m_edit.SetWindowText(pStructure-&gt;article);</span></div><div class="line">	<span class="keyword">if</span> (pNMLV-&gt;uNewState == (LVIS_SELECTED | LVIS_FOCUSED))</div><div class="line">	&#123;</div><div class="line">		m_edit.SetWindowText(<span class="string">""</span>);</div><div class="line">		Blog *pStructure = (Blog*)m_list.GetItemData(pNMLV-&gt;iItem);</div><div class="line">		m_edit.SetWindowText(pStructure-&gt;article);</div><div class="line">	&#125;</div><div class="line">	*pResult = <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>实现列表和编辑框交互后，可以说这已经是一个可以完整运行的程序了，V1.0版本出炉。
+实测解析时间：1分41秒
+能够成功获取该博客111篇文章，能够正确显示正文（包括清晰显示代码）。现在的运行图：
+<img src="http://img.blog.csdn.net/20170805145839785?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="V1.0">
+该版本未添加多线程、未和数据库关联。</p>
+<p>V2.0实现数据库操作</p>
+<h1 id="使用sqlite数据库">使用sqlite数据库</h1>
+<h2 id="下载导入">下载导入</h2>
+<p>官网下载sqlite
+Source Code  sqlite-amalgamation-3200000.zip  有三个东西  shell.c  sqlite3.c  sqlite3.h
+根据<a href="http://blog.csdn.net/sunnyloves/article/details/39010831" target="_blank" rel="external">VS2010下SQLite3生成lib库文件</a> 文章方法生成sqlite3.lib</p>
+<p>Precompiled Binaries for Windows  sqlite-dll-win32-x86-3200000.zip  有一个所需 sqlite3.dll</p>
+<p>将lib和dll放入项目工程里，在.cpp开头加上
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"sqlite3.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"sqlite3.lib"</span>)</span></div></pre></td></tr></table></figure></p>
+<h2 id="sqlite在vc中的操作">sqlite在VC中的操作</h2>
+<pre><code class="language-C++">int CGetWebDlg::Database(CString title, CString article)
+{
+	sqlite3 * pDB;
+	char* errMsg;
+	// 连接SQLite数据库
+	int res = sqlite3_open(&quot;datebase.db&quot;, &amp;pDB);
+	if (res != SQLITE_OK){
+		MessageBox(_T(&quot;数据库打开失败，请检查后再操作！&quot;), NULL, MB_ICONSTOP);
+		sqlite3_close(pDB);
+		return -1;
+	}
+// 	// 创建表
+	string strSQL = &quot;create table test (title text, article text);&quot;;
+	res = sqlite3_exec(pDB, strSQL.c_str(), 0, 0, &amp;errMsg);
+	if (res != SQLITE_OK)
+	{
+		MessageBox(_T(&quot;数据库打开失败，请检查后再操作！&quot;), NULL, MB_ICONSTOP);
+		//return -1;
+	}
+	// 插入数据
+	string strSQL = &quot;INSERT INTO \&quot;blog\&quot; VALUES(title, article); &quot;;
+	sqlite3_exec(pDB, strSQL.c_str(), 0, 0, &amp;errMsg);
+	
+// 	int nrow = 0, ncolumn = 0;
+// 	char **azResult; //二维数组存放结果
 
-<p>　　开发一个网页分析程序，可以抓取特定网页的内容，加以分析之后将结果保存至数据库。</p>
-<p>　　V1.0版本出炉，实测解析时间1分41秒。
-　　
-　　
-　　</p>
-          
+
+	//查询数据
+	strSQL = &quot;select * from test;&quot;;
+	sqlite3_exec(pDB, strSQL.c_str(), SelectCallback, 0, &amp;errMsg);
+
+
+	sqlite3_close(pDB); //关闭数据库
+
+}
+
+
+int CGetWebDlg::SelectCallback(void *notUsed, int argc, char **argv, char **azColName)
+{
+	for (int i = 0; i &lt; argc; i++)
+	{
+		printf(&quot;%s = %s&quot;, azColName[i], (argv[i] ? argv[i] : &quot;NULL&quot;));
+		if (i != argc - 1)
+		{
+				printf(&quot;, &quot;);
+		}
+	}
+	printf(&quot;\n&quot;);
+	return 0;
+}
+
+</code></pre>
+<p>还是事先把数据库和表创建好了方便……
+<img src="http://img.blog.csdn.net/20170812235933407?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="创建数据库和表"></p>
+<p>思路是解析完每一篇正文后就将标题和正文数据存入数据库，添加为表中的一项。</p>
+<p>1.好像和ADO没啥关系
+2.能不能保存结构体到sqlite
+3.数据怎么查看……没数据库管理系统可视化界面反而……
+4.考虑用不用sqlite的封装类
+5.select回调函数怎么用
+6.怎么存变量到数据库
+7.查询后怎么显示到列表控件上
+8.从列表控件点击怎么获取正文显示到编辑框，因为数据来自数据库，就不是直接获取列表点击项的结构体了。</p>
+<p>。。。白学的数据库</p>
+<p><a href="http://blog.csdn.net/langxm2006/article/details/55685173" target="_blank" rel="external">MFC中使用sqlite3操作数据库 创建，插入数据，查询数据</a>
+<a href="http://www.jb51.net/article/50982.htm" target="_blank" rel="external">C++操作SQLite简明教程</a>
+<a href="http://blog.csdn.net/lp310018931/article/details/28706439" target="_blank" rel="external">在vc中使用sqlite3数据库</a>
+<a href="http://blog.csdn.net/segen_jaa/article/details/7938959" target="_blank" rel="external">C++使用SQLite步骤及示例</a>
+<a href="http://www.cnblogs.com/sunniflyer/p/4118956.html" target="_blank" rel="external">MFC中使用ADO进行数据库操作</a>
+<a href="http://blog.csdn.net/auauxxx/article/details/7462410" target="_blank" rel="external">VC连接SQLite3的方法(MFC封装类)</a>
+<a href="https://yq.aliyun.com/ziliao/145275" target="_blank" rel="external">VC++操作SQLite简单实例_C语言</a></p>
+<p>To be continued...</p>
+
       
     </div>
     
@@ -410,10 +639,6 @@
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MFC/">MFC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
     </div>
 
-      
-        <p class="article-more-link">
-          <a href="/2017/06/14/MFC网页分析程序/#more">阅读全文 >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -476,11 +701,78 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <div align="left"><br><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1502983864&di=4ae6d79210dfb4ff7b9b0fd9c23807de&imgtype=jpg&er=1&src=http%3A%2F%2Fimg4.duitang.com%2Fuploads%2Fblog%2F201306%2F27%2F20130627144045_5KSSc.jpeg" width="300" height="180" style="float:right;"/><br> </div>
+        <p>&lt;div align=&quot;left&quot;&gt;
+&lt;img src=&quot;https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1502983864&amp;di=4ae6d79210dfb4ff7b9b0fd9c23807de&amp;imgtype=jpg&amp;er=1&amp;src=http%3A%2F%2Fimg4.duitang.com%2Fuploads%2Fblog%2F201306%2F27%2F20130627144045_5KSSc.jpeg&quot; width=&quot;300&quot; height=&quot;180&quot; style=&quot;float:right;&quot;/&gt;
+&lt;/div&gt;</p>
+<p>小桥流水肯定有人家，
+两人对坐必须在饮茶。
+为何提笔再难描绘出风雅。</p>
+<p>一个C++古风自动写诗器。V1.1上线
+【注意：有背景音乐！】</p>
+<p>&lt;!--more--&gt;</p>
+<p>灵感来自
+<img src="http://img.blog.csdn.net/20170810230338826?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="古风"></p>
+<p>今天看到这个，突然就想到文中提到的这个想法不难实现哇~那自己实现一个玩玩儿吧，主要就是个产生随机数的问题嘛~</p>
+<h1 id="v10">V1.0</h1>
+<p>上代码：
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> CPoetryDlg::OnBnClickedOk()</div><div class="line">&#123;</div><div class="line">	<span class="comment">// <span class="doctag">TODO:</span>  在此添加控件通知处理程序代码</span></div><div class="line">	CStdioFile file;</div><div class="line">	CString strLine, strtemp;</div><div class="line">	<span class="keyword">char</span> *single[<span class="number">68</span>];</div><div class="line">	<span class="keyword">char</span> *wanted[<span class="number">8</span>];</div><div class="line">	<span class="keyword">if</span> (!file.Open(<span class="number">_</span>T(<span class="string">"d:\\1.txt "</span>), CFile::modeRead))</div><div class="line">	&#123;</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">int</span> row = <span class="number">0</span>; </div><div class="line">	<span class="keyword">while</span> (file.ReadString(strLine))</div><div class="line">	&#123;</div><div class="line">		<span class="keyword">char</span> *str = strLine.GetBufferSetLength(strLine.GetLength());</div><div class="line">		<span class="keyword">char</span> *p;</div><div class="line">		</div><div class="line">		<span class="keyword">int</span> i = <span class="number">0</span>, k = <span class="number">0</span>;</div><div class="line">		<span class="keyword">char</span> *buf;</div><div class="line">		<span class="keyword">if</span> (strLine != <span class="string">""</span>)</div><div class="line">		&#123;</div><div class="line">			<span class="keyword">for</span> (p = strtok_s(str, <span class="string">"、"</span>, &amp;buf); p != <span class="literal">NULL</span>; p = strtok_s(<span class="literal">NULL</span>, <span class="string">"、"</span>, &amp;buf))</div><div class="line">			&#123;</div><div class="line">				single[i] = p;</div><div class="line">				i++;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line"></div><div class="line">			CString strSum = <span class="string">""</span>;</div><div class="line">			srand((<span class="keyword">unsigned</span>)time(<span class="literal">NULL</span>));</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> m = <span class="number">0</span>; m &lt; <span class="number">6</span>; m++)</div><div class="line">			&#123;</div><div class="line">				<span class="keyword">int</span> j = random(<span class="number">68</span>);</div><div class="line">				wanted[m] = single[j];</div><div class="line">				strtemp = wanted[m];</div><div class="line">				strSum= strSum + strtemp;</div><div class="line">			&#125;</div><div class="line">			strSum = strSum + <span class="string">"\r\n"</span>;</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> m = <span class="number">0</span>; m &lt; <span class="number">4</span>; m++)</div><div class="line">			&#123;</div><div class="line">				<span class="keyword">int</span> j = random(<span class="number">68</span>);</div><div class="line">				wanted[m] = single[j];</div><div class="line">				strtemp = wanted[m];</div><div class="line">				strSum = strSum + strtemp;</div><div class="line">			&#125;</div><div class="line">			strSum = strSum + <span class="string">"\r\n"</span>;</div><div class="line"></div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> m = <span class="number">0</span>; m &lt; <span class="number">5</span>; m++)</div><div class="line">			&#123;</div><div class="line">				<span class="keyword">int</span> j = random(<span class="number">68</span>);</div><div class="line">				wanted[m] = single[j];</div><div class="line">				strtemp = wanted[m];</div><div class="line">				strSum = strSum + strtemp;</div><div class="line">			&#125;</div><div class="line">			strSum = strSum + <span class="string">"\r\n"</span>;</div><div class="line"></div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> m = <span class="number">0</span>; m &lt; <span class="number">4</span>; m++)</div><div class="line">			&#123;</div><div class="line">				<span class="keyword">int</span> j = random(<span class="number">68</span>);</div><div class="line">				wanted[m] = single[j];</div><div class="line">				strtemp = wanted[m];</div><div class="line">				strSum = strSum + strtemp;</div><div class="line">			&#125;</div><div class="line">			SetDlgItemText(IDC_EDIT2,strSum);</div><div class="line">			SetDlgItemText(IDC_EDIT1, <span class="string">"烟、倾、萧、墨、歌、弦、痴、泠、幽、离、覆、寂、情、思、恋、醉、浅、尘、念、葬、负、梦、韶、陌、落、琴、夜、君、殇、朱砂、韶华、江南、烟雨、迷离、红尘、寂寞、繁华、风华、苍老、红颜、天下、彼岸、伊人、青丝、白首、陌上、千年、倾城、断弦、长歌、悲欢、沧海、天涯、尘缘、情殇、忘川、碧落、奈何、指尖、长安、青鸾、凤凰、桃花、海棠、红妆、婆娑、轻狂、未央"</span>);</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	file.Close();</div><div class="line"></div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>当然了，这个代码写的非常的粗糙，很多可以改进之处，我就是特别想先看到一个能运行的结果，后续再来慢慢改咯~丑陋的V1.0
+<img src="http://img.blog.csdn.net/20170810230733878?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="1"></p>
+<p><img src="http://img.blog.csdn.net/20170810233547056?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="2"></p>
+<p>P.S.哈哈哈哈哈哈好想笑这自动生成的诗句  这个时候背景音乐应该是浮夸</p>
+<p>随便赋几首机器作诗：
+未央忘川梦千年长安韶
+尘缘君幽繁华
+风华夜梦离红妆
+海棠烟寂痴</p>
+<p>海棠白首伊人悲欢负歌
+红妆迷离苍老覆
+韶华红妆尘缘萧寂寞
+墨奈何歌白首</p>
+<p>彼岸覆迷离浅烟雨伊人
+长安倾城碧落倾
+未央倾奈何韶华陌上
+天下迷离朱砂千年</p>
+<p>苍老覆红妆陌长安青鸾
+繁华红尘落殇
+迷离轻狂海棠思梦
+恋倾凤凰浅</p>
+<p>可以改进的地方：
+1.分成动词、名词 单字、双字  放在多个txt中读取
+2.四个暴力循环可以改一改……看着太扎心了
+3.可以增加重复词审查过滤
+4.扩大词库
+5.按现代诗、古诗字数韵律等分配每个循环里的约束条件</p>
+<h1 id="v11">V1.1</h1>
+<p>因为数组不定长，换成vector实现。同时扩大了词库，换了种句式……</p>
+<p><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div></pre></td><td class="code"><pre><div class="line">CStdioFile file;</div><div class="line">	CString strLine, strtemp;</div><div class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;CString&gt;Word;</div><div class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;CString&gt;Selected;</div><div class="line">	<span class="keyword">if</span> (!file.Open(<span class="number">_</span>T(<span class="string">"d:\\1.txt "</span>), CFile::modeRead))</div><div class="line">	&#123;</div><div class="line">		ASSERT(FALSE);</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">while</span> (file.ReadString(strLine))</div><div class="line">	&#123;</div><div class="line">		<span class="keyword">int</span> len = strLine.GetLength();</div><div class="line">		</div><div class="line">		<span class="keyword">char</span> *str = strLine.GetBufferSetLength(strLine.GetLength());</div><div class="line">		<span class="keyword">char</span> *p;</div><div class="line">		</div><div class="line">		<span class="keyword">int</span> i = <span class="number">0</span>, k = <span class="number">0</span>;</div><div class="line">		<span class="keyword">char</span> *buf;</div><div class="line">		<span class="keyword">if</span> (strLine != <span class="string">""</span>)</div><div class="line">		&#123;</div><div class="line">			<span class="keyword">for</span> (p = strtok_s(str, <span class="string">"、"</span>, &amp;buf); p != <span class="literal">NULL</span>; p = strtok_s(<span class="literal">NULL</span>, <span class="string">"、"</span>, &amp;buf))</div><div class="line">			&#123;</div><div class="line">				Word.push_back(p);</div><div class="line">				i++;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line"></div><div class="line">			CString strSum = <span class="string">""</span>;</div><div class="line">			srand((<span class="keyword">unsigned</span>)time(<span class="literal">NULL</span>));</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> m = <span class="number">0</span>; m &lt; <span class="number">3</span>; m++)</div><div class="line">			&#123;</div><div class="line">				<span class="keyword">int</span> j = random(i);</div><div class="line">				Selected.push_back(Word.at(j));</div><div class="line">				strtemp = Selected.at(m);</div><div class="line">				strSum= strSum + strtemp;</div><div class="line">			&#125;</div><div class="line">			strSum = strSum + <span class="string">"，"</span>;</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> m = <span class="number">3</span>; m &lt; <span class="number">7</span>; m++)</div><div class="line">			&#123;</div><div class="line">				<span class="keyword">int</span> j = random(i);</div><div class="line">				Selected.push_back(Word.at(j));</div><div class="line">				strtemp = Selected.at(m);</div><div class="line">				strSum = strSum + strtemp;</div><div class="line">			&#125;</div><div class="line">			strSum = strSum + <span class="string">"，"</span>;</div><div class="line">			strSum = strSum + <span class="string">"\r\n"</span>;</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> m = <span class="number">7</span>; m &lt; <span class="number">10</span>; m++)</div><div class="line">			&#123;</div><div class="line">				<span class="keyword">int</span> j = random(i);</div><div class="line">				Selected.push_back(Word.at(j));</div><div class="line">				strtemp = Selected.at(m);</div><div class="line">				strSum = strSum + strtemp;</div><div class="line">			&#125;</div><div class="line">			strSum = strSum + <span class="string">"，"</span>;</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> m = <span class="number">10</span>; m &lt; <span class="number">13</span>; m++)</div><div class="line">			&#123;</div><div class="line">				<span class="keyword">int</span> j = random(i);</div><div class="line">				Selected.push_back(Word.at(j));</div><div class="line">				strtemp = Selected.at(m);</div><div class="line">				strSum = strSum + strtemp;</div><div class="line">			&#125;</div><div class="line">			strSum = strSum + <span class="string">"，"</span>;</div><div class="line">			strSum = strSum + <span class="string">"\r\n"</span>;</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> m = <span class="number">13</span>; m &lt; <span class="number">18</span>; m++)</div><div class="line">			&#123;</div><div class="line">				<span class="keyword">int</span> j = random(i);</div><div class="line">				Selected.push_back(Word.at(j));</div><div class="line">				strtemp = Selected.at(m);</div><div class="line">				strSum = strSum + strtemp;</div><div class="line">			&#125;</div><div class="line">			strSum = strSum + <span class="string">"，"</span>;</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> m = <span class="number">18</span>; m &lt; <span class="number">20</span>; m++)</div><div class="line">			&#123;</div><div class="line">				<span class="keyword">int</span> j = random(i);</div><div class="line">				Selected.push_back(Word.at(j));</div><div class="line">				strtemp = Selected.at(m);</div><div class="line">				strSum = strSum + strtemp;</div><div class="line">			&#125;</div><div class="line">			strSum = strSum + <span class="string">"，"</span>;</div><div class="line">			strSum = strSum + <span class="string">"\r\n"</span>;</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> m = <span class="number">20</span>; m &lt; <span class="number">23</span>; m++)</div><div class="line">			&#123;</div><div class="line">				<span class="keyword">int</span> j = random(i);</div><div class="line">				Selected.push_back(Word.at(j));</div><div class="line">				strtemp = Selected.at(m);</div><div class="line">				strSum = strSum + strtemp;</div><div class="line">			&#125;</div><div class="line"></div><div class="line">			strSum = strSum + <span class="string">"？"</span>;</div><div class="line">			strSum = strSum + <span class="string">"\r\n"</span>;</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> m = <span class="number">23</span>; m &lt; <span class="number">25</span>; m++)</div><div class="line">			&#123;</div><div class="line">				<span class="keyword">int</span> j = random(i);</div><div class="line">				Selected.push_back(Word.at(j));</div><div class="line">				strtemp = Selected.at(m);</div><div class="line">				strSum = strSum + strtemp;</div><div class="line">			&#125;</div><div class="line">			strSum = strSum + <span class="string">"。"</span>;</div><div class="line"></div><div class="line"></div><div class="line">			SetDlgItemText(IDC_EDIT2,strSum);</div><div class="line">			TCHAR szBuf[<span class="number">1264</span>];</div><div class="line">			FILE *pfile;</div><div class="line">			fopen_s(&amp;pfile,<span class="string">"d:\\library.txt"</span>, <span class="string">"r"</span>);</div><div class="line">			fread(szBuf, <span class="number">1</span>, <span class="number">1262</span>, pfile);</div><div class="line">			SetDlgItemText(IDC_EDIT1, szBuf);</div><div class="line"></div><div class="line">			fclose(pfile); </div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	file.Close();</div></pre></td></tr></table></figure></p>
+<p><img src="http://img.blog.csdn.net/20170816001549657?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="V1.1"></p>
+<p>字符串尾的烫烫烫烫烫还没解决</p>
+<p>随机散文诗：
+环佩离海棠，悲欢情墨红颜，
+古道回推敲，萧瑟繁华梳妆，
+寂寥绮罗簌簌桑麻墨，青梅尘缘，
+花蕊墨城郭？
+白露陌上。</p>
+<p>烟读碧绿，顾青鸾青丝古墓，
+楚楚故里尺素，念情殇柳眉，
+伊人亮尘缘挥毫古墓，簌簌伽蓝，
+寂寥萧尘埃？
+桑麻知否。</p>
+<p>枝桠年华尘埃，经纬竹婆娑伽蓝，
+一觅古筝笑靥，沧海寺轩窗，
+泠五岳勾勒磐石江，桑麻寂，
+一觅知否袅袅？
+萧瑟瑶池。</p>
+<p>羌笛绮罗剑鞘，枯藤乌艄断弦琴，
+绮罗朱砂萧，寺参差寒蝉，
+一抹长安水墨朱砂踌躇，寂凤凰，
+渔樵红烛垂钓？
+长歌芭蕉。</p>
+<p>哈哈哈哈哈看起来好有文化的样子</p>
+<p>附上一首吐槽古风乱象的歌：
+&lt;iframe frameborder=&quot;no&quot; border=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; width=330 height=86 src=&quot;//music.163.com/outchain/player?type=2&amp;id=34152526&amp;auto=1&amp;height=66&quot;&gt;&lt;/iframe&gt;</p>
 
-<p>小桥流水肯定有人家，<br>两人对坐必须在饮茶。<br>为何提笔再难描绘出风雅。　　</p>
-<p>一个C++古风自动写诗器。V1.1上线<br>【注意：有背景音乐！】</p>
-          
       
     </div>
     
@@ -497,10 +789,6 @@
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MFC/">MFC</a></li></ul>
     </div>
 
-      
-        <p class="article-more-link">
-          <a href="/2017/08/10/古风自动造句器/#more">阅读全文 >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -563,8 +851,68 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <div align="left"><br><img src="http://images.cnitblog.com/i/609598/201404/072129507785920.jpg" width="300" height="180" style="float:right;"/><br><br><br>大热天敲代码与看书更配哦　　<br><br><br> </div>
-          
+        <p>&lt;div align=&quot;left&quot;&gt;
+&lt;img src=&quot;http://images.cnitblog.com/i/609598/201404/072129507785920.jpg&quot; width=&quot;300&quot; height=&quot;180&quot; style=&quot;float:right;&quot;/&gt;</p>
+<p>大热天敲代码与看书更配哦</p>
+<p>&lt;/div&gt;</p>
+<p>&lt;!--more--&gt;</p>
+<p>伪代码。</p>
+<h1 id="二叉树的链式存储结构">二叉树的链式存储结构</h1>
+<p><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> BiTNode&#123;</div><div class="line">	ElemType data;<span class="comment">//数据域</span></div><div class="line">	<span class="keyword">struct</span> BiTNode *lchild, *rchild;<span class="comment">//左、右孩子指针</span></div><div class="line">&#125;BiTNode, *BiTree;</div></pre></td></tr></table></figure></p>
+<h1 id="二叉树的遍历">二叉树的遍历</h1>
+<p>例：1
+2      3
+4       5
+6</p>
+<h2 id="先序遍历preorder">先序遍历（PreOrder）</h2>
+<p>根-&gt;左-&gt;右
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">PreOrder</span><span class="params">(BiTree T)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span> (T != <span class="literal">NULL</span>)&#123;</div><div class="line">		visit(T);<span class="comment">//访问根节点</span></div><div class="line">		PreOrder(T-&gt;lchild);<span class="comment">//递归遍历左子树</span></div><div class="line">		PreOrder(T-&gt;rchild);<span class="comment">//递归遍历右子树</span></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>124635</p>
+<h2 id="中序遍历inorder">中序遍历（InOrder）</h2>
+<p>左-&gt;根-&gt;右
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">InOrder</span><span class="params">(BiTree T)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span> (T != <span class="literal">NULL</span>)&#123;</div><div class="line">		InOrder(T-&gt;lchild);<span class="comment">//递归遍历左子树</span></div><div class="line">		visit(T);<span class="comment">//访问根节点</span></div><div class="line">		InOrder(T-&gt;rchild);<span class="comment">//递归遍历右子树</span></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>264135</p>
+<h2 id="后序遍历postorder">后序遍历（PostOrder）</h2>
+<p>左-&gt;右-&gt;根
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">PostOrder</span><span class="params">(BiTree T)</span></span>&#123;</div><div class="line">	<span class="keyword">if</span> (T != <span class="literal">NULL</span>)</div><div class="line">	&#123;</div><div class="line">		PostOrder(T-&gt;lchild);<span class="comment">//递归遍历左子树</span></div><div class="line">		PostOrder(T-&gt;rchild);<span class="comment">//递归遍历右子树</span></div><div class="line">		visit(T);<span class="comment">//访问根节点</span></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>642531</p>
+<p>时间复杂度都是O(n)，空间复杂度为O(n)。</p>
+<h1 id="中序遍历的非递归算法">中序遍历的非递归算法</h1>
+<p><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">InOrder2</span><span class="params">(BiTree T)</span></span>&#123;</div><div class="line">	<span class="comment">//二叉树中序遍历的非递归算法，算法需要借助一个栈</span></div><div class="line">	InitStack(S);</div><div class="line">	BiTree p = T;				<span class="comment">//初始化栈；p是遍历指针</span></div><div class="line">	<span class="keyword">while</span> (p || !IsEmpty(S))&#123;		<span class="comment">//栈不空或p不空时循环</span></div><div class="line">		<span class="keyword">if</span> (p)&#123;						<span class="comment">//根指针进展，遍历左子树</span></div><div class="line">			Push(S, p);					<span class="comment">//每遇到非空二叉树先向左走</span></div><div class="line">			p = p-&gt;lchild;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">else</span>&#123;						<span class="comment">//根指针退栈，访问根节点，遍历右子树</span></div><div class="line">			Pop(S, p); visit(p);		<span class="comment">//退栈，访问根节点</span></div><div class="line">			p = p-&gt;rchild;			<span class="comment">//再向右子树走</span></div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="二叉树的层次遍历">二叉树的层次遍历</h1>
+<p><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">LevelOrder</span><span class="params">(BiTree T)</span></span>&#123;</div><div class="line">	InitQueue(Q);<span class="comment">//初始化辅助队列</span></div><div class="line">	BiTree p;</div><div class="line">	EnQueue(Q, T);<span class="comment">//将根结点入队</span></div><div class="line">	<span class="keyword">while</span> (!IsEmpty(Q))&#123;<span class="comment">//队列不空循环</span></div><div class="line">		DeQueue(Q, p);<span class="comment">//队头元素出队</span></div><div class="line">		visit(p);<span class="comment">//访问当前p所指向结点</span></div><div class="line">		<span class="keyword">if</span> (p-&gt;lchild != <span class="literal">NULL</span>)</div><div class="line">		&#123;</div><div class="line">			EnQueue(Q, p-&gt;lchild);<span class="comment">//左子树不空，则左子树入队列</span></div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> (p-&gt;rchild != <span class="literal">NULL</span>)</div><div class="line">		&#123;</div><div class="line">			EnQueue(Q, p-&gt;rchild);<span class="comment">//右子树不空，则右子树入队列</span></div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="树的存储结构">树的存储结构</h1>
+<h2 id="双亲表示法">双亲表示法</h2>
+<p><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> MAX_TREE_SIZE 100	<span class="comment">//树中最多结点数</span></span></div><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span>&#123;		<span class="comment">//树的结点定义</span></div><div class="line">	ElemType data;	<span class="comment">//数据元素</span></div><div class="line">	<span class="keyword">int</span> parent;	<span class="comment">//双亲位置域</span></div><div class="line">&#125;PTNode;</div><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span>&#123;		<span class="comment">//树的类型定义</span></div><div class="line">	PTNode nodes[MAX_TREE_SIZE];	<span class="comment">//双亲表示</span></div><div class="line">	<span class="keyword">int</span> n;		<span class="comment">//结点数</span></div><div class="line">&#125;PTree;</div></pre></td></tr></table></figure></p>
+<p>求结点的孩子时需遍历整个结构。</p>
+<h2 id="孩子表示法">孩子表示法</h2>
+<p><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> CTNode	<span class="comment">//孩子结点</span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">int</span> child;</div><div class="line">	<span class="keyword">struct</span> CTNode *next;</div><div class="line">&#125;*ChildPtr;</div><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></div><div class="line">&#123;</div><div class="line">	TElemType data;</div><div class="line">	ChildPtr firstchild;<span class="comment">//孩子链表头指针</span></div><div class="line">&#125;CTBox;</div><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></div><div class="line">&#123;</div><div class="line">	CTBox nodes[MAX_TREE_SIZE];</div><div class="line">	<span class="keyword">int</span> n, r;	<span class="comment">//结点数和根的位置</span></div><div class="line">&#125;CTree;</div></pre></td></tr></table></figure></p>
+<p>求结点的双亲时需遍历N个结点中孩子链表指针域所指向的N个孩子链表。</p>
+<h2 id="孩子兄弟表示法二叉树表示法">孩子兄弟表示法（二叉树表示法）</h2>
+<p><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> CSNode</div><div class="line">&#123;</div><div class="line">	ElemType data;	<span class="comment">//数据域</span></div><div class="line">	<span class="keyword">struct</span> CSNode *firstchild, *nextsibling;	<span class="comment">//第一个孩子和右兄弟指针</span></div><div class="line">&#125;CSNode, *CSTree;</div></pre></td></tr></table></figure></p>
+<p>易查找结点的孩子，若为每个结点增设一个parent域指向其父节点，则查找结点的父结点也很方便。</p>
+<p>树转换为二叉树的规则：每个结点左指针指向它的第一个孩子结点，右指针指向它在树中的相邻兄弟结点，可表示为“左孩子右兄弟”。由于根节点没有兄弟，所以由树转换而得的二叉树没有右子树。</p>
+<p>例：
+<img src="http://img.blog.csdn.net/20160405115409687" alt="一颗具体的树">
+<img src="http://img.blog.csdn.net/20160405121851681" alt="转换后"></p>
+<h1 id="c实现">C++实现</h1>
+<p>由于博主不允许转载，因此详见参考。
+为防止程序一闪而过，在main程序末尾添加system(&quot;pause&quot;);使画面停留。</p>
+<h1 id="参考">参考</h1>
+<p>数据结构教材
+<a href="http://blog.csdn.net/linux_ever/article/details/51063795" target="_blank" rel="external">数据结构与算法——普通树的定义与C++实现</a>
+<a href="http://blog.csdn.net/jkay_wong/article/details/6635984" target="_blank" rel="external">C++树（兄弟孩子结构实现）</a>
+<a href="http://www.educity.cn/develop/478944.html" target="_blank" rel="external">VC++ 树的孩子兄弟表示法</a>
+<a href="http://blog.csdn.net/insistgogo/article/details/6876867" target="_blank" rel="external">使用C++ 和 孩子兄弟表示法实现树</a>
+<a href="http://blog.csdn.net/htyurencaotang/article/details/7781920" target="_blank" rel="external">孩子兄弟表示法实现树</a></p>
+<hr>
+<p>最近更新频繁的原因如下：
+上周
+<img src="http://img.blog.csdn.net/20170723212235401?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="上周"></p>
+<p>未来一周
+<img src="http://img.blog.csdn.net/20170723212159371?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="未来一周"></p>
+<p>热成熟透的咸鱼  不如宅着做咸鱼</p>
+
       
     </div>
     
@@ -581,10 +929,6 @@
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据结构/">数据结构</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/树/">树</a></li></ul>
     </div>
 
-      
-        <p class="article-more-link">
-          <a href="/2017/07/23/树/#more">阅读全文 >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -647,10 +991,46 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <div align="left"><br><img src="http://b-ssl.duitang.com/uploads/item/201510/12/20151012094245_twKjA.jpeg" width="300" height="180" style="float:right;"/><br><br> </div>
+        <p>&lt;div align=&quot;left&quot;&gt;
+&lt;img src=&quot;http://b-ssl.duitang.com/uploads/item/201510/12/20151012094245_twKjA.jpeg&quot; width=&quot;300&quot; height=&quot;180&quot; style=&quot;float:right;&quot;/&gt;</p>
+<p>&lt;/div&gt;</p>
+<p>这贴适合又不适合卡吧老司机进来
+　　
+　　
+　　
+&lt;!--more--&gt;</p>
+<p><strong>不是组装电脑！让你失望了[微笑]</strong></p>
+<p>直连光猫
+<img src="http://img.blog.csdn.net/20170722004202507?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="直连光猫"></p>
+<p>连接路由器
+<img src="http://img.blog.csdn.net/20170722004135465?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="路由器"></p>
+<p>这还是最快的信道  100M的钱  10M的同等感受</p>
+<p>1.求推路由器
+100M光纤 家用 连Wifi设备还比较多 需跨墙
+要求：性能好 性能好 性能好 性价比高</p>
+<p>2.求推电视音响
+要求：音质好 音质好 音质好 重低音强（低音炮！）
+价格……当然性价比越高越好……价位……高中低各给一款参考？</p>
+<p>能直接给京东链接最好了……</p>
+<p>。。。。。。</p>
+<p>之所以不去卡吧等土豪吧发帖，当然是  因为  穷</p>
+<p>默默想起几年前的一首诗
+三千预算进卡吧 加钱加到九万八 八核 E5 装上去 四路Titan抱回家
+4K 屏幕组三屏 万元水冷温度压 固态硬盘装三块 硬盘内存使劲加 　
+键鼠必花几千元 耳机手柄三千八 还有机箱六千元 红星炸弹劈劈啪</p>
+<p>---华丽的分界线---</p>
+<p>一天不能同时留2个Flag是真的
+总有一个会打脸<br>
+比如上一篇写的 今天说好写MSHTML例子的  结果今天先被MSXML弄昏了
+昨晚去云村留Flag说早睡  总要做到一个吧
+真的！我要早点睡觉！不过12点！！！</p>
+<p>附上两张公司厕所励志图…………………………
+<img src="http://img.blog.csdn.net/20170718232530408?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="1"></p>
+<p><img src="http://img.blog.csdn.net/20170718232554242?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="2"></p>
+<p>各位看到的大神们晚安~
+我要做一只美丽的小菜鸟
+⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄</p>
 
-<p> 　　　　<br>　　<br>这贴适合又不适合卡吧老司机进来<br>　　<br>　　<br>　　<br>
-          
       
     </div>
     
@@ -667,10 +1047,6 @@
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/杂谈/">杂谈</a></li></ul>
     </div>
 
-      
-        <p class="article-more-link">
-          <a href="/2017/07/18/求购/#more">阅读全文 >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -733,9 +1109,49 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <p><div align="left"><br><img src="http://p7.qhimg.com/t01ca7ccf3b4a3ffe38.png" width="300" height="180" style="float:right;"/></p>
-<p></div><br>　　<br>　　<br>　　<br>如题。<br>　　<br>　<br>　　　<br>
-          
+        <p>&lt;div align=&quot;left&quot;&gt;
+&lt;img src=&quot;http://p7.qhimg.com/t01ca7ccf3b4a3ffe38.png&quot; width=&quot;300&quot; height=&quot;180&quot; style=&quot;float:right;&quot;/&gt;</p>
+<p>&lt;/div&gt;
+　　
+　　
+　　
+如题。
+　　
+　
+　　　
+&lt;!--more--&gt;</p>
+<h1 id="代码">代码</h1>
+<p>系统自带MSXML6.dll，在C盘system32下。先要导入文件，定义使用空间。</p>
+<p><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">&lt;msxml6.dll&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> MSXML2;</div></pre></td></tr></table></figure></p>
+<p>为三个编辑框分别添加变量m_strId,m_strAuthor,m_strTitle。</p>
+<p>主要代码：</p>
+<p><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">void</span> CXMLDlg::OnBnClickedBtncreate()</div><div class="line">&#123;</div><div class="line">	<span class="comment">// <span class="doctag">TODO:</span>  在此添加控件通知处理程序代码</span></div><div class="line">	UpdateData();</div><div class="line"></div><div class="line">	MSXML2::IXMLDOMDocumentPtr pDoc;</div><div class="line">	MSXML2::IXMLDOMElementPtr xmlRoot;</div><div class="line"></div><div class="line">	<span class="comment">//创建DOMDocument对象</span></div><div class="line">	HRESULT hr = pDoc.CreateInstance(<span class="number">__u</span>uidof(MSXML2::DOMDocument60));</div><div class="line"></div><div class="line">	<span class="comment">//根节点的名称为Book</span></div><div class="line">	<span class="comment">//创建元素并添加到文档中</span></div><div class="line">	xmlRoot = pDoc-&gt;createElement((<span class="keyword">_bstr_t</span>)<span class="string">"Book"</span>);</div><div class="line"></div><div class="line">	<span class="comment">//设置属性</span></div><div class="line">	xmlRoot-&gt;setAttribute(<span class="string">"id"</span>, (<span class="keyword">_variant_t</span>)m_strId);</div><div class="line">	pDoc-&gt;appendChild(xmlRoot);</div><div class="line">	MSXML2::IXMLDOMElementPtr pNode;</div><div class="line">	<span class="comment">//添加“author”元素</span></div><div class="line">	pNode = pDoc-&gt;createElement((<span class="keyword">_bstr_t</span>)<span class="string">"Author"</span>);</div><div class="line">	pNode-&gt;Puttext((<span class="keyword">_bstr_t</span>)m_strAuthor);</div><div class="line">	xmlRoot-&gt;appendChild(pNode);</div><div class="line"></div><div class="line">	<span class="comment">//添加“Title”元素</span></div><div class="line">	pNode = pDoc-&gt;createElement(<span class="string">"Title"</span>);</div><div class="line">	pNode-&gt;Puttext((<span class="keyword">_bstr_t</span>)m_strTitle);</div><div class="line">	xmlRoot-&gt;appendChild(pNode);</div><div class="line"></div><div class="line">	<span class="comment">//如果不存在就建立,存在就覆盖</span></div><div class="line">	pDoc-&gt;save(<span class="string">"text.xml"</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">void</span> CXMLDlg::OnBnClickedBtnload()</div><div class="line">&#123;</div><div class="line">	<span class="comment">// <span class="doctag">TODO:</span>  在此添加控件通知处理程序代码</span></div><div class="line">	MSXML2::IXMLDOMDocumentPtr pDoc;</div><div class="line">	HRESULT hr = pDoc.CreateInstance(<span class="number">__u</span>uidof(MSXML2::DOMDocument60));</div><div class="line"></div><div class="line">	<span class="comment">//加载文件</span></div><div class="line">	pDoc-&gt;load(<span class="string">"text.xml"</span>);</div><div class="line"></div><div class="line">	MSXML2::IXMLDOMNodePtr pNode;</div><div class="line">	<span class="comment">//在树中查找名为Book的节点,"//"表示在任意一层查找</span></div><div class="line">	pNode = pDoc-&gt;selectSingleNode(<span class="string">"//Book"</span>);</div><div class="line">	MSXML2::DOMNodeType nodeType;</div><div class="line">	<span class="comment">//得到节点类型</span></div><div class="line">	pNode-&gt;get_nodeType(&amp;nodeType);</div><div class="line">	<span class="comment">//节点名称</span></div><div class="line">	CString strName;</div><div class="line">	strName = (<span class="keyword">char</span> *)pNode-&gt;GetnodeName();</div><div class="line">	<span class="comment">//节点属性,放在链表中</span></div><div class="line">	MSXML2::IXMLDOMNamedNodeMapPtr pAttrMap = <span class="literal">NULL</span>;</div><div class="line">	MSXML2::IXMLDOMNodePtr   pAttrItem;</div><div class="line">	<span class="keyword">_variant_t</span> variantValue;</div><div class="line">	pNode-&gt;get_attributes(&amp;pAttrMap);</div><div class="line">	<span class="keyword">long</span> count;</div><div class="line">	count = pAttrMap-&gt;get_length(&amp;count);</div><div class="line">	pAttrMap-&gt;get_item(<span class="number">0</span>, &amp;pAttrItem);</div><div class="line">	<span class="comment">//取得节点的值</span></div><div class="line">	pAttrItem-&gt;get_nodeTypedValue(&amp;variantValue);</div><div class="line">	m_strId = (<span class="keyword">char</span> *)(<span class="keyword">_bstr_t</span>)variantValue;</div><div class="line">	UpdateData(FALSE);</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">void</span> CXMLDlg::OnBnClickedBtnclear()</div><div class="line">&#123;</div><div class="line">	<span class="comment">// <span class="doctag">TODO:</span>  在此添加控件通知处理程序代码</span></div><div class="line">	m_temp = <span class="string">""</span>;</div><div class="line">	SetDlgItemText(IDC_EDIT1, m_temp);</div><div class="line">	SetDlgItemText(IDC_EDIT2, m_temp);</div><div class="line">	SetDlgItemText(IDC_EDIT3, m_temp);</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="效果">效果</h1>
+<p>生成的XML:</p>
+<p><img src="http://img.blog.csdn.net/20170713215940972?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="XML"></p>
+<p>界面：</p>
+<p><img src="http://img.blog.csdn.net/20170713220135411?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="界面"></p>
+<h1 id="报错">报错</h1>
+<ol>
+<li></li>
+</ol>
+<p><img src="http://img.blog.csdn.net/20170713214333758?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="报错">
+之前也遇到过类似情况。</p>
+<p>解决：
+<a href="http://cs.cuc.edu.cn/huangwei/wiki/teaching_c_ds_fileio_unicode.html" target="_blank" rel="external">Unicode in the Windows API</a>
+<a href="https://msdn.microsoft.com/en-us/library/windows/desktop/dd317766%28v=vs.85%29.aspx" target="_blank" rel="external">Conventions for Function Prototypes</a></p>
+<p>简单说来，是因为随着版本更替，老规则渐渐不使用，现在的字符多是Unicode字符集，为了各版本的兼容，最好的方法是使用TEXT宏。即将程序改为：
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (!SUCCEEDED(hr))</div><div class="line"></div><div class="line">	&#123;</div><div class="line"></div><div class="line">		MessageBox(<span class="number">_</span>T(<span class="string">"无法创建DOMDocument对象，请检查是否安装了MS XML Parser 运行库!"</span>));</div><div class="line"></div><div class="line">		<span class="keyword">return</span>;</div><div class="line"></div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<p>即能编译通过。</p>
+<ol start="2">
+<li></li>
+</ol>
+<p><img src="http://img.blog.csdn.net/20170713214741223?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="报错2">
+这个DOMDocument40是什么？同样的程序，WIN7电脑就可以编译通过，WIN10就报错？要换成DOMDocument60才行。</p>
+<p>答：MSXML SDK版本不同造成的差异。</p>
+<h1 id="参考">参考</h1>
+<p><a href="http://m.blog.csdn.net/John_ToStr/article/details/50970443" target="_blank" rel="external">MFC中利用MSXML解析XML文档</a></p>
+
       
     </div>
     
@@ -752,10 +1168,6 @@
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MFC/">MFC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/XML/">XML</a></li></ul>
     </div>
 
-      
-        <p class="article-more-link">
-          <a href="/2017/07/13/一个MFC利用MSXML解析XML的最简例子/#more">阅读全文 >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -818,11 +1230,78 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <p><div align="left"><br><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1491392241106&di=d26487a68371b445aa7b604ab2883ce1&imgtype=0&src=http%3A%2F%2Fimage103.360doc.com%2FDownloadImg%2F2017%2F02%2F1715%2F91672979_2.png" width="300" height="180" style="float:right;"/><br> </div><br>我以为短期内我不可能再更新这篇文章了。没想到……</p>
-<h1 id="2017-7-9-网页云跟帖停止服务"><a href="#2017-7-9-网页云跟帖停止服务" class="headerlink" title="2017.7.9 网页云跟帖停止服务"></a>2017.7.9 网页云跟帖停止服务</h1><p><img src="http://img.blog.csdn.net/20170709154958703?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="跟帖关闭"><br>此刻我只想说：<br>哈哈哈哈哈哈哈哈！</p>
+        <p>&lt;div align=&quot;left&quot;&gt;
+&lt;img src=&quot;https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1491392241106&amp;di=d26487a68371b445aa7b604ab2883ce1&amp;imgtype=0&amp;src=http%3A%2F%2Fimage103.360doc.com%2FDownloadImg%2F2017%2F02%2F1715%2F91672979_2.png&quot; width=&quot;300&quot; height=&quot;180&quot; style=&quot;float:right;&quot;/&gt;
+&lt;/div&gt;
+我以为短期内我不可能再更新这篇文章了。没想到……</p>
+<h1 id="201779-网页云跟帖停止服务">2017.7.9 网页云跟帖停止服务</h1>
+<p><img src="http://img.blog.csdn.net/20170709154958703?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="跟帖关闭">
+此刻我只想说：
+哈哈哈哈哈哈哈哈！</p>
 <p>跟帖服务跟不上，最终还是被畅言玩死了。幸好早早换了disqus。</p>
 <p>同时，为这个商业社会默哀一秒钟。</p>
-          
+<p>&lt;!--more--&gt;</p>
+<h1 id="201773-disqus不用翻墙即可评论">2017.7.3 disqus不用翻墙即可评论</h1>
+<p>不审核，直接显示。并且，可以回访！</p>
+<p>这次折腾好后短期内应该不会再弄评论框了  专注工作专注工作</p>
+<p>墙内换成网易云跟帖后，评论量就跳水式下降，仿佛被打入冷宫？加上跟帖各种缺陷，还是用disqus吧，刚好听说了可以不翻墙就能用的方法，遂试之。</p>
+<p>之前的600条评论又只能暂以json的形式躺在电脑里了。为什么大家的格式都不一样呢？这真的很不和谐，很不！和！谐！！</p>
+<h2 id="登录服务器">登录服务器</h2>
+<p>我用的xshell，ssh连接服务器。我的服务器是DigitalOcean买的 512M的……(它已经被闲置了三个月了，心疼money)
+详见<a href="http://hubojing.me/2017/03/28/DigitalOcean%E8%B4%AD%E4%B9%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%95%99%E7%A8%8B/" target="_blank" rel="external">DigitalOcean购买服务器教程</a></p>
+<h2 id="安装面板">安装面板</h2>
+<p>在服务器上安装<a href="https://www.bt.cn/bbs/thread-1186-1-1.html" target="_blank" rel="external">宝塔Linux面板</a>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install -y wget &amp;&amp; wget -O install.sh http://download.bt.cn/install/install.sh &amp;&amp; sh install.sh</div></pre></td></tr></table></figure></p>
+<p>然后在浏览器中打开面板。</p>
+<h2 id="新建站点">新建站点</h2>
+<p>在网站中添加站点，输入一个域名。（可勾选FTP）</p>
+<h2 id="配置api">配置API</h2>
+<p><a href="https://github.com/fooleap/disqus-php-api" target="_blank" rel="external">利用 PHP cURL 转发 Disqus API 请求</a> ，将文件clone到本地。在config中按要求配置。</p>
+<p>将API打包上传到面板，解压。再将dist文件夹下的两个文件上传上去。</p>
+<h2 id="域名解析">域名解析</h2>
+<p>接着打开解析博客的地址，我用的腾讯云。<a href="https://www.dnspod.cn" target="_blank" rel="external">DNSPOD</a> 添加域名。
+主机记录填对应的新建的站点名（不带网站一级域名），记录类型A，记录值为服务器地址。</p>
+<h2 id="disqus配置">disqus配置</h2>
+<p>disqus后台中勾选允许匿名评论。</p>
+<h2 id="修改主题中评论文件">修改主题中评论文件</h2>
+<p>完工。</p>
+<p>部署时，
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">fatal: Unable <span class="built_in">to</span> <span class="built_in">create</span> <span class="string">'E:/hexo/.deploy_git/.git/index.lock'</span>: File exists.</div><div class="line"></div><div class="line">Another git <span class="built_in">process</span> seems <span class="built_in">to</span> be running <span class="keyword">in</span> this repository, e.g.</div><div class="line"><span class="keyword">an</span> editor opened <span class="keyword">by</span> <span class="string">'git commit'</span>. Please make sure all processes</div><div class="line">are terminated <span class="keyword">then</span> <span class="keyword">try</span> again. If <span class="keyword">it</span> still fails, <span class="keyword">a</span> git <span class="built_in">process</span></div><div class="line">may have crashed <span class="keyword">in</span> this repository earlier:</div><div class="line">remove <span class="keyword">the</span> <span class="built_in">file</span> manually <span class="built_in">to</span> continue.</div><div class="line">FATAL Something<span class="string">'s wrong. Maybe you can find the solution here: http://hexo.io/docs/troubleshooting.html</span></div></pre></td></tr></table></figure></p>
+<p>解决：删除对应的index.lock。</p>
+<hr>
+<blockquote>
+<h1 id="2017527-已更换为disqus">2017.5.27 已更换为Disqus</h1>
+</blockquote>
+<p>由于Disqus被墙，可能需要科学上网后才能看到评论。
+若墙内的朋友们需要评论，可以直接点击QQ图标（PC端在左边栏，移动端在页面上方），和我进行在线对话。</p>
+<hr>
+<blockquote>
+<h1 id="2017530-已导入历史评论">2017.5.30 已导入历史评论</h1>
+</blockquote>
+<p>虽然比不上多说，比网易云跟帖还是好很多了。
+目前发现有一篇文章的评论导入失败，Disqus的显示如下：
+Missing or invalid message 或 Unable to find parent post
+我再看看怎么解决，是否需要手工导入。
+参考：<a href="http://urouge.github.io/migrate-to-disqus/" target="_blank" rel="external">多说评论迁移至Disqus</a></p>
+<hr>
+<p>多说八百年不发邮件通知我有评论，在我换为网易云跟帖后，竟然邮件通知我有评论了！</p>
+<p>多说关闭带来的评论区何去何从让我颇为困扰。
+现在能用的大概只有这些：畅言（需备案）、网易云跟帖（github.io不支持）、友言（也有倒闭趋势）、来必力（韩国）。</p>
+<p>没有一个像多说这样好用的！</p>
+<p>虽然多说也有很多问题，但它至少解决了核心问题：
+1.评论显示正确的网友名称。
+来看看我换上网易云跟帖后的效果：
+<img src="http://img.blog.csdn.net/20170405161942419?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="网易云跟帖"></p>
+<p>都是有态度网友…… 我压根分不清谁是谁！</p>
+<p>2.点击头像可以回访人家的独立博客。
+这一点真的很重要，这往往是我们小众的独立博客人交朋友的主要途径啊！</p>
+<p>3.可以自定义。
+头像旋转、评论框自定义，真的可以很好看。这些跟帖做不到。</p>
+<p>4.盖楼模式多样。
+而跟帖只能一种，我不太喜欢，重复率太高，我还是喜欢多说的嵌套。</p>
+<p>多说名字没起好啊！多说无益必自毙→_→
+先换回多说吧，再等一个月看看。</p>
+
       
     </div>
     
@@ -839,10 +1318,6 @@
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多说/">多说</a></li></ul>
     </div>
 
-      
-        <p class="article-more-link">
-          <a href="/2017/04/05/多说关闭引发的麻烦/#more">阅读全文 >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>
@@ -905,8 +1380,31 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-              <div align="left"><br><img src="http://n.sinaimg.cn/translate/20170628/njjU-fyhneam5185815.jpg" width="300" height="180" style="float:right;"/><br><br><br><br><br>给Petya病毒差评，比永恒之蓝的用户体验差太多了，竟然没有简体中文版！！！<br>　　<br><br><br> </div>
-          
+        <p>&lt;div align=&quot;left&quot;&gt;
+&lt;img src=&quot;http://n.sinaimg.cn/translate/20170628/njjU-fyhneam5185815.jpg&quot; width=&quot;300&quot; height=&quot;180&quot; style=&quot;float:right;&quot;/&gt;</p>
+<p>给Petya病毒差评，比永恒之蓝的用户体验差太多了，竟然没有简体中文版！！！</p>
+<p>&lt;/div&gt;</p>
+<p>&lt;!--more--&gt;</p>
+<p>QQ身份证显示，2006年加入QQ，竟然是全球第7.96亿个用户？？？？然而腾讯2008年用户数也才4.3亿吧，前不久统计全国网民也还不到十亿。
+。。。。。。
+好吧，我看2014年注册的号已经是第41.2亿个用户了，很强势。。。看来很多人都有多个QQ号→_→</p>
+<hr>
+<p><strong>三条新闻</strong></p>
+<p>巴铁狗带
+今天看新闻巴铁终于被拆了……
+还记得当初第一回看到这个新概念视频时还觉得超酷的，然而仔细一想就漏洞百出。黑科技常有，但在众人提出质疑后却给不出解决方案的情况下一意孤行就很不地道。只能说是打着科研旗号骗国家钱的玩意儿……</p>
+<hr>
+<p>之前报道：
+【微软惊呆：Win 10源代码泄漏！】外媒Theregister获得消息称，Win10源代码目前在网上被大量泄漏，这些源代码大小超过32TB。据悉，这些代码在今年三月左右在微软内部系统当中流出，包含Win10硬件驱动程序源码及USB和Wi-Fi协议栈等，获得源代码的黑客将可以查找系统中的漏洞用来破坏全球Windows系统.. ​</p>
+<p>标题我都想好了：
+震惊！！Windows系统将走向开源 国产自主研发加速</p>
+<p>最新消息：微软承认遭泄露，不过只有1.2G。（这就很不新闻了）</p>
+<hr>
+<p>最近勒索病毒又升级了……吓得我又去看看自己win10升级没……</p>
+<p>Petya病毒对勒索对象的加密，分为以下7个步骤：
+遍历所有驱动器，对每个驱动器创建一个线程并行加密 -&gt; 生成AES-128密钥key -&gt; 遍历磁盘文件，用key对其进行AES加密 -&gt; 从程序中获取一个公钥pubkey（内置固定） -&gt; 用pubkey加密key，得到ekey -&gt; 将ekey写入README.TXT -&gt; 释放key</p>
+<p><a href="https://yq.aliyun.com/articles/85783?spm=5176.100239.blogcont111587.33.CQn23O&amp;utm_content=m_24432" target="_blank" rel="external">WanaCrypt0r勒索蠕虫完全分析报告</a></p>
+
       
     </div>
     
@@ -923,10 +1421,6 @@
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/病毒/">病毒</a></li></ul>
     </div>
 
-      
-        <p class="article-more-link">
-          <a href="/2017/06/29/勒索病毒/#more">阅读全文 >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>
