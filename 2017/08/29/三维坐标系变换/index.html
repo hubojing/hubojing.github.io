@@ -15,18 +15,19 @@
 
 
 
-<meta name="description" content="关于三维坐标变换的一些思考。　从两条相交直线说起。">
+<meta name="description" content="&amp;lt;div align=&amp;quot;left&amp;quot;&amp;gt;
+&amp;lt;img src=&amp;quot;https://timgsa.baidu.com/timg?image&amp;amp;quality=80&amp;amp;size=b9999_10000&amp;amp;sec=1504032008394&amp;amp;di=e99e963bf5137db65c21d19b5589cb26&amp;amp;imgtype=0">
 <meta property="og:type" content="article">
 <meta property="og:title" content="三维坐标系变换">
 <meta property="og:url" content="http://hubojing.github.io/2017/08/29/三维坐标系变换/index.html">
 <meta property="og:site_name" content="胡博靖的技术博客">
-<meta property="og:description" content="关于三维坐标变换的一些思考。　从两条相交直线说起。">
-<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1504032008394&di=e99e963bf5137db65c21d19b5589cb26&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F16%2F55%2F89%2F38258PICNZn_1024.jpg">
+<meta property="og:description" content="&amp;lt;div align=&amp;quot;left&amp;quot;&amp;gt;
+&amp;lt;img src=&amp;quot;https://timgsa.baidu.com/timg?image&amp;amp;quality=80&amp;amp;size=b9999_10000&amp;amp;sec=1504032008394&amp;amp;di=e99e963bf5137db65c21d19b5589cb26&amp;amp;imgtype=0">
 <meta property="og:updated_time" content="2017-08-29T16:01:17.123Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="三维坐标系变换">
-<meta name="twitter:description" content="关于三维坐标变换的一些思考。　从两条相交直线说起。">
-<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1504032008394&di=e99e963bf5137db65c21d19b5589cb26&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F16%2F55%2F89%2F38258PICNZn_1024.jpg">
+<meta name="twitter:description" content="&amp;lt;div align=&amp;quot;left&amp;quot;&amp;gt;
+&amp;lt;img src=&amp;quot;https://timgsa.baidu.com/timg?image&amp;amp;quality=80&amp;amp;size=b9999_10000&amp;amp;sec=1504032008394&amp;amp;di=e99e963bf5137db65c21d19b5589cb26&amp;amp;imgtype=0">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -106,7 +107,7 @@
 
         
         <p class="header-subtitle">小清新IT旅程|为中华崛起读书</p>
-        <p class="post-count">已写92.5k字</p>
+        <p class="post-count">已写94.7k字</p>
         
 
         
@@ -397,20 +398,32 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <div align="left"><br><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1504032008394&di=e99e963bf5137db65c21d19b5589cb26&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F16%2F55%2F89%2F38258PICNZn_1024.jpg" width="300" height="180" style="float:right;"><br> </div>
-
-<p>关于三维坐标变换的一些思考。　<br>从两条相交直线说起。
-　　
-　　
-　　</p>
-<a id="more"></a>
-<p>从最简单的情况入手，求空间两条相交直线AB、BC的夹角，AB和BC相交于B点，已知ABC三点三维坐标。<br>假设两条直线向量分别为a(x1,y1,z1),b(x2,y2,z2),根据公式cosα=a·b/(|a|*|b|)=(x1x2+y1y2+z1z2)/[√(x1^2+y1^2+z1^2)+√(x2^2+y2^2+z2^2)] 可直接求得。</p>
-<p>情况变一变：<br>以此两条直线中的某一条为基准（为z’轴），求另一条直线关于基准线的x’、y’、z’轴（新的基准坐标系）夹角。</p>
-<p>如果不用矩阵的做法，求解很复杂：<br>以AB为新的坐标系Z’轴为例，O为原坐标系原点。<br>B’(0,0,0)，可求AB点距离s，则A’(0,0,s)。这还是比较容易的，关键是求C’坐标。<br>首先要求z轴和AB之间的各种角度，想象从Z轴先延x轴平移绕x轴旋转，再延y轴平移绕y轴旋转，最后延z轴平移绕z轴旋转。同理，C点做同类运动，得到C’。<br>千辛万苦得到C’还没完，再将B’C’分别向x’o’y’、y’o’z’、z’o’x’面投影，求关于基准线的夹角。方可算出所求。</p>
-<p>很明显，这种方法显然不适用在3D中。<br>这个问题其实等价于将世界坐标系转换为物体坐标系。,矩阵的作用就发挥广大。</p>
-<p>令原坐标系为M=(i,j,k)T（转置），变换后N=(i’,j’,k’)T，i=(1,0,0),j=(0,1,0),k=(0,0,1)<br>原坐标系中一点P为(x,y,z)，则P’=((x,y,z)-O’)N^(-1)   N^(-1)指N的逆矩阵  (若N为正交矩阵，无需求逆矩阵，求转置矩阵即可。)</p>
-<p>推导：∵P=O+(x,y,z)M=O’+(x’,y’,z’)N<br>∴(x’,y’,z’)=((x,y,z)M+(O-O’))N^(-1)<br>此时O’=(0，0，0),并带入M，则上式得证。</p>
-<p>综上所述，讨论的情况实质就是进行了坐标系的转换。目的是求C’坐标，假设A(a1,b1,c1),B(a2,b2,c2),C(a3,b3,c3),那么根据公式C’=((a3,b3,c3)-(a2,b2,c2))N^(-1)，问题就转化为求N。记N=MK，K=M^(-1)N，也就是说，K是将i,j,k装换为i’,k’,j’的变换矩阵。<br>N^(-1)=(MK)^(-1)=K^(-1)M^(-1)<br>∴(x’,y’,z’)=((x,y,z)M+(O-O’))K^(-1)M^(-1)<br>=((x,y,z)+(-O’))K^(-1)  K=N</p>
+        <p>&lt;div align=&quot;left&quot;&gt;
+&lt;img src=&quot;https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1504032008394&amp;di=e99e963bf5137db65c21d19b5589cb26&amp;imgtype=0&amp;src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F16%2F55%2F89%2F38258PICNZn_1024.jpg&quot; width=&quot;300&quot; height=&quot;180&quot; style=&quot;float:right;&quot;/&gt;
+&lt;/div&gt;</p>
+<p>关于三维坐标变换的一些思考。　
+从两条相交直线说起。</p>
+<p>&lt;!--more--&gt;
+从最简单的情况入手，求空间两条相交直线AB、BC的夹角，AB和BC相交于B点，已知ABC三点三维坐标。
+假设两条直线向量分别为a(x1,y1,z1),b(x2,y2,z2),根据公式cosα=a·b/(|a|*|b|)=(x1x2+y1y2+z1z2)/[√(x1^2+y1^2+z1^2)+√(x2^2+y2^2+z2^2)] 可直接求得。</p>
+<p>情况变一变：
+以此两条直线中的某一条为基准（为z'轴），求另一条直线关于基准线的x'、y'、z'轴（新的基准坐标系）夹角。</p>
+<p>如果不用矩阵的做法，求解很复杂：
+以AB为新的坐标系Z'轴为例，O为原坐标系原点。
+B'(0,0,0)，可求AB点距离s，则A'(0,0,s)。这还是比较容易的，关键是求C'坐标。
+首先要求z轴和AB之间的各种角度，想象从Z轴先延x轴平移绕x轴旋转，再延y轴平移绕y轴旋转，最后延z轴平移绕z轴旋转。同理，C点做同类运动，得到C’。
+千辛万苦得到C'还没完，再将B’C’分别向x'o'y'、y'o'z'、z'o'x'面投影，求关于基准线的夹角。方可算出所求。</p>
+<p>很明显，这种方法显然不适用在3D中。
+这个问题其实等价于将世界坐标系转换为物体坐标系。,矩阵的作用就发挥广大。</p>
+<p>令原坐标系为M=(i,j,k)T（转置），变换后N=(i',j',k')T，i=(1,0,0),j=(0,1,0),k=(0,0,1)
+原坐标系中一点P为(x,y,z)，则P'=((x,y,z)-O')N^(-1)   N^(-1)指N的逆矩阵  (若N为正交矩阵，无需求逆矩阵，求转置矩阵即可。)</p>
+<p>推导：∵P=O+(x,y,z)M=O'+(x',y',z')N
+∴(x',y',z')=((x,y,z)M+(O-O'))N^(-1)
+此时O’=(0，0，0),并带入M，则上式得证。</p>
+<p>综上所述，讨论的情况实质就是进行了坐标系的转换。目的是求C'坐标，假设A(a1,b1,c1),B(a2,b2,c2),C(a3,b3,c3),那么根据公式C’=((a3,b3,c3)-(a2,b2,c2))N^(-1)，问题就转化为求N。记N=MK，K=M^(-1)N，也就是说，K是将i,j,k装换为i',k',j'的变换矩阵。
+N^(-1)=(MK)^(-1)=K^(-1)M^(-1)
+∴(x',y',z')=((x,y,z)M+(O-O'))K^(-1)M^(-1)
+=((x,y,z)+(-O'))K^(-1)  K=N</p>
 <p>怎么求K呢？</p>
 <p>可以参考这篇文章<a href="http://blog.csdn.net/jc_laoshu/article/details/69657579" target="_blank" rel="external">图形学1-三维坐标系间的变换矩阵推导</a></p>
 <p>看似也挺麻烦，其实推导占据了大量篇幅，真正使用时直接套就好了。</p>
@@ -427,7 +440,7 @@
     <div class="copyright">
         <p><span>本文标题:</span><a href="/2017/08/29/三维坐标系变换/">三维坐标系变换</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">胡博靖</a></p>
-        <p><span class="post-count">本文字数:</span>670字</p>
+        <p><span class="post-count">本文字数:</span>713字</p>
         <p><span>发布时间:</span>2017-08-29, 22:23:54</p>
         <p><span>最后更新:</span>2017-08-30, 00:01:17</p>
         

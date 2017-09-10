@@ -16,18 +16,27 @@
 
 
 <meta name="description" content="位选就是要亮哪一个数码管,段选就是让这个数码管显示哪个数!!!
-#define uchar unsigned charunsigned char 用来声明无符号字符变量的，上面这个语句的作用就是在其之后 可以用uchar来代替unsigned char 简化编写，就是说 写了这条 下面在写 uchar i; 效果跟 unsigned char i; 一样">
+#define uchar unsigned char
+unsigned char 用来声明无符号字符变量的，上面这个语句的作用就是在其之后 可以用uchar来代替unsigned char 简化编写，就是说 写了这条 下面在写 uchar i; 效果跟 unsigned char i; 一样
+&amp;lt;!--more--&amp;gt;
+蓝色">
 <meta property="og:type" content="article">
 <meta property="og:title" content="零碎知识记录">
 <meta property="og:url" content="http://hubojing.github.io/2016/01/04/零碎知识记录/index.html">
 <meta property="og:site_name" content="胡博靖的技术博客">
 <meta property="og:description" content="位选就是要亮哪一个数码管,段选就是让这个数码管显示哪个数!!!
-#define uchar unsigned charunsigned char 用来声明无符号字符变量的，上面这个语句的作用就是在其之后 可以用uchar来代替unsigned char 简化编写，就是说 写了这条 下面在写 uchar i; 效果跟 unsigned char i; 一样">
+#define uchar unsigned char
+unsigned char 用来声明无符号字符变量的，上面这个语句的作用就是在其之后 可以用uchar来代替unsigned char 简化编写，就是说 写了这条 下面在写 uchar i; 效果跟 unsigned char i; 一样
+&amp;lt;!--more--&amp;gt;
+蓝色">
 <meta property="og:updated_time" content="2016-03-26T13:28:24.268Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="零碎知识记录">
 <meta name="twitter:description" content="位选就是要亮哪一个数码管,段选就是让这个数码管显示哪个数!!!
-#define uchar unsigned charunsigned char 用来声明无符号字符变量的，上面这个语句的作用就是在其之后 可以用uchar来代替unsigned char 简化编写，就是说 写了这条 下面在写 uchar i; 效果跟 unsigned char i; 一样">
+#define uchar unsigned char
+unsigned char 用来声明无符号字符变量的，上面这个语句的作用就是在其之后 可以用uchar来代替unsigned char 简化编写，就是说 写了这条 下面在写 uchar i; 效果跟 unsigned char i; 一样
+&amp;lt;!--more--&amp;gt;
+蓝色">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -107,7 +116,7 @@
 
         
         <p class="header-subtitle">小清新IT旅程|为中华崛起读书</p>
-        <p class="post-count">已写92.5k字</p>
+        <p class="post-count">已写94.7k字</p>
         
 
         
@@ -399,13 +408,41 @@
       
           
         <p>位选就是要亮哪一个数码管,段选就是让这个数码管显示哪个数!!!</p>
-<p>#define uchar unsigned char<br>unsigned char 用来声明无符号字符变量的，上面这个语句的作用就是在其之后 可以用uchar来代替unsigned char 简化编写，就是说 写了这条 下面在写 uchar i; 效果跟 unsigned char i; 一样<br><a id="more"></a><br>蓝色是低电平。红色是高电平。黄色一般为不正常的情况，灰色为不确定（高阻？）</p>
-<p>0xe0 P2.4<br>P1=0x10 P1的第5位<br>0x04是十六进制数，对应的二进制数为0000 0100，从低位到高位一次对应p1.0-p1.7，所以p1.2为高电平，其余为低电平。</p>
-<p>  temp=P3&0xf0;<br>是个位与运算符<br>0x80=1000 0000<br>temp转换为二进制<br>假设temp=1010 1010<br>&amp;后temp=1000 0000<br>如果temp=0010 1010<br>&amp;后temp=0000 0000<br>可见temp低7位无论是什么&amp;后都是0<br>最高位由temp决定<br>结果就是最高位保持其余全为0从而取出了最高位</p>
-<p>&amp;是按位与的意思，就是说只将P3口的高四位读入，低四位为0，放到 temp里面 </p>
-<p>P2=0x01 对应 P2^0=1<br>P2=0x02 对应 P2^1=1<br>P2=0x04 对应 P2^2=1<br>P2=0x08 对应 P2^3=1<br>P2=0x10 对应 P2^4=1<br>P2=0x20 对应 P2^5=1<br>P2=0x40 对应 P2^6=1<br>P2=0x80 对应 P2^7=1<br>P2=0x11 对应 P2^4=1 与 P2^0=1<br>P2=0xff 对应 P2^7=1 与 P2^6=1、P2^5=1、P2^4=1、P2^3=1、P2^2=1、P2^1=1、P2^0=1 </p>
-<p>数字信号处理 问题<br>1.正弦型模拟信号xa(t)=Asin(Ω0t+φ)中t是时间变量，单位是秒（s），去连续数值，而正弦序列中x(n)=Asin(ω0n+φ)中n是无量纲数，取离散数值，因而造成Ω0越大，则xa(t)变化越快；但由于x(n)=sin(ω0n+φ)=sin[(ω0+2πm)n+φ]，当ω0变化时，x(n)是以2π为周期的，并不是ω0越大，x(n)变化越快。<br>连续和离散的不都是以2π为周期的吗？为什么一个越来越大，一个却有周期性？</p>
-<p><span id="busuanzi_container_page_pv"><br>本文已被阅读 <span id="busuanzi_value_page_pv"></span> 次。感谢您的点击！<br></span></p>
+<p>#define uchar unsigned char
+unsigned char 用来声明无符号字符变量的，上面这个语句的作用就是在其之后 可以用uchar来代替unsigned char 简化编写，就是说 写了这条 下面在写 uchar i; 效果跟 unsigned char i; 一样
+&lt;!--more--&gt;
+蓝色是低电平。红色是高电平。黄色一般为不正常的情况，灰色为不确定（高阻？）</p>
+<p>0xe0 P2.4
+P1=0x10 P1的第5位
+0x04是十六进制数，对应的二进制数为0000 0100，从低位到高位一次对应p1.0-p1.7，所以p1.2为高电平，其余为低电平。</p>
+<p>temp=P3&amp;0xf0;
+是个位与运算符
+0x80=1000 0000
+temp转换为二进制
+假设temp=1010 1010
+&amp;后temp=1000 0000
+如果temp=0010 1010
+&amp;后temp=0000 0000
+可见temp低7位无论是什么&amp;后都是0
+最高位由temp决定
+结果就是最高位保持其余全为0从而取出了最高位</p>
+<p>&amp;是按位与的意思，就是说只将P3口的高四位读入，低四位为0，放到 temp里面</p>
+<p>P2=0x01 对应 P2^0=1
+P2=0x02 对应 P2^1=1
+P2=0x04 对应 P2^2=1
+P2=0x08 对应 P2^3=1
+P2=0x10 对应 P2^4=1
+P2=0x20 对应 P2^5=1
+P2=0x40 对应 P2^6=1
+P2=0x80 对应 P2^7=1
+P2=0x11 对应 P2^4=1 与 P2^0=1
+P2=0xff 对应 P2^7=1 与 P2^6=1、P2^5=1、P2^4=1、P2^3=1、P2^2=1、P2^1=1、P2^0=1</p>
+<p>数字信号处理 问题
+1.正弦型模拟信号xa(t)=Asin(Ω0t+φ)中t是时间变量，单位是秒（s），去连续数值，而正弦序列中x(n)=Asin(ω0n+φ)中n是无量纲数，取离散数值，因而造成Ω0越大，则xa(t)变化越快；但由于x(n)=sin(ω0n+φ)=sin[(ω0+2πm)n+φ]，当ω0变化时，x(n)是以2π为周期的，并不是ω0越大，x(n)变化越快。
+连续和离散的不都是以2π为周期的吗？为什么一个越来越大，一个却有周期性？</p>
+<p>&lt;span id=&quot;busuanzi_container_page_pv&quot;&gt;
+本文已被阅读 &lt;span id=&quot;busuanzi_value_page_pv&quot;&gt;&lt;/span&gt; 次。感谢您的点击！
+&lt;/span&gt;</p>
 
       
     </div>
@@ -419,7 +456,7 @@
     <div class="copyright">
         <p><span>本文标题:</span><a href="/2016/01/04/零碎知识记录/">零碎知识记录</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">胡博靖</a></p>
-        <p><span class="post-count">本文字数:</span>544字</p>
+        <p><span class="post-count">本文字数:</span>553字</p>
         <p><span>发布时间:</span>2016-01-04, 21:42:08</p>
         <p><span>最后更新:</span>2016-03-26, 21:28:24</p>
         
