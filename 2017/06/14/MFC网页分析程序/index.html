@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://hubojing.github.io//2017/06/14/MFC网页分析程序/">
+    
+    
+    <title>MFC网页分析程序 | 靖待的技术博客 | 小清新IT旅程|为中华之崛起而读书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="CPP,MFC,爬虫">
+    <meta name="description" content="开发一个网页分析程序，可以抓取特定网页的内容，加以分析之后将结果保存至数据库。 　　V1.5上线，保存至sqlite数据库用时2分13秒。">
+<meta name="keywords" content="CPP,MFC,爬虫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MFC网页分析程序">
+<meta property="og:url" content="https://hubojing.github.io/2017/06/14/MFC网页分析程序/index.html">
+<meta property="og:site_name" content="靖待的技术博客">
+<meta property="og:description" content="开发一个网页分析程序，可以抓取特定网页的内容，加以分析之后将结果保存至数据库。 　　V1.5上线，保存至sqlite数据库用时2分13秒。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://img.blog.csdn.net/20170805145839785?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170614232311302?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170709011136986?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170709011240176?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170802003740628?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170805145839785?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20170812235933407?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20171006211052844?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20171006211119313?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20171006211200087?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20171006211410475?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20171006231410366?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2017-10-12T13:37:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MFC网页分析程序">
+<meta name="twitter:description" content="开发一个网页分析程序，可以抓取特定网页的内容，加以分析之后将结果保存至数据库。 　　V1.5上线，保存至sqlite数据库用时2分13秒。">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20170805145839785?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+    
+        <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<!--google adsense code-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-2097896583568287",
+    enable_page_level_ads: true
+  });
+</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">靖待</h5>
+          <a href="mailto:hubojing@outlook.com" title="hubojing@outlook.com" class="mail">hubojing@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archive"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hubojing" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/friends"  >
+                <i class="icon icon-lg icon-users"></i>
+                友情链接
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/Chinese"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/comment"  >
+                <i class="icon icon-lg icon-book"></i>
+                留言板
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/littletalk"  >
+                <i class="icon icon-lg icon-edit"></i>
+                自言自语
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/advertising"  >
+                <i class="icon icon-lg icon-link"></i>
+                推广
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes"  >
+                <i class="icon icon-lg icon-qq"></i>
+                和我在线交流
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">MFC网页分析程序</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">MFC网页分析程序</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-06-14T14:45:38.000Z" itemprop="datePublished" class="page-time">
+  2017-06-14
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/互联网/">互联网</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#获取源码"><span class="post-toc-number">1.</span> <span class="post-toc-text">获取源码</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#编码问题"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">编码问题</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#解析"><span class="post-toc-number">2.</span> <span class="post-toc-text">解析</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#HTMLCXX"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">HTMLCXX</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#下载htmlcxx库"><span class="post-toc-number">2.1.1.</span> <span class="post-toc-text">下载htmlcxx库</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#编译"><span class="post-toc-number">2.1.2.</span> <span class="post-toc-text">编译</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#导入"><span class="post-toc-number">2.1.3.</span> <span class="post-toc-text">导入</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#测试"><span class="post-toc-number">2.1.4.</span> <span class="post-toc-text">测试</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#参考"><span class="post-toc-number">2.1.5.</span> <span class="post-toc-text">参考</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#MSHTML"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">MSHTML</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#MSHTML导入"><span class="post-toc-number">2.2.1.</span> <span class="post-toc-text">MSHTML导入</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#解析过程"><span class="post-toc-number">2.2.2.</span> <span class="post-toc-text">解析过程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#创建"><span class="post-toc-number">2.2.2.1.</span> <span class="post-toc-text">创建</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#元素遍历"><span class="post-toc-number">2.2.2.2.</span> <span class="post-toc-text">元素遍历</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#正文解析"><span class="post-toc-number">2.2.2.3.</span> <span class="post-toc-text">正文解析</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#列表控件和编辑框交互"><span class="post-toc-number">2.2.2.4.</span> <span class="post-toc-text">列表控件和编辑框交互</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#列表控件初始化"><span class="post-toc-number">2.2.2.4.1.</span> <span class="post-toc-text">列表控件初始化</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#添加数据"><span class="post-toc-number">2.2.2.4.2.</span> <span class="post-toc-text">添加数据</span></a></li><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#OnLvnItemchangedList"><span class="post-toc-number">2.2.2.4.3.</span> <span class="post-toc-text">OnLvnItemchangedList</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#使用sqlite数据库"><span class="post-toc-number">3.</span> <span class="post-toc-text">使用sqlite数据库</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#下载导入"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">下载导入</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#保存至sqlite数据库"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">保存至sqlite数据库</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#出现的问题"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">出现的问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#效果"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">效果</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#从sqlite数据库读取数据"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">从sqlite数据库读取数据</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#成品"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">成品</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-MFC网页分析程序"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">MFC网页分析程序</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-06-14 22:45:38" datetime="2017-06-14T14:45:38.000Z"  itemprop="datePublished">2017-06-14</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/互联网/">互联网</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p><div align="left"><br><img src="http://img.blog.csdn.net/20170805145839785?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" width="300" height="180" style="float:right;"><br>  </div><br> 　　<br> 　　<br>　　<strong>开发一个网页分析程序，可以抓取特定网页的内容，加以分析之后将结果保存至数据库。</strong></p>
+<p>　　<strong>V1.5上线，保存至sqlite数据库用时2分13秒。</strong>
+　　
+　　
+　　</p>
+<a id="more"></a>
+<pre><code>网页分析程序具体要求描述如下：
+1. 使用http技术获取一个博客的首页http://blog.csdn.net/jiangsheng
+2. 分析这个网页的内容，从中找到博客中每一篇文章的链接。
+3. 通过这些链接，获取文章的正文网页，从内容中提取文章的标题和文章的内容。
+4. 将文章的标题与内容分别保存至数据库。
+5. 布局要求：提供一个列表框和一个多行文本框。列表框中显示从数据库中获取的文章标题列表；当点击列表框中的某一篇文章时，在文本框中显示该文章的内容。
+</code></pre><h1 id="获取源码"><a href="#获取源码" class="headerlink" title="获取源码"></a>获取源码</h1><p>因为需多次调用获取源码功能，将它放入一个函数中。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">CString CGetWebDlg::DownloadCodes(CString path)</span><br><span class="line">&#123;</span><br><span class="line">	CInternetSession session;</span><br><span class="line">	CHttpFile *file = <span class="literal">NULL</span>;</span><br><span class="line">	CString strURL = path;</span><br><span class="line">	CString strHtml = _T(<span class="string">""</span>); <span class="comment">//存放网页数据</span></span><br><span class="line">	<span class="keyword">try</span></span><br><span class="line">	&#123;</span><br><span class="line">		file = (CHttpFile*)session.OpenURL(strURL);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">catch</span> (CInternetException *m_pException)</span><br><span class="line">	&#123;</span><br><span class="line">		file = <span class="literal">NULL</span>;</span><br><span class="line">		m_pException-&gt;m_dwError;</span><br><span class="line">		m_pException-&gt;Delete();</span><br><span class="line">		session.Close();</span><br><span class="line">		MessageBox(<span class="string">"网络连接错误！"</span>, <span class="string">"提示"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	CString strLine;</span><br><span class="line">	<span class="keyword">char</span> sRecived[<span class="number">1024</span>];</span><br><span class="line">	<span class="keyword">if</span> (file != <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">while</span> (file-&gt;ReadString((LPTSTR)sRecived, <span class="number">1024</span>) != <span class="literal">NULL</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			strHtml += sRecived;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		AfxMessageBox(_T(<span class="string">"失败！"</span>));</span><br><span class="line">	&#125;</span><br><span class="line">	session.Close();</span><br><span class="line">	file-&gt;Close();</span><br><span class="line">	<span class="keyword">delete</span> file;</span><br><span class="line">	file = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">	strHtml = ConvertUtf8ToGBK(strHtml);<span class="comment">//源码转换</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> strHtml;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="编码问题"><a href="#编码问题" class="headerlink" title="编码问题"></a>编码问题</h2><p>注意网页编码问题，因此需要格式转换，编写一个函数：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span>  <span class="title">ConvertUtf8ToGBK</span><span class="params">(CString &amp;strUtf8)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">          </span><br><span class="line">    <span class="keyword">int</span> len=MultiByteToWideChar(CP_UTF8, <span class="number">0</span>, (LPCTSTR)strUtf8, <span class="number">-1</span>, <span class="literal">NULL</span>,<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">short</span> * wszGBK = <span class="keyword">new</span> <span class="keyword">unsigned</span> <span class="keyword">short</span>[len+<span class="number">1</span>];</span><br><span class="line">	<span class="built_in">memset</span>(wszGBK, <span class="number">0</span>, len * <span class="number">2</span> + <span class="number">2</span>);</span><br><span class="line">	MultiByteToWideChar(CP_UTF8, <span class="number">0</span>, (LPCTSTR)strUtf8, <span class="number">-1</span>, (LPWSTR)wszGBK, len);</span><br><span class="line"> </span><br><span class="line">	len = WideCharToMultiByte(CP_ACP, <span class="number">0</span>, (LPCWSTR)wszGBK, <span class="number">-1</span>, <span class="literal">NULL</span>, <span class="number">0</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>); </span><br><span class="line">	<span class="keyword">char</span> *szGBK=<span class="keyword">new</span> <span class="keyword">char</span>[len + <span class="number">1</span>];</span><br><span class="line">	<span class="built_in">memset</span>(szGBK, <span class="number">0</span>, len + <span class="number">1</span>);</span><br><span class="line">	WideCharToMultiByte (CP_ACP, <span class="number">0</span>, (LPCWSTR)wszGBK, <span class="number">-1</span>, szGBK, len, <span class="literal">NULL</span>,<span class="literal">NULL</span>);</span><br><span class="line"> </span><br><span class="line">	strUtf8 = szGBK;</span><br><span class="line">	 <span class="keyword">delete</span>[] szGBK;</span><br><span class="line">	 <span class="keyword">delete</span>[] wszGBK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://img.blog.csdn.net/20170614232311302?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="显示源码" title="">
+                </div>
+                <div class="image-caption">显示源码</div>
+            </figure>
+<p>有些类似网页爬虫的感觉。</p>
+<p>由于我刚开始是用VC6.0创建项目，现在用VS2013打开，因此，提示报错：<br>error MSB8031: Building an MFC project for a non-Unicode character set is deprecated. You must change the project property to Unicode or download an additional library. See <a href="http://go.microsoft.com/fwlink/p/?LinkId=286820" target="_blank" rel="noopener">http://go.microsoft.com/fwlink/p/?LinkId=286820</a> for more information.</p>
+<p>解决：用于多字节字符编码 (MBCS) 的 MFC 库 (DLL) 不再包含于 Visual Studio 中，但是可用作插件，可以在任何装有 Visual Studio Professional、Visual Studio Premium 或 Visual Studio Ultimate 的计算机上下载和安装。下载地址：<a href="https://www.microsoft.com/zh-cn/download/details.aspx?id=40770" target="_blank" rel="noopener">https://www.microsoft.com/zh-cn/download/details.aspx?id=40770</a></p>
+<h1 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h1><p><del>为了接下来的操作，我去学正则表达式了……</del><br>还是学习html解析库 htmlcxx<br><a href="http://htmlcxx.sourceforge.net/" target="_blank" rel="noopener">官方</a><br><a href="http://blog.csdn.net/youfangyuan/article/details/7816518" target="_blank" rel="noopener">HtmlCxx用户手册</a></p>
+<h2 id="HTMLCXX"><a href="#HTMLCXX" class="headerlink" title="HTMLCXX"></a>HTMLCXX</h2><h3 id="下载htmlcxx库"><a href="#下载htmlcxx库" class="headerlink" title="下载htmlcxx库"></a>下载htmlcxx库</h3><p><a href="http://sourceforge.net/projects/htmlcxx/" target="_blank" rel="noopener">http://sourceforge.net/projects/htmlcxx/</a><br>并解压。</p>
+<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>打开htmlcxx.vcproj，右键属性，配置属性-C/C++-代码生成-运行库：多线程调试 DLL (/ MDd)进行编译。编译会报错，将<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *signature = <span class="string">"﻿"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>改为<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *signature = <span class="string">"﻿\xEF\xBB\xBF"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>即可编译成功。</p>
+<h3 id="导入"><a href="#导入" class="headerlink" title="导入"></a>导入</h3><p>把生成的htmlcxx.lib和html文件夹拷贝到所需的工程中。即：<br>在所开发项目文件夹中，新建”htmlcxx“文件，里面添加两个子文件夹”lib“和”include“。将编译好的htmlcxx.lib拷贝到lib文件夹，将html文件夹中所有的.h头文件和ParserSax.tcc添加到include文件夹。添加库文件htmlcxx.lib到项目中，具体说来：</p>
+<blockquote>
+<p>在VS工程中，添加c/c++工程中外部头文件及库的基本步骤：<br>    1、添加工程的头文件目录：工程—属性—配置属性—c/c++—常规—附加包含目录：加上头文件存放目录。<br>    2、添加文件引用的lib静态库路径：工程—属性—配置属性—链接器—常规—附加库目录：加上lib文件存放目录。<br>         然后添加工程引用的lib文件名：工程—属性—配置属性—链接器—输入—附加依赖项：加上lib文件名。<br>    3、添加工程引用的dll动态库：把引用的dll放到工程的可执行文件所在的目录下。<br>注意：第一步可以不用，直接在工程里加入动态库的头文件，在使用代码处引用这个头文件。</p>
+</blockquote>
+<p>所开发的项目的头文件中添加以下内容：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"htmlcxx/include/ParserDom.h"</span></span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> htmlcxx;</span><br><span class="line"> </span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"htmlcxx.lib"</span>)</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>官方测试代码：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;htmlcxx/html/ParserDom.h&gt;</span></span></span><br><span class="line"> ...</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//Parse some html code</span></span><br><span class="line"> <span class="built_in">string</span> html = <span class="string">"&lt;html&gt;&lt;body&gt;hey&lt;/body&gt;&lt;/html&gt;"</span>;</span><br><span class="line"> HTML::ParserDom parser;</span><br><span class="line"> tree&lt;HTML::Node&gt; dom = parser.parseTree(html);</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//Print whole DOM tree</span></span><br><span class="line"> <span class="built_in">cout</span> &lt;&lt; dom &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//Dump all links in the tree</span></span><br><span class="line"> tree&lt;HTML::Node&gt;::iterator it = dom.begin();</span><br><span class="line"> tree&lt;HTML::Node&gt;::iterator end = dom.end();</span><br><span class="line"> <span class="keyword">for</span> (; it != end; ++it)</span><br><span class="line"> &#123;</span><br><span class="line"> 	<span class="keyword">if</span> (it-&gt;tagName() == <span class="string">"A"</span>)</span><br><span class="line"> 	&#123;</span><br><span class="line"> 		it-&gt;parseAttributes();</span><br><span class="line"> 		<span class="built_in">cout</span> &lt;&lt; it-&gt;attributes(<span class="string">"href"</span>);</span><br><span class="line"> 	&#125;</span><br><span class="line"> &#125;</span><br><span class="line"> </span><br><span class="line"> <span class="comment">//Dump all text of the document</span></span><br><span class="line"> it = dom.begin();</span><br><span class="line"> end = dom.end();</span><br><span class="line"> <span class="keyword">for</span> (; it != end; ++it)</span><br><span class="line"> &#123;</span><br><span class="line"> 	<span class="keyword">if</span> ((!it-&gt;isTag()) &amp;&amp; (!it-&gt;isComment()))</span><br><span class="line"> 	&#123;</span><br><span class="line"> 		<span class="built_in">cout</span> &lt;&lt; it-&gt;text();</span><br><span class="line"> 	&#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
+<p>  然而……</p>
+<p>   <img src="http://img.blog.csdn.net/20170709011136986?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="报错1"></p>
+<p>   加入#include”iostream”头文件即可。</p>
+<p><img src="http://img.blog.csdn.net/20170709011240176?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="报错2"></p>
+<p>修改为：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (it-&gt;tagName() == <span class="string">"A"</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				it-&gt;parseAttributes();</span><br><span class="line">				<span class="built_in">std</span>::pair&lt;<span class="keyword">bool</span>, <span class="built_in">std</span>::<span class="built_in">string</span>&gt; pa = it-&gt;attribute(<span class="string">"href"</span>);</span><br><span class="line">				<span class="built_in">cout</span> &lt;&lt; pa.second;</span><br><span class="line">			&#125;</span><br></pre></td></tr></table></figure></p>
+<p>编译通过。</p>
+<p>  还有其他的库也可以用，比如<a href="http://blog.csdn.net/lanuage/article/details/72825878" target="_blank" rel="noopener">使用MSHTML解析HTML页面</a><br>  比如<a href="http://www.oschina.net/question/565065_67992" target="_blank" rel="noopener">LIBXML2库使用指南</a><br>  还可以用正则表达式写库……</p>
+<p>  突然发现 原来的计划里有COM组件 XML和HTML 数据库访问技术<br>  都没怎么接触过  补补补<br>  在填坑的路上不能止步…</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://www.cnblogs.com/striver-zhu/p/4451781.html" target="_blank" rel="noopener">C++ 使用Htmlcxx解析Html内容(VS编译库文件)</a><br><a href="http://blog.csdn.net/farcall/article/details/20378475" target="_blank" rel="noopener">html与xml解析库htmlcxx使用过程中的若干问题及解决方案</a><br><a href="http://www.cnblogs.com/learning-lzj2014/p/3928346.html" target="_blank" rel="noopener">c++ hmtlcxx 学习之旅</a> </p>
+<h2 id="MSHTML"><a href="#MSHTML" class="headerlink" title="MSHTML"></a>MSHTML</h2><p>  因为最近用过MSXML，就试试MSHTML。学有余力的话，htmlcxx之后还是想玩一下…<br>   <a href="https://msdn.microsoft.com/en-us/library/aa741317(v=vs.85).aspx" target="_blank" rel="noopener">https://msdn.microsoft.com/en-us/library/aa741317(v=vs.85).aspx</a><br>  <a href="http://blog.csdn.net/jiangsheng/article/details/3793" target="_blank" rel="noopener">蒋晟-关于MSHTML</a><br>   <a href="https://msdn.microsoft.com/zh-cn/library/mshtml(v=vs.110).aspx" target="_blank" rel="noopener">https://msdn.microsoft.com/zh-cn/library/mshtml(v=vs.110).aspx</a></p>
+<h3 id="MSHTML导入"><a href="#MSHTML导入" class="headerlink" title="MSHTML导入"></a>MSHTML导入</h3><p>系统中自带了mshtml，和msxml一样，在C盘windows/system32中可找到。</p>
+<p><a href="http://blog.csdn.net/mimica247706624/article/details/6128239" target="_blank" rel="noopener">如何导入</a>  </p>
+<p>先看MSDN……<br> <a href="https://msdn.microsoft.com/en-us/library/aa741317%28v=vs.85%29.aspx?f=255&amp;MSPPError=-2147217396" target="_blank" rel="noopener">MSDN-MSHTML</a></p>
+<p> 再看各种搜集的文章<br>  <a href="http://bbs.csdn.net/topics/330214041" target="_blank" rel="noopener">http://bbs.csdn.net/topics/330214041</a><br>  <a href="http://www.cnblogs.com/speedmancs/archive/2010/08/11/1797442.html" target="_blank" rel="noopener">http://www.cnblogs.com/speedmancs/archive/2010/08/11/1797442.html</a><br>  <a href="http://blog.csdn.net/jinyaba/article/details/17097323" target="_blank" rel="noopener">http://blog.csdn.net/jinyaba/article/details/17097323</a><br>  <a href="https://social.msdn.microsoft.com/Search/zh-CN?query=MSHTML&amp;pgArea=header&amp;emptyWatermark=true&amp;ac=4#refinementChanges=117&amp;pageNumber=1&amp;showMore=false" target="_blank" rel="noopener">https://social.msdn.microsoft.com/Search/zh-CN?query=MSHTML&amp;pgArea=header&amp;emptyWatermark=true&amp;ac=4#refinementChanges=117&amp;pageNumber=1&amp;showMore=false</a><br>  <a href="https://wenku.baidu.com/view/d571abc4ec3a87c24028c4bb.html" target="_blank" rel="noopener">https://wenku.baidu.com/view/d571abc4ec3a87c24028c4bb.html</a><br>  <a href="http://www.codeguru.com/cpp/i-n/ieprogram/article.php/c4385/Lightweight-HTML-Parsing-Using-MSHTML.htm" target="_blank" rel="noopener">http://www.codeguru.com/cpp/i-n/ieprogram/article.php/c4385/Lightweight-HTML-Parsing-Using-MSHTML.htm</a><br>  <a href="http://www.yesky.com/403/1938403.shtml?qq-pf-to=pcqq.c2c" target="_blank" rel="noopener">http://www.yesky.com/403/1938403.shtml?qq-pf-to=pcqq.c2c</a><br>  <a href="http://www.bianceng.cn/Programming/vc/201411/46771.htm" target="_blank" rel="noopener">http://www.bianceng.cn/Programming/vc/201411/46771.htm</a><br>  <a href="https://wenku.baidu.com/view/299bba4a336c1eb91a375df5.html" target="_blank" rel="noopener">https://wenku.baidu.com/view/299bba4a336c1eb91a375df5.html</a></p>
+<p> <del>思路：下载源码和获取链接是两个独立函数，会被多次调用。先获取首页源码，div id=”archive_list” 遍历该div获取各月份归档链接，再使用多线程（48个线程？？？）进入每个归档链接里下载源码，获取源码中h1的每篇文章标题,保存到数据库。</del></p>
+<p> 虽然有两种方法，一种通过归档获得链接，一种通过翻页获得链接，但根据本html特点，明显通过翻页要简洁方便一些，因为翻页的链接是有规律的，可通过循环搞定。每页5篇直接获得正文链接，比从归档获得少一层。<del>两核4个逻辑处理器，所以是开2个线程好还是4个好呢……</del></p>
+<p>获取每篇正文链接，下载源码，解析得正文，保存到数据库。最后从数据库中提取标题和正文显示到对应窗口(使用ADO)。</p>
+<h3 id="解析过程"><a href="#解析过程" class="headerlink" title="解析过程"></a>解析过程</h3><h4 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h4><p>1.使用CoCreateInstance创建一个接口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HRESULT hr = CoCreateInstance(CLSID_HTMLDocument, NULL, CLSCTX_INPROC_SERVER, IID_IHTMLDocument2, (void**)&amp;pDoc);</span><br></pre></td></tr></table></figure></p>
+<p>2.创建一个COM中的数组，将HTML字符串写到数组中</p>
+<p>a）SafeArrayCreateVector:函数用来创建一个对应的数组结构。函数有三个参数，第一个参数表示数组中元素类型，一般给VT_VARIANT表示它是一个自动类型，第二个参数数组元素起始位置的下标，对于VC来说，数组元素总是从0开始，所以这个位置一般给0，第三个参数是数组的维数，在这将它作为一个字符数组，所以是一个一维数组。<br>b）SafeArrayAccessData：允许用户操作这个数组，在需要读写这个数组时都需要调用这个函数，以便获取这个数组的操作权。它有两个参数，第一个参数是数组变量，第二个参数是一个输出参数，当调用这个函数成功，会提供一个缓冲区，操作这个缓冲区就相当于操作了这个数组。<br>c）SafeArrayUnaccessData：每当操作数组完成时需要调用这个函数，函数与SafeArrayAccessData配套使用，用来回收这个权限，并使对数组的操作生效。</p>
+<ol start="3">
+<li>调用接口的write方法，将接口与HTML字符串绑定 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SAFEARRAY* psa = SafeArrayCreateVector(VT_VARIANT, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">VARIANT *param;</span><br><span class="line"><span class="keyword">bstr_t</span> bsData = (LPCTSTR)strHtml;</span><br><span class="line">hr = SafeArrayAccessData(psa, (LPVOID*)&amp;param);</span><br><span class="line">param-&gt;vt = VT_BSTR;</span><br><span class="line">param-&gt;bstrVal = (BSTR)bsData;</span><br><span class="line">hr = pDoc-&gt;write(psa);</span><br><span class="line">hr = SafeArrayUnaccessData(psa);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>目标：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;span class=&quot;link_title&quot;&gt;&lt;a href=&quot;/jiangsheng/article/details/9870241&quot;&gt;</span><br><span class="line">选择剪贴板格式顺序            </span><br><span class="line">&lt;/a&gt;</span><br><span class="line">&lt;/span&gt;</span><br></pre></td></tr></table></figure>
+<p>整个 \&lt;span> \&lt;/span>  是元素， \&lt;span>  是标签，class是属性名，link_title是属性值，“选择剪贴板格式顺序”是文本。</p>
+<h4 id="元素遍历"><a href="#元素遍历" class="headerlink" title="元素遍历"></a>元素遍历</h4><p>至少两种方法：<br>法一：<br>获取了HTML文档的IID_IHTMLDocument2接口后，开始遍历：<br>1.get_all方法获取所有标签节点，这个函数通过一个输出参数输出IHTMLElementCollection类型的接口指针<br>2.用IHTMLElementCollection接口的get_length方法获取标签的总数量，据此写一个循环，在循环进行元素的遍历<br>3.循环中用IHTMLElementCollection接口的item方法进行迭代，获取各元素对应的IDispatch接口指针<br>4.调用IDispatch接口指针的QueryInterface方法生成对应的IHTMLElement接口。通过这个接口获取元素的各种信息</p>
+<p>以下已能成功获取标题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">void CGetWebDlg::EnumElements(IHTMLDocument2* pDoc)</span><br><span class="line">&#123;</span><br><span class="line">	CComPtr&lt;IHTMLElementCollection&gt; pCollection;</span><br><span class="line">	pDoc-&gt;get_all(&amp;pCollection);</span><br><span class="line">	if (NULL == pCollection)</span><br><span class="line">	&#123;</span><br><span class="line">		return;</span><br><span class="line">	&#125;</span><br><span class="line">	VARIANT varName;</span><br><span class="line">	CString strText;</span><br><span class="line">	long len = 0;</span><br><span class="line">	pCollection-&gt;get_length(&amp;len);</span><br><span class="line">	for (int i = 0; i &lt; len; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		varName.vt = VT_I4;</span><br><span class="line">		varName.lVal = i;</span><br><span class="line">		CComPtr&lt;IHTMLElement&gt; pElement;</span><br><span class="line">		CComPtr&lt;IDispatch&gt; pDisp;</span><br><span class="line">		pCollection-&gt;item(varName, varName, &amp;pDisp);</span><br><span class="line">		if (NULL == pDisp)</span><br><span class="line">		&#123;</span><br><span class="line">			continue;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		pDisp-&gt;QueryInterface(IID_IHTMLElement, (LPVOID*)&amp;pElement);</span><br><span class="line">		if (NULL != pElement)</span><br><span class="line">		&#123;</span><br><span class="line">			BSTR bstrClass;	</span><br><span class="line">			pElement-&gt;get_className(&amp;bstrClass);</span><br><span class="line">			CString strClass = _com_util::ConvertBSTRToString(bstrClass);</span><br><span class="line">			if (strClass.Compare(&quot;link_title&quot;) == 0)</span><br><span class="line">			&#123;</span><br><span class="line">					BSTR bstrText = NULL;</span><br><span class="line">					pElement-&gt;get_innerText(&amp;bstrText);</span><br><span class="line">					strText = bstrText;</span><br><span class="line">					m_list.InsertItem(i, strText);</span><br><span class="line">			&#125;			</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>法二：<br>利用IHTMLDocument2将字符串形式的HTML转换为DOM对象，利用IHTMLDocument3的getElementByTagName等方法来操作DOM对象。<br>以下已能成功获取标题：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">MSHTML::IHTMLDocument3Ptr pDoc3;</span><br><span class="line"> 	MSHTML::IHTMLElementCollectionPtr pCollection;</span><br><span class="line"> 	MSHTML::IHTMLElementPtr pElement;</span><br><span class="line"></span><br><span class="line">pDoc3 = pDoc;</span><br><span class="line">pCollection = pDoc3-&gt;getElementsByTagName(L&quot;span&quot;);</span><br><span class="line">for (long i = 0; i &lt; pCollection-&gt;length; i++)</span><br><span class="line">&#123;</span><br><span class="line">	pElement = pCollection-&gt;item(i, (long)0);</span><br><span class="line">	if (pElement != NULL)</span><br><span class="line">	&#123;</span><br><span class="line">		BSTR bstrClass;</span><br><span class="line">		pElement-&gt;get_className(&amp;bstrClass);</span><br><span class="line">		CString strClass = _com_util::ConvertBSTRToString(bstrClass);</span><br><span class="line">		if (strClass.Compare(&quot;link_title&quot;) == 0)</span><br><span class="line">		&#123;</span><br><span class="line">			BSTR bstrText = NULL;</span><br><span class="line">			pElement-&gt;get_innerText(&amp;bstrText);</span><br><span class="line">			CString strText = bstrText;</span><br><span class="line">			m_list.InsertItem(i, strText);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其实两种方法大同小异，相较而言可能数据量大的话，法二效率高些吧。因为法一是直接遍历所有的元素寻找class相同的，而法二是先定位span，然后在span中找寻class。（getElementsByTagName只有IHTMLDocument3Ptr）</p>
+<p><a href="http://blog.csdn.net/lanuage/article/details/72825878" target="_blank" rel="noopener">使用MSHTML解析HTML页面</a><br><a href="http://www.2cto.com/kf/201305/214730.html" target="_blank" rel="noopener">变体VARIANT</a><br>MSDN-DOM    <a href="https://msdn.microsoft.com/en-us/library/ms766487(v=vs.85).aspx" target="_blank" rel="noopener">https://msdn.microsoft.com/en-us/library/ms766487(v=vs.85).aspx</a><br><a href="http://www.360doc.com/content/12/0427/19/8006573_207099529.shtml" target="_blank" rel="noopener">使用MSHTML接口获取链接</a></p>
+<p>晚上几个小时做完了一半，抵了之前一两个月。<br>数据库这块没来得及做，没加多线程，很多细节还得调。但比起之前心有余而力不足的感觉还是好多了。  学过msxml后，学习mshtml确实强一点，比一个月前完全不知道怎么下手好很多了。</p>
+<p>今晚总算做出来个半成品<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://img.blog.csdn.net/20170802003740628?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="半成品" title="">
+                </div>
+                <div class="image-caption">半成品</div>
+            </figure></p>
+<h4 id="正文解析"><a href="#正文解析" class="headerlink" title="正文解析"></a>正文解析</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> CGetWebDlg::ArticleParse(CString strArticle, Blog* blog, <span class="keyword">int</span> iRow)</span><br><span class="line">&#123;</span><br><span class="line">	IHTMLDocument2* pDoc;</span><br><span class="line">	MSHTML::IHTMLDocument3Ptr pDoc3;</span><br><span class="line">	MSHTML::IHTMLElementCollectionPtr pCollection;</span><br><span class="line">	MSHTML::IHTMLElementPtr pElement;</span><br><span class="line"></span><br><span class="line">	HRESULT hr = CoCreateInstance(CLSID_HTMLDocument, <span class="literal">NULL</span>, CLSCTX_INPROC_SERVER, IID_IHTMLDocument2, (<span class="keyword">void</span>**)&amp;pDoc);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">//将代码放入安全数组并写入文档</span></span><br><span class="line">	SAFEARRAY* psa = SafeArrayCreateVector(VT_VARIANT, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">	<span class="keyword">if</span> (psa == <span class="literal">NULL</span> || pDoc == <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		MessageBox(_T(<span class="string">"创建Document2对象失败！"</span>));</span><br><span class="line">	&#125;</span><br><span class="line">	VARIANT *param;</span><br><span class="line">	<span class="keyword">bstr_t</span> bsData = (LPCTSTR)strArticle;</span><br><span class="line">	hr = SafeArrayAccessData(psa, (LPVOID*)&amp;param);</span><br><span class="line">	param-&gt;vt = VT_BSTR;</span><br><span class="line">	param-&gt;bstrVal = (BSTR)bsData;</span><br><span class="line">	hr = pDoc-&gt;write(psa);</span><br><span class="line">	<span class="comment">//hr = pDoc-&gt;close();</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//SafeArrayDestroy(psa);</span></span><br><span class="line">	hr = SafeArrayUnaccessData(psa);</span><br><span class="line">	<span class="keyword">_bstr_t</span> href;</span><br><span class="line">	pDoc3 = pDoc;</span><br><span class="line">	pCollection = pDoc3-&gt;getElementsByTagName(<span class="string">L"div"</span>);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">long</span> k = <span class="number">0</span>; k &lt; pCollection-&gt;length; k++)</span><br><span class="line">	&#123;</span><br><span class="line">		pElement = pCollection-&gt;item(k, (<span class="keyword">long</span>)<span class="number">0</span>);</span><br><span class="line">		<span class="keyword">if</span> (pElement != <span class="literal">NULL</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			BSTR bstrClass;</span><br><span class="line">			pElement-&gt;get_id(&amp;bstrClass);</span><br><span class="line">			CString strClass = _com_util::ConvertBSTRToString(bstrClass);</span><br><span class="line">			<span class="keyword">if</span> (strClass.CompareNoCase(<span class="string">"article_content"</span>) == <span class="number">0</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				BSTR bstrText = <span class="literal">NULL</span>;</span><br><span class="line">				pElement-&gt;get_innerText(&amp;bstrText);</span><br><span class="line">				CString strText = bstrText;</span><br><span class="line">				blog-&gt;article = strText;</span><br><span class="line">				m_list.SetItemData(iRow, (DWORD_PTR)blog);							</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>建立了一个结构体用来存放每篇文章的标题和正文，方便点击列表控件项时读取对应的结构体。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Blog</span></span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">		CString title;</span><br><span class="line">		CString article;</span><br><span class="line">	&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="列表控件和编辑框交互"><a href="#列表控件和编辑框交互" class="headerlink" title="列表控件和编辑框交互"></a>列表控件和编辑框交互</h4><h5 id="列表控件初始化"><a href="#列表控件初始化" class="headerlink" title="列表控件初始化"></a>列表控件初始化</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CRect rectLocal;</span><br><span class="line">m_list.GetClientRect(rectLocal); <span class="comment">//获得当前客户区信息</span></span><br><span class="line">m_list.InsertColumn(<span class="number">0</span>, <span class="string">"序号"</span>, LVCFMT_LEFT, rectLocal.Width() / <span class="number">6</span>, <span class="number">0</span>);</span><br><span class="line">m_list.InsertColumn(<span class="number">1</span>, <span class="string">"文章列表"</span>, LVCFMT_LEFT, rectLocal.Width() / <span class="number">6</span> * <span class="number">5</span>, <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<p>添加多列后，单击只能选中第一列，这时需要修改风格 LVS_EX_FULLROWSELECT   表示整行。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m_list.SetExtendedStyle(LVS_EX_FULLROWSELECT);</span><br></pre></td></tr></table></figure></p>
+<h5 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h5><p>单纯添加一项的话：    m_list.InsertItem(项的索引, 数据);<br>但要指定列的话：<br>m_list.InsertItem(项的索引, “”);<br>m_list.SetItemText(行, 列, 数据);</p>
+<h5 id="OnLvnItemchangedList"><a href="#OnLvnItemchangedList" class="headerlink" title="OnLvnItemchangedList"></a>OnLvnItemchangedList</h5><p>试了多种方法，只有这一种成功了：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> CGetWebDlg::OnLvnItemchangedList1(NMHDR *pNMHDR, LRESULT *pResult)</span><br><span class="line">&#123;</span><br><span class="line">	LPNMLISTVIEW pNMLV = <span class="keyword">reinterpret_cast</span>&lt;LPNMLISTVIEW&gt;(pNMHDR);</span><br><span class="line">	<span class="comment">// <span class="doctag">TODO:</span>  在此添加控件通知处理程序代码</span></span><br><span class="line"><span class="comment">// 	m_edit.SetWindowText("");</span></span><br><span class="line"><span class="comment">// 	int index = m_list.GetNextItem(-1, LVNI_ALL | LVNI_SELECTED);</span></span><br><span class="line"><span class="comment">// 	Blog *pStructure = (Blog*)m_list.GetItemData(index);</span></span><br><span class="line"><span class="comment">// 	m_edit.SetWindowText(pStructure-&gt;article);</span></span><br><span class="line">	<span class="keyword">if</span> (pNMLV-&gt;uNewState == (LVIS_SELECTED | LVIS_FOCUSED))</span><br><span class="line">	&#123;</span><br><span class="line">		m_edit.SetWindowText(<span class="string">""</span>);</span><br><span class="line">		Blog *pStructure = (Blog*)m_list.GetItemData(pNMLV-&gt;iItem);</span><br><span class="line">		m_edit.SetWindowText(pStructure-&gt;article);</span><br><span class="line">	&#125;</span><br><span class="line">	*pResult = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>实现列表和编辑框交互后，可以说这已经是一个可以完整运行的程序了，V1.0版本出炉。<br>实测解析时间：1分41秒<br>能够成功获取该博客111篇文章，能够正确显示正文（包括清晰显示代码）。现在的运行图：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://img.blog.csdn.net/20170805145839785?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="V1.0" title="">
+                </div>
+                <div class="image-caption">V1.0</div>
+            </figure><br>该版本未添加多线程、未和数据库关联。</p>
+<p>V2.0实现数据库操作</p>
+<h1 id="使用sqlite数据库"><a href="#使用sqlite数据库" class="headerlink" title="使用sqlite数据库"></a>使用sqlite数据库</h1><h2 id="下载导入"><a href="#下载导入" class="headerlink" title="下载导入"></a>下载导入</h2><p>官网下载sqlite<br>Source Code  sqlite-amalgamation-3200000.zip  有三个东西  shell.c  sqlite3.c  sqlite3.h<br>根据<a href="http://blog.csdn.net/sunnyloves/article/details/39010831" target="_blank" rel="noopener">VS2010下SQLite3生成lib库文件</a> 文章方法生成sqlite3.lib</p>
+<p>Precompiled Binaries for Windows  sqlite-dll-win32-x86-3200000.zip  有一个所需 sqlite3.dll</p>
+<p>将lib和dll放入项目工程里，在.cpp开头加上<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"sqlite3.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib,<span class="meta-string">"sqlite3.lib"</span>)</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="保存至sqlite数据库"><a href="#保存至sqlite数据库" class="headerlink" title="保存至sqlite数据库"></a>保存至sqlite数据库</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> CGetWebDlg::Database(<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Blog*&gt; &amp;vecBlog)</span><br><span class="line">&#123;</span><br><span class="line">	sqlite3 * pDB;</span><br><span class="line">	<span class="keyword">char</span>* errMsg;</span><br><span class="line">	<span class="comment">// 连接SQLite数据库</span></span><br><span class="line">	<span class="keyword">int</span> res = sqlite3_open(<span class="string">"test.db"</span>, &amp;pDB);</span><br><span class="line">	<span class="keyword">if</span> (res != SQLITE_OK)</span><br><span class="line">	&#123;</span><br><span class="line">		MessageBox(_T(<span class="string">"数据库打开失败，请检查后再操作！"</span>), <span class="literal">NULL</span>, MB_ICONSTOP);</span><br><span class="line">		sqlite3_close(pDB);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 创建表</span></span><br><span class="line">    <span class="built_in">string</span> strSQL = <span class="string">"create table blog (title text, article text);"</span>;</span><br><span class="line">    res = sqlite3_exec(pDB, strSQL.c_str(), <span class="number">0</span>, <span class="number">0</span>, &amp;errMsg);</span><br><span class="line">    <span class="keyword">if</span> (res != SQLITE_OK)</span><br><span class="line">    &#123;</span><br><span class="line">        MessageBox(_T(<span class="string">"数据库打开失败，请检查后再操作！"</span>), <span class="literal">NULL</span>, MB_ICONSTOP);</span><br><span class="line">        <span class="comment">//return -1;</span></span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">		<span class="comment">// 插入数据</span></span><br><span class="line">		<span class="built_in">vector</span>&lt;Blog*&gt;::iterator iter;</span><br><span class="line">		<span class="keyword">for</span> (iter = vecBlog.begin(); iter != vecBlog.end(); iter++)</span><br><span class="line">		&#123;</span><br><span class="line">			</span><br><span class="line">			CString cstrTitle = (*iter)-&gt;title;</span><br><span class="line">			CString cstrArticle = (*iter)-&gt;article;</span><br><span class="line">			cstrTitle = ConvertGBKToUtf8(cstrTitle);</span><br><span class="line">			cstrArticle = ConvertGBKToUtf8(cstrArticle);</span><br><span class="line"></span><br><span class="line">			<span class="keyword">char</span> *p1 = cstrTitle.GetBuffer(cstrTitle.GetLength() + <span class="number">1</span>);</span><br><span class="line">			cstrTitle.ReleaseBuffer();</span><br><span class="line">			<span class="keyword">char</span> *p2 = cstrArticle.GetBuffer(cstrArticle.GetLength() + <span class="number">1</span>);</span><br><span class="line">			cstrArticle.ReleaseBuffer();</span><br><span class="line">			<span class="keyword">char</span> *strSQL = sqlite3_mprintf(<span class="string">"INSERT INTO blog VALUES('%q','%q')"</span>, p1, p2);</span><br><span class="line">			sqlite3_exec(pDB, strSQL, <span class="number">0</span>, <span class="number">0</span>, &amp;errMsg);</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当然，也可以事先把数据库和表创建好……<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://img.blog.csdn.net/20170812235933407?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="创建数据库和表" title="">
+                </div>
+                <div class="image-caption">创建数据库和表</div>
+            </figure></p>
+<p>因为sqlite数据库是UTF-8格式存储，于是，需要一个转换函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">CString  <span class="title">ConvertUtf8ToGBK</span><span class="params">(CString &amp;strUtf8)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">          </span><br><span class="line">    <span class="keyword">int</span> len=MultiByteToWideChar(CP_UTF8, <span class="number">0</span>, (LPCTSTR)strUtf8, <span class="number">-1</span>, <span class="literal">NULL</span>,<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">short</span> * wszGBK = <span class="keyword">new</span> <span class="keyword">unsigned</span> <span class="keyword">short</span>[len+<span class="number">1</span>];</span><br><span class="line">	<span class="built_in">memset</span>(wszGBK, <span class="number">0</span>, len * <span class="number">2</span> + <span class="number">2</span>);</span><br><span class="line">	MultiByteToWideChar(CP_UTF8, <span class="number">0</span>, (LPCTSTR)strUtf8, <span class="number">-1</span>, (LPWSTR)wszGBK, len);</span><br><span class="line"> </span><br><span class="line">	len = WideCharToMultiByte(CP_ACP, <span class="number">0</span>, (LPCWSTR)wszGBK, <span class="number">-1</span>, <span class="literal">NULL</span>, <span class="number">0</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>); </span><br><span class="line">	<span class="keyword">char</span> *szGBK=<span class="keyword">new</span> <span class="keyword">char</span>[len + <span class="number">1</span>];</span><br><span class="line">	<span class="built_in">memset</span>(szGBK, <span class="number">0</span>, len + <span class="number">1</span>);</span><br><span class="line">	WideCharToMultiByte (CP_ACP, <span class="number">0</span>, (LPCWSTR)wszGBK, <span class="number">-1</span>, szGBK, len, <span class="literal">NULL</span>,<span class="literal">NULL</span>);</span><br><span class="line"> </span><br><span class="line">	strUtf8 = szGBK;</span><br><span class="line">	 <span class="keyword">delete</span>[] szGBK;</span><br><span class="line">	 <span class="keyword">delete</span>[] wszGBK;</span><br><span class="line">	 <span class="keyword">return</span> strUtf8;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="出现的问题"><a href="#出现的问题" class="headerlink" title="出现的问题"></a>出现的问题</h2><ol>
+<li>如图，数据少时并不会出现。<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://img.blog.csdn.net/20171006211052844?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="Q1" title="">
+                </div>
+                <div class="image-caption">Q1</div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://img.blog.csdn.net/20171006211119313?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="Q2" title="">
+                </div>
+                <div class="image-caption">Q2</div>
+            </figure>
+</li>
+</ol>
+<p>2.好像是运行了脚本<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://img.blog.csdn.net/20171006211200087?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="Q3" title="">
+                </div>
+                <div class="image-caption">Q3</div>
+            </figure><br>据查将“script”修改成别的字符便不会运行脚本，并没尝试成功。</p>
+<h2 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h2><p>下载了一个SQLiteStudio可视化管理工具。可见数据已成功保存至数据库。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://img.blog.csdn.net/20171006211410475?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="sqlite" title="">
+                </div>
+                <div class="image-caption">sqlite</div>
+            </figure></p>
+<h2 id="从sqlite数据库读取数据"><a href="#从sqlite数据库读取数据" class="headerlink" title="从sqlite数据库读取数据"></a>从sqlite数据库读取数据</h2><p>新建工程。<br>主要用到该函数：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sqlite3_get_table</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  sqlite3 *db,          <span class="comment">/* An open database */</span></span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">const</span> <span class="keyword">char</span> *zSql,     <span class="comment">/* SQL to be evaluated */</span></span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">char</span> ***pazResult,    <span class="comment">/* Results of the query */</span></span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">int</span> *pnRow,           <span class="comment">/* Number of result rows written here */</span></span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">int</span> *pnColumn,        <span class="comment">/* Number of result columns written here */</span></span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">char</span> **pzErrmsg       <span class="comment">/* Error msg written here */</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sqlite3_free_table</span><span class="params">(<span class="keyword">char</span> **result)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> CGetDataFromSqliteDlg::OnBnClickedBtnreaddata()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// <span class="doctag">TODO:</span>  在此添加控件通知处理程序代码</span></span><br><span class="line">	sqlite3 * pDB;</span><br><span class="line">	<span class="keyword">char</span>* errMsg;</span><br><span class="line">	<span class="comment">// 连接SQLite数据库</span></span><br><span class="line">	<span class="keyword">int</span> res = sqlite3_open(<span class="string">"test.db"</span>, &amp;pDB);</span><br><span class="line">	<span class="keyword">if</span> (res != SQLITE_OK)&#123;</span><br><span class="line">		MessageBox(_T(<span class="string">"数据库打开失败，请检查后再操作！"</span>), <span class="literal">NULL</span>, MB_ICONSTOP);</span><br><span class="line">		sqlite3_close(pDB);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="built_in">string</span> strSql = <span class="string">"select * from blog"</span>;</span><br><span class="line">	<span class="keyword">char</span>** pResult;</span><br><span class="line">	<span class="keyword">int</span> nRow;</span><br><span class="line">	<span class="keyword">int</span> nCol;</span><br><span class="line">	<span class="keyword">int</span> nResult;</span><br><span class="line">	nResult = sqlite3_get_table(pDB, strSql.c_str(), &amp;pResult, &amp;nRow, &amp;nCol, &amp;errMsg);</span><br><span class="line">	<span class="keyword">if</span> (nResult != SQLITE_OK)</span><br><span class="line">	&#123;</span><br><span class="line">		sqlite3_close(pDB);</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; errMsg &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		sqlite3_free(errMsg);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Blog*&gt;vecBlog;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">string</span> strOut;</span><br><span class="line">	<span class="keyword">int</span> nIndex = <span class="number">2</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nRow; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		Blog* blog = <span class="keyword">new</span> Blog;</span><br><span class="line">		<span class="built_in">string</span> tempTitle = pResult[nIndex];</span><br><span class="line">		<span class="built_in">string</span> tempArticle = pResult[nIndex + <span class="number">1</span>];</span><br><span class="line">		CString number;</span><br><span class="line">		number.Format(<span class="string">"%d"</span>, i + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">		m_list.InsertItem(nRow, <span class="string">""</span>);</span><br><span class="line">		CString strTitle(tempTitle.c_str());</span><br><span class="line">		CString strArticle(tempArticle.c_str());</span><br><span class="line">		ConvertUtf8ToGBK(strTitle);</span><br><span class="line">		ConvertUtf8ToGBK(strArticle);</span><br><span class="line">		blog-&gt;title = strTitle;</span><br><span class="line">		blog-&gt;article = strArticle;</span><br><span class="line">		vecBlog.push_back(blog);</span><br><span class="line">		m_list.SetItemText(i, <span class="number">0</span>, number);</span><br><span class="line">		m_list.SetItemText(i, <span class="number">1</span>, strTitle);</span><br><span class="line">		m_list.SetItemData(i, (DWORD_PTR)blog);</span><br><span class="line"></span><br><span class="line">		nIndex = nIndex + <span class="number">2</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	sqlite3_free_table(pResult);</span><br><span class="line">	sqlite3_close(pDB);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同样地，注意格式转码。</p>
+<h2 id="成品"><a href="#成品" class="headerlink" title="成品"></a>成品</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://img.blog.csdn.net/20171006231410366?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="V1.5" title="">
+                </div>
+                <div class="image-caption">V1.5</div>
+            </figure>
+<p>V1.5成功实现从sqlite数据库读取数据并反映在列表和编辑框中。</p>
+<p>To be continued…</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-10-12T13:37:46.000Z" itemprop="dateUpdated">2017-10-12 21:37:46</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2017/06/14/MFC网页分析程序/" target="_blank" rel="external">https://hubojing.github.io/2017/06/14/MFC网页分析程序/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hubojing.github.io">
+            <img src="/img/avatar.jpg" alt="靖待">
+            靖待
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CPP/">CPP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MFC/">MFC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2017/06/14/MFC网页分析程序/&title=《MFC网页分析程序》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2017/06/14/MFC网页分析程序/&title=《MFC网页分析程序》 — 靖待的技术博客&source=   　　 　　　　开发一个网页分析程序，可以抓取特定网页的内容，加以分析之后将结果保存至数据库。
+　　V1.5上线，保存至sqlite数据库用时2分13..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2017/06/14/MFC网页分析程序/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《MFC网页分析程序》 — 靖待的技术博客&url=https://hubojing.github.io/2017/06/14/MFC网页分析程序/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2017/06/14/MFC网页分析程序/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/06/15/MFC-多线程-进度条-复制文件（夹）/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">MFC+多线程+进度条+复制文件（夹）</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/05/07/Socket点对点聊天-文件传输/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Socket点对点聊天+文件传输</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "JmIOWxzPr7srCSPni2dKJvlk-gzGzoHsz",
+            appKey: "RNTLoM5BDEURrDBqJGq68wqK",
+            avatar: "identicon",
+            placeholder: "据说留言的人都变漂亮了...",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        码代码和码字，都是人生乐趣
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>靖待 &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2017/06/14/MFC网页分析程序/&title=《MFC网页分析程序》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2017/06/14/MFC网页分析程序/&title=《MFC网页分析程序》 — 靖待的技术博客&source=   　　 　　　　开发一个网页分析程序，可以抓取特定网页的内容，加以分析之后将结果保存至数据库。
+　　V1.5上线，保存至sqlite数据库用时2分13..." data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2017/06/14/MFC网页分析程序/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《MFC网页分析程序》 — 靖待的技术博客&url=https://hubojing.github.io/2017/06/14/MFC网页分析程序/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2017/06/14/MFC网页分析程序/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACOElEQVR42u3azW7CQAxFYd7/pVOp6gJEmZ5rJ6h4zqwiCEm+LIx/5nbD6/he98f369X56zOfP19f84QlQ4aMj2Ucy/XMSK/GH3r9yR+vT4YMGRsweJDthFdyTF6fDBkyZPAbr5FX/EqGDBkyeMBdB0deoJLryJAhQwYvYtfBkaSJvFV3YS0uQ4aMD2TUBgPvOb58viFDhox/zzjClTbLyH07z/NzBRkyZIxmrNM7VDricjQdUqajAhkyZMxmpBlX2m4j+LRUliFDxj6MTuuKjB7T4QEP+r8khTJkyBjNSEPtub29zlDzoRaXIUPGBox+2OVFbPFxX4VyGTJkjGbw8jVt7tfGBnxgEBe3MmTI+HBGOnSsNdr4G03HCTJkyJjN6Gwh5WGaB9li+JYhQ8Y2jE7Lnm+wIMlfPB6QIUPGaAYvHdM0jtyYp6RoZ4UMGTI2YNTa8emwsxbE0V+CDBkyRjNaGx1wKpmek26ZlSFDxlQG+XEa/tIith/EZciQMZuRNuv5Nohzy9R004YMGTImMWpBlgdH/ubINVE+K0OGjKEM3girDQZqyCAQy5AhYzQjTeB4gcpDc5Cxkk6hDBkyxjGOcKWvgJPShPXhWxkyZIxm8HVWu58HcdJokyFDxj4MntidO3TsbM5A0V2GDBnjGLxZn97shJkq+ZeQIUOGjLAE7cwZawFdhgwZMkigrG0m65fQMmTI2IeRDiBrj8hfRzpMlSFDxmxGGvJqKWM6MOBJpAwZMkYzvgDy7SLgphTEYQAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来嘛！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)抱抱~你回来了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://hubojing.github.io//2019/01/11/django搭建博客/">
+    
+    
+    <title>Django博客demo | 靖待的技术博客 | 小清新IT旅程|为中华之崛起而读书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,Django">
+    <meta name="description" content="Django-blog-demo笔记。">
+<meta name="keywords" content="Python,Django">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django博客demo">
+<meta property="og:url" content="https://hubojing.github.io/2019/01/11/django搭建博客/index.html">
+<meta property="og:site_name" content="靖待的技术博客">
+<meta property="og:description" content="Django-blog-demo笔记。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547395242880&di=51c657b409cc95bb168dde1d33880538&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20171129%2F35c49523c50843f3ba22b8bc246c5d42.jpeg">
+<meta property="og:updated_time" content="2019-09-13T11:15:01.490Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Django博客demo">
+<meta name="twitter:description" content="Django-blog-demo笔记。">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547395242880&di=51c657b409cc95bb168dde1d33880538&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20171129%2F35c49523c50843f3ba22b8bc246c5d42.jpeg">
+    
+        <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<!--google adsense code-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-2097896583568287",
+    enable_page_level_ads: true
+  });
+</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">靖待</h5>
+          <a href="mailto:hubojing@outlook.com" title="hubojing@outlook.com" class="mail">hubojing@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archive"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hubojing" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/friends"  >
+                <i class="icon icon-lg icon-users"></i>
+                友情链接
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/Chinese"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/comment"  >
+                <i class="icon icon-lg icon-book"></i>
+                留言板
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/littletalk"  >
+                <i class="icon icon-lg icon-edit"></i>
+                自言自语
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/advertising"  >
+                <i class="icon icon-lg icon-link"></i>
+                推广
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes"  >
+                <i class="icon icon-lg icon-qq"></i>
+                和我在线交流
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Django博客demo</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Django博客demo</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-01-11T10:19:51.000Z" itemprop="datePublished" class="page-time">
+  2019-01-11
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/互联网/">互联网</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#搭建"><span class="post-toc-number">1.</span> <span class="post-toc-text">搭建</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#环境"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">环境</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安装"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">安装</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#创建项目和应用"><span class="post-toc-number">2.</span> <span class="post-toc-text">创建项目和应用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#创建项目"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">创建项目</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#myblog目录"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">myblog目录</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#创建应用"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">创建应用</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#blog目录"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">blog目录</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Hello-World"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">Hello World</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#第二种URL配置"><span class="post-toc-number">2.6.</span> <span class="post-toc-text">第二种URL配置</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Templates"><span class="post-toc-number">3.</span> <span class="post-toc-text">Templates</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#开发第一个Template"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">开发第一个Template</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#DTL初步使用"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">DTL初步使用</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Models"><span class="post-toc-number">4.</span> <span class="post-toc-text">Models</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ORM"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">ORM</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#编写Models"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">编写Models</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#字段创建"><span class="post-toc-number">4.2.1.</span> <span class="post-toc-text">字段创建</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#生成数据表"><span class="post-toc-number">4.2.2.</span> <span class="post-toc-text">生成数据表</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#生成数据表-1"><span class="post-toc-number">4.2.3.</span> <span class="post-toc-text">生成数据表</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#页面呈现数据"><span class="post-toc-number">4.2.4.</span> <span class="post-toc-text">页面呈现数据</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#后台步骤"><span class="post-toc-number">4.2.4.1.</span> <span class="post-toc-text">后台步骤</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#后端步骤"><span class="post-toc-number">4.2.4.2.</span> <span class="post-toc-text">后端步骤</span></a></li></ol></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Admin"><span class="post-toc-number">5.</span> <span class="post-toc-text">Admin</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#配置Admin"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">配置Admin</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#创建用户"><span class="post-toc-number">5.1.1.</span> <span class="post-toc-text">创建用户</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#配置应用"><span class="post-toc-number">5.1.2.</span> <span class="post-toc-text">配置应用</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#修改数据"><span class="post-toc-number">5.1.3.</span> <span class="post-toc-text">修改数据</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#修改数据默认显示名称"><span class="post-toc-number">5.1.3.1.</span> <span class="post-toc-text">修改数据默认显示名称</span></a></li></ol></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#博客开发"><span class="post-toc-number">6.</span> <span class="post-toc-text">博客开发</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#页面设计"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">页面设计</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#主页面内容"><span class="post-toc-number">6.1.1.</span> <span class="post-toc-text">主页面内容</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#列表编写思路"><span class="post-toc-number">6.1.1.1.</span> <span class="post-toc-text">列表编写思路</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#页面内容"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">页面内容</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#超链接"><span class="post-toc-number">6.2.1.</span> <span class="post-toc-text">超链接</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#再配URL"><span class="post-toc-number">6.2.1.1.</span> <span class="post-toc-text">再配URL</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-5"><a class="post-toc-link" href="#uel函数的名称参数"><span class="post-toc-number">6.2.1.1.1.</span> <span class="post-toc-text">uel函数的名称参数</span></a></li></ol></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#撰写页面"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">撰写页面</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#编辑相应函数"><span class="post-toc-number">6.3.1.</span> <span class="post-toc-text">编辑相应函数</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#两个编辑页面"><span class="post-toc-number">6.4.</span> <span class="post-toc-text">两个编辑页面</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Templates过滤器"><span class="post-toc-number">7.</span> <span class="post-toc-text">Templates过滤器</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Django-Shell"><span class="post-toc-number">8.</span> <span class="post-toc-text">Django Shell</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Admin增强"><span class="post-toc-number">9.</span> <span class="post-toc-text">Admin增强</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#创建admin配置类"><span class="post-toc-number">9.1.</span> <span class="post-toc-text">创建admin配置类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#显示其他字段"><span class="post-toc-number">9.2.</span> <span class="post-toc-text">显示其他字段</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#过滤器"><span class="post-toc-number">9.3.</span> <span class="post-toc-text">过滤器</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#相关资料"><span class="post-toc-number">10.</span> <span class="post-toc-text">相关资料</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#代码下载"><span class="post-toc-number">11.</span> <span class="post-toc-text">代码下载</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-django搭建博客"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Django博客demo</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-01-11 18:19:51" datetime="2019-01-11T10:19:51.000Z"  itemprop="datePublished">2019-01-11</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/互联网/">互联网</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div align="left"><br><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547395242880&di=51c657b409cc95bb168dde1d33880538&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20171129%2F35c49523c50843f3ba22b8bc246c5d42.jpeg" width="300" height="180" style="float:right;"><br><br><br>　　<strong>Django-blog-demo笔记。</strong><br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="搭建"><a href="#搭建" class="headerlink" title="搭建"></a>搭建</h1><h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>　　python 3.7<br>　　Django 2.1.5<br>　　pycharm</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>　　cmd里敲：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install Django==2.1.5</span><br></pre></td></tr></table></figure></p>
+<h1 id="创建项目和应用"><a href="#创建项目和应用" class="headerlink" title="创建项目和应用"></a>创建项目和应用</h1><h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>　　在预想安装博客目录下计入cmd，敲：<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">django-admin startproject myblog</span><br></pre></td></tr></table></figure></p>
+<p>　　对应目录下生成一个myblog文件夹。</p>
+<p>　　manage.py:与项目进行交互的命令行工具集的入口<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py</span><br></pre></td></tr></table></figure></p>
+<p>　　查看所有命令。</p>
+<p>　　启动命令：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py runserver</span><br></pre></td></tr></table></figure></p>
+<p>　　浏览器127.0.0.1:8000查看效果。</p>
+<p>　　改端口号：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py runserver <span class="number">8888</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="myblog目录"><a href="#myblog目录" class="headerlink" title="myblog目录"></a>myblog目录</h2><p>　　myblog<br>　　|–__init__.py<br>　　|–settings.py<br>　　|–urls.py<br>　　|–wsgi.py<br>　　manage.py</p>
+<p>　　wsgi.py<br>　　WSGI(Python Web Server Gateway Interface)   Python服务器网关接口<br>　　Python应用与Web服务器之间的接口</p>
+<p>　　urls.py<br>　　URL配置文件</p>
+<p>　　settings.py<br>　　项目总配置文件，包含数据库、Web应用、时间等各种配置</p>
+<p>　　__init__.py<br>　　内容默认为空</p>
+<h2 id="创建应用"><a href="#创建应用" class="headerlink" title="创建应用"></a>创建应用</h2><p>　　打开命令行，进入manage.py同级目录<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py startapp blog</span><br></pre></td></tr></table></figure></p>
+<p>　　会多一个blog文件夹。<br>　　添加应用名到settings.py中的INSTALLED_APPS里<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS = [</span><br><span class="line">    <span class="string">'django.contrib.admin'</span>,</span><br><span class="line">    <span class="string">'django.contrib.auth'</span>,</span><br><span class="line">    <span class="string">'django.contrib.contenttypes'</span>,</span><br><span class="line">    <span class="string">'django.contrib.sessions'</span>,</span><br><span class="line">    <span class="string">'django.contrib.messages'</span>,</span><br><span class="line">    <span class="string">'django.contrib.staticfiles'</span>,</span><br><span class="line">    <span class="string">'blog'</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<h2 id="blog目录"><a href="#blog目录" class="headerlink" title="blog目录"></a>blog目录</h2><p>　　blog<br>　　|–migrations<br>　　|—-__init__.py<br>　　|–__init__.py<br>　　|–admin.py<br>　　|–apps.py<br>　　|–models.py<br>　　|–tests.py<br>　　|–views.py</p>
+<p>　　migrations 数据移植（迁移）模块，内容自动生成</p>
+<p>　　admin.py    该应用的后台管理系统配置<br>　　apps.py 应用配置（Django-1.9以后自动生成）<br>　　models.py   数据模块，使用ORM框架，类似于MVC结构中的Models(模型)<br>　　test.py 自动化测试模块，在此编写测试脚本（语句）<br>　　views.py    执行响应的代码所在模块，代码逻辑处理地（项目大部分代码在此）</p>
+<h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2><p>　　打开view.py，输入<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> render</span><br><span class="line"><span class="keyword">from</span> django.http <span class="keyword">import</span> HttpResponse</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">(request)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> HttpResponse(<span class="string">'Hello World!'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>　　即编辑blog.views<br>　　每个相应对应一个函数，函数必须返回一个响应<br>　　函数必须存在一个参数，一般约定为request<br>　　每个相应（函数）对应一个URL</p>
+<p>在urls.py中，输入<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> blog.views <span class="keyword">as</span> bv</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'admin/'</span>, admin.site.urls),</span><br><span class="line">    path(<span class="string">'index/'</span>, bv.index),</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<p>　　即编辑urls.py<br>　　url函数放在urlpatterns列表中<br>　　url函数三个参数：URL(正则)，对应方法，名称</p>
+<p>　　运行，输入地址<a href="http://localhost:8000/index/" target="_blank" rel="noopener">http://localhost:8000/index/</a> 即可。</p>
+<h2 id="第二种URL配置"><a href="#第二种URL配置" class="headerlink" title="第二种URL配置"></a>第二种URL配置</h2><p>　　如果页面很多，都写在根urls.py中就很乱。于是，在根urls.py中引入include，在APP目录下创建urls.py文件，格式与根urls.py相同。</p>
+<p>　　更改后：<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path,include</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> blog.views <span class="keyword">as</span> bv</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'admin/'</span>, admin.site.urls),</span><br><span class="line">    path(<span class="string">'index/'</span>, include(<span class="string">'blog.urls'</span>)),</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<p>　　新blog.urls.py<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">''</span>, views.index),</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<h1 id="Templates"><a href="#Templates" class="headerlink" title="Templates"></a>Templates</h1><p>　　HTML文件使用了Django模板语言（Django Template Language, DTL）</p>
+<h2 id="开发第一个Template"><a href="#开发第一个Template" class="headerlink" title="开发第一个Template"></a>开发第一个Template</h2><ul>
+<li>在APP的<strong>根目录</strong>下创建名叫Templates的目录</li>
+<li>在该目录下创建HTML文件</li>
+<li>在views.py中返回<code>render()</code></li>
+</ul>
+<p>　　html中敲入：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello blog!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>　　修改views.py为：<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> render</span><br><span class="line"><span class="keyword">from</span> django.http <span class="keyword">import</span> HttpResponse</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">(request)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> render(request,<span class="string">'index.html'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>　　运行查看效果。</p>
+<h2 id="DTL初步使用"><a href="#DTL初步使用" class="headerlink" title="DTL初步使用"></a>DTL初步使用</h2><p>　　<code>render()</code>函数中支持一个dict类型参数<br>　　该字典是后台传递到模板的参数，键为参数名<br>　　在模板中使用<code></code>来直接使用</p>
+<p>　　修改views.py<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">return</span> render(request,<span class="string">'index.html'</span>,&#123;<span class="string">'hello'</span>:<span class="string">'Hello blog!'</span>&#125;)</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>　　修改html<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123;hello&#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>　　运行查看效果。</p>
+<h1 id="Models"><a href="#Models" class="headerlink" title="Models"></a>Models</h1><p>　　通常，一个Model对应数据库的一张数据表<br>　　Django中Models以类的形式表现<br>　　它包含了一些基本字段以及数据的一些行为</p>
+<h2 id="ORM"><a href="#ORM" class="headerlink" title="ORM"></a>ORM</h2><p>　　对象关系映射（Object Relation Mapping）<br>　　实现了对象和数据库之间的映射<br>　　隐藏了数据访问的细节，不需要编写SQL语句</p>
+<h2 id="编写Models"><a href="#编写Models" class="headerlink" title="编写Models"></a>编写Models</h2><ul>
+<li>在应用根目录下创建models.py，并引入models模块</li>
+<li>创建类，继承models.Model，该类即是一张数据表</li>
+<li>在类中创建字段</li>
+</ul>
+<h3 id="字段创建"><a href="#字段创建" class="headerlink" title="字段创建"></a>字段创建</h3><p>　　字段即类里面的属性（变量）<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">attr = models.CharField(max_length = <span class="number">64</span>)</span><br></pre></td></tr></table></figure></p>
+<h3 id="生成数据表"><a href="#生成数据表" class="headerlink" title="生成数据表"></a>生成数据表</h3><p>　　命令行中进入manage.py同级目录<br>　　执行命令<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python manage.py makemigrations app名（可选）</span><br><span class="line">python manage.py migrate</span><br></pre></td></tr></table></figure></p>
+<p>　　不加app名默认给所有app进行数据迁移。</p>
+<p>　　cmd将显示：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">E:\PythonCode\myblog&gt;python manage.py makemigrations</span><br><span class="line">Migrations <span class="keyword">for</span> <span class="string">'blog'</span>:</span><br><span class="line">  blog\migrations\0001_initial.py</span><br><span class="line">    - Create model Article</span><br><span class="line"></span><br><span class="line">E:\PythonCode\myblog&gt;python manage.py migrate</span><br><span class="line">Operations to perform:</span><br><span class="line">  Apply all migrations: admin, auth, blog, contenttypes, sessions</span><br><span class="line">Running migrations:</span><br><span class="line">  Applying contenttypes.0001_initial... OK</span><br><span class="line">  Applying auth.0001_initial... OK</span><br><span class="line">  Applying admin.0001_initial... OK</span><br><span class="line">  Applying admin.0002_logentry_remove_auto_add... OK</span><br><span class="line">  Applying admin.0003_logentry_add_action_flag_choices... OK</span><br><span class="line">  Applying contenttypes.0002_remove_content_type_name... OK</span><br><span class="line">  Applying auth.0002_alter_permission_name_max_length... OK</span><br><span class="line">  Applying auth.0003_alter_user_email_max_length... OK</span><br><span class="line">  Applying auth.0004_alter_user_username_opts... OK</span><br><span class="line">  Applying auth.0005_alter_user_last_login_null... OK</span><br><span class="line">  Applying auth.0006_require_contenttypes_0002... OK</span><br><span class="line">  Applying auth.0007_alter_validators_add_error_messages... OK</span><br><span class="line">  Applying auth.0008_alter_user_username_max_length... OK</span><br><span class="line">  Applying auth.0009_alter_user_last_name_max_length... OK</span><br><span class="line">  Applying blog.0001_initial... OK</span><br><span class="line">  Applying sessions.0001_initial... OK</span><br></pre></td></tr></table></figure></p>
+<h3 id="生成数据表-1"><a href="#生成数据表-1" class="headerlink" title="生成数据表"></a>生成数据表</h3><p>　　查看<br>　　Django会自动在app/migrations/目录下生成移植文件<br>　　执行命令查看SQL语句<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py sqlmigrate 应用名 文件id</span><br></pre></td></tr></table></figure></p>
+<p>　　cmd将显示：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">E:\PythonCode\myblog&gt;python manage.py sqlmigrate blog 0001</span><br><span class="line">BEGIN;</span><br><span class="line">--</span><br><span class="line">-- Create model Article</span><br><span class="line">--</span><br><span class="line">CREATE TABLE <span class="string">"blog_article"</span> (<span class="string">"id"</span> <span class="built_in">integer</span> NOT NULL PRIMARY KEY AUTOINCREMENT, <span class="string">"title"</span> varchar(32) NOT NULL, <span class="string">"content"</span> text NULL);</span><br><span class="line">COMMIT;</span><br></pre></td></tr></table></figure></p>
+<p>　　默认sqlite3的数据库在项目根目录下db.sqlite3<br>　　查看并编辑db.sqlite3，使用第三方软件，如SQLite Expert Personal</p>
+<h3 id="页面呈现数据"><a href="#页面呈现数据" class="headerlink" title="页面呈现数据"></a>页面呈现数据</h3><h4 id="后台步骤"><a href="#后台步骤" class="headerlink" title="后台步骤"></a>后台步骤</h4><p>　　views.py中import models<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">article = models.Article.objects.get(pk = <span class="number">1</span>)</span><br><span class="line">render(request, page, &#123;<span class="string">'article'</span>:article&#125;)</span><br></pre></td></tr></table></figure></p>
+<h4 id="后端步骤"><a href="#后端步骤" class="headerlink" title="后端步骤"></a>后端步骤</h4><p>　　模板可直接使用对象以及对象的“.”操作<br><code></code></p>
+<p>　　修改html<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123;article.title&#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>&#123;&#123;article.content&#125;&#125;<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>　　运行，查看<a href="http://localhost:8000/index/" target="_blank" rel="noopener">http://localhost:8000/index/</a></p>
+<h1 id="Admin"><a href="#Admin" class="headerlink" title="Admin"></a>Admin</h1><p>Django自带的一个功能强大的自动化数据管理界面<br>被授权的用户可直接在Admin中管理数据库<br>Django提供了许多针对Admin的定制功能</p>
+<h2 id="配置Admin"><a href="#配置Admin" class="headerlink" title="配置Admin"></a>配置Admin</h2><h3 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h3><p>创建超级用户<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py createsuperuser</span><br></pre></td></tr></table></figure></p>
+<p>之后要求输入用户名<br>邮箱<br>密码</p>
+<p>Admin入口访问地址：localhost:8000/admin/</p>
+<p>如需修改成中文版，修改settings.py中LANGUAGE_CODE = ‘zh_Hans’<br>（英文：LANGUAGE_CODE = ‘en-us’）</p>
+<h3 id="配置应用"><a href="#配置应用" class="headerlink" title="配置应用"></a>配置应用</h3><p>在应用下admin.py中引入自身的models模块（或里面的模型类）<br>编辑admin.py<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> .models <span class="keyword">import</span> Article</span><br><span class="line">admin.site.register(models.Article)</span><br></pre></td></tr></table></figure></p>
+<h3 id="修改数据"><a href="#修改数据" class="headerlink" title="修改数据"></a>修改数据</h3><p>点击Article超链接进入Article列表页面，按页面指示修改。</p>
+<h4 id="修改数据默认显示名称"><a href="#修改数据默认显示名称" class="headerlink" title="修改数据默认显示名称"></a>修改数据默认显示名称</h4><p>每条都显示的Article object，很不方便，显示文章标题比较好。</p>
+<ul>
+<li>在Article类下添加一个方法</li>
+<li>根据Python版本选择<strong>str</strong>(self) (python3以上)或<strong>unicode</strong>(self) （python2.7）</li>
+<li>return self.title</li>
+</ul>
+<h1 id="博客开发"><a href="#博客开发" class="headerlink" title="博客开发"></a>博客开发</h1><h2 id="页面设计"><a href="#页面设计" class="headerlink" title="页面设计"></a>页面设计</h2><p>　　博客主页面<br>　　博客文章内容页面<br>　　博客撰写页面</p>
+<h3 id="主页面内容"><a href="#主页面内容" class="headerlink" title="主页面内容"></a>主页面内容</h3><p>　　文章标题列表，超链接<br>　　发表博客按钮（超链接）</p>
+<h4 id="列表编写思路"><a href="#列表编写思路" class="headerlink" title="列表编写思路"></a>列表编写思路</h4><ul>
+<li>取出数据库中所有文章对象</li>
+<li>将文章对象们打包成列表，传递到前端</li>
+<li>前端页面把文章以标题超链接的形式逐个列出</li>
+</ul>
+<p>　　模板For循环<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;%<span class="keyword">for</span> xx <span class="keyword">in</span> xxs%&#125;</span><br><span class="line"><span class="comment"># HTML语句</span></span><br><span class="line">&#123;%endfor%&#125;</span><br></pre></td></tr></table></figure></p>
+<p>　　修改views.py<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> render</span><br><span class="line"><span class="keyword">from</span> django.http <span class="keyword">import</span> HttpResponse</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> models</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">(request)</span>:</span></span><br><span class="line">    articles = models.Article.objects.all()</span><br><span class="line">    <span class="keyword">return</span> render(request,<span class="string">'index.html'</span>,&#123;<span class="string">'articles'</span>: articles&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>　　修改html<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">""</span>&gt;</span>新文章<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">&#123;% for article in articles %&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">""</span>&gt;</span>&#123;&#123;article.title&#125;&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="页面内容"><a href="#页面内容" class="headerlink" title="页面内容"></a>页面内容</h2><p>　　标题<br>　　文章内容<br>　　修改文章按钮（超链接）</p>
+<p>　　在templates中新增article_page.html<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Article Page<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123;article.title&#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>&#123;&#123;article.content&#125;&#125;<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">br</span>/&gt;</span><span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">""</span>&gt;</span>修改文章<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>　　修改views.py<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> render</span><br><span class="line"><span class="keyword">from</span> django.http <span class="keyword">import</span> HttpResponse</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> models</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span><span class="params">(request)</span>:</span></span><br><span class="line">    articles = models.Article.objects.all()</span><br><span class="line">    <span class="keyword">return</span> render(request,<span class="string">'index.html'</span>,&#123;<span class="string">'articles'</span>: articles&#125;)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">article_page</span><span class="params">(request, article_id)</span>:</span></span><br><span class="line">    article=models.Article.objects.get(pk = article_id)</span><br><span class="line">    <span class="keyword">return</span> render(request,<span class="string">'article_page.html'</span>,&#123;<span class="string">'article'</span>:article&#125;)</span><br><span class="line">``</span><br><span class="line"><span class="comment">### URL传递参数</span></span><br><span class="line">　　参数写在相应函数中request后，可以有默认值</span><br><span class="line"></span><br><span class="line">　　修改blog下的urls.py</span><br><span class="line">```py</span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">''</span>, views.index),</span><br><span class="line">    path(<span class="string">'article/&lt;article_id&gt;'</span>, views.article_page),</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<p>　　顺便把myblog\urls.py里的index改成blog（非必要，只是更符合博客url）<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</span><br><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path,include</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> blog.views <span class="keyword">as</span> bv</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'admin/'</span>, admin.site.urls),</span><br><span class="line">    path(<span class="string">'blog/'</span>, include(<span class="string">'blog.urls'</span>)),</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<p>　　运行，输入<a href="http://localhost:8000/blog/article/1" target="_blank" rel="noopener">http://localhost:8000/blog/article/1</a> 查看。</p>
+<h3 id="超链接"><a href="#超链接" class="headerlink" title="超链接"></a>超链接</h3><p>　　href后是目标地址，template中可用<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;%url <span class="string">'app_name:url_name'</span> param%&#125;</span><br></pre></td></tr></table></figure></p>
+<p>　　其中app_name和url_name都在url中配置</p>
+<h4 id="再配URL"><a href="#再配URL" class="headerlink" title="再配URL"></a>再配URL</h4><h5 id="uel函数的名称参数"><a href="#uel函数的名称参数" class="headerlink" title="uel函数的名称参数"></a>uel函数的名称参数</h5><p>　　法一：根urls，写在<code>include()</code>的第二个参数位置，<code>namespace=&#39;blog&#39;</code><br>　　法二：应用下则写在<code>url()</code>的第三个参数位置，<code>name=&#39;article&#39;</code><br>　　主要取决于是否使用<code>include</code>引用了另一个url配置文件</p>
+<h2 id="撰写页面"><a href="#撰写页面" class="headerlink" title="撰写页面"></a>撰写页面</h2><p>　　标题编辑栏<br>　　文章内容编辑区域<br>　　提交按钮</p>
+<p>　　新建edit_page.html<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Edit Page<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">""</span> <span class="attr">method</span>=<span class="string">"post"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">label</span>&gt;</span>文章标题</span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"title"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">label</span>&gt;</span>文章内容</span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"content"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">value</span>=<span class="string">"提交"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>　　views.py新增<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit_page</span><span class="params">(request)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> render(request,<span class="string">'edit_page.html'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>　　blog\urls.py新增<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path(<span class="string">'edit'</span>, views.edit_page),</span><br></pre></td></tr></table></figure></p>
+<p>　　运行，输入<a href="http://localhost:8000/blog/edit" target="_blank" rel="noopener">http://localhost:8000/blog/edit</a> 查看。</p>
+<h3 id="编辑相应函数"><a href="#编辑相应函数" class="headerlink" title="编辑相应函数"></a>编辑相应函数</h3><p>　　使用<code>request.POST[&#39;参数名&#39;]</code>获取表单数据<br>　　models.Article.objects.create(title, content)创建对象</p>
+<h2 id="两个编辑页面"><a href="#两个编辑页面" class="headerlink" title="两个编辑页面"></a>两个编辑页面</h2><p>　　思路：新文章为空，修改文章有内容<br>　　修改文章页面有文章对象<br>　　文章的ID</p>
+<p>　　修改数据<br>　　article.title = title<br>　　article.save()</p>
+<p>　　修改views.py<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit_page</span><span class="params">(request, article_id)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> str(article_id) == <span class="string">'0'</span>:</span><br><span class="line">        <span class="keyword">return</span> render(request,<span class="string">'edit_page.html'</span>)</span><br><span class="line">    article = models.Article.objects.get(pk=article_id)</span><br><span class="line">    <span class="keyword">return</span> render(request, <span class="string">'edit_page.html'</span>, &#123;<span class="string">'article'</span>: article&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">edit_action</span><span class="params">(request)</span>:</span></span><br><span class="line">    title = request.POST.get(<span class="string">'title'</span>, <span class="string">'TITLE'</span>)</span><br><span class="line">    content = request.POST.get(<span class="string">'content'</span>, <span class="string">'CONTENT'</span>)</span><br><span class="line">    article_id = request.POST.get(<span class="string">'article_id'</span>, <span class="string">'0'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> article_id == <span class="string">'0'</span>:</span><br><span class="line">        models.Article.objects.create(title=title, content=content)</span><br><span class="line">        articles = models.Article.objects.all()</span><br><span class="line">        <span class="keyword">return</span> render(request, <span class="string">'index.html'</span>, &#123;<span class="string">'articles'</span>: articles&#125;)</span><br><span class="line"></span><br><span class="line">    article = models.Article.objects.get(pk=article_id)</span><br><span class="line">    article.title = title</span><br><span class="line">    article.content = content</span><br><span class="line">    article.save()</span><br><span class="line">    <span class="keyword">return</span> render(request,<span class="string">'article_page.html'</span>, &#123;<span class="string">'article'</span>: article&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>　　修改blog\urls.py<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">''</span>, views.index),</span><br><span class="line">    path(<span class="string">'article/(?P&lt;article_id&gt;[0-9]+)$'</span>, views.article_page,name=<span class="string">'article_page'</span>),</span><br><span class="line">    path(<span class="string">'edit/(?P&lt;article_id&gt;[0-9]+)$'</span>, views.edit_page,name=<span class="string">'edit_page'</span>),</span><br><span class="line">    path(<span class="string">'edit/Action$'</span>, views.edit_action,name=<span class="string">'edit_action'</span>),</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<p>　　修改article_page.html<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Article Page<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123;article.title&#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>&#123;&#123;article.content&#125;&#125;<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">br</span>/&gt;</span><span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"&#123;% url 'blog:edit_page' article.id %&#125;"</span>&gt;</span>修改文章<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>　　修改主页index.html<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"&#123;% url 'blog:edit_page' 0 %&#125;"</span>&gt;</span>新文章<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">&#123;% for article in articles %&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"&#123;% url 'blog:article_page' article.id %&#125;"</span>&gt;</span>&#123;&#123;article.title&#125;&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>　　修改edit_page.gtml<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Edit Page<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">"&#123;% url 'blog:edit_action' %&#125;"</span> <span class="attr">method</span>=<span class="string">"post"</span>&gt;</span></span><br><span class="line">    &#123;% csrf_token %&#125;</span><br><span class="line">    &#123;% if article %&#125;</span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"article_id"</span> <span class="attr">value</span>=<span class="string">"&#123;&#123;article.id&#125;&#125;"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>文章标题</span><br><span class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"title"</span> <span class="attr">value</span>=<span class="string">"&#123;&#123;article.title&#125;&#125;"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>文章内容</span><br><span class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"content"</span> <span class="attr">value</span>=<span class="string">"&#123;&#123;article.content&#125;&#125;"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line">    &#123;% else %&#125;</span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"article_id"</span> <span class="attr">value</span>=<span class="string">"0"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>文章标题</span><br><span class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"title"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>文章内容</span><br><span class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"content"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">value</span>=<span class="string">"提交"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="Templates过滤器"><a href="#Templates过滤器" class="headerlink" title="Templates过滤器"></a>Templates过滤器</h1><p>　　写在模板中，属于Django模板语言<br>　　可以修改模板中的变量，从而显示不同的内容<br>　　使用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;value | filter&#125;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>e.g.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;list_nums | length&#125;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>　　过滤器可叠加：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;value | filter1 | filter2 | ...&#125;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>　　修改edit_page.html<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Edit Page<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">"&#123;% url 'blog:edit_action' %&#125;"</span> <span class="attr">method</span>=<span class="string">"post"</span>&gt;</span></span><br><span class="line">    &#123;% csrf_token %&#125;</span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"hidden"</span> <span class="attr">name</span>=<span class="string">"article_id"</span> <span class="attr">value</span>=<span class="string">"&#123;&#123;article.id | default:'0'&#125;&#125;"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>文章标题</span><br><span class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"title"</span> <span class="attr">value</span>=<span class="string">"&#123;&#123;article.title&#125;&#125;"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">label</span>&gt;</span>文章内容</span><br><span class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"content"</span> <span class="attr">value</span>=<span class="string">"&#123;&#123;article.content&#125;&#125;"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">br</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">value</span>=<span class="string">"提交"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="Django-Shell"><a href="#Django-Shell" class="headerlink" title="Django Shell"></a>Django Shell</h1><p>　　Python交互式命令行程序，自动引入了项目环境，可使用它与项目进行交互<br>　　使用<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python manage.py shell</span><br><span class="line"><span class="keyword">from</span> blog.models <span class="keyword">import</span> Article</span><br><span class="line">Article.objects.all()</span><br></pre></td></tr></table></figure></p>
+<p>　　可以使用它进行调试<br>　　测试未知的方法</p>
+<h1 id="Admin增强"><a href="#Admin增强" class="headerlink" title="Admin增强"></a>Admin增强</h1><h2 id="创建admin配置类"><a href="#创建admin配置类" class="headerlink" title="创建admin配置类"></a>创建admin配置类</h2><p>　　class ArticleAdmin(admin.ModelAdmin)<br>　　注册：admin.site.register(Article, ArticleAdmin)</p>
+<h2 id="显示其他字段"><a href="#显示其他字段" class="headerlink" title="显示其他字段"></a>显示其他字段</h2><p>　　list_display = (‘title’, ‘content’)<br>　　list_display同时支持tuple和list</p>
+<p>　　修改admin.py<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.contrib <span class="keyword">import</span> admin</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> .models <span class="keyword">import</span> Article</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ArticleAdmin</span><span class="params">(admin.ModelAdmin)</span>:</span></span><br><span class="line">    list_display = (<span class="string">'title'</span>, <span class="string">'content'</span>,<span class="string">'pub_time'</span>)</span><br><span class="line"></span><br><span class="line">admin.site.register(Article, ArticleAdmin)</span><br></pre></td></tr></table></figure></p>
+<p>　　修改models.py<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Article</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    title = models.CharField(max_length=<span class="number">32</span>, default=<span class="string">'Title'</span>)</span><br><span class="line">    content=models.TextField(null=<span class="keyword">True</span>)</span><br><span class="line">    pub_time = models.DateTimeField(auto_now=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.title</span><br></pre></td></tr></table></figure></p>
+<p>　　如果是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pub_time = models.DateTimeField(null=True)</span><br></pre></td></tr></table></figure></p>
+<p>　　则可自己设定时间。</p>
+<p>　　修改完代码记得进行数据移植<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python manage.py makemigrations</span><br><span class="line">python manage.py migrate</span><br></pre></td></tr></table></figure></p>
+<h2 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h2><p>　　list_filter = (‘pub_time’,)<br>　　注意有个逗号</p>
+<h1 id="相关资料"><a href="#相关资料" class="headerlink" title="相关资料"></a>相关资料</h1><p><a href="https://docs.djangoproject.com/en/2.1/ref/" target="_blank" rel="noopener">Django API Reference</a></p>
+<h1 id="代码下载"><a href="#代码下载" class="headerlink" title="代码下载"></a>代码下载</h1><p><a href="https://github.com/hubojing/django-blog-demo" target="_blank" rel="noopener">django-blog-demo</a></p>
+<hr>
+<p>hexo天坑：<br>遇到 两个大括号 以及 一个大括号一个% 一定放入代码行（如下），<code>这样是不行的</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;&#125;&#125;</span><br><span class="line">&#123;%%&#125;</span><br></pre></td></tr></table></figure></p>
+<p>排查这个bug花了我半个小时…</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-09-13T11:15:01.490Z" itemprop="dateUpdated">2019-09-13 19:15:01</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2019/01/11/django搭建博客/" target="_blank" rel="external">https://hubojing.github.io/2019/01/11/django搭建博客/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hubojing.github.io">
+            <img src="/img/avatar.jpg" alt="靖待">
+            靖待
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Django/">Django</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2019/01/11/django搭建博客/&title=《Django博客demo》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2019/01/11/django搭建博客/&title=《Django博客demo》 — 靖待的技术博客&source=　　Django-blog-demo笔记。 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2019/01/11/django搭建博客/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Django博客demo》 — 靖待的技术博客&url=https://hubojing.github.io/2019/01/11/django搭建博客/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2019/01/11/django搭建博客/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/01/22/C-程序设计之兼谈对象模型/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">C++程序设计之兼谈对象模型</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/01/01/新年Flag/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">新年Flag</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "JmIOWxzPr7srCSPni2dKJvlk-gzGzoHsz",
+            appKey: "RNTLoM5BDEURrDBqJGq68wqK",
+            avatar: "identicon",
+            placeholder: "据说留言的人都变漂亮了...",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        码代码和码字，都是人生乐趣
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>靖待 &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2019/01/11/django搭建博客/&title=《Django博客demo》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2019/01/11/django搭建博客/&title=《Django博客demo》 — 靖待的技术博客&source=　　Django-blog-demo笔记。 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2019/01/11/django搭建博客/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Django博客demo》 — 靖待的技术博客&url=https://hubojing.github.io/2019/01/11/django搭建博客/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2019/01/11/django搭建博客/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLUlEQVR42u3aO3LDMAwAUd//0kqTLhaz+MhjgqsqY0kknwoGIPB64ev6c93dXf9yN/LdW82XDBkytmVcyyvKWC+dPLme95YqQ4aMAxhkK1y/xX8hH4WvTYYMGTI4iW+jHC9DhgwZFQYK18C7JBmWIUOGDJ7ERgO+CvLBXFyGDBkbMvip++f/fqS+IUOGjK0YV/DqOtzvWs/vaDJkyBjN4BtcNNQjh2iBBJXMIkOGjKEMvrHWS5U86CTjB76xDBkyNmeQoaNH9rmDPPIR+ZYtQ4aMSYzowT0PAfmySBkgHBrKkCFjEAPdSDVkdCXDZAQZMmScwOhKZSvNE/z5xzNyGTJkfBmj3v5VORSrH7S9iXBlyJAxlFFJKfldUlTgd9/k4jJkyBjN4MslS4wWLBvKojJkyBjNiE7GJ+CkDzVbyJAhY1tG18SVkicvMIRDQxkyZIxgVIIwcsQfrqN2/ZeQIUPGOAbfEMlhXK6pK1cilSFDxmmMdfhVmbi3kBnoH5EhQ8YgBlkoD/7I87zJI9AOIkOGjGMYuYGi4GiKiwoGMmTIOIDBT7FyB/froLPhPE2GDBlDGVfw4gvqarlIxrYyZMgYxMhtc5WtM/oMD0llyJAxm5HbZHPTV1LZf0aQIUPGAYzosnj7BS+RPpKLy5Ah40gGGrTwVq5oKkOGDBmVBtNSK+pyzFJoKEOGjA0ZJInlzRCVcmauTU2GDBmzGdEtj6Sp9UXw8oAMGTJGM34AJU7bGXLpimcAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来嘛！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)抱抱~你回来了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

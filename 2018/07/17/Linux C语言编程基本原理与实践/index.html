@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://hubojing.github.io//2018/07/17/Linux C语言编程基本原理与实践/">
+    
+    
+    <title>Linux C语言编程基本原理与实践 | 靖待的技术博客 | 小清新IT旅程|为中华之崛起而读书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Linux,C">
+    <meta name="description" content="再学C语言，复习&amp;amp;笔记。">
+<meta name="keywords" content="Linux,C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux C语言编程基本原理与实践">
+<meta property="og:url" content="https://hubojing.github.io/2018/07/17/Linux C语言编程基本原理与实践/index.html">
+<meta property="og:site_name" content="靖待的技术博客">
+<meta property="og:description" content="再学C语言，复习&amp;amp;笔记。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531846872888&di=911d449b8951faf6481a160bd65576ce&imgtype=0&src=http%3A%2F%2Fimg.mukewang.com%2F570762760001a1db06000338-590-330.jpg">
+<meta property="og:updated_time" content="2018-07-22T15:43:44.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux C语言编程基本原理与实践">
+<meta name="twitter:description" content="再学C语言，复习&amp;amp;笔记。">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531846872888&di=911d449b8951faf6481a160bd65576ce&imgtype=0&src=http%3A%2F%2Fimg.mukewang.com%2F570762760001a1db06000338-590-330.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<!--google adsense code-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-2097896583568287",
+    enable_page_level_ads: true
+  });
+</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">靖待</h5>
+          <a href="mailto:hubojing@outlook.com" title="hubojing@outlook.com" class="mail">hubojing@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archive"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hubojing" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/friends"  >
+                <i class="icon icon-lg icon-users"></i>
+                友情链接
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/Chinese"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/comment"  >
+                <i class="icon icon-lg icon-book"></i>
+                留言板
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/littletalk"  >
+                <i class="icon icon-lg icon-edit"></i>
+                自言自语
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/advertising"  >
+                <i class="icon icon-lg icon-link"></i>
+                推广
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes"  >
+                <i class="icon icon-lg icon-qq"></i>
+                和我在线交流
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Linux C语言编程基本原理与实践</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Linux C语言编程基本原理与实践</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-07-17T14:10:51.000Z" itemprop="datePublished" class="page-time">
+  2018-07-17
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/互联网/">互联网</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#常用指令"><span class="post-toc-number">1.</span> <span class="post-toc-text">常用指令</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#第一个Linux-C程序"><span class="post-toc-number">2.</span> <span class="post-toc-text">第一个Linux C程序</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#多文件操作"><span class="post-toc-number">3.</span> <span class="post-toc-text">多文件操作</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#makeFile的编写与使用"><span class="post-toc-number">4.</span> <span class="post-toc-text">makeFile的编写与使用</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#main函数详解"><span class="post-toc-number">5.</span> <span class="post-toc-text">main函数详解</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#标准输入流输出流以及错误流"><span class="post-toc-number">6.</span> <span class="post-toc-text">标准输入流输出流以及错误流</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#管道原理及应用"><span class="post-toc-number">7.</span> <span class="post-toc-text">管道原理及应用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#管道使用demo"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">管道使用demo</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Linux C语言编程基本原理与实践"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Linux C语言编程基本原理与实践</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-07-17 22:10:51" datetime="2018-07-17T14:10:51.000Z"  itemprop="datePublished">2018-07-17</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/互联网/">互联网</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div align="left"><br><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531846872888&di=911d449b8951faf6481a160bd65576ce&imgtype=0&src=http%3A%2F%2Fimg.mukewang.com%2F570762760001a1db06000338-590-330.jpg" width="300" height="180" style="float:right;"><br><br><br>　　<strong>再学C语言，复习&amp;笔记。</strong><br><br><br> </div>
+
+<a id="more"></a>
+<p>系列顺序：<br><a href="https://hubojing.github.io/2018/07/17/Linux%20C%E8%AF%AD%E8%A8%80%E7%BC%96%E7%A8%8B%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E8%B7%B5/">Linux C语言编程基本原理与实践</a><br><a href="https://hubojing.github.io/2018/07/20/Linux%20C%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88%E4%B8%8E%E5%86%85%E5%AD%98/">Linux C语言指针与内存</a><br><a href="https://hubojing.github.io/2018/07/21/linux%20C%E8%AF%AD%E8%A8%80%E7%BB%93%E6%9E%84%E4%BD%93/">Linux C语言结构体</a></p>
+<p>更多Linux知识：<br><a href="https://hubojing.github.io/2016/12/26/linux%E6%95%B4%E7%90%86%E7%AC%94%E8%AE%B0/">一天一点linux</a></p>
+<hr>
+<h1 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h1><p><code>sudo</code>管理员权限<br><code>sudo apt-get update</code> 更新资源（安装软件前最好先更新资源）<br><code>sudo apt-get install vim(软件名称)</code> 安装某软件<br><code>cd ~</code>   进入home目录<br><code>pwd</code>  显示当前目录路径<br><code>ls</code> 显示当前文件夹下所有文件夹及文件<br><code>ls -l</code> 进入当前目录的文件夹目录后查看当前文件夹包含的文件/文件夹的类型、创建时间、用户权限、用户和用户组<br>（最前面是“d”为文件夹；“-”为普通类型的文件）<br><code>touch + 文件名</code>  新建文件<br><code>rm + 文件名</code>     删除文件<br><code>mkdir + 目录名</code>  新建目录<br><code>vi(vim) + 文件名</code> 使用vim编辑文件<br><code>clear</code> 清洁屏幕<br><code>cc -v</code> 检查编译器<br><code>gcc -v</code> 检查编译器</p>
+<p>VIM命令模式：<br><code>dd</code> 删除整行<br><code>i</code> 在光标前面插入<br><code>a</code> 在光标后面插入<br><code>x</code> 删除单个字符<br><code>Shift + a</code> 行尾插入<br><code>Shift + i</code> 行首插入<br><code>o</code> 下一行插入<br><code>Shift + o</code> 上行插入<br><code>:$</code> 跳到代码末尾</p>
+<h1 id="第一个Linux-C程序"><a href="#第一个Linux-C程序" class="headerlink" title="第一个Linux C程序"></a>第一个Linux C程序</h1><p>编译文件：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cc a.c</span><br></pre></td></tr></table></figure></p>
+<p>会得到a.out<br>编译文件后查看文件权限：<br>rw-：可读、可写<br>rwx:可读、可写、可执行<br>三个rwx  1创建用户  2与创建用户在同一个用户组  3任意用户<br>运行文件：<br>“.” 当前路径<br>“./” 当前路径下的文件<br>执行文件：./a.out</p>
+<h1 id="多文件操作"><a href="#多文件操作" class="headerlink" title="多文件操作"></a>多文件操作</h1><p><code>sp max.c</code>  新建max.c文件(窗口打开多个文件)<br><code>ctrl + w +下箭头</code> 跳转到下一个编辑框<br><code>ctrl + w +下箭头</code> 跳转到上一个编辑框<br><code>对应行数+d+d</code> 剪切光标下相应行数的程序<br>9dd（代码占九行，剪切代码）<br>按<code>p</code>粘贴在剪切板的程序<br><code>set nu</code> 打开行号<br><code>:wqa</code> 保存所有文件并退出<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gcc hello.c -o hello.out  指定编译文件（-o 给编译后的文件重命名）</span><br><span class="line">cp a.c b.c  拷贝文件：将a.c拷贝到b.c</span><br><span class="line">cat a.c 查看源代码程序</span><br></pre></td></tr></table></figure></p>
+<p>分开编译：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -c 文件名.c -o 文件名.o</span><br></pre></td></tr></table></figure></p>
+<p>函数可以先编译成.o文件，然后再和主文件一起编译成可执行文件。在源代码多的时候可以提高效率。<br>例如：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">gcc -c max.c -o max.o</span><br><span class="line">gcc max.o hello.c</span><br><span class="line">./a.out</span><br><span class="line">cp max.c min.c</span><br><span class="line">rm a.out</span><br><span class="line">gcc-c min.c -o min.o </span><br><span class="line">gcc gcc max.o min.o hello.c</span><br><span class="line">./a.out</span><br></pre></td></tr></table></figure></p>
+<p>gcc编译流程分为4步：<br>预处理(Pre-Processing) －&gt; 编译(Compling) -&gt; 汇编(Assembling) -&gt; 连接(Linking)<br>预处理：处理#include、#define、#ifdef 等宏命令<br>编译：把预处理完的文件编译为汇编程序.s<br>汇编：把汇编程序.s编译为.o二进制文件<br>链接：把多个二进制文件.o集合（链接）成一个可执行文件</p>
+<p>使用别人的静态库.o文件(机器码，无法查看原代码)可以创建.h文件，然后在源程序中#include&lt;文件名.h&gt;来引用。</p>
+<p>hello.c<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"max.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"min.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a1 = <span class="number">33</span>;</span><br><span class="line">    <span class="keyword">int</span> a2 = <span class="number">21</span>;</span><br><span class="line">    <span class="keyword">int</span> maxNum = max(a1, a2);</span><br><span class="line">    <span class="keyword">int</span> minNum = min(a1, a2);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d,%d\n"</span>, maxNum, minNum);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>max.c<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(a &gt; b)&#123;</span><br><span class="line">    	<span class="keyword">return</span> a;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    	<span class="keyword">return</span> b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>min.c<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">min</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(a &lt; b)&#123;</span><br><span class="line">    	<span class="keyword">return</span> a;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    	<span class="keyword">return</span> b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>max.h<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>min.h<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">min</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<h1 id="makeFile的编写与使用"><a href="#makeFile的编写与使用" class="headerlink" title="makeFile的编写与使用"></a>makeFile的编写与使用</h1><p>make工具可以将大型的开发项目分成若干个模块。<br>make工具可以很清晰和很快捷的编译和整理源文件。</p>
+<p><code>rm *.o</code> 表示删除所有.o文件<br><code>make -v</code> 检查make版本<br>vi Makefile  编译修改过的部分<br>输出文件：源文件<br>一个tab gcc命令<br>从上到下逐层求精<br>eg:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">hello.out:max.o min.o hello.c</span><br><span class="line">        gcc max.o min.o hello -o hello.out</span><br><span class="line">max.o:max.c</span><br><span class="line">        gcc -c max.c</span><br><span class="line">min.o:min.c</span><br><span class="line">        gcc -c min.c</span><br></pre></td></tr></table></figure></p>
+<p>最后用make命令执行</p>
+<p>重复使用make时，中间生成过的文件不需要再生成，没有修改过的文件不用再编译，会直接跳过该段代码，所以更加节省编译时间。</p>
+<p><code>gcc-c</code> 参数的意义：<br><code>-c</code> 参数是将源代码编译成“目标文件 .o”，不进行连接<br>后面多个目标文件可通过-o链接成可执行文件。<br>不使用这个参数时gcc会直接进行编译链接，生成可执行文件。</p>
+<h1 id="main函数详解"><a href="#main函数详解" class="headerlink" title="main函数详解"></a>main函数详解</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># main函数的完整形式</span></span><br><span class="line"><span class="keyword">int</span> main（<span class="keyword">int</span> argc，<span class="keyword">char</span>* argv[]）</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"hello world\n"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>gcc main.c -o main.out &amp;&amp; ./ main.out<br>echo \$?    执行成功则返回0</p>
+<p>参数<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"argc is %d\n"</span>,argc);</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;argv;i++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"argv[%d] is %s\n"</span>,i,argv[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>./out.c -l -s asd qwe</p>
+<p>输出为：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">argc is <span class="number">5</span></span><br><span class="line">argv[<span class="number">0</span>] is ./m3.out</span><br><span class="line">argv[<span class="number">1</span>] is -l</span><br><span class="line">argv[<span class="number">2</span>] is -a</span><br><span class="line">argv[<span class="number">3</span>] is asd</span><br><span class="line">argv[<span class="number">4</span>] is qwe</span><br></pre></td></tr></table></figure></p>
+<h1 id="标准输入流输出流以及错误流"><a href="#标准输入流输出流以及错误流" class="headerlink" title="标准输入流输出流以及错误流"></a>标准输入流输出流以及错误流</h1><p>cio.c<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt; //标准输入输出</span></span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">stdin</span></span><br><span class="line"><span class="comment">stdout</span></span><br><span class="line"><span class="comment">stderr</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"hello world!\n"</span>); <span class="comment">//输出功能由标准输出流完成，printf是系统封装后的</span></span><br><span class="line">  <span class="keyword">int</span> a;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;a); <span class="comment">//标准输入流，错误流是系统出错的时候的</span></span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"input value is : %d\n"</span>, a);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在输入a.out时，程序执行，系统给程序提供了一个进程，当程序启动时，系统也提供给程序一系列的指针。linux将所有的外设（摄像头，打印机等），都视为文件。当启动应用程序时候，会产生三个文件（stdin，stdout，stderr，即标准输入，输出，错误流）。<br>默认情况下，输入流就是键盘，stdout默认为显示器，可切换为网卡或者打印机。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"Please input the value a:\n"</span>);</span><br><span class="line"><span class="built_in">fprintf</span>(<span class="built_in">stdout</span>, <span class="string">"please input the value a:\n"</span>);</span><br></pre></td></tr></table></figure>
+<p>因为stdout默认是显示器，上两句就是等价的，printf其实就是fprintf封装后得到的。<br>同理，scanf和fscanf等价：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;a);</span><br><span class="line"><span class="built_in">fscanf</span>(<span class="built_in">stdin</span>, <span class="string">"%d"</span>, &amp;a);</span><br></pre></td></tr></table></figure></p>
+<p>错误流：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(a &lt; <span class="number">0</span>)&#123;</span><br><span class="line"><span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"the value must &gt; 0\n"</span>);</span><br><span class="line"><span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br></pre></td></tr></table></figure></p>
+<p>通过返回值1和0,让程序知道出错了。再次编译cc cio.c -o a2.out，我们运行a2.out，输入2则正常执行，当输入-1，则有对应的提示，即错误流发挥作用。<br>其实Linux这个很大的系统，就是由这些类似的小工具完成的。当等于0是为正确，错的话为其他值。<br>标准的输入流，输出流，以及错误流还可以重定向。</p>
+<p>Linux几乎可以用于任何领域，这里我们不得不提出linux的通道，管道起到了很重要的作用，不同应用程序之间要配合使用，就需要用到管道。<br>先说输入流，输出流和错误流的重定向机制：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"input the int value i:\n"</span>); \\<span class="built_in">printf</span>其实对<span class="built_in">fprintf</span>的封装，是从标准输出流（即<span class="built_in">stdout</span>）来输出这个过程</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;i); <span class="comment">//默认输入流是键盘</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"input the int value j:\n"</span>);</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;j);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"i+j=%d\n"</span>, i+j);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>cc main.c<br>得到a.out，运行a.out，我们分别输入3和5输入到终端。我们标准输出流是1，输出入是0。<br><code>&gt;&gt;</code> 标准输出流重新定向符<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./a.out <span class="number">1</span>&gt;&gt; a.txt   输出到a.txt（默认为<span class="number">1</span>，可不写<span class="number">1</span>）</span><br><span class="line">./a.out &gt;&gt; a.txt	内容追加下方</span><br><span class="line">./a.out &gt; a.txt		内容覆盖</span><br></pre></td></tr></table></figure></p>
+<p>执行命令后，分别输入3回车后再输入5。再使用命令cat a.txt，可以看到已经输出到文件里的内容。<br>错误流重定向：1&gt;标准输出流重定向 2&gt;标准错误流重定向<br>./a.out 1&gt;t.txt 2&gt;f.txt 将正确的输出流重定向输出到t.txt，错误的输出流重定向输出到f.txt</p>
+<p><code>&lt;&lt;</code> 标准输入流重新定向符<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./a.out &lt; input.txt 将input.txt的内容作为输入流传递给程序a.out</span><br></pre></td></tr></table></figure></p>
+<p>综合使用标准输出流、标准错误流、标准输入流<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./a.out <span class="number">1</span>&gt;t.txt <span class="number">2</span>&gt;f.txt &lt;input.txt</span><br></pre></td></tr></table></figure></p>
+<h1 id="管道原理及应用"><a href="#管道原理及应用" class="headerlink" title="管道原理及应用"></a>管道原理及应用</h1><p><code>ls /</code>    查看根目录<br><code>ls /etc/</code>    查看Linux默认配置目录<br><code>ls /etc/ | grep 关键字符</code>    将etc文件输出到一个管道<br><code>|</code>管道<br>eg. 要查找某个目录下有多少个文件名包含“ab”，可以写<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls /etc/ | grep ab</span><br></pre></td></tr></table></figure></p>
+<p>将前一个程序输出流重定向到grep，通过管道得到需要的内容。<br>ps -e | grep ssh<br>ps查看当前的进程，当前操作系统是否开启ssh进程</p>
+<h2 id="管道使用demo"><a href="#管道使用demo" class="headerlink" title="管道使用demo"></a>管道使用demo</h2><p>程序avg.c，求任意个数的平均值：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> sum, n;</span><br><span class="line">  <span class="built_in">scanf</span>(<span class="string">"%d,%d"</span>, &amp;sum, &amp;n);</span><br><span class="line">  <span class="keyword">float</span> v = sum / n;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">"v = %f\n"</span>, v);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>cc avg.c -o avg.out</p>
+<p>再写一个统计输入的程序input.c：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> flag = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">int</span> i;</span><br><span class="line">  <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span>(flag)&#123;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;i);</span><br><span class="line">    <span class="keyword">if</span>(<span class="number">0</span>==i)&#123; </span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    count++;</span><br><span class="line">    sum+=i;         </span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d,%d\n"</span>,sum,count);</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>cc input.c -o input.out<br>结合使用以上两个程序，将所有数据进行统计，执行input.out，之后通过管道经过avg.out计算平均值。<br>./input.out | ./avg.out<br>以上就是通过管道，将两个小程序连接起来得到更复杂的程序的过程。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2018-07-22T15:43:44.000Z" itemprop="dateUpdated">2018-07-22 23:43:44</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2018/07/17/Linux C语言编程基本原理与实践/" target="_blank" rel="external">https://hubojing.github.io/2018/07/17/Linux C语言编程基本原理与实践/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hubojing.github.io">
+            <img src="/img/avatar.jpg" alt="靖待">
+            靖待
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2018/07/17/Linux C语言编程基本原理与实践/&title=《Linux C语言编程基本原理与实践》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2018/07/17/Linux C语言编程基本原理与实践/&title=《Linux C语言编程基本原理与实践》 — 靖待的技术博客&source=　　再学C语言，复习&amp;笔记。 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2018/07/17/Linux C语言编程基本原理与实践/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Linux C语言编程基本原理与实践》 — 靖待的技术博客&url=https://hubojing.github.io/2018/07/17/Linux C语言编程基本原理与实践/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2018/07/17/Linux C语言编程基本原理与实践/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/07/20/Linux C语言指针与内存/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Linux C语言指针与内存</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/05/26/读取24位bmp像素数据（带透明通道）/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">读取24位bmp像素数据（带透明通道）</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "JmIOWxzPr7srCSPni2dKJvlk-gzGzoHsz",
+            appKey: "RNTLoM5BDEURrDBqJGq68wqK",
+            avatar: "identicon",
+            placeholder: "据说留言的人都变漂亮了...",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        码代码和码字，都是人生乐趣
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>靖待 &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2018/07/17/Linux C语言编程基本原理与实践/&title=《Linux C语言编程基本原理与实践》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2018/07/17/Linux C语言编程基本原理与实践/&title=《Linux C语言编程基本原理与实践》 — 靖待的技术博客&source=　　再学C语言，复习&amp;笔记。 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2018/07/17/Linux C语言编程基本原理与实践/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Linux C语言编程基本原理与实践》 — 靖待的技术博客&url=https://hubojing.github.io/2018/07/17/Linux C语言编程基本原理与实践/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2018/07/17/Linux C语言编程基本原理与实践/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtklEQVR42u3aQW7DQAgF0Nz/0q3UVTYefWBIW+l5ZSVOPG8WBgOvV3x8/Rzv5+9H/g9P/3O+49Mn1w48PDy81tKfjvPNzrc8Y86fnHnJmvHw8PC2ecniepty3qzzXc4bkYQTPDw8vN/lVZfbCxjJFuPh4eH9F15y3qPmaTQeHh7e3+H1kuNesSAvASdbea3WgoeHh9f/z9etILF3vt7fw8PDw2t11fOHb1Jc6IWTyWrx8PDwNnj5EMAtTP5tgowCBh4eHt4Cb/6qXx3b6hWOk7GtqFaNh4eHN+BNHuu9xDcPML3AECXTeHh4eGNe70GfJOXnYDBpj0WJNR4eHt5HeNUb5FuTJMf5NVFZBA8PD+8jvHyh1WGsUaUkDkJ4eHh427zqYFOeIlc/TwoT+Rbg4eHhbfMmaXH1f6qL6xU48PDw8PZ41R/nLahJCJmHDTw8PLw93kYRtro1veJFMiKGh4eHt8GrDkX1UurJo78aAB5nyvDw8PAu8SYpcv6AzseqkrvkK8fDw8Pb4OXN+0mJoTdq0Cv4PqbUeHh4eJd4SRli0qSvbkc+ZFBO9/Hw8PAu8aql2N4YQb5ZyaLP15R3Fw8PD6/IS27QAyQP91vJ9ChS4eHh4Y1J1cJustAJYNJCw8PDw9vm9RLoarKbnycbEZWS8fDw8BZ4SUu+uohJC+1umo6Hh4e3wUtGmnpdtXzoqvdt840BDw8P7xKvWq6dtKyuNbSSkIaHh4d3lfdVPJIX/jxgJJvbK3zg4eHh7fEm/ffqt73W1yQI4eHh4e3xqq/3k9GBCb4XqPDw8PD2eHcHpApl1rj91rweDw8P78/wJuWAfMyrOojwmFLj4eHh/RIvH4TKH9xJk2xyPR4eHt4eb970ygNJshHVpPxCrQUPDw8v5k0aYL2SQbVMXG2D4eHh4a3xvgF5WJxxoThaNQAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来嘛！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)抱抱~你回来了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

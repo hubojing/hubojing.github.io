@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://hubojing.github.io//2017/08/29/三维坐标系变换/">
+    
+    
+    <title>三维坐标系变换 | 靖待的技术博客 | 小清新IT旅程|为中华之崛起而读书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="3D">
+    <meta name="description" content="关于三维坐标变换的一些思考。　　　从两条相交直线说起。">
+<meta name="keywords" content="3D">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三维坐标系变换">
+<meta property="og:url" content="https://hubojing.github.io/2017/08/29/三维坐标系变换/index.html">
+<meta property="og:site_name" content="靖待的技术博客">
+<meta property="og:description" content="关于三维坐标变换的一些思考。　　　从两条相交直线说起。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1504032008394&di=e99e963bf5137db65c21d19b5589cb26&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F16%2F55%2F89%2F38258PICNZn_1024.jpg">
+<meta property="og:updated_time" content="2017-08-29T16:01:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="三维坐标系变换">
+<meta name="twitter:description" content="关于三维坐标变换的一些思考。　　　从两条相交直线说起。">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1504032008394&di=e99e963bf5137db65c21d19b5589cb26&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F16%2F55%2F89%2F38258PICNZn_1024.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<!--google adsense code-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-2097896583568287",
+    enable_page_level_ads: true
+  });
+</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">靖待</h5>
+          <a href="mailto:hubojing@outlook.com" title="hubojing@outlook.com" class="mail">hubojing@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archive"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hubojing" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/friends"  >
+                <i class="icon icon-lg icon-users"></i>
+                友情链接
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/Chinese"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/comment"  >
+                <i class="icon icon-lg icon-book"></i>
+                留言板
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/littletalk"  >
+                <i class="icon icon-lg icon-edit"></i>
+                自言自语
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/advertising"  >
+                <i class="icon icon-lg icon-link"></i>
+                推广
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes"  >
+                <i class="icon icon-lg icon-qq"></i>
+                和我在线交流
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">三维坐标系变换</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">三维坐标系变换</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-08-29T14:23:54.000Z" itemprop="datePublished" class="page-time">
+  2017-08-29
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/互联网/">互联网</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+
+<article id="post-三维坐标系变换"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">三维坐标系变换</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-08-29 22:23:54" datetime="2017-08-29T14:23:54.000Z"  itemprop="datePublished">2017-08-29</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/互联网/">互联网</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div align="left"><br><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1504032008394&di=e99e963bf5137db65c21d19b5589cb26&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F16%2F55%2F89%2F38258PICNZn_1024.jpg" width="300" height="180" style="float:right;"><br> </div>
+
+<p>　　<strong>关于三维坐标变换的一些思考。　</strong><br>　　<strong>从两条相交直线说起。</strong><br>　　<br>　　<br><a id="more"></a><br>从最简单的情况入手，求空间两条相交直线AB、BC的夹角，AB和BC相交于B点，已知ABC三点三维坐标。<br>假设两条直线向量分别为a(x1,y1,z1),b(x2,y2,z2),根据公式cosα=a·b/(|a|*|b|)=(x1x2+y1y2+z1z2)/[√(x1^2+y1^2+z1^2)+√(x2^2+y2^2+z2^2)] 可直接求得。</p>
+<p>情况变一变：<br>以此两条直线中的某一条为基准（为z’轴），求另一条直线关于基准线的x’、y’、z’轴（新的基准坐标系）夹角。</p>
+<p>如果不用矩阵的做法，求解很复杂：<br>以AB为新的坐标系Z’轴为例，O为原坐标系原点。<br>B’(0,0,0)，可求AB点距离s，则A’(0,0,s)。这还是比较容易的，关键是求C’坐标。<br>首先要求z轴和AB之间的各种角度，想象从Z轴先延x轴平移绕x轴旋转，再延y轴平移绕y轴旋转，最后延z轴平移绕z轴旋转。同理，C点做同类运动，得到C’。<br>千辛万苦得到C’还没完，再将B’C’分别向x’o’y’、y’o’z’、z’o’x’面投影，求关于基准线的夹角。方可算出所求。</p>
+<p>很明显，这种方法显然不适用在3D中。<br>这个问题其实等价于将世界坐标系转换为物体坐标系。,矩阵的作用就发挥广大。</p>
+<p>令原坐标系为M=(i,j,k)T（转置），变换后N=(i’,j’,k’)T，i=(1,0,0),j=(0,1,0),k=(0,0,1)<br>原坐标系中一点P为(x,y,z)，则P’=((x,y,z)-O’)N^(-1)   N^(-1)指N的逆矩阵  (若N为正交矩阵，无需求逆矩阵，求转置矩阵即可。)</p>
+<p>推导：∵P=O+(x,y,z)M=O’+(x’,y’,z’)N<br>∴(x’,y’,z’)=((x,y,z)M+(O-O’))N^(-1)<br>此时O’=(0，0，0),并带入M，则上式得证。</p>
+<p>综上所述，讨论的情况实质就是进行了坐标系的转换。目的是求C’坐标，假设A(a1,b1,c1),B(a2,b2,c2),C(a3,b3,c3),那么根据公式C’=((a3,b3,c3)-(a2,b2,c2))N^(-1)，问题就转化为求N。记N=MK，K=M^(-1)N，也就是说，K是将i,j,k装换为i’,k’,j’的变换矩阵。<br>N^(-1)=(MK)^(-1)=K^(-1)M^(-1)<br>∴(x’,y’,z’)=((x,y,z)M+(O-O’))K^(-1)M^(-1)<br>=((x,y,z)+(-O’))K^(-1)  K=N</p>
+<p>怎么求K呢？</p>
+<p>可以参考这篇文章<a href="http://blog.csdn.net/jc_laoshu/article/details/69657579" target="_blank" rel="noopener">图形学1-三维坐标系间的变换矩阵推导</a></p>
+<p>看似也挺麻烦，其实推导占据了大量篇幅，真正使用时直接套就好了。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-08-29T16:01:18.000Z" itemprop="dateUpdated">2017-08-30 00:01:18</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2017/08/29/三维坐标系变换/" target="_blank" rel="external">https://hubojing.github.io/2017/08/29/三维坐标系变换/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hubojing.github.io">
+            <img src="/img/avatar.jpg" alt="靖待">
+            靖待
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/3D/">3D</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2017/08/29/三维坐标系变换/&title=《三维坐标系变换》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2017/08/29/三维坐标系变换/&title=《三维坐标系变换》 — 靖待的技术博客&source= 
+
+　　关于三维坐标变换的一些思考。　　　从两条相交直线说起。　　　　" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2017/08/29/三维坐标系变换/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《三维坐标系变换》 — 靖待的技术博客&url=https://hubojing.github.io/2017/08/29/三维坐标系变换/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2017/08/29/三维坐标系变换/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/08/31/三维坐标旋转/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">三维坐标旋转</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/08/10/古风自动造句器/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">古风自动造句器</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'false' == 'true',
+            verify: 'false' == 'true',
+            appId: "JmIOWxzPr7srCSPni2dKJvlk-gzGzoHsz",
+            appKey: "RNTLoM5BDEURrDBqJGq68wqK",
+            avatar: "identicon",
+            placeholder: "据说留言的人都变漂亮了...",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        码代码和码字，都是人生乐趣
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>靖待 &copy; 2015 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2017/08/29/三维坐标系变换/&title=《三维坐标系变换》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2017/08/29/三维坐标系变换/&title=《三维坐标系变换》 — 靖待的技术博客&source= 
+
+　　关于三维坐标变换的一些思考。　　　从两条相交直线说起。　　　　" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2017/08/29/三维坐标系变换/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《三维坐标系变换》 — 靖待的技术博客&url=https://hubojing.github.io/2017/08/29/三维坐标系变换/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2017/08/29/三维坐标系变换/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKUlEQVR42u3a204DMQwFwP7/Ty8ST0how7FdQJtMnqq2pJkiub7k9YrX9bmS93xdd89/32396tsWBgbGYxnXcq0ZV7CSr2b9ONoZAwPjAEbvY+5IyW7r4JufDQMDA+PuiL3krwfGwMDAmATc9UdWU8NqSoqBgXEaIylikzZZfqB/q8UxMDAeyKgOBv7y8S/ONzAwMB7CuAYrH3YmIXh0EgwMjK0ZSfOrd9B3tecKgRgDA2NrxvrPeoPJhJ3neIXLahgYGNsxekfPQ3Y+tuyBR/8BDAyMxzKqmDwo90YLydeNgYFxAmPSe5+PGZKSNZrBYmBgHMaYX7OYtMyqn4iBgXECo5oCTq5KFBK+YPyJgYFxDiMPc71kMd+zCm7+PmBgYDyK0Wuf9QrUJID2ymkMDIxzGL22fpIaVkvlXtKJgYGxK2O9UTUIvje8lhNBDAyMTRkTWH5dtfd8/jOAgYFxAiMJiNXLENV3VlPP2/IVAwPjAMZ8VNBr9FdL4h8CLgYGxqaMeRlZvRxWDcSFrBYDA2NTxvw6RbVhNzl6VMRiYGBsxCj35ILR5qQxV2VjYGDszeiFvMkwIN+/8LkYGBhbMya3F6qtsWrVme+PgYFxAqMXZPNGW++CRZ6eYmBgnMPoDQYmDbions5LawwMDIy4yMyvhSXlbiGTxcDAwMinCuM980tjGBgYpzF6zfrqq/lktdwjxMDA2JpRHQz0GmST5LLXjMPAwNiC8QHUVZNhJBuaZgAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来嘛！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)抱抱~你回来了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
