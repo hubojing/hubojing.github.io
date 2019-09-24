@@ -4,6 +4,49 @@
   
     
     <entry>
+      <title><![CDATA[初涉Hadoop]]></title>
+      <url>https://hubojing.github.io/2019/09/24/%E5%88%9D%E6%B6%89Hadoop/</url>
+      <content type="html"><![CDATA[<div align="left"><br><img src="https://github.com/hubojing/BlogImages/blob/master/%E5%88%9D%E6%B6%89Hadoop%E2%80%94%E2%80%94%E5%8C%BA%E5%88%AB.png?raw=true" width="300" height="180" style="float:right;"><br><br><br>　　<strong>最基本的概念。</strong><br><br><br> </div>
+
+<a id="more"></a>
+<p>最近看到一篇用Hadoop解决交通问题的论文，然而我还没有接触过……</p>
+<h1 id="Hadoop是什么"><a href="#Hadoop是什么" class="headerlink" title="Hadoop是什么"></a>Hadoop是什么</h1><p>Hadoop是一个开源的大数据框架<br>Hadoop是一个分布式计算的解决方案<br>Hadoop=HDFS(分布式文件系统)+MapReduce(分布式计算)<br>HDFS：存储是大数据技术的基础<br>MapReduce编程模型：分布式计算是大数据应用的解决方案</p>
+<h2 id="HDFS概念"><a href="#HDFS概念" class="headerlink" title="HDFS概念"></a>HDFS概念</h2><h3 id="数据块"><a href="#数据块" class="headerlink" title="数据块"></a>数据块</h3><p>默认大小为64MB，一般设置为128M，备份x3</p>
+<h3 id="NameNode"><a href="#NameNode" class="headerlink" title="NameNode"></a>NameNode</h3><p>管理文件系统的命名空间，存放文件元数据<br>维护着文件系统的所有文件和目录，文件与数据块的映射<br>记录每个文件中各个块所在数据节点的信息</p>
+<h3 id="DataNode"><a href="#DataNode" class="headerlink" title="DataNode"></a>DataNode</h3><p>存储并检索数据块<br>向NameNode更新所存储块的列表</p>
+<h2 id="HDFS优缺点"><a href="#HDFS优缺点" class="headerlink" title="HDFS优缺点"></a>HDFS优缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>适合大文件存储，支持TB、PB级的数据存储，并有副本策略<br>可以构建在廉价的机器上，并有一定的容错和恢复机制<br>支持流式数据访问，一次写入，多次读取最高效</p>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><p>不适合大量小文件存储<br>不适合并发写入，不支持文件随机修改<br>不支持随机读等低延时的访问方式</p>
+<h1 id="Hadoop基础架构"><a href="#Hadoop基础架构" class="headerlink" title="Hadoop基础架构"></a>Hadoop基础架构</h1><h2 id="YARN概念"><a href="#YARN概念" class="headerlink" title="YARN概念"></a>YARN概念</h2><h3 id="ResourceManager"><a href="#ResourceManager" class="headerlink" title="ResourceManager"></a>ResourceManager</h3><p>分配和调度资源<br>启动并监控ApplicationMaster<br>监控NodeManager</p>
+<h3 id="ApplicationMaster"><a href="#ApplicationMaster" class="headerlink" title="ApplicationMaster"></a>ApplicationMaster</h3><p>为MR类型的程序申请资源，并分配给内部任务<br>负责数据的切分<br>监控任务的执行及容错<br>NodeManager<br>管理单个节点的资源<br>处理来自ResourceManager的命令<br>处理来自ApplicationMaster的命令</p>
+<h2 id="MapReduce编程模型"><a href="#MapReduce编程模型" class="headerlink" title="MapReduce编程模型"></a>MapReduce编程模型</h2><p>输入一个大文件，通过Split之后，将其分为多个分片<br>每个文件分片由单独的机器去处理，这就是Map方法<br>将各个机器计算的结果进行汇总并得到最终的结果，这就是Reduce方法</p>
+<h2 id="1-0和2-0区别"><a href="#1-0和2-0区别" class="headerlink" title="1.0和2.0区别"></a>1.0和2.0区别</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E5%88%9D%E6%B6%89Hadoop%E2%80%94%E2%80%94%E5%8C%BA%E5%88%AB.png?raw=true" alt="区别" title="">
+                </div>
+                <div class="image-caption">区别</div>
+            </figure>
+<h1 id="Hadoop生态圈"><a href="#Hadoop生态圈" class="headerlink" title="Hadoop生态圈"></a>Hadoop生态圈</h1><p>很多…</p>
+<h2 id="HBase"><a href="#HBase" class="headerlink" title="HBase"></a>HBase</h2><p>高可靠，高性能，面向列，可伸缩，实时读写的分布式数据库<br>利用HDFS作为其文件存储系统，支持MR程序读取数据<br>存储非结构化和半结构化数据<br>RowKey:数据唯一标识，按字典排序<br>Column Family:列族，多个列的集合。最多不要超过3个<br>TimeStamp时间戳：支持多版本数据同时存在</p>
+<h2 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h2><p>基于内存计算的大数据并行计算框架<br>Spark是MapReduce的替代方案，兼容HDFS, HIVE等数据源<br>优点：<br>基于内存计算的分布式计算框架<br>抽象出分布式内存存储数据结构 弹性分布式数据集RDD<br>基于事件驱动，通过线程池复用线程提高性能</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 数据挖掘 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Hadoop </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Hexo博客进阶优化]]></title>
       <url>https://hubojing.github.io/2019/09/14/hexo%E5%8D%9A%E5%AE%A2%E8%BF%9B%E9%98%B6%E4%BC%98%E5%8C%96/</url>
       <content type="html"><![CDATA[<div align="left"><br><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1511116107294&di=a91ad5adc5431ecb1865be565f7b0e82&imgtype=0&src=http%3A%2F%2Fpic4.zhimg.com%2Fd4c1239e75c02e8482c22017a6c8d407_r.jpg" width="300" height="180" style="float:right;"><br>　　<br>　　　<br>　　<strong>Hexo优化的一些汇总整理。</strong><br>　　<br>　　<br> </div>
