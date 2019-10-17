@@ -4,6 +4,75 @@
   
     
     <entry>
+      <title><![CDATA[在Eclipse中使用Weka]]></title>
+      <url>https://hubojing.github.io/2019/10/17/%E5%9C%A8Eclipse%E4%B8%AD%E4%BD%BF%E7%94%A8Weka/</url>
+      <content type="html"><![CDATA[<div align="left"><br><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571320761053&di=e3ea30e5834bde78e291a37e2063dbd9&imgtype=0&src=http%3A%2F%2Fimg3.doubanio.com%2Flpic%2Fs9123895.jpg" width="300" height="180" style="float:right;"><br><br><br>　　<strong>笔记备忘。</strong><br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h1><p>Weka 3.8<br>Eclipse 2019-9</p>
+<h1 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h1><ol>
+<li>解压weka-src.jar，获得weka-src文件夹。</li>
+<li>将weka-src文件夹放在桌面（或任何喜欢的位置）。</li>
+<li>打开Eclipse，新建Java Project项目，取消<code>Use default location</code>的勾，选择weka-src所在位置。Finish。</li>
+<li>在项目src中新建package, weka.classifiers.xxx(自己命名)，添加算法文件。比如NB.java。</li>
+<li>修改配置（每次添加算法都需要）<br>weka.gui下<code>GenericPropertiesCreator.props</code>中添加创建的包<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">weka.classifiers.Classifier=\</span><br><span class="line"> ...</span><br><span class="line"> weka.classifiers.xxx,\</span><br><span class="line"> ...</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><code>GenericObjectEditor.props</code>中添加创建的算法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">weka.classifiers.functions.supportVector.Kernel=\</span><br><span class="line">...</span><br><span class="line"> weka.classifiers.xxx.NB,\</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<ol start="6">
+<li>点击<code>GUIChooser.java</code>运行。弹出Weka。</li>
+<li>选择<code>Explorer</code>-<code>Preprocess</code>-<code>Open file...</code>添加数据。（Weka的data里有实例数据）</li>
+<li>选择<code>Classify</code>-<code>Choose</code>，找到添加的算法-<code>Start</code>。<br>完成！</li>
+</ol>
+]]></content>
+      
+        <categories>
+            
+            <category> 数据挖掘 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Weka </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[ArcGIS操作备忘]]></title>
+      <url>https://hubojing.github.io/2019/10/09/ArcGIS%E6%93%8D%E4%BD%9C%E5%A4%87%E5%BF%98/</url>
+      <content type="html"><![CDATA[<div align="left"><br><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571320824862&di=08704337942c2cb7ba038a2597321fa8&imgtype=0&src=http%3A%2F%2Fpic4.zhimg.com%2F50%2F977b7b34370b0e721b367571791a6a85_qhd.jpg" width="300" height="180" style="float:right;"><br><br><br>　　<strong>好记性不如烂笔头。</strong><br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="xls转shp文件"><a href="#xls转shp文件" class="headerlink" title="xls转shp文件"></a>xls转shp文件</h1><p>添加数据xls-Sheet1$-右键 显示XY数据-Y字段改为纬度-确定<br>对Sheet1$个事件右键 数据-导出数据-确定</p>
+<h1 id="转换坐标系"><a href="#转换坐标系" class="headerlink" title="转换坐标系"></a>转换坐标系</h1><p>十进制度–&gt;米<br>打开shp文件，打开ArcToolbox-数据管理工具-投影和变换-定义投影<br>坐标系选择地理坐标系-World-WGS 1984</p>
+<p>再选择投影-输出坐标系-投影坐标系-World-WGS 1984 Web Mercator(Auxiliary Sphere)</p>
+<p>完成。</p>
+<h1 id="属性表相关"><a href="#属性表相关" class="headerlink" title="属性表相关"></a>属性表相关</h1><h2 id="添加字段"><a href="#添加字段" class="headerlink" title="添加字段"></a>添加字段</h2><p>表选项-添加字段</p>
+<h2 id="修改属性"><a href="#修改属性" class="headerlink" title="修改属性"></a>修改属性</h2><p>按属性选择<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;class&quot;=&apos;park&apos;</span><br></pre></td></tr></table></figure></p>
+<p>修改选中行特定属性<br>选中该列右键 字段计算器<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;green place&quot;</span><br></pre></td></tr></table></figure></p>
+<p>写上需填写的值即可。<br>注意单双引号。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 数据挖掘 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> GIS </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[学习R语言]]></title>
       <url>https://hubojing.github.io/2019/09/27/%E5%AD%A6%E4%B9%A0R%E8%AF%AD%E8%A8%80/</url>
       <content type="html"><![CDATA[<div align="left"><br><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1570279473&di=4d33479a18fb2e2b4de972424affd863&imgtype=jpg&er=1&src=http%3A%2F%2Fwww.raincent.com%2Fuploadfile%2F2017%2F0928%2F20170928104357284.jpg" width="300" height="180" style="float:right;"><br><br><br>　　<strong>嘤嘤嘤还要学统计</strong><br><br><br> </div>
@@ -49,7 +118,7 @@
     <entry>
       <title><![CDATA[初涉Hadoop]]></title>
       <url>https://hubojing.github.io/2019/09/24/%E5%88%9D%E6%B6%89Hadoop/</url>
-      <content type="html"><![CDATA[<div align="left"><br><img src="https://github.com/hubojing/BlogImages/blob/master/%E5%88%9D%E6%B6%89Hadoop%E2%80%94%E2%80%94%E5%8C%BA%E5%88%AB.png?raw=true" width="300" height="180" style="float:right;"><br><br><br>　　<strong>最基本的概念。</strong><br><br><br> </div>
+      <content type="html"><![CDATA[<div align="left"><br><img src="https://github.com/hubojing/BlogImages/blob/master/%E5%88%9D%E6%B6%89Hadoop%E2%80%94%E2%80%94%E5%8C%BA%E5%88%AB.png?raw=true" width="300" height="180" style="float:right;"><br><br><br>　　<strong>最基本的概念+简单实战。</strong><br><br><br> </div>
 
 <a id="more"></a>
 <p>最近看到一篇用Hadoop解决交通问题的论文，然而我还没有接触过……</p>
@@ -72,6 +141,7 @@
 <h1 id="Hadoop生态圈"><a href="#Hadoop生态圈" class="headerlink" title="Hadoop生态圈"></a>Hadoop生态圈</h1><p>很多…</p>
 <h2 id="HBase"><a href="#HBase" class="headerlink" title="HBase"></a>HBase</h2><p>高可靠，高性能，面向列，可伸缩，实时读写的分布式数据库<br>利用HDFS作为其文件存储系统，支持MR程序读取数据<br>存储非结构化和半结构化数据<br>RowKey:数据唯一标识，按字典排序<br>Column Family:列族，多个列的集合。最多不要超过3个<br>TimeStamp时间戳：支持多版本数据同时存在</p>
 <h2 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h2><p>基于内存计算的大数据并行计算框架<br>Spark是MapReduce的替代方案，兼容HDFS, HIVE等数据源<br>优点：<br>基于内存计算的分布式计算框架<br>抽象出分布式内存存储数据结构 弹性分布式数据集RDD<br>基于事件驱动，通过线程池复用线程提高性能</p>
+<h1 id="简单实战"><a href="#简单实战" class="headerlink" title="简单实战"></a>简单实战</h1><p>常用HDFS Shell命令<br>类Linux系统：ls, cat, mkdir, rm, chmod, chown等<br>HDFS文件交互：copyFromLocal, copyToLocal, get, put</p>
 ]]></content>
       
         <categories>
@@ -696,9 +766,9 @@ install 安装jar包到本地仓库中
         
         <tags>
             
-            <tag> CPP </tag>
-            
             <tag> Java </tag>
+            
+            <tag> CPP </tag>
             
         </tags>
         
