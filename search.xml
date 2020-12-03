@@ -5,7 +5,7 @@
     
     <entry>
       <title><![CDATA[【置顶】交流贴]]></title>
-      <url>https://hubojing.github.io/9999/01/01/%E4%BA%A4%E6%B5%81%E8%B4%B4/</url>
+      <url>https://hubojing.github.io/2020/12/03/%E4%BA%A4%E6%B5%81%E8%B4%B4/</url>
       <content type="html"><![CDATA[<p>　　<strong>诚挚邀请推荐算法/推荐系统方向的朋友们进行交流讨论！</strong></p>
 <a id="more"></a>
 <div align="left"><br><img src="/images/交流贴.jpg" width="300" height="180" style="float:right;"><br> </div>
@@ -25,6 +25,60 @@
         <tags>
             
             <tag> 公告 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[【Paper】Amazon.com Recommendations Item-to-Item Collaborative Filtering]]></title>
+      <url>https://hubojing.github.io/2020/12/02/%E3%80%90Paper%E3%80%91Amazon.com%20Recommendations%20Item-to-Item%20Collaborative%20Filtering/</url>
+      <content type="html"><![CDATA[<div align="left"><br><img src="\images\假装有图片.jpg" width="300" height="180" style="float:right;"><br><br><br>　　<strong>ItemCF原文。</strong><br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="论文背景"><a href="#论文背景" class="headerlink" title="论文背景"></a>论文背景</h1><p>　　22 January 2003<br>　　谷歌学术被引用次数：6769（截至2020年12月2日）<br>　　期刊：IEEE Internet Computing<br>　　DOI: 10.1109/MIC.2003.1167344<br>　　作者：Greg Linden,Brent Smith,and Jeremy York • Amazon.com<br>　　<a href="https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=1167344" target="_blank" rel="noopener">PDF</a></p>
+<h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>　　电子商务推荐算法面临的挑战：  </p>
+<ul>
+<li>一家大型零售商可能拥有大量数据、数千万客户和数百万不同的物品</li>
+<li>要求在不超过半秒钟的时间内实时返回结果集，同时能产生高质量的推荐</li>
+<li>新客户通常只有非常有限的信息，仅有少量购买信息和产品评分</li>
+<li>基于成千上万次的购买和评分，老用户可能拥有大量信息</li>
+<li>客户数据是不稳定的：每次交互都提供有价值的客户数据，算法必须对新信息立即做出响应</li>
+</ul>
+<h1 id="Recommendation-Algorithms-推荐算法"><a href="#Recommendation-Algorithms-推荐算法" class="headerlink" title="Recommendation Algorithms 推荐算法"></a>Recommendation Algorithms 推荐算法</h1><p>　　三种常规方法：<br>　　传统协同过滤、聚类模型和基于搜索的策略<br>　　traditional collaborative filtering, cluster models, and search-based methods  </p>
+<h2 id="Traditional-Collaborative-Filtering-传统协同过滤"><a href="#Traditional-Collaborative-Filtering-传统协同过滤" class="headerlink" title="Traditional Collaborative Filtering 传统协同过滤"></a>Traditional Collaborative Filtering 传统协同过滤</h2><p>　　传统协同过滤，这里指基于用户的协同过滤方法。<br>　　相似度计算：<br><img src="\images\Paper-Amazon-similarity.jpg" alt="similarity"></p>
+<p>　　使用该方法时间复杂度最差为O(MN)，由于用户向量稀疏，时间复杂度更接近于O(M + N)。（大部分用户只涉及很少的物品，每个用户是O(M)，但一小部分用户买了很多物品，需要O(N)时间。）<br>　　M为用户数，N为物品数  </p>
+<p>　　解决方法是降低数据规模。<br>　　通过随机采样用户或者忽视只有少数购买记录的用户，来减少M。<br>　　通过忽视非常流行或不流行的物品，来减少N。<br>　　还可以通过产品类别或或客观分类来分割物品成为小向量来减少物品数量。<br>　　维度减少，比如聚类或主成分分析可以减少M或N的大量因素。  </p>
+<p>　　但是上述方法会降低推荐质量。  </p>
+<h2 id="Cluster-Models-聚类模型"><a href="#Cluster-Models-聚类模型" class="headerlink" title="Cluster Models 聚类模型"></a>Cluster Models 聚类模型</h2><p>　　该算法的目标是将用户分配到包含最相似用户的簇。然后，它使用该簇中用户的购买和评级信息来推荐。<br>　　一旦该算法生成了簇，它就计算用户与每个簇的向量的相似性，然后选择具有最大相似性的簇，并相应地对用户进行分类。一些算法将用户分为多个簇，并描述每个关系的强度。<br>　　优点：比上述协同过滤具有更好的在线可扩展性和性能，复杂且昂贵的聚类计算是离线运行的。<br>　　缺点：推荐效果差。通过使用大量细粒度的聚类来提高质量是可能的，但是线上用户细分聚类变得几乎和使用协同过滤寻找相似客户一样昂贵。  </p>
+<h2 id="Search-Based-Methods-基于搜索的策略"><a href="#Search-Based-Methods-基于搜索的策略" class="headerlink" title="Search-Based Methods 基于搜索的策略"></a>Search-Based Methods 基于搜索的策略</h2><p>　　基于搜索或基于内容的方法将推荐问题视为对相关项目的搜索。对于给定用户购买和评级信息的物品，该算法构建搜索查询来查找由相同作者、艺术家或导演或具有相似关键字或主题的其他流行项目。例如，如果一位顾客购买了《教父》系列影碟，系统可能会推荐其他犯罪题材的电影、其他由影星马龙·白兰度主演的电影或其他由弗朗西斯·福特·科波拉执导的电影。  </p>
+<p>　　优点：用户购买和评分记录少时，性能不错。<br>　　缺点：推荐质量低，推荐的物品太一般（general)或太狭窄（narrow）。  </p>
+<h1 id="Item-to-Item-Collaborative-Filtering-基于物品的协同过滤"><a href="#Item-to-Item-Collaborative-Filtering-基于物品的协同过滤" class="headerlink" title="Item-to-Item Collaborative Filtering 基于物品的协同过滤"></a>Item-to-Item Collaborative Filtering 基于物品的协同过滤</h1><h2 id="How-It-Works-如何工作"><a href="#How-It-Works-如何工作" class="headerlink" title="How It Works 如何工作"></a>How It Works 如何工作</h2><p>　Item-to-item collaborative filtering matches each of the user’s purchased and rated items to similar items, then combines those similar items into a recommendation list.  </p>
+<p>　　基于物品的协同过滤将用户购买的和评分的每个物品与相似的物品进行匹配，然后将这些相似的物品组合成推荐列表。  </p>
+<p>　　为了确定给定物品的最相似匹配，该算法通过查找用户倾向于一起购买的物品来构建相似物品表。可通过遍历所有物品并为每一对计算相似性来构建物品矩阵。然而，许多产品对没有共同的用户，因此这种方法在处理时间和内存使用方面效率低下。以下迭代算法通过计算单个物品和所有相关物品之间的相似性提供了更好的措施：<br>　　伪代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">For each item in product catalog, I1</span><br><span class="line">    For each customer C who purchased I1</span><br><span class="line">        For each item I2 purchased by customer C</span><br><span class="line">            Record that a customer purchased I1 and I2</span><br><span class="line">    For each item I2</span><br><span class="line">        Compute the similarity between I1 and I2</span><br></pre></td></tr></table></figure></p>
+<p>　　计算两个物品之间的相似性有多种方法，一种常见的方法是使用前面描述的余弦度量，其中每个向量对应于一个物品而不是一个客户，并且向量的多维度对应于已经购买该物品的用户。相似物品表的这种离线计算非常耗时，最糟糕的情况是O($N^2M$)。然而，在实践中，它更接近于零，因为大多数客户只有很少的购买记录。对购买畅销物品的用户进行采样会进一步减少运行时间，而质量几乎没有下降。<br>　　给定相似物品表，该算法找到与每个用户的购买和评分相似的物品，汇总这些物品，然后推荐最受欢迎或相关的物品。这种计算非常快速，仅取决于用户购买或评分的物品数量。  </p>
+<h2 id="Scalability-A-Comparison-可扩展性"><a href="#Scalability-A-Comparison-可扩展性" class="headerlink" title="Scalability: A Comparison 可扩展性"></a>Scalability: A Comparison 可扩展性</h2><p>　　Amazon.com有超过2900万的顾客和数百万的商品目录。对于非常大的数据集，可扩展的推荐算法必须离线执行最昂贵的计算。<br>　　现有算法的缺点：  </p>
+<ul>
+<li>传统的协同过滤很少或没有离线计算，其在线计算随着用户和物品目录的数量而变化。该算法在大数据集上是不切实际的，除非它使用降维、采样或分区——所有这些都会降低推荐质量。</li>
+<li>聚类模型可以离线执行大部分计算，但是推荐质量相对较差。为了改善这一点，可以增加细分簇的数量，但这使得在线用户细分分类变得昂贵。</li>
+<li>基于搜索的模型离线构建关键字、类别和作者索引，但无法提供有趣的、有针对性的主题推荐。对于有大量购买和评分的用户来说，它们的可扩展性也很小。</li>
+</ul>
+<p>　　可扩展性和性能的关键是它离线创建昂贵的相似物品表。该算法的在线组件——为用户的购买和评分物品查找相似的物品——独立于物品目录大小或客户总数，它只取决于用户购买或评分物品。因此，即使对于非常大的数据集，该算法也是快速的。因为该算法推荐高度相关的相似物品，所以推荐质量很好。与传统的协作过滤不同，该算法在有限的用户数据下也表现良好，仅基于两三个物品就能产生高质量的推荐。</p>
+<h1 id="Conclusion-总结"><a href="#Conclusion-总结" class="headerlink" title="Conclusion 总结"></a>Conclusion 总结</h1><p>　　主要是介绍了基于物品的协同过滤思想。<br>　　耗时昂贵的操作放在线下离线进行，使线上达到实时要求。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 论文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 推荐算法 </tag>
+            
+            <tag> CF </tag>
             
         </tags>
         
@@ -499,7 +553,7 @@
     </entry>
     
     <entry>
-      <title><![CDATA[【论文】Using Collaborative Filtering to Weave an Information Tapestry]]></title>
+      <title><![CDATA[【Paper】Using Collaborative Filtering to Weave an Information Tapestry]]></title>
       <url>https://hubojing.github.io/2020/07/15/%E3%80%90Paper%E3%80%91Using%20collaborative%20filtering%20to%20weave%20an%20information%20tapestry/</url>
       <content type="html"><![CDATA[<div align="left"><br><img src="\images\假装有图片.jpg" width="300" height="180" style="float:right;"><br><br><br>　　<strong>“协同过滤”词汇来源。</strong><br><br><br> </div>
 
@@ -521,7 +575,9 @@
         
         <tags>
             
-            <tag> 推荐系统 </tag>
+            <tag> 推荐算法 </tag>
+            
+            <tag> CF </tag>
             
         </tags>
         
