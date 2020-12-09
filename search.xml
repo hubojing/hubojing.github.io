@@ -14,7 +14,7 @@
 <p>　　协同过滤又分为neighborhood methods和latent factor models。<br>　　基于领域的策略又可分为基于用户和基于物品。<br>　　基于物品的策略基于同一个用户对相邻物品的评分对用户偏好进行评估。同一个用户给一件物品的相邻物品会打相似的评分。<br>　　基于用户的方法鉴定相似的用户，他们可以互相补充对方的评分信息。  </p>
 <p>　　LFM隐语义模型<br><img src="\images\Paper-MF-LFM.png" alt="LFM"><br>　　意思是把特征刻画分为k个维度。如图，将刻画特征设为性别和题材类别（serious/escapist），形成一个坐标空间，每个用户和物品都在这个空间中，如果在坐标系中距离越近则说明越相似。  </p>
 <h1 id="Matrix-Factorization-Methods-矩阵分解策略"><a href="#Matrix-Factorization-Methods-矩阵分解策略" class="headerlink" title="Matrix Factorization Methods 矩阵分解策略"></a>Matrix Factorization Methods 矩阵分解策略</h1><p>　　一些最成功的隐语义模型是基于矩阵分解实现的。<br>　　矩阵分解通过从评分矩阵推断出的因子向量来刻画物品和用户。<br>　　优势：当显式反馈无法得到时，可以添加其它信息（比如使用隐式反馈推断用户偏好）。  </p>
-<h1 id="A-Basic-Matrix-Factorization-Model-基本矩阵分解模型"><a href="#A-Basic-Matrix-Factorization-Model-基本矩阵分解模型" class="headerlink" title="A Basic Matrix Factorization Model 基本矩阵分解模型"></a>A Basic Matrix Factorization Model 基本矩阵分解模型</h1><p>　　矩阵分解模型将用户和物品映射到维度f的联合潜在因素空间，用户-物品交互在空间中使用内积建模。<br>　　每一个item的向量设为$q_i$，每一个用户的向量设为$p_u$。$q_i$表示item拥有的积极或消极的因子，$p_u$表示用户拥有的积极或消极的因子。两者内积可以捕捉用户u和item i之间的交互，即用户在这个item上的整体兴趣。设评分为$r_ui$，<br>$$\hat{r}_{ui} = {q_i}^T{p_u}$$<br>　　这个模型和SVD（singular value decomposition）很接近。但在协同过滤中使用SVD要用到用户-物品评分矩阵，这个矩阵稀疏性太大。如果数据不完整，SVD不能被确定。并且用少数数据尝试容易过拟合。<br>　　早期系统都在填补缺失评分和使评分矩阵更稠密上下功夫。但是这个运算很昂贵。因此，更多的工作聚焦在直接观察现有评分数据，并通过正则化来避免过拟合。为了学习${p_u}$和${q_i}$，使用下述公式<br>$$min_{q*,p*}\sum_{(u,i)∈k}({r_ui} - {p_u}^Tq_i)^2 + \lambda(||p_u||^2 + ||q_i||^2)$$<br>　　其中，k是(u,i)对的集合。${r_ui}$是未知的（训练集）。  </p>
+<h1 id="A-Basic-Matrix-Factorization-Model-基本矩阵分解模型"><a href="#A-Basic-Matrix-Factorization-Model-基本矩阵分解模型" class="headerlink" title="A Basic Matrix Factorization Model 基本矩阵分解模型"></a>A Basic Matrix Factorization Model 基本矩阵分解模型</h1><p>　　矩阵分解模型将用户和物品映射到维度f的联合潜在因素空间，用户-物品交互在空间中使用内积建模。<br>　　每一个item的向量设为$q_i$，每一个用户的向量设为$p_u$。$q_i$表示item拥有的积极或消极的因子，$p_u$表示用户拥有的积极或消极的因子。两者内积可以捕捉用户u和item i之间的交互，即用户在这个item上的整体兴趣。设评分为$r_{ui}$，<br>$$\hat{r}_{ui} = {q_i}^T{p_u}$$<br>　　这个模型和SVD（singular value decomposition）很接近。但在协同过滤中使用SVD要用到用户-物品评分矩阵，这个矩阵稀疏性太大。如果数据不完整，SVD不能被确定。并且用少数数据尝试容易过拟合。<br>　　早期系统都在填补缺失评分和使评分矩阵更稠密上下功夫。但是这个运算很昂贵。因此，更多的工作聚焦在直接观察现有评分数据，并通过正则化来避免过拟合。为了学习${p_u}$和${q_i}$，使用下述公式<br>$$min_{q*,p*}\sum_{(u,i)∈k}({r_ui} - {p_u}^Tq_i)^2 + \lambda(||p_u||^2 + ||q_i||^2)$$<br>　　其中，k是(u,i)对的集合。${r_{ui}}$是未知的（训练集）。  </p>
 <h1 id="Learning-Algorithms-学习算法"><a href="#Learning-Algorithms-学习算法" class="headerlink" title="Learning Algorithms 学习算法"></a>Learning Algorithms 学习算法</h1><p>　　使上述式子最小化的两种方法是随机梯度下降和交替最小二乘法。</p>
 <h2 id="Stochastic-gradient-descent-随机梯度下降"><a href="#Stochastic-gradient-descent-随机梯度下降" class="headerlink" title="Stochastic gradient descent 随机梯度下降"></a>Stochastic gradient descent 随机梯度下降</h2><p>　　计算error<br>$$\begin{equation}{e_{ui}}\overset{def}{=} {r_{ui}} - {q_i}^T{p_u}\end{equation}$$</p>
 <p>　　调参<br>$${q_i} \leftarrow q_i + \gamma·({e_ui}·{p_u} - \lambda · {q_i})$$<br>$${p_u} \leftarrow p_u + \gamma·({e_ui}·{q_i} - \lambda · {p_u})$$</p>
@@ -36,12 +36,14 @@
       
         <categories>
             
-            <category> 推荐系统 </category>
+            <category> 论文 </category>
             
         </categories>
         
         
         <tags>
+            
+            <tag> 推荐算法 </tag>
             
             <tag> MF </tag>
             
