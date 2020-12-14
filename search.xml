@@ -4,6 +4,52 @@
   
     
     <entry>
+      <title><![CDATA[【Paper】Factorization Machines]]></title>
+      <url>https://hubojing.github.io/2020/12/09/%E3%80%90Paper%E3%80%91Factorization%20Machines/</url>
+      <content type="html"><![CDATA[<div align="left"><br><img src="\images\Paper-FM-feature_x.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>FM算法原文。</strong><br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="论文背景"><a href="#论文背景" class="headerlink" title="论文背景"></a>论文背景</h1><p>　　2010 IEEE International Conference on Data Mining<br>　　Steffen Rendle<br>　　Department of Reasoning for Intelligence<br>　　The Institute of Scientific and Industrial Research Osaka University, Japan<br>    谷歌学术被引用次数1396（截至2020年12月14日）<br>　　论文关键词：factorization machine; sparse data; tensor factorization; support vector machine<br>　　<a href="https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=5694074" target="_blank" rel="noopener">PDF</a></p>
+<h1 id="Introduction-引言"><a href="#Introduction-引言" class="headerlink" title="Introduction 引言"></a>Introduction 引言</h1><p>　　FM优点：<br>　1. FM能在很稀疏的数据上进行参数估计，但SVM不行。<br>　2. FM是线性复杂度，不需要类似于SVM中的支持向量。<br>　3. FM是通用预测方法，适用于任何特征向量。其它的因子分解方法都受限于特定的输入。（对比biased MF, SVD++, PITF和FPMC）</p>
+<h1 id="Prediction-under-sparsity-稀疏情况下的预测"><a href="#Prediction-under-sparsity-稀疏情况下的预测" class="headerlink" title="Prediction under sparsity 稀疏情况下的预测"></a>Prediction under sparsity 稀疏情况下的预测</h1><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\Paper-FM-feature_x.png" alt="feature x" title="">
+                </div>
+                <div class="image-caption">feature x</div>
+            </figure>
+<h1 id="Factorization-machines-FM-因子分解机"><a href="#Factorization-machines-FM-因子分解机" class="headerlink" title="Factorization machines(FM) 因子分解机"></a>Factorization machines(FM) 因子分解机</h1><h2 id="Factorization-machine-model-因子分解机模型"><a href="#Factorization-machine-model-因子分解机模型" class="headerlink" title="Factorization machine model 因子分解机模型"></a>Factorization machine model 因子分解机模型</h2><p>　　degree d = 2<br>$$\hat{y}(x):=w_0 + \sum_{i=1}^nw_ix_i + \sum_{i=1}^n\sum_{j=i+1}^n&lt;v_i,v_j&gt;x_ix_j$$<br>　　其中$w_0∈R$，$w∈R^n$,$V∈R^{n×k}$，&lt;·,·&gt;表示点乘。<br>$$&lt;v_i,v_j&gt;:=\sum_{f=1}^kv_{i,f}·v_{j,f}$$<br>　　V中的$v_i$描述k个因素中的第i个变量。$Ks∈N_0^+$是定义因子分解的维度的超参数。<br>　　2-way FM捕捉所有变量的单个和成对交互：<br>　　$w_0$是全局偏置，$w_i$模拟了第i个变量的程度。<br>　　$\hat{w}_{i,j}:=&lt;v_i, v_j&gt;$模拟了第i和第j个变量间的交互。这个在高阶交互时（d &gt; 2）高质量估计的关键。<br>　　时间复杂度O($kn^2$)，因为所有的交互对都要被计算。但可以变形使之化为O(kn)。</p>
+<h2 id="Factorization-machines-as-predictors-FM作为预测器"><a href="#Factorization-machines-as-predictors-FM作为预测器" class="headerlink" title="Factorization machines as predictors FM作为预测器"></a>Factorization machines as predictors FM作为预测器</h2><p>　　可用于回归、二分类和排序问题。</p>
+<h2 id="Learning-factorization-machines-FM学习策略"><a href="#Learning-factorization-machines-FM学习策略" class="headerlink" title="Learning factorization machines FM学习策略"></a>Learning factorization machines FM学习策略</h2><p>　　使用随机梯度下降（SGD）来学习。</p>
+<h2 id="d-way-factorization-machine-多维FM"><a href="#d-way-factorization-machine-多维FM" class="headerlink" title="d-way factorization machine 多维FM"></a>d-way factorization machine 多维FM</h2><p>　　同时2-way FM可以拓展为d-way。</p>
+<h2 id="Summary-总结"><a href="#Summary-总结" class="headerlink" title="Summary 总结"></a>Summary 总结</h2><p>　　FM优点：<br>　　1. 在高稀疏下可估计特征交互，尤其是不可观测的交互。<br>　　2. 预测和学习的时间复杂度是线性的。使SGD优化可行，并允许多种损失函数优化。</p>
+<h1 id="FMs-vs-SVMs-因子分解机对比支持向量机"><a href="#FMs-vs-SVMs-因子分解机对比支持向量机" class="headerlink" title="FMs vs. SVMs 因子分解机对比支持向量机"></a>FMs vs. SVMs 因子分解机对比支持向量机</h1><h2 id="SVM-model-支持向量机模型"><a href="#SVM-model-支持向量机模型" class="headerlink" title="SVM model 支持向量机模型"></a>SVM model 支持向量机模型</h2><p>　　SVM等式$$\hat{y}(x) = &lt;\Phi(x), w&gt;$$<br>　　其中$\Phi$是从空间$R^n$到F的映射。$\Phi$和下式的核相关：<br>$$K:R^n × R^n → R, K(x, z) = &lt;\Phi(x), \Phi(z)&gt;$$<br>1) 线性核<br>　　$K_l(x, z) = 1 + &lt;x, z&gt;$，对应$\Phi(x) := (1, x_1, … , x_n)$<br>　　SVM等式为<br>$$\hat{y}(x) = w_0 + \sum^n_{i=1}w_ix_i, w_0∈R, w∈R^n$$<br>　　这等价于FM中d = 1的情况。</p>
+<p>2) 多项式核<br>　　多项式核使SVM能模拟变量间的高阶交互。<br>$K(x, z) := (&lt;x, z&gt; + 1)^d$，对于d = 2有<br>$\Phi(x) := (1, \sqrt{2}x_1, … , \sqrt{2}x_n, x_1^2, … , x_n^2, \sqrt{2} x_1x_2, … , \sqrt{2}x_1x_n, \sqrt{2}x_2x_3, … , \sqrt{2}x_{n-1}x_n$<br>　　SVM等式为<br>$$\hat{y}(x) = w_0 + \sqrt{2}\sum^n_{i=1}w_ix_i + \sum^n_{i = 1}w_{i,i}^{(2)}x_i^2 + \sqrt{2}\sum^n_{i=1}\sum^n_{j=i+1}w_{i,j}^{(2)}x_ix_j$$<br>　　其中$w_0∈R, w∈R^n, w^(2)∈R^{n×n}$。<br>　　d = 2时，FM和SVM的区别在于SVM中$w_{i,j}$是完全独立的，而FM中参数是因子分解的，所以&lt;v_i, v_j&gt;依赖于彼此。</p>
+<h2 id="Parameter-Estimation-Under-Sparsity-在稀疏情况下的参数估计"><a href="#Parameter-Estimation-Under-Sparsity-在稀疏情况下的参数估计" class="headerlink" title="Parameter Estimation Under Sparsity 在稀疏情况下的参数估计"></a>Parameter Estimation Under Sparsity 在稀疏情况下的参数估计</h2><p>　　举例：使用协同过滤（上图中蓝色和红色部分数据）。<br>1) 线性SVM<br>$$\hat{y}(x) = w_0 + w_u + w_i$$<br>　　只有j = u 或 j = i时$x_j$ = 1，即只有用户和物品偏好被选中时才有用。由于模型简单，在稀疏情况也能进不错的参数估计，但预测质量低。<br>2) 多项式SVM<br>$$\hat{y}(x) = w_0 + \sqrt{2}(w_u + w_i) + w_{u,u}^{(2)} +  w_{i,i}^{(2)} + \sqrt{2}w_{u,i}^{(2)}$$<br>　　$w_u$和$w_{u,u}^{(2)}$是一样的。该等式除了一个额外的$w_{u,i}$，等价于线性SVM。在训练集中，对于每一个$w_{u,i}$最多只有一条记录，在测试集中通常没有。因此，2-way的SVM效果也不比线性SVM好。</p>
+<h2 id="Summary-总结-1"><a href="#Summary-总结-1" class="headerlink" title="Summary 总结"></a>Summary 总结</h2><p>1) SVM需要直接观测交互数据，但稀疏数据集经常没有。FM参数可以在系数情况下进行不错的参数估计。<br>2) FM可以一开始就直接学习，但非线性SVM需要成对学习。<br>3) FM是独立于训练集的，SVM的预测是基于部分训练数据的。</p>
+<h1 id="FMs-VS-Other-Factorization-Models-其它因子分解方法对比"><a href="#FMs-VS-Other-Factorization-Models-其它因子分解方法对比" class="headerlink" title="FMs VS. Other Factorization Models 其它因子分解方法对比"></a>FMs VS. Other Factorization Models 其它因子分解方法对比</h1><p>　　改写FM公式形式，分别与Matrix and Tensor Factorization矩阵和张量分解、SVD++、PITF for Tag Recommendation、Factorized Personalized Markov Chains(FPMC)方法对比，FM改写后性能与这些方法实现效果类似。</p>
+<h2 id="Summary-总结-2"><a href="#Summary-总结-2" class="headerlink" title="Summary 总结"></a>Summary 总结</h2><p>1) 标准因子分解模型（比如PARAFAC或者MF）不像FM一样是通用预测模型。<br>2) 修改特征提取部分，FM可以模拟在特定任务下的成功模型（比如MF,PARAFAC,SVD++,PITF,FPMC)。</p>
+<h1 id="Conclusion-and-Future-Work-总结和展望"><a href="#Conclusion-and-Future-Work-总结和展望" class="headerlink" title="Conclusion and Future Work 总结和展望"></a>Conclusion and Future Work 总结和展望</h1><p>　　与SVM对比，<br>1) 在数据稀疏情况下，FM可以进行参数估计。<br>2) 模型时间复杂度是线性的，并且只依赖于模型参数。<br>3) 从最开始就能直接优化。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 论文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 推荐算法 </tag>
+            
+            <tag> FM </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[【Paper】Matrix Factorization Techniques for Recommender Systems]]></title>
       <url>https://hubojing.github.io/2020/12/07/%E3%80%90Paper%E3%80%91Matrix%20Factorization%20Techniques%20for%20Recommender%20Systems/</url>
       <content type="html"><![CDATA[<div align="left"><br><img src="\images\Paper-MF-LFM.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>矩阵分解算法原文。</strong><br><br><br> </div>
