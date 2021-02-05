@@ -4,6 +4,81 @@
   
     
     <entry>
+      <title><![CDATA[【paper】AutoRec - Autoencoders Meet Collaborative Filtering]]></title>
+      <url>https://hubojing.github.io/2021/02/04/%E3%80%90Paper%E3%80%91AutoRec/</url>
+      <content type="html"><![CDATA[<div align="left"><br><img src="\images\Paper-AutoRec-Itembased.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>推荐系统 + 深度学习 1</strong><br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="论文背景"><a href="#论文背景" class="headerlink" title="论文背景"></a>论文背景</h1><p>WWW’15<br>作者：Suvash  Sedhain, Aditya Krishna Menon, Scott Patrick Sanner, Lexing Xie  </p>
+<p>谷歌学术引用次数580（截至2021年2月4日）  </p>
+<p>关键词：Recommender Systems; Collaborative Filtering; Autoencoders  </p>
+<h1 id="INTRODUCTION-引言"><a href="#INTRODUCTION-引言" class="headerlink" title="INTRODUCTION 引言"></a>INTRODUCTION 引言</h1><p>本文提出一种新的基于自动编码器范例的CF模型，思路来自于针对视觉和语音任务的深度神经网络模型。<br>和CF相比，具有表示和计算的优越性。    </p>
+<h1 id="THE-AUTOREC-MODEL-模型"><a href="#THE-AUTOREC-MODEL-模型" class="headerlink" title="THE AUTOREC MODEL 模型"></a>THE AUTOREC MODEL 模型</h1><p>每个用户U={1,…,m}可表示为$r^{(i)} = (R_{u1},…,R_{un})∈\mathbb{R}^n$。<br>每个物品I={1,…,n}可表示为$r^{(i)} = (R_{1i},…,R_{mi})∈\mathbb{R}^m$，评分矩阵R。<br>目标：设计一种基于物品（用户）的自动编码器，可以输入部分显式$r_{(i)}$($r_{(u)}$)，将其映射到低维潜在空间，然后在输出空间重建$r_{(i)}$($r_{(u)}$)来预测缺失的评分用于推荐。<br>自动编码器解决<br>$$min_{\theta}\sum_{r∈S}||r - h(r;\theta)||^2_2$$<br>$h(r;\theta)$是输入r的重构<br>$$h(r;\theta) = f(W · g(Vr + μ) + b)$$<br>f、g是激活函数。$\theta = {W, V, μ, b}$<br>$W∈\mathbb{R}^{d×k}$, $V∈\mathbb{R}^{k×d}$, $μ∈\mathbb{R}^k$, $b∈\mathbb{R}^d$<br>该目标对应于具有单个k维隐藏层的自连接神经网络。使用反向传播来学习参数θ。</p>
+<p>基于物品的AutoRec模型I-AutoRec<br>${r^{(i)}}^n_{i=1}$<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="imagesPaper-AutoRec-Itembased.png" alt="基于物品的AutoRec" title="">
+                </div>
+                <div class="image-caption">基于物品的AutoRec</div>
+            </figure><br>两点改变：  </p>
+<ol>
+<li>每个$r^{(i)}$通过反向传播更新和输入有关的权重得到，这在矩阵分解和RBM策略中常用。  </li>
+<li>设计了学习参数正则化防止过拟合。</li>
+</ol>
+<p>I-AutoRec需要估计2mk + m + k个参数。<br>对于给定的已学习参数$\theta$，对于用户u和物品i的预测评分为<br>$$\hat{R}_{ui} = (h(r^(i);\hat{\theta}))_u$$</p>
+<p>目标函数：<br>$$min_{\theta}||r^{(i)}-h(r^{(i)};\theta)||^2_o + \flat{\lambda}{2}·(||W||^2_F + ||V||^2_F)$$<br>$||||^2_o$代表只考虑可观测评分的贡献。</p>
+<p>基于用户的AutoRec模型U-AutoRec<br>${r^{(u)}}^m_{u=1}$</p>
+<p>和CF策略的区别：<br>对比基于RBM的CF模型（RBM-CF）</p>
+<ol>
+<li>RBM-CF是基于限制玻尔兹曼机的生成概率模型，AutoRec是一个基于自动编码器的判别模型。</li>
+<li>RBM-CF通过最大化似然log函数估计参数，AutoRec直接最小化RMSE。</li>
+<li>训练RBM-CF需要使用对比散度，训练AutoRec需要相对更快的基于梯度的反向传播。</li>
+<li>RBM-CF只使用于离散评分，并对每个评分估计一个分散的参数集。对r个可能的评分，它使用了基于RBM的nkr或者mkr个参数用于用户（物品）。AutoRec与r无关，因此需要较少的参数。 较少的参数使AutoRec的内存占用量更少，更不容易过度拟合。</li>
+</ol>
+<p>对比矩阵分解（MF）<br>MF学习线性潜在表示，AutoRec可以通过激活函数学习非线性潜在表示。</p>
+<h1 id="EXPERIMENTAL-EVALUATION-实验评估"><a href="#EXPERIMENTAL-EVALUATION-实验评估" class="headerlink" title="EXPERIMENTAL EVALUATION 实验评估"></a>EXPERIMENTAL EVALUATION 实验评估</h1><p>基线：RBM-CF, BiasedMF, LLORMA.<br>数据集：Movielens 1M, 10M 和Nerflix数据集<br>没有训练数据的测试集默认评分为3。<br>训练集：测试集=9：1<br>将训练集10%作为验证集。<br>重复划分步骤5次并记录平均RMSE。<br>每次实验95%在RMSE偶然的间隔在±0.003之间。<br>正则化参数λ∈{0.001, 0.01, 0.1, 1, 100, 1000}<br>潜在维度k∈{10, 20, 40, 80, 100, 200, 300, 400, 500}</p>
+<p>三种实验</p>
+<ol>
+<li>和RBM对比</li>
+<li>激活函数选取对比</li>
+<li>隐藏单元k的数量<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="imagesPaper-AutoRec-k.png" alt="k" title="">
+                </div>
+                <div class="image-caption">k</div>
+            </figure></li>
+<li>基线性能对比<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="imagesPaper-AutoRec-baselines.png" alt="基线" title="">
+                </div>
+                <div class="image-caption">基线</div>
+            </figure></li>
+<li>深度扩展对Auto的帮助</li>
+</ol>
+]]></content>
+      
+        <categories>
+            
+            <category> 论文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 推荐算法 </tag>
+            
+            <tag> CF </tag>
+            
+            <tag> Autoencoder </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[打脸现场——2020年终总结]]></title>
       <url>https://hubojing.github.io/2020/12/31/2020%E5%B9%B4%E7%BB%88%E6%80%BB%E7%BB%93/</url>
       <content type="html"><![CDATA[<div align="left"><br><img src="\images\打脸现场——2020年终总结.jpg" width="300" height="180" style="float:right;"><br><br><br>　　<strong>2020年我到底在干嘛之年终总结。</strong><br><br><br> </div>
@@ -182,7 +257,7 @@
                 <div class="image-caption">排序架构</div>
             </figure>
 <p>　　使用与候选生成结构相似的深度神经网络，使用逻辑回归为每个视频印象分配一个独立的分数。如图所示。然后，视频列表将根据这个分数进行排序并返回给用户。最终排名目标是根据实时A/B测试结果不断调整，但通常是每个印象的预期观看时间的简单函数。通过点击率排名通常会促进欺骗性视频，用户没有完成(“点击诱饵”)，而观看时间能够更好地捕捉用户粘性。</p>
-<h2 id="Feature-Representation-特征表示"><a href="#Feature-Representation-特征表示" class="headerlink" title="Feature Representation 特征表示"></a>Feature Representation 特征表示</h2><p>　　用的类别或特征在基数上差别很大——有些是二进制的（例如用户是否登录），而其他有数百万个可能的值（例如用户的最后一次搜索查询）。根据功能是仅贡献单个值(“univalent”)还是一组值(“multivalent”)，进一步划分功能。　　univalent例子：被评分的视频ID，multivalent例子：用户最近观看的N个视频ID的bag。还根据特性是描述物品的属性（”impression”）还是描述用户/上下文的属性（”query”）对特性进行分类。查询特征为每个请求计算一次，而印象特征为每个物品项计算一次。</p>
+<h2 id="Feature-Representation-特征表示"><a href="#Feature-Representation-特征表示" class="headerlink" title="Feature Representation 特征表示"></a>Feature Representation 特征表示</h2><p>　　用的类别或特征在基数上差别很大——有些是二进制的（例如用户是否登录），而其他有数百万个可能的值（例如用户的最后一次搜索查询）。根据功能是仅贡献单个值(“univalent”)还是一组值(“multivalent”)，进一步划分功能。　　<br>univalent例子：被评分的视频ID，multivalent例子：用户最近观看的N个视频ID的bag。还根据特性是描述物品的属性（”impression”）还是描述用户/上下文的属性（”query”）对特性进行分类。查询特征为每个请求计算一次，而印象特征为每个物品项计算一次。</p>
 <h3 id="Feature-Engineering-特征工程"><a href="#Feature-Engineering-特征工程" class="headerlink" title="Feature Engineering 特征工程"></a>Feature Engineering 特征工程</h3><p>　　描述过去视频输入频率的特性对于在推荐中引入“churn”(连续的请求不返回相同的列表)也是至关重要的。如果一个用户最近被推荐了一个视频，但没有看过它，那么模型自然会在下一次加载页面时降低这种印象。</p>
 <h3 id="Embedding-Categorical-Features-嵌入分类特征"><a href="#Embedding-Categorical-Features-嵌入分类特征" class="headerlink" title="Embedding Categorical Features 嵌入分类特征"></a>Embedding Categorical Features 嵌入分类特征</h3><p>　　类似于候选生成，使用嵌入将稀疏分类特征映射到适合于神经网络的稠密表示。<br>　　同一ID空间中的分类特性也共享底层的嵌入。共享嵌入对于提高泛化性能、加快训练速度和减少内存需求具有重要意义。</p>
 <h3 id="Normalizing-Continuous-Features-归一化连续特征"><a href="#Normalizing-Continuous-Features-归一化连续特征" class="headerlink" title="Normalizing Continuous Features 归一化连续特征"></a>Normalizing Continuous Features 归一化连续特征</h3><p>　　神经网络对其输入的尺度和分布非常敏感，而其他方法，如决策树的集合，对单个特征的尺度是不变的。<br>　　对于连续特征x，其分布为f，使用公式$\tilde{x} = \int_{-\infty}^xdf$进行归一化操作到[0,1)。除了该方法，也使用了$\tilde{x}^2$和$\sqrt{\tilde{x}}$。</p>
@@ -227,7 +302,7 @@
 <h2 id="d-way-factorization-machine-多维FM"><a href="#d-way-factorization-machine-多维FM" class="headerlink" title="d-way factorization machine 多维FM"></a>d-way factorization machine 多维FM</h2><p>　　同时2-way FM可以拓展为d-way。</p>
 <h2 id="Summary-总结"><a href="#Summary-总结" class="headerlink" title="Summary 总结"></a>Summary 总结</h2><p>　　FM优点：<br>　　1. 在高稀疏下可估计特征交互，尤其是不可观测的交互。<br>　　2. 预测和学习的时间复杂度是线性的。使SGD优化可行，并允许多种损失函数优化。</p>
 <h1 id="FMs-vs-SVMs-因子分解机对比支持向量机"><a href="#FMs-vs-SVMs-因子分解机对比支持向量机" class="headerlink" title="FMs vs. SVMs 因子分解机对比支持向量机"></a>FMs vs. SVMs 因子分解机对比支持向量机</h1><h2 id="SVM-model-支持向量机模型"><a href="#SVM-model-支持向量机模型" class="headerlink" title="SVM model 支持向量机模型"></a>SVM model 支持向量机模型</h2><p>　　SVM等式$$\hat{y}(x) = &lt;\Phi(x), w&gt;$$<br>　　其中$\Phi$是从空间$R^n$到F的映射。$\Phi$和下式的核相关：<br>$$K:R^n × R^n → R, K(x, z) = &lt;\Phi(x), \Phi(z)&gt;$$<br>1) 线性核<br>　　$K_l(x, z) = 1 + &lt;x, z&gt;$，对应$\Phi(x) := (1, x_1, … , x_n)$<br>　　SVM等式为<br>$$\hat{y}(x) = w_0 + \sum^n_{i=1}w_ix_i, w_0∈R, w∈R^n$$<br>　　这等价于FM中d = 1的情况。</p>
-<p>2) 多项式核<br>　　多项式核使SVM能模拟变量间的高阶交互。<br>$K(x, z) := (&lt;x, z&gt; + 1)^d$，对于d = 2有<br>$\Phi(x) := (1, \sqrt{2}x_1, … , \sqrt{2}x_n, x_1^2, … , x_n^2, \sqrt{2} x_1x_2, … , \sqrt{2}x_1x_n, \sqrt{2}x_2x_3, … , \sqrt{2}x_{n-1}x_n$<br>　　SVM等式为<br>$$\hat{y}(x) = w_0 + \sqrt{2}\sum^n_{i=1}w_ix_i + \sum^n_{i = 1}w_{i,i}^{(2)}x_i^2 + \sqrt{2}\sum^n_{i=1}\sum^n_{j=i+1}w_{i,j}^{(2)}x_ix_j$$<br>　　其中$w_0∈R, w∈R^n, w^(2)∈R^{n×n}$。<br>　　d = 2时，FM和SVM的区别在于SVM中$w_{i,j}$是完全独立的，而FM中参数是因子分解的，所以&lt;v_i, v_j&gt;依赖于彼此。</p>
+<p>2) 多项式核<br>　　多项式核使SVM能模拟变量间的高阶交互。<br>$K(x, z) := (&lt;x, z&gt; + 1)^d$，对于d = 2有<br>$\Phi(x) := (1, \sqrt{2}x_1, … , \sqrt{2}x_n, x_1^2, … , x_n^2, \sqrt{2} x_1x_2, … , \sqrt{2}x_1x_n, \sqrt{2}x_2x_3, … , \sqrt{2}x_{n-1}x_n$<br>　　SVM等式为<br>$$\hat{y}(x) = w_0 + \sqrt{2}\sum^n_{i=1}w_ix_i + \sum^n_{i = 1}w_{i,i}^{(2)}x_i^2 + \sqrt{2}\sum^n_{i=1}\sum^n_{j=i+1}w_{i,j}^{(2)}x_ix_j$$<br>　　其中$w_0∈R, w∈R^n, w^(2)∈R^{n×n}$。<br>　　d = 2时，FM和SVM的区别在于SVM中$w_{i,j}$是完全独立的，而FM中参数是因子分解的，所以$&lt;v_i, v_j&gt;$依赖于彼此。</p>
 <h2 id="Parameter-Estimation-Under-Sparsity-在稀疏情况下的参数估计"><a href="#Parameter-Estimation-Under-Sparsity-在稀疏情况下的参数估计" class="headerlink" title="Parameter Estimation Under Sparsity 在稀疏情况下的参数估计"></a>Parameter Estimation Under Sparsity 在稀疏情况下的参数估计</h2><p>　　举例：使用协同过滤（上图中蓝色和红色部分数据）。<br>1) 线性SVM<br>$$\hat{y}(x) = w_0 + w_u + w_i$$<br>　　只有j = u 或 j = i时$x_j$ = 1，即只有用户和物品偏好被选中时才有用。由于模型简单，在稀疏情况也能进不错的参数估计，但预测质量低。<br>2) 多项式SVM<br>$$\hat{y}(x) = w_0 + \sqrt{2}(w_u + w_i) + w_{u,u}^{(2)} +  w_{i,i}^{(2)} + \sqrt{2}w_{u,i}^{(2)}$$<br>　　$w_u$和$w_{u,u}^{(2)}$是一样的。该等式除了一个额外的$w_{u,i}$，等价于线性SVM。在训练集中，对于每一个$w_{u,i}$最多只有一条记录，在测试集中通常没有。因此，2-way的SVM效果也不比线性SVM好。</p>
 <h2 id="Summary-总结-1"><a href="#Summary-总结-1" class="headerlink" title="Summary 总结"></a>Summary 总结</h2><p>1) SVM需要直接观测交互数据，但稀疏数据集经常没有。FM参数可以在系数情况下进行不错的参数估计。<br>2) FM可以一开始就直接学习，但非线性SVM需要成对学习。<br>3) FM是独立于训练集的，SVM的预测是基于部分训练数据的。</p>
 <h1 id="FMs-VS-Other-Factorization-Models-其它因子分解方法对比"><a href="#FMs-VS-Other-Factorization-Models-其它因子分解方法对比" class="headerlink" title="FMs VS. Other Factorization Models 其它因子分解方法对比"></a>FMs VS. Other Factorization Models 其它因子分解方法对比</h1><p>　　改写FM公式形式，分别与Matrix and Tensor Factorization矩阵和张量分解、SVD++、PITF for Tag Recommendation、Factorized Personalized Markov Chains(FPMC)方法对比，FM改写后性能与这些方法实现效果类似。</p>
@@ -10283,7 +10358,7 @@ d, --max-depth（所查看文件的深度）
 <h2 id="分式"><a href="#分式" class="headerlink" title="分式"></a>分式</h2><p>法一<br><code>\frac</code><br>例：\$\frac {a+b}{c+d}\$<br>$\frac {a+b}{c+d}$<br>法二<br><code>\over</code><br>例：\$a+1 \over b+1\$<br>$a+1 \over b+1$</p>
 <h2 id="根号"><a href="#根号" class="headerlink" title="根号"></a>根号</h2><p><code>sqrt</code><br>例：\$sqrt[3]{\frac xy}\$<br>\$\sqrt{a+b}\$<br>$\sqrt[3]{\frac xy}$<br>$\sqrt{a+b}$</p>
 <h2 id="求和"><a href="#求和" class="headerlink" title="求和"></a>求和</h2><p><code>\sum</code><br>例：\$\sum_{k=1}^n\$<br>$\sum_{k=1}^n$</p>
-<h1 id="符号"><a href="#符号" class="headerlink" title="符号"></a>符号</h1><h2 id="希腊字母"><a href="#希腊字母" class="headerlink" title="希腊字母"></a>希腊字母</h2><p>ϵ \epsilon<br>∂ \partial<br>λ \lambda</p>
+<h1 id="符号"><a href="#符号" class="headerlink" title="符号"></a>符号</h1><h2 id="希腊字母"><a href="#希腊字母" class="headerlink" title="希腊字母"></a>希腊字母</h2><p>ϵ \epsilon<br>∂ \partial<br>λ \lambda<br>θ \theta</p>
 <h2 id="戴帽符号"><a href="#戴帽符号" class="headerlink" title="戴帽符号"></a>戴帽符号</h2><p>\$\hat{xy}\$<br>$\hat{xy}$<br>\$\widehat{xyz}\$<br>$\widehat{xyz}$<br>\$\tilde{xy}\$<br>$\tilde{xy}$<br>\$\widetilde{xyz}\$<br>$\widetilde{xyz}$<br>\$\check{x}\$<br>$\check{x}$<br>\$\breve{y}\$<br>$\breve{y}$<br>\$\grave{x}\$<br>$\grave{x}$<br>\$\acute{y}\$<br>$\acute{y}$</p>
 <h2 id="空心符号"><a href="#空心符号" class="headerlink" title="空心符号"></a>空心符号</h2><p>A~Z<br>A \mathbb{A}<br>$\mathbb{A}$</p>
 <h2 id="花体字母"><a href="#花体字母" class="headerlink" title="花体字母"></a>花体字母</h2><p>A~Z<br>A \mathcal{A}<br>$\mathcal{A}$</p>

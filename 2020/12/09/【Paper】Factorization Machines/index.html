@@ -37,7 +37,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://hubojing.github.io/images/Paper-FM-feature_x.png">
 <meta property="og:image" content="https://hubojing.github.io/images/Paper-FM-feature_x.png">
-<meta property="og:updated_time" content="2020-12-14T12:08:40.668Z">
+<meta property="og:updated_time" content="2020-12-14T12:08:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Paper】Factorization Machines">
 <meta name="twitter:description" content="FM算法原文。">
@@ -270,7 +270,7 @@
 <h2 id="d-way-factorization-machine-多维FM"><a href="#d-way-factorization-machine-多维FM" class="headerlink" title="d-way factorization machine 多维FM"></a>d-way factorization machine 多维FM</h2><p>　　同时2-way FM可以拓展为d-way。</p>
 <h2 id="Summary-总结"><a href="#Summary-总结" class="headerlink" title="Summary 总结"></a>Summary 总结</h2><p>　　FM优点：<br>　　1. 在高稀疏下可估计特征交互，尤其是不可观测的交互。<br>　　2. 预测和学习的时间复杂度是线性的。使SGD优化可行，并允许多种损失函数优化。</p>
 <h1 id="FMs-vs-SVMs-因子分解机对比支持向量机"><a href="#FMs-vs-SVMs-因子分解机对比支持向量机" class="headerlink" title="FMs vs. SVMs 因子分解机对比支持向量机"></a>FMs vs. SVMs 因子分解机对比支持向量机</h1><h2 id="SVM-model-支持向量机模型"><a href="#SVM-model-支持向量机模型" class="headerlink" title="SVM model 支持向量机模型"></a>SVM model 支持向量机模型</h2><p>　　SVM等式$$\hat{y}(x) = &lt;\Phi(x), w&gt;$$<br>　　其中$\Phi$是从空间$R^n$到F的映射。$\Phi$和下式的核相关：<br>$$K:R^n × R^n → R, K(x, z) = &lt;\Phi(x), \Phi(z)&gt;$$<br>1) 线性核<br>　　$K_l(x, z) = 1 + &lt;x, z&gt;$，对应$\Phi(x) := (1, x_1, … , x_n)$<br>　　SVM等式为<br>$$\hat{y}(x) = w_0 + \sum^n_{i=1}w_ix_i, w_0∈R, w∈R^n$$<br>　　这等价于FM中d = 1的情况。</p>
-<p>2) 多项式核<br>　　多项式核使SVM能模拟变量间的高阶交互。<br>$K(x, z) := (&lt;x, z&gt; + 1)^d$，对于d = 2有<br>$\Phi(x) := (1, \sqrt{2}x_1, … , \sqrt{2}x_n, x_1^2, … , x_n^2, \sqrt{2} x_1x_2, … , \sqrt{2}x_1x_n, \sqrt{2}x_2x_3, … , \sqrt{2}x_{n-1}x_n$<br>　　SVM等式为<br>$$\hat{y}(x) = w_0 + \sqrt{2}\sum^n_{i=1}w_ix_i + \sum^n_{i = 1}w_{i,i}^{(2)}x_i^2 + \sqrt{2}\sum^n_{i=1}\sum^n_{j=i+1}w_{i,j}^{(2)}x_ix_j$$<br>　　其中$w_0∈R, w∈R^n, w^(2)∈R^{n×n}$。<br>　　d = 2时，FM和SVM的区别在于SVM中$w_{i,j}$是完全独立的，而FM中参数是因子分解的，所以&lt;v_i, v_j&gt;依赖于彼此。</p>
+<p>2) 多项式核<br>　　多项式核使SVM能模拟变量间的高阶交互。<br>$K(x, z) := (&lt;x, z&gt; + 1)^d$，对于d = 2有<br>$\Phi(x) := (1, \sqrt{2}x_1, … , \sqrt{2}x_n, x_1^2, … , x_n^2, \sqrt{2} x_1x_2, … , \sqrt{2}x_1x_n, \sqrt{2}x_2x_3, … , \sqrt{2}x_{n-1}x_n$<br>　　SVM等式为<br>$$\hat{y}(x) = w_0 + \sqrt{2}\sum^n_{i=1}w_ix_i + \sum^n_{i = 1}w_{i,i}^{(2)}x_i^2 + \sqrt{2}\sum^n_{i=1}\sum^n_{j=i+1}w_{i,j}^{(2)}x_ix_j$$<br>　　其中$w_0∈R, w∈R^n, w^(2)∈R^{n×n}$。<br>　　d = 2时，FM和SVM的区别在于SVM中$w_{i,j}$是完全独立的，而FM中参数是因子分解的，所以$&lt;v_i, v_j&gt;$依赖于彼此。</p>
 <h2 id="Parameter-Estimation-Under-Sparsity-在稀疏情况下的参数估计"><a href="#Parameter-Estimation-Under-Sparsity-在稀疏情况下的参数估计" class="headerlink" title="Parameter Estimation Under Sparsity 在稀疏情况下的参数估计"></a>Parameter Estimation Under Sparsity 在稀疏情况下的参数估计</h2><p>　　举例：使用协同过滤（上图中蓝色和红色部分数据）。<br>1) 线性SVM<br>$$\hat{y}(x) = w_0 + w_u + w_i$$<br>　　只有j = u 或 j = i时$x_j$ = 1，即只有用户和物品偏好被选中时才有用。由于模型简单，在稀疏情况也能进不错的参数估计，但预测质量低。<br>2) 多项式SVM<br>$$\hat{y}(x) = w_0 + \sqrt{2}(w_u + w_i) + w_{u,u}^{(2)} +  w_{i,i}^{(2)} + \sqrt{2}w_{u,i}^{(2)}$$<br>　　$w_u$和$w_{u,u}^{(2)}$是一样的。该等式除了一个额外的$w_{u,i}$，等价于线性SVM。在训练集中，对于每一个$w_{u,i}$最多只有一条记录，在测试集中通常没有。因此，2-way的SVM效果也不比线性SVM好。</p>
 <h2 id="Summary-总结-1"><a href="#Summary-总结-1" class="headerlink" title="Summary 总结"></a>Summary 总结</h2><p>1) SVM需要直接观测交互数据，但稀疏数据集经常没有。FM参数可以在系数情况下进行不错的参数估计。<br>2) FM可以一开始就直接学习，但非线性SVM需要成对学习。<br>3) FM是独立于训练集的，SVM的预测是基于部分训练数据的。</p>
 <h1 id="FMs-VS-Other-Factorization-Models-其它因子分解方法对比"><a href="#FMs-VS-Other-Factorization-Models-其它因子分解方法对比" class="headerlink" title="FMs VS. Other Factorization Models 其它因子分解方法对比"></a>FMs VS. Other Factorization Models 其它因子分解方法对比</h1><p>　　改写FM公式形式，分别与Matrix and Tensor Factorization矩阵和张量分解、SVD++、PITF for Tag Recommendation、Factorized Personalized Markov Chains(FPMC)方法对比，FM改写后性能与这些方法实现效果类似。</p>
@@ -284,7 +284,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-12-14T12:08:40.668Z" itemprop="dateUpdated">2020-12-14 20:08:40</time>
+    最后更新时间：<time datetime="2020-12-14T12:08:40.000Z" itemprop="dateUpdated">2020-12-14 20:08:40</time>
 </span><br>
 
 
