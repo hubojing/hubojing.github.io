@@ -4,6 +4,131 @@
   
     
     <entry>
+      <title><![CDATA[【Paper】Deep Interesting Network for Click-Through Rate Prediction]]></title>
+      <url>https://hubojing.github.io/2021/05/06/DIN/</url>
+      <content type="html"><![CDATA[<div align="left"><br><img src="\images\DIN架构.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>阿里DIN模型</strong><br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="论文背景"><a href="#论文背景" class="headerlink" title="论文背景"></a>论文背景</h1><p>2018年 阿里</p>
+<h1 id="现有问题"><a href="#现有问题" class="headerlink" title="现有问题"></a>现有问题</h1><p>目前的深度学习模型都是先将稀疏输入特征映射为低维嵌入向量，再转换为固定长度的向量，最后联结起来送入MLP。这个固定长度的向量会成为瓶颈，无法从历史行为中捕获用户不同的兴趣。因此，本文提出深度兴趣网络Deep Interest Network（DIN）。它设计了一个局部激活单元从用户历史行为中自适应学习用户兴趣。另外，本文提出了两大技术：小批量感知正则化（mini-batch aware regularization）和数据自适应激活函数（data adaptive activation function）。</p>
+<h1 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h1><p>点击率预测（Click-Through Rate Prediction）、展示广告（Display Advertising），线上贸易（E-commerce）</p>
+<h1 id="引言-INTRODUCTION"><a href="#引言-INTRODUCTION" class="headerlink" title="引言 INTRODUCTION"></a>引言 INTRODUCTION</h1><p>Embedding &amp; MLP方法通过将用户行为嵌入向量转换为一个固定长度的向量来学习用户所有兴趣的表示，所有的表示向量是欧式空间。换言之，将用户不同的兴趣压缩到一个固定长度的向量，限制了表达能力。为了更好地表达用户不同兴趣，就要扩展向量长度。这会增多学习参数，并且增加过拟合的风险。也加重了计算和存储的压力，对于工业线上系统来说很困难。<br>另一方面，没有必要把用户全部兴趣压缩到同一个向量里，因为只有部分兴趣会影响用户下一个动作（点击或不点击）。</p>
+<p>训练的问题：<br>基于SGD的优化方法只更新出现在每个小批量中的稀疏特征的参数。然而，加上传统的ℓ2正则化，计算变得不可接受，这需要为每个小批量计算整个参数的L2范数(在阿里的场景，大小按比例增加到数十亿)。本文提出了一种新的小批量正则化方法，在L2范数的计算中，每个小批量正则化中只出现非零特征参数，使得计算是可接受的。另外，设计了一个数据自适应激活函数，推广到常用的PReLU，它通过自适应地调整输入的校正点，也就是输入的分布，并被证明有助于训练具有稀疏特征的工业网络。</p>
+<p><strong>贡献点</strong></p>
+<ol>
+<li>指出了使用固定长度向量来表达用户不同兴趣的局限性，并设计了一种新的深度兴趣网络(DIN)，它引入了一个局部激活单元来自适应地从给定广告的历史行为中学习用户兴趣的表示。DIN可以大大提高模型的表达能力，更好地捕捉用户兴趣的多样性特征。</li>
+<li>开发了两种新的技术来帮助训练工业深度网络:I)一种小批量感知正则化器，这种正则化器在具有大量参数的深度网络上节省了大量的正则化计算，并且有助于避免过拟合；ii)一种数据自适应激活函数，这种函数通过考虑输入的分布来推广PReLU，并且表现出良好的性能。</li>
+<li>在公共数据集和AI-ibaba数据集上进行了大量实验。结果验证了所提出的DIN和训练技术的有效性。所提出的方法已经在全球最大的广告平台之一阿里巴巴的商业展示广告系统中得到了应用，为业务的发展做出了重大贡献。</li>
+</ol>
+<p>代码：<a href="https://github.com/zhougr1993/DeepInterestNetwork" target="_blank" rel="noopener">https://github.com/zhougr1993/DeepInterestNetwork</a></p>
+<h1 id="背景-BACKGROUND"><a href="#背景-BACKGROUND" class="headerlink" title="背景 BACKGROUND"></a>背景 BACKGROUND</h1><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\DIN-1.png" alt="图1 - 阿里广告系统" title="">
+                </div>
+                <div class="image-caption">图1 - 阿里广告系统</div>
+            </figure>，预测每个给定广告的点击率，然后选择排名最高的广告。<br><br># 深度兴趣网络 DEEP INTEREST NETWORK<br>## 特征表示 Feature Representation<br><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\DIN-2.png" alt="表1 - 特征处理" title="">
+                </div>
+                <div class="image-caption">表1 - 特征处理</div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\DIN-特征表示.png" alt="特征表示" title="">
+                </div>
+                <div class="image-caption">特征表示</div>
+            </figure>
+<p>表中描述了我们系统中使用的全部特征集，它由四类组成，其中用户行为特征是典型的多热点编码向量，包含丰富的用户兴趣信息。注意，在我们的设置中，没有组合特性。我们利用深度神经网络捕获特征的交互作用。</p>
+<h2 id="基线模型-Base-Model-Embedding-amp-MLP"><a href="#基线模型-Base-Model-Embedding-amp-MLP" class="headerlink" title="基线模型 Base Model(Embedding&amp;MLP)"></a>基线模型 Base Model(Embedding&amp;MLP)</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\DIN架构.png" alt="基础架构 vs DIN架构" title="">
+                </div>
+                <div class="image-caption">基础架构 vs DIN架构</div>
+            </figure>
+<p>嵌入层（Embedding layer）</p>
+<p>池化层和连接层（Pooling layer and Concat layer）</p>
+<p>MLP</p>
+<p>Loss</p>
+<p>未完待续..</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 论文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> DIN </tag>
+            
+            <tag> 推荐算法 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[【Paper】Entire Space Multi-Task Model-An Effective Approach for Estimating Post-Click Conversion Rate]]></title>
+      <url>https://hubojing.github.io/2021/04/27/ESMM/</url>
+      <content type="html"><![CDATA[<div align="left"><br><img src="\images\ESMM-f2.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>多任务学习之ESMM</strong><br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="论文背景"><a href="#论文背景" class="headerlink" title="论文背景"></a>论文背景</h1><p>2018年 阿里巴巴</p>
+<h1 id="摘要-ABSTRACT"><a href="#摘要-ABSTRACT" class="headerlink" title="摘要 ABSTRACT"></a>摘要 ABSTRACT</h1><p>传统的CVR建模应用流行的深度学习方法，并实现最先进的性能。遇到的问题：传统的CVR模型用点击曝光的样本进行训练，同时用所有曝光的样本对整个空间进行推断。这导致样本选择偏差（sample selection bias）问题。另外还有数据稀疏的问题。本文提出ESMM(Entire Space Multi-task Model)，通过用户行为序列模式对CVR建模，比如，曝光(impression)–&gt;点击(click)–&gt;转换(conversion)。该模型直接在整个空间建模CVR，并使用了一种特征表示转移学习策略。数据集采用淘宝推荐系统，显示ESMM效果显著。本文还发布了第一个包含点击和转化标签用于CVR建模的时序样本数据集。</p>
+<p>关键词：CVR(post-click conversion rate), 多任务学习(multi-task learning), 样本选择偏差(sample selection bias), 数据稀疏(data sparsity), 全空间建模(entire-space modeling)</p>
+<h1 id="介绍-INTRODUCTION"><a href="#介绍-INTRODUCTION" class="headerlink" title="介绍 INTRODUCTION"></a>介绍 INTRODUCTION</h1><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\ESMM-f1.png" alt="ESMM" title="">
+                </div>
+                <div class="image-caption">ESMM</div>
+            </figure>
+<p>1）传统的CVR模型在由impression组成的数据集上训练，同时利用所有impression的样本在整个空间上进行推断。该问题（SSB）会影响训练模型的泛化性能。<br>2）数据稀疏问题。在实践中，为训练CVR模型而收集的数据通常比CTR任务少得多。训练数据的稀疏性使得CVR模型拟合相当困难。</p>
+<p>以前的研究试图解决这些问题。在[5]中，建立了不同特征的分层估计量，并结合逻辑回归模型来解决直接序列问题。然而，它依赖于先验知识来构建层次结构，这在拥有数千万用户和项目的推荐系统中很难应用。过采样方法[11]复制了罕见的类别样本，这有助于减轻数据的稀疏性，但对采样率敏感。全部缺失为阴性(AMAN)应用随机抽样策略选择未点击的impression作为负样本[6]。通过引入未观察到的例子，它可以在一定程度上消除SSB问题，但会导致始终被低估的预测。无偏方法[10]通过剔除抽样从观测值中拟合真实的潜在分布，解决了CTR建模中的SSB问题。然而，当用拒绝概率划分来加权样本时，可能会遇到数值不稳定性。总之，无论是SSB还是DS问题都没有在CVR建模的场景中得到了很好的解决，上述方法都没有利用序列动作信息。</p>
+<p>pCVR = p(conversion|click, impression)</p>
+<p>ESMM可以同时解决SSB和DS问题。它引入了CTR和CTCVR的两个辅助任务。ESMM没有直接用曝光的样本来训练CVR模型，而是把pCVR作为一个中间变量，乘以pCTR等于pCTCVR。PCTCVR和pCTR都是在整个空间上用所有曝光的样本来估计的，因此导出的pCVR也适用于整个空间。这表明SSB问题已经消除。此外，CVR网络特征表示的参数与CTR网络共享。后者是用更丰富的样本训练的。这种参数迁移学习有助于显著缓解DS问题。</p>
+<p>对于这项工作，我们从淘宝的推荐系统中收集流量日志。整个数据集由89亿个样本组成，并带有点击和转换的序列标签。ESMM的表现始终优于其它模型，这证明了所提出方法的有效性。</p>
+<p>数据集开源：<a href="https://tianchi.aliyun.com/datalab/dataSet.html?dataId=408" target="_blank" rel="noopener">https://tianchi.aliyun.com/datalab/dataSet.html?dataId=408</a></p>
+<h1 id="提出的方法-THE-PROPOSED-APPROACH"><a href="#提出的方法-THE-PROPOSED-APPROACH" class="headerlink" title="提出的方法 THE PROPOSED APPROACH"></a>提出的方法 THE PROPOSED APPROACH</h1><h2 id="注释-Notation"><a href="#注释-Notation" class="headerlink" title="注释 Notation"></a>注释 Notation</h2><p>$S = {(x_i, y_i -&gt; z_i)}|^N_{i=1}$，x代表已观察曝光的特征向量，它通常是一个有多域(field)的高维稀疏向量，比如用户域，物品域等。y和z是二分标签，y = 1或者z = 1代表各自被点击或转化事件发生。y-&gt;z代表点击和转化标签的序列依赖，即转化事件发生时总会有前序点击。<br>pCVR = p(z = 1|y = 1, x)<br>pCTR = p(y = 1|x)<br>pCTCVR = p(y = 1, z = 1|x)<br>p(y = 1, z = 1|x) = p(y = 1|x) × p(z = 1|y = 1, x)<br>—–pCTCVR————pCTR———–pCVR——–</p>
+<h2 id="CVR建模和挑战-CVR-Modeling-and-Challenges"><a href="#CVR建模和挑战-CVR-Modeling-and-Challenges" class="headerlink" title="CVR建模和挑战 CVR Modeling and Challenges"></a>CVR建模和挑战 CVR Modeling and Challenges</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\ESMM-f2.png" alt="ESMM架构" title="">
+                </div>
+                <div class="image-caption">ESMM架构</div>
+            </figure>
+<p>图2左边的DNN CVR建模作为基线模型，传统的CVR模型直接建模p(z = 1|y = 1, x)，使用点击的曝光样本训练模型。比如，$S_c = {(x_j, z_j)|y_j = 1}|^M_{j=1}$，M是所有曝光样本数。$S_c$是S的子集。在$S_c$中，被点击但没有被转化的样本作为负样本，被转化也被点击的样本作为正样本。<br><strong>Sample selection bias(SSB)</strong><br>通过引入一个辅助特征向量$x_c$，传统CVR做了一个近似：$p(z = 1|y = 1, x) ≈ q(z = 1|x_c)$。<br>推理阶段，p(z = 1|y = 1, x)在整个X空间将近似为q(z = 1|x)。<br>传统的CVR训练数据是曝光和点击的数据，然而预测时又要在整个样本空间。点击事件只是整个曝光样本空间的一个子集，在子集中提取的特征在完整集中使用是有偏的，且数据分布也不一致，违背了机器学习算法有效训练的前提（iid），减弱模型的泛化能力。</p>
+<p><strong>Data sparsity (DS)</strong><br>一般CVR比关联的CTR任务少1-3个数量级，CTR任务是在全印象的S的数据集上训练的。表1显示了我们的实验数据集的统计数据，其中CVR任务的样本数量仅为CTR任务的4%。<br>值得一提的是，CVR建模还存在其他挑战，例如延迟反馈。本文不涉及。</p>
+<h2 id="多任务全空间模型-Entire-Space-Multi-Task-Model"><a href="#多任务全空间模型-Entire-Space-Multi-Task-Model" class="headerlink" title="多任务全空间模型 Entire Space Multi-Task Model"></a>多任务全空间模型 Entire Space Multi-Task Model</h2><p>在整个空间建模。<br>$p(z = 1|y = 1, x) = \frac{p(y = 1, z = 1|x)}{p(y = 1|x)}$</p>
+<p>这里p(y = 1，z = 1|x)和p(y = 1|x)是在具有所有曝光的S的数据集上建模的。</p>
+<p>损失函数：$L(θ<em>{cvr}, θ</em>{ctr}) = \sum_{i=1}^N{l(y_i,f(x_i; θ<em>{ctr}))} + \sum</em>{i=1}^N{l(y_i \&amp; z_i,f(x_i; θ_{ctr}) × f(x_i;θ_{cvr}))}$<br>l(·)是交叉熵损失函数。</p>
+<p>特征表征转移。<br>嵌入层将大规模稀疏输入映射到低维表示向量中。它贡献了深层网络的大部分参数，而深层网络的学习需要大量的训练样本。在ESMM，CVR网络的嵌入式词典与CTR的嵌入式词典是共享的。它遵循特征表征迁移学习范式。CTR任务的全曝光训练样本相对比CVR任务丰富得多。这种参数共享机制使ESMM的CVR网络能够借鉴未点击的曝光，为缓解数据稀疏问题提供了很大的帮助。<br>请注意，ESMM的子网络可以用一些最近开发的模型来代替，这可能会获得更好的性能。由于篇幅有限，我们省略了它，而把重点放在解决CVR建模在实际实践中遇到的挑战上。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 论文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 推荐算法 </tag>
+            
+            <tag> ESMM </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[多机共用一套键鼠方案]]></title>
       <url>https://hubojing.github.io/2021/03/05/%E5%A4%9A%E6%9C%BA%E5%85%B1%E7%94%A8%E4%B8%80%E5%A5%97%E9%94%AE%E9%BC%A0%E6%96%B9%E6%A1%88/</url>
       <content type="html"><![CDATA[<div align="left"><br><img src="\images\假装有图片.jpg" width="300" height="180" style="float:right;"><br><br><br>　　<strong>零成本 半小时内 极速解决问题</strong><br><br><br> </div>
