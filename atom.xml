@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://hubojing.github.io/"/>
-  <updated>2021-05-06T09:39:57.461Z</updated>
+  <updated>2021-06-16T15:13:02.950Z</updated>
   <id>https://hubojing.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CRF++</title>
+    <link href="https://hubojing.github.io/2021/06/16/CRF++/"/>
+    <id>https://hubojing.github.io/2021/06/16/CRF++/</id>
+    <published>2021-06-16T14:31:37.000Z</published>
+    <updated>2021-06-16T15:13:02.950Z</updated>
+    
+    <content type="html"><![CDATA[<div align="left"><br><img src="\images\CRF++_NLP流程.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>CRF++笔记。</strong><br><br><br> </div><a id="more"></a><h1 id="NLP引入"><a href="#NLP引入" class="headerlink" title="NLP引入"></a>NLP引入</h1><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="\images\CRF++_NLP流程.png" alt="NLP流程" title="">                </div>                <div class="image-caption">NLP流程</div>            </figure><p>　　句法分析是NLP任务的核心，NER是句法分析的基础。NER任务用于识别文本中的人名（PER）、地名（LOC）等具有特定意义的实体。非实体用O来表示。</p><h1 id="CRF"><a href="#CRF" class="headerlink" title="CRF"></a>CRF</h1><p>　　Conditional Random Field，条件随机场，一种机器学习模型，广泛用于NLP文本标注领域。<br>　　应用场景：分词、词性标注、命名实体识别（NER，Named Entity Recognition）等。<br>　　命名实体识别的任务是识别出待处理文本中三大类（实体类、时间类和数字类）、七小类（人名、机构名、地名、时间、日期、货币和百分比）命名实体。</p><p>　　NER是个分类任务,具体称为序列标注任务，即文本中不同的实体对应不同的标签，人名-PER，地名-LOC，等等，相似的序列标注任务还有词性标注、语义角色标注。</p><p>　　传统解决方法：<br>（1）基于规则<br>（2）基于统计学<br>　　隐马尔可夫（HMM）、条件随机场（CRF）模型和Viterbi算法<br>（3）神经网络<br>　　LSTM+CRF模型</p><p>　　CRF的基础是马尔科夫随机场（概率无向图）。<br>　　CRF可以理解为在给定随机变量X的条件下，随机变量Y的马尔可夫随机场。其中，线性链CRF（一种特殊的CRF）可以用于序列标注问题。CRF模型在训练时，给定训练序列样本集(X,Y)，通过极大似然估计、梯度下降等方法确定CRF模型的参数；预测时，给定输入序列X，根据模型，求出P(Y|X)最大的序列y。</p><h2 id="CRF分词原理"><a href="#CRF分词原理" class="headerlink" title="CRF分词原理"></a>CRF分词原理</h2><p>　　CRF把分词当做字的词位分类问题，通常定义字的词位信息如下：<br>　　词首，常用B表示<br>　　词中，常用M表示<br>　　词尾，常用E表示<br>　　单子词，常用S表示</p><p>　　例：<br>　　原始例句：他爱上海陆家嘴<br>　　CRF标注后：他/S 爱/S 上/B 海/E 陆/B 家/M 嘴/E<br>　　分词结果：他/爱/上海/陆家嘴</p><p>　　用CRF进行命名实体识别属于有监督学习。需要大批已标注的语料对模型参数进行训练。</p><h1 id="CRF-1"><a href="#CRF-1" class="headerlink" title="CRF++"></a>CRF++</h1><p>　　目前常见的CRF工具包有pocket crf, flexcrf 和CRF++。<br>　　CRF++是著名的条件随机场的开源工具，也是目前综合性能最佳的CRF工具。<br>　　CRF++官网<a href="http://taku910.github.io/crfpp/" target="_blank" rel="noopener">http://taku910.github.io/crfpp/</a></p><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ol><li>解压</li><li>cd 进入解压后的目录，执行‘./configure’命令</li><li>make 编译</li><li>make install  （需先执行“su”获取root用户权限）</li><li>make clean 删除安装时产生的临时文件（可不执行）</li></ol><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>　　两个过程：训练、测试。</p><h3 id="数据格式"><a href="#数据格式" class="headerlink" title="数据格式"></a>数据格式</h3><p>　　训练和测试文件必须包含多个tokens，每个token又包含多个列。token的定义可根据具体的任务，如词、词性等。每个token必须写在一行，且各列之间用空格或制表格间隔。一个token的序列可构成一个sentence，每个sentence之间用一个空行间隔。注意最后一列将是被CRF用来训练的最终标签。</p><h3 id="特征模板"><a href="#特征模板" class="headerlink" title="特征模板"></a>特征模板</h3><p>　　CRF++训练的时候，要求我们自己提供特征模板。<br>　　模板文件中的每一行是一个模板。每个模板都是由%x[row,col]来指定输入数据中的一个token。row指定到当前token的行偏移，col指定列位置。</p><h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><a href="https://www.zybuluo.com/lianjizhe/note/1205311" target="_blank" rel="noopener">用CRF做命名实体识别(三)</a><br><a href="https://blog.csdn.net/miner_zhu/article/details/83143487" target="_blank" rel="noopener">NLP之CRF++安装及使用</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;img src=&quot;\images\CRF++_NLP流程.png&quot; width=&quot;300&quot; height=&quot;180&quot; style=&quot;float:right;&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;　　&lt;strong&gt;CRF++笔记。&lt;/strong&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt; &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="人工智能" scheme="https://hubojing.github.io/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"/>
+    
+    
+      <category term="NLP" scheme="https://hubojing.github.io/tags/NLP/"/>
+    
+      <category term="CRF" scheme="https://hubojing.github.io/tags/CRF/"/>
+    
+      <category term="CRF++" scheme="https://hubojing.github.io/tags/CRF/"/>
+    
+  </entry>
   
   <entry>
     <title>【Paper】Deep Interesting Network for Click-Through Rate Prediction</title>
@@ -455,30 +481,6 @@
     
     
       <category term="ECharts" scheme="https://hubojing.github.io/tags/ECharts/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>词的向量表示方法</title>
-    <link href="https://hubojing.github.io/2020/01/15/%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95/"/>
-    <id>https://hubojing.github.io/2020/01/15/词的向量表示方法/</id>
-    <published>2020-01-15T12:14:49.000Z</published>
-    <updated>2020-01-15T12:14:49.000Z</updated>
-    
-    <content type="html"><![CDATA[<div align="left"><br><img src="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——Word2Vec.png?raw=true" width="300" height="180" style="float:right;"><br><br><br>　　<strong>思想简记</strong><br><br><br> </div><a id="more"></a><p>NLP中，离散符号化的词语不能包含语义信息，所以把词映射到向量空间。</p><h1 id="独热编码（One-Hot-Encoding）"><a href="#独热编码（One-Hot-Encoding）" class="headerlink" title="独热编码（One-Hot Encoding）"></a>独热编码（One-Hot Encoding）</h1><p>思想：将一个词表示成很长的向量，该向量的维度是整个词表的大小。对某一具体词，除了该词编号的维度为1，其余都为0。<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——独热编码.png?raw=true" alt="独热编码" title="">                </div>                <div class="image-caption">独热编码</div>            </figure></p><h1 id="词袋模型（Bag-of-Words-BoW）"><a href="#词袋模型（Bag-of-Words-BoW）" class="headerlink" title="词袋模型（Bag-of-Words, BoW）"></a>词袋模型（Bag-of-Words, BoW）</h1><p>思想：将文本视为装词的袋子，不考虑词的上下文关系和顺序，只记录每个词在该文本（词袋）中出现的次数。<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——词袋模型.png?raw=true" alt="词袋模型" title="">                </div>                <div class="image-caption">词袋模型</div>            </figure></p><h1 id="词向量-词嵌入（Word-Embedding）"><a href="#词向量-词嵌入（Word-Embedding）" class="headerlink" title="词向量/词嵌入（Word Embedding）"></a>词向量/词嵌入（Word Embedding）</h1><p>上面对词的表示方法没有考虑语义层面信息。为表示词与词之间的语义相似程度，提出词的分布式表示，即基于上下文的稠密向量表示法，通常称为词向量或词嵌入（Word Embedding）。<br>产生词向量的手段：</p><ul><li>Count-based。基于计数的方法，即记录词的出现次数。</li><li>Predictive。基于预测的方法，即可通过上下文预测中心词，又可通过中心词预测上下文。</li><li>Task-based。基于任务的，即通过任务驱动的方法。通过对词向量在具体任务上的表现效果对词向量进行学习。</li></ul><p>下面是经典开源工具word2vec中的CBoW模型和Skip-gram模型。</p><h2 id="连续词袋模型（Continuous-Bag-of-Words-CBoW）"><a href="#连续词袋模型（Continuous-Bag-of-Words-CBoW）" class="headerlink" title="连续词袋模型（Continuous Bag-of-Words, CBoW）"></a>连续词袋模型（Continuous Bag-of-Words, CBoW）</h2><p>和BoW相同点：不考虑词的顺序。<br>思想：将上下文词的独热表示与词向量矩阵相乘，提取相应的词向量并求和得到投影层，然后再经过一个Softmax层最终得到输出，输出的每一维表达的就是词表中每个词作为该上下文中心词的概率。整个模型训练时类似于一个窗口在训练语料上滑动，所以得名连续词袋模型。</p><h2 id="Skip-gram模型（Continuous-skip-gram-Model）"><a href="#Skip-gram模型（Continuous-skip-gram-Model）" class="headerlink" title="Skip-gram模型（Continuous skip-gram Model）"></a>Skip-gram模型（Continuous skip-gram Model）</h2><p>思想：与CBoW思想刚好相反，它用中心词来预测上下文词。先通过中心词的独热表示从词向量矩阵中得到中心词的词向量，得到投影层，再经过一层Softmax得到输出，输出的每一维中代表某个词作为输入中心词的上下文出现的概率。</p><p>这两种模型都包含三层，输入层、投影层、输出层：<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——Word2Vec.png?raw=true" alt="Word2Vec" title="">                </div>                <div class="image-caption">Word2Vec</div>            </figure></p><p>训练好的词向量中，具有一定的空间平移性。<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——空间平移性.png?raw=true" alt="空间平移性" title="">                </div>                <div class="image-caption">空间平移性</div>            </figure></p><p>如图，Rome和Italy之间存在is-capital-of关系，而Paris和France也同样存在。可以理解为知识图谱中的relation，即（Rome, is-capital-of, Italy）和（Paris, is-capital-of, France）。<br>通过两对在语义上关系相同的词向量相减可得相似结果，这种连续向量可近似地平移到其它具有类似关系的两个词向量之间。<br>如：<br>vector(‘Paris’) - Vector(‘France’) + Vector(‘Italy’) ≈ Vector(‘Rome’)</p><h1 id="论文"><a href="#论文" class="headerlink" title="论文"></a>论文</h1><p><a href="https://arxiv.org/abs/1301.3781v3" target="_blank" rel="noopener">Efficient Estimation of Word Representations in Vector Space</a><br><a href="https://arxiv.org/abs/1405.4053" target="_blank" rel="noopener">Distributed Representations of Sentences and Documents</a><br><a href="https://arxiv.org/abs/1607.04606" target="_blank" rel="noopener">Enriching Word Vectors with Subword Information</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;img src=&quot;https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——Word2Vec.png?raw=true&quot; width=&quot;300&quot; height=&quot;180&quot; style=&quot;float:right;&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;　　&lt;strong&gt;思想简记&lt;/strong&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt; &lt;/div&gt;
-    
-    </summary>
-    
-      <category term="数据挖掘" scheme="https://hubojing.github.io/categories/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/"/>
-    
-    
-      <category term="NLP" scheme="https://hubojing.github.io/tags/NLP/"/>
-    
-      <category term="Embedding" scheme="https://hubojing.github.io/tags/Embedding/"/>
     
   </entry>
   
