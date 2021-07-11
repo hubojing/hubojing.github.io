@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://hubojing.github.io//2021/07/11/Pandas笔记/">
+    
+    
+    <title>Pandas自用笔记 | 靖待的技术博客 | 小清新IT旅程 | 为中华之崛起而读书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,Pandas">
+    <meta name="description" content="代码不写就会忘　　笔记不整理就会乱">
+<meta name="keywords" content="Python,Pandas">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pandas自用笔记">
+<meta property="og:url" content="https://hubojing.github.io/2021/07/11/Pandas笔记/index.html">
+<meta property="og:site_name" content="靖待的技术博客">
+<meta property="og:description" content="代码不写就会忘　　笔记不整理就会乱">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://hubojing.github.io/images/cover-pandas.jpg">
+<meta property="og:updated_time" content="2021-07-11T15:23:31.580Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Pandas自用笔记">
+<meta name="twitter:description" content="代码不写就会忘　　笔记不整理就会乱">
+<meta name="twitter:image" content="https://hubojing.github.io/images/cover-pandas.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<!--google adsense code-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-2097896583568287",
+    enable_page_level_ads: true
+  });
+</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">靖待</h5>
+          <a href="mailto:hubojing@outlook.com" title="hubojing@outlook.com" class="mail">hubojing@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archive"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hubojing/"  >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/friends"  >
+                <i class="icon icon-lg icon-users"></i>
+                友情链接
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/Chinese"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/comment"  >
+                <i class="icon icon-lg icon-book"></i>
+                留言板
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/littletalk"  >
+                <i class="icon icon-lg icon-edit"></i>
+                自言自语
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://blog.csdn.net/hubojing/"  >
+                <i class="icon icon-lg icon-pencil"></i>
+                CSDN博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/advertising"  >
+                <i class="icon icon-lg icon-link"></i>
+                推广
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes"  >
+                <i class="icon icon-lg icon-qq"></i>
+                和我在线交流
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Pandas自用笔记</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Pandas自用笔记</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2021-07-11T08:02:53.000Z" itemprop="datePublished" class="page-time">
+  2021-07-11
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程语言/">编程语言</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#读取文件"><span class="post-toc-number">1.</span> <span class="post-toc-text">读取文件</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#显示完整df"><span class="post-toc-number">2.</span> <span class="post-toc-text">显示完整df</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#groupby"><span class="post-toc-number">3.</span> <span class="post-toc-text">groupby</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#单分组"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">单分组</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多分组"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">多分组</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#agg"><span class="post-toc-number">4.</span> <span class="post-toc-text">agg</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#merge"><span class="post-toc-number">5.</span> <span class="post-toc-text">merge</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考文献"><span class="post-toc-number">6.</span> <span class="post-toc-text">参考文献</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Pandas笔记"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Pandas自用笔记</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2021-07-11 16:02:53" datetime="2021-07-11T08:02:53.000Z"  itemprop="datePublished">2021-07-11</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程语言/">编程语言</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div align="left"><br><img src="\images\cover-pandas.jpg" width="300" height="180" style="float:right;"><br><br><br><br>　　<strong>代码不写就会忘</strong><br>　　<strong>笔记不整理就会乱</strong><br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="读取文件"><a href="#读取文件" class="headerlink" title="读取文件"></a>读取文件</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line">abs_path = os.path.abspath(__file__)</span><br><span class="line">proj_path = os.path.abspath(<span class="string">f"<span class="subst">&#123;abs_path&#125;</span>/../"</span>)</span><br><span class="line">data_path = os.path.join(proj_path, <span class="string">'data.pkl'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取pkl</span></span><br><span class="line">df = pd.read_pickle(data_path)</span><br><span class="line"><span class="comment"># 按列读取pkl</span></span><br><span class="line">df = pd.read_pickle(data_path)[[<span class="string">'id'</span>] + [<span class="string">'name'</span>] + [<span class="string">'location'</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 保存pkl</span></span><br><span class="line">df.to_pickle(data_path)</span><br><span class="line"><span class="comment"># 保存csv</span></span><br><span class="line">df.to_csv(<span class="string">'data.csv'</span>, index=<span class="keyword">False</span>, encoding=<span class="string">'utf-8-sig'</span>)</span><br></pre></td></tr></table></figure>
+<p>更多见<a href="https://pandas.pydata.org/docs/user_guide/io.html" target="_blank" rel="noopener">https://pandas.pydata.org/docs/user_guide/io.html</a></p>
+<h1 id="显示完整df"><a href="#显示完整df" class="headerlink" title="显示完整df"></a>显示完整df</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pd.set_option(<span class="string">'display.width'</span>, <span class="keyword">None</span>)</span><br><span class="line">pd.set_option(<span class="string">'display.max_rows'</span>, <span class="keyword">None</span>)</span><br><span class="line">pd.set_option(<span class="string">'display.max_colwidth'</span>, <span class="keyword">None</span>)</span><br><span class="line">print(df)</span><br></pre></td></tr></table></figure>
+<h1 id="groupby"><a href="#groupby" class="headerlink" title="groupby"></a><code>groupby</code></h1><p>该函数是基于行的操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[](指输出数据的结果属性名称).groupby([df[属性],df[属性])(指分类的属性，数据的限定定语，可以有多个).mean()(对于数据的计算方式——函数名称)</span><br></pre></td></tr></table></figure>
+<p>例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">'score'</span>].groupby([df[<span class="string">"id"</span>],df[<span class="string">"name"</span>]]).mean()</span><br></pre></td></tr></table></figure>
+<h2 id="单分组"><a href="#单分组" class="headerlink" title="单分组"></a>单分组</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df.groupby(<span class="string">"id"</span>)</span><br><span class="line">df.groupby(<span class="string">"id"</span>).describe().unstack()</span><br><span class="line">df.groupby(<span class="string">"id"</span>)[<span class="string">"location"</span>].describe().unstack()<span class="comment">#用id分组，只看location</span></span><br></pre></td></tr></table></figure>
+<h2 id="多分组"><a href="#多分组" class="headerlink" title="多分组"></a>多分组</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.groupby([<span class="string">"id"</span>,<span class="string">"name"</span>]).mean()</span><br></pre></td></tr></table></figure>
+<h1 id="agg"><a href="#agg" class="headerlink" title="agg"></a><code>agg</code></h1><p>该函数是基于列的聚合操作。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A.groupby(A[<span class="string">"生日"</span>].apply(<span class="keyword">lambda</span> x:x.year)).count()</span><br></pre></td></tr></table></figure>
+<p>更多例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">info_df = df. groupby([<span class="string">"id"</span>, <span class="string">"name"</span>], sort=<span class="keyword">False</span>).count()[[<span class="string">"city"</span>]]<span class="comment">#根据id和name分组统计city个数</span></span><br><span class="line"></span><br><span class="line">info_df = df.groupby([<span class="string">"id"</span>, <span class="string">"name"</span>], as_index=<span class="keyword">False</span>, sort=<span class="keyword">True</span>).agg(&#123;<span class="string">"city"</span>: <span class="keyword">lambda</span> x: len(set(list(x)))&#125;).reset_index(drop=<span class="keyword">True</span>).rename(columns=&#123;<span class="string">"city"</span>: <span class="string">"city_cnt"</span>&#125;)</span><br><span class="line"><span class="comment">#根据id和name分组统计city的个数并重命名city列为city_cnt</span></span><br></pre></td></tr></table></figure>
+<h1 id="merge"><a href="#merge" class="headerlink" title="merge"></a><code>merge</code></h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.merge(left, right, how=<span class="string">'inner'</span>, on=<span class="keyword">None</span>, left_on=<span class="keyword">None</span>, right_on=<span class="keyword">None</span>, left_index=<span class="keyword">False</span>, right_index=<span class="keyword">False</span>, sort=<span class="keyword">True</span>, suffixes=(<span class="string">'_x'</span>, <span class="string">'_y'</span>), copy=<span class="keyword">True</span>, indicator=<span class="keyword">False</span>, validate=<span class="keyword">None</span>)</span><br></pre></td></tr></table></figure>
+<p>例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">df1 = pd.DataFrame(&#123;<span class="string">'key'</span>:list(<span class="string">'bbaca'</span>), <span class="string">'data1'</span>:range(<span class="number">5</span>)&#125;)</span><br><span class="line">print(df1)</span><br><span class="line">df2 = pd.DataFrame(&#123;<span class="string">'key'</span>:[<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'d'</span>], <span class="string">'data2'</span>:range(<span class="number">3</span>)&#125;)</span><br><span class="line">print(df2)</span><br><span class="line"></span><br><span class="line">print(pd.merge(df1, df2))</span><br><span class="line">print(pd.merge(df2, df1))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">  key  data1</span><br><span class="line">0   b      0</span><br><span class="line">1   b      1</span><br><span class="line">2   a      2</span><br><span class="line">3   c      3</span><br><span class="line">4   a      4</span><br><span class="line">  key  data2</span><br><span class="line">0   a      0</span><br><span class="line">1   b      1</span><br><span class="line">2   d      2</span><br><span class="line">  key  data1  data2</span><br><span class="line">0   b      0      1</span><br><span class="line">1   b      1      1</span><br><span class="line">2   a      2      0</span><br><span class="line">3   a      4      0</span><br><span class="line">  key  data2  data1</span><br><span class="line">0   a      0      2</span><br><span class="line">1   a      0      4</span><br><span class="line">2   b      1      0</span><br><span class="line">3   b      1      1</span><br></pre></td></tr></table></figure>
+<p>更多见<a href="https://pandas.pydata.org/docs/user_guide/merging.html" target="_blank" rel="noopener">https://pandas.pydata.org/docs/user_guide/merging.html</a></p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><a href="https://pandas.pydata.org/docs/" target="_blank" rel="noopener">pandas官方文档</a></p>
+<p><a href="https://www.cnblogs.com/Yanjy-OnlyOne/p/11217802.html" target="_blank" rel="noopener">python中groupby函数详解（非常容易懂）</a></p>
+<p><a href="https://blog.csdn.net/Asher117/article/details/84725199" target="_blank" rel="noopener">[Python3]pandas.merge用法详解</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2021-07-11T15:23:31.580Z" itemprop="dateUpdated">2021-07-11 23:23:31</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2021/07/11/Pandas笔记/" target="_blank" rel="external">https://hubojing.github.io/2021/07/11/Pandas笔记/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hubojing.github.io">
+            <img src="/img/avatar.jpg" alt="靖待">
+            靖待
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Pandas/">Pandas</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2021/07/11/Pandas笔记/&title=《Pandas自用笔记》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2021/07/11/Pandas笔记/&title=《Pandas自用笔记》 — 靖待的技术博客&source=　　代码不写就会忘　　笔记不整理就会乱 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2021/07/11/Pandas笔记/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Pandas自用笔记》 — 靖待的技术博客&url=https://hubojing.github.io/2021/07/11/Pandas笔记/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2021/07/11/Pandas笔记/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2021/06/16/CRF++/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">CRF++</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "2H9yj8iEb2hu9aasGn4nMwsc-MdYXbMMI",
+            appKey: "sM0wCJDvqhJACy3RaqtxvJ7u",
+            avatar: "identicon",
+            placeholder: "据说留言的人都变漂亮了...",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        码代码和码字，都是人生乐趣
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>靖待 &copy; 2015 - 2021</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2021/07/11/Pandas笔记/&title=《Pandas自用笔记》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2021/07/11/Pandas笔记/&title=《Pandas自用笔记》 — 靖待的技术博客&source=　　代码不写就会忘　　笔记不整理就会乱 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2021/07/11/Pandas笔记/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Pandas自用笔记》 — 靖待的技术博客&url=https://hubojing.github.io/2021/07/11/Pandas笔记/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2021/07/11/Pandas笔记/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLElEQVR42u3aQXLbMBAEQP3/08o1VVHIGazksoDmyQeTRPMwWuzi8Yiv5+X19/9c////nvzvXY9PXBgYGF/LyJd4/YLkrvwT5GvDwMA4h5FEYb6UZBHte2/WjIGBgRE/OonpawwGBgbGnHG96GR32ZaSGBgYGG0r7fpxa425fNP7hr04BgbGFzLyrvvP//2R+QYGBsZXMZ7l9bm54WhVGBgYWzPygMvLsryJNglcDAyM0xhrA8t8Kzs5nFEXixgYGJsy2oicHJvIh5pJKL/43cDAwDiA0Ybd/CBF8rGKChcDA2NTRl4srjXU5uPMtlTFwMDYiTFv6LcFXF4gFsGKgYGxNSMfAMyHne2BsOvS86ZsxcDA2IjRBu6kjKuHkTkbAwNja8bkoMPipDT+BWgbeRgYGOcwJuPGtrk/KRDfNqPAwMD49Yyk7FsL5fbeFvOiwsXAwDiAsRaIa1vc9khZ/YuBgYGxEaPlPQdXPvjMoxkDA+McRh6j+VZ2badZF4UYGBiHMfIgXjv4lTTpJsUoBgbGCYy8vGsDMY/UyaENDAyMMxlt+K4Fbv7Gm/EqBgbGpoy1ltlaaObftS0fMTAw9ma008C2rZYH9LsacxgYGLsy1jau+b3vKi5vPhkGBsYBjHbo2Db68xJwtBfHwMDAiEu6NqbbU151TYqBgXEkI3/ZdfGXh+zNEzAwMA5g5MOAtpWfB2vbesPAwDiH0UZee8CiXcTaqAADA2NTxh9gxqh2D4JoigAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来嘛！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)抱抱~你回来了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
