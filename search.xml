@@ -4,6 +4,193 @@
   
     
     <entry>
+      <title><![CDATA[设计模式笔记]]></title>
+      <url>https://hubojing.github.io/2021/11/02/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%AC%94%E8%AE%B0/</url>
+      <content type="html"><![CDATA[<div align="left"><br><img src="\images\假装有图片.jpg" width="300" height="180" style="float:right;"><br><br><br>　　<strong>23种设计模式总结</strong><br><br><br> </div>
+
+<a id="more"></a>
+<p>刚好最近在看一本技术书，随手记录。</p>
+<h1 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h1><p>设计模式可分为创建型模式、结构型模式和行为型模式。</p>
+<p>创建型模式：抽象工厂模式（Abstract Factory），构建器模式（Builder)，工厂方法模式（Factory Method），原型模式（Prototype），单例模式（Singleton）</p>
+<p>结构型模式：适配器模式（Adapter），桥接模式（Bridge），组合模式（Composite），装饰模式（Decorator），外观模式（Facade），享元模式（Flyweight），代理模式（Proxy）。</p>
+<p>行为型模式：责任链模式（Chain of Responsibility），命令模式（Command），迭代器模式（Iterator），解释器模式（Interpreter），中介者模式（Mediator），备忘录模式（Memento），观察者模式（Observer），状态模式（State），策略模式（Strategy），模板方法模式（Template Method），访问者模式（Visitor）</p>
+<h1 id="设计模式的六大原则"><a href="#设计模式的六大原则" class="headerlink" title="设计模式的六大原则"></a>设计模式的六大原则</h1><ul>
+<li>单一职责原则</li>
+<li>里氏代换原则</li>
+<li>依赖倒置原则</li>
+<li>接口隔离原则</li>
+<li>迪米特原则</li>
+<li>开闭原则</li>
+</ul>
+<h1 id="创建型模式"><a href="#创建型模式" class="headerlink" title="创建型模式"></a>创建型模式</h1><p>创建型模式：对对象实例化过程的抽象，通过采用抽象类所定义的接口，封装了系统中对象如何创建、组合等信息。</p>
+<h2 id="抽象工厂模式-Abstract-Factory"><a href="#抽象工厂模式-Abstract-Factory" class="headerlink" title="抽象工厂模式 Abstract Factory"></a>抽象工厂模式 Abstract Factory</h2><p>提供创建一组或者一系列相关的或相互依赖对象的接口。<br>优点：</p>
+<ul>
+<li>分离了具体类</li>
+<li>更容易在产品系列中进行转换</li>
+<li>提高了产品间一致性<br>缺点：</li>
+<li>难以支持新的产品等级结构，支持新的产品等级结构就要扩展抽象工厂接口<br>适用场景：</li>
+<li>系统独立于产品的创建、组成以及表示</li>
+<li>系统配置成具有多个产品的系列</li>
+<li>当要强调一系列相关的产品对象的设计以便于进行联合使用时</li>
+<li>当提供一个产品类库，而只想显示它们的接口而不是实现时<br>应用举例：<br>在很多软件系统中需要更换界面主题，要求界面中的按钮、文本框、背景色等一起发生改变时，可以使用抽象工厂模式进行设计。<h2 id="构建器模式-Builder"><a href="#构建器模式-Builder" class="headerlink" title="构建器模式 Builder"></a>构建器模式 Builder</h2>将复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。<br>优点：</li>
+<li>产品的内部表象可以独立地变化</li>
+<li>将构造代码与表示代码相分离，可以使客户端不必知道产品内部组成的细节<br>缺点：</li>
+<li>构建器模式所创建的产品一般具有较多的共同点，其组成部分相似，如果产品之间的差异性很大，则不适合使用构造器模式</li>
+<li>如果产品的内部变化复杂，可能会导致需要定义很多具体建造者类来实现这种变化，导致系统变得很庞大<br>适用场景：</li>
+<li>创建复杂对象的算法独立于组成对象的部分以及这些部分的集合方式</li>
+<li>构造过程必须允许已构造对象有不同表示<br>应用举例：<br>在很多游戏软件中，地图包括天空、地面、背景等组成部分，人物角色包括人体、服装、装备等组成部分，可以使用建造者模式对其进行设计，通过不同的具体建造者创建不同类型的地图或人物。<h2 id="工厂方法模式-Factory-Method"><a href="#工厂方法模式-Factory-Method" class="headerlink" title="工厂方法模式 Factory Method"></a>工厂方法模式 Factory Method</h2>定义一个用于创建对象（产品）的接口，由子类决定实例化哪个类的对象（产品）。<br>优点：</li>
+<li>没有了将应用程序类绑定到代码中的要求，代码只处理接口，因此可以使用任何实现了接口的类</li>
+<li>允许子类提供对象的扩展版本</li>
+<li><ul>
+<li>符合迪米特法则、依赖倒置原则、里式替换原则<br>缺点：</li>
+</ul>
+</li>
+<li>需要Creator和相应的子类作为工厂方法的载体，如果应用模式确实需要creator和子类存在，则很好；否则，需要增加一个类层次。<br>适用场景：</li>
+<li>当一个类不知道它所创建的产品的具体是哪个子类时</li>
+<li>当创建的对象的过程希望延缓到子类中进行时</li>
+<li>类希望子类指定它要创建的对象<br>应用举例：<br>Windows的COM组件与MFC。<h2 id="原型模式-Prototype"><a href="#原型模式-Prototype" class="headerlink" title="原型模式 Prototype"></a>原型模式 Prototype</h2>指定创建对象的种类，并且通过拷贝这些原型创建新的对象。以一个已有的对象作为原型，通过它来创建新的对象。<br>优点：</li>
+<li>可以在运行时添加或删除产品</li>
+<li>原型模式提供简化的创建结构</li>
+<li>具有给一个应用软件加载新功能的能力</li>
+<li>产品类不需要非得有任何事先确定的等级结构<br>缺点：</li>
+<li>每一个类必须配备一个克隆方法<br>适用场景：</li>
+<li>在运行时，指定需要例化的类，例如动态载入</li>
+<li>避免构建与产品的类层次结构相似的工厂类层次结构</li>
+<li>当类的实例是仅有的一些不同状态组合<h2 id="单例模式-Singleton"><a href="#单例模式-Singleton" class="headerlink" title="单例模式 Singleton"></a>单例模式 Singleton</h2>一个类只有一个实例。<br>优点：</li>
+<li>对单个实例的受控制访问</li>
+<li>名称空间减少</li>
+<li>允许改进操作和表示</li>
+<li>允许可变数目的实例</li>
+<li>比类操作更灵活<br>缺点：</li>
+<li>单例类的扩展有很大的困难，且职责过重，在一定程度上违背了“单一职责原则”<br>适用场景：<br>只有一个类实例。<br>应用举例：<br>主键生成器。<h1 id="结构型模式"><a href="#结构型模式" class="headerlink" title="结构型模式"></a>结构型模式</h1>结构型模式：主要用于如何组合已有的类和对象以获得更大的结构，它采用继承机制赖组合接口或实现，以提供统一的外部视图或新的功能。<h2 id="适配器模式-Adapter"><a href="#适配器模式-Adapter" class="headerlink" title="适配器模式 Adapter"></a>适配器模式 Adapter</h2>将一个类的接口转换成客户希望的另外一个接口，Adapter模式使得原本由于接口不兼容而不能一起工作的那些类可以一起工作。<br>优点：</li>
+<li>允许两个或多个不兼容的对象进行交互和通信</li>
+<li>提高已有功能的重复使用性</li>
+<li>增加了类的透明度</li>
+<li>灵活性好<br>缺点：</li>
+<li>过多地使用适配器会让系统非常零乱，不易整体进行把握<br>适用场景：</li>
+<li>要使用已有的类，而该类接口与所需的接口并不匹配</li>
+<li>要创建可重复的类，该类可以与不相干或未知类进行协助，即类之间不需要兼容接口</li>
+<li>要在一个不同于已知对象接口的接口环境中使用对象</li>
+<li>必须要进行多个源之间的接口转换的时候<br>应用举例：<br>在.NET中有一个类库已经实现的、非常重要的适配器——Data Adapter。<h2 id="桥接模式-Bridge"><a href="#桥接模式-Bridge" class="headerlink" title="桥接模式 Bridge"></a>桥接模式 Bridge</h2>将一个辅助的组件分成两个独立的但又相关的继承层次结构：功能性的抽象和内部实现。<br>优点：</li>
+<li>可以将接口与实现相分离</li>
+<li>提高可扩展性</li>
+<li>对客户端隐藏了实现的细节<br>缺点：</li>
+<li>增加了系统的理解和设计难度</li>
+<li>要求正确识别出系统中两个独立变化的维度，因此其使用范围有一定的局限性<br>适用场景：</li>
+<li>想避免在抽象及其实现之间存在永久的绑定</li>
+<li>抽象及其实现可以使用子类进行扩展</li>
+<li>抽象的实现被改动应该对客户端没有影响</li>
+</ul>
+<h2 id="组合模式-Composite"><a href="#组合模式-Composite" class="headerlink" title="组合模式 Composite"></a>组合模式 Composite</h2><p>将对象组合成树型结构以表示“部分-整体”的层次结构。<br>优点：</p>
+<ul>
+<li>清楚地定义分层次的复杂对象，表示对象的全部或部分层次</li>
+<li>使得增加新构件更容易</li>
+<li>提高了结构的灵活性和可管理的接口<br>缺点：</li>
+<li>使设计变得更加抽象，如果对象的业务规则很复杂，则实现组合模式具有很大的挑战性，而且不是所有的方法都与叶子对象子类有关联。<br>适用场景：</li>
+<li>想表示对象的部分-整体层次结构</li>
+<li>希望用户忽略组合对象与单个对象的不同，用户将统一地使用组合结构中的所有对象</li>
+<li>结构可以具有任何级别的复杂性，而且是动态的<br>应用举例：<br>部分、整体场景，如树形菜单，文件、文件夹的管理。<h2 id="装饰模式-Decorator"><a href="#装饰模式-Decorator" class="headerlink" title="装饰模式 Decorator"></a>装饰模式 Decorator</h2>动态的给对象添加一些额外的责任，就增加功能来说，装饰比生成子类更为灵活。<br>优点：</li>
+<li>比静态继承具有更大的灵活性</li>
+<li>简化代码</li>
+<li>改进对象扩展性，用户可以通过编写新的类来作出改变</li>
+<li>装饰类和被装饰类可以独立发展，不会相互耦合<br>缺点：</li>
+<li>多层装饰比较复杂<br>适用场景：</li>
+<li>想要在单个对象中动态并且透明地添加责任，而这样不会影响其他对象</li>
+<li>想要在以后可能要修改的对象中添加责任</li>
+<li>当无法通过静态子类化实现扩展时<h2 id="外观模式-Facade"><a href="#外观模式-Facade" class="headerlink" title="外观模式 Facade"></a>外观模式 Facade</h2>为子系统中的一组接口提供一个统一的接口，外观模式通过提供一个高层接口，隔离了外部系统与子系统间复杂的交互过程，使得复杂系统的子系统更易使用。<br>优点：</li>
+<li>在不减少系统所提供的选项的情况下，为复杂系统提供了简单的接口</li>
+<li>对客户端屏蔽了子系统组件</li>
+<li>提高了子系统与其客户端之间的弱耦合度</li>
+<li>将客户端请求转换后发送给能够处理这些请求的子系统<br>缺点：</li>
+<li>不能很好地限制客户使用子系统类，如果对客户访问子系统类做太多的限制，则减少了可变性和灵活性</li>
+<li>在不引入抽象外观类的情况下，增加新的子系统可能需要修改外观类或客户端的源代码，违背了“开闭原则”<br>适用场景：</li>
+<li>为一个复杂子系统提供一个简单接口时</li>
+<li>客户程序与抽象类的实现部分之间存在着很大的依赖性</li>
+<li>构建一个层次结构的子系统时，使用Facade模式定义子系统中每层的入口点，如果子系统之间是相互依赖的，则可以让它们仅通过Facede进行通信，从而简化了它们之间的依赖关系。<h2 id="享元模式-Flyweight"><a href="#享元模式-Flyweight" class="headerlink" title="享元模式 Flyweight"></a>享元模式 Flyweight</h2>通过共享对象减少系统中低等级的、详细的对象数目。<br>优点：</li>
+<li>减少了要处理的对象数目</li>
+<li>如果对象能够持续，可以减少内存和存储设备<br>缺点：</li>
+<li>使得应用程序在某种程度上来说更加复杂化了</li>
+<li>为了使对象可以共享，享元模式需要将享元对象的状态外部化，而读取外部状态使得运行时间变长<br>适用场景：</li>
+<li>应用程序使用大量的对象</li>
+<li>由于对象数目巨大，导致很高的存储开销</li>
+<li>应用程序不依赖于对象的身份<h2 id="代理模式-Proxy"><a href="#代理模式-Proxy" class="headerlink" title="代理模式 Proxy"></a>代理模式 Proxy</h2>为控制对初始对象的访问，提供了一个代理或者占位符对象。<br>优点：</li>
+<li>远程代理可以隐藏对象位于不同的地址空间的事实</li>
+<li>虚拟代理可以执行优化操作<br>缺点：</li>
+<li>请求的处理速度变慢</li>
+<li>实现代理模式需要额外的工作，从而增加了系统实现的复杂度<br>适用场景：</li>
+<li>当需要为一个对象在不同的地址空间提供局部的代表时</li>
+<li>当需要创建开销非常大的对象时<br>应用举例：<br>防火墙代理——保护目标不让恶意用户靠近。</li>
+</ul>
+<h1 id="行为型模式"><a href="#行为型模式" class="headerlink" title="行为型模式"></a>行为型模式</h1><p>行为型模式：从大量实际行动中概括处理作为行为的理论抽象、基本框架和标准。该类模式主要用于对象之间的职责及其提供的服务的分配，它不仅描述对象或类的模式，还描述它们之间的通信模式。</p>
+<h2 id="责任链模式-Chain-of-Responsibility"><a href="#责任链模式-Chain-of-Responsibility" class="headerlink" title="责任链模式 Chain of Responsibility"></a>责任链模式 Chain of Responsibility</h2><p>在系统中建立一个链，消息可以首先被接收到它的级别处理，或者定位到可以处理它的对象。<br>优点：</p>
+<ul>
+<li>降低耦合度</li>
+<li>增加向对象指定责任的灵活性<br>适用场景：</li>
+<li>多个对象可以处理一个请求，而其处理器却是未知的</li>
+<li>可以动态指定能够处理请求的对象集<h2 id="命令模式-Command"><a href="#命令模式-Command" class="headerlink" title="命令模式 Command"></a>命令模式 Command</h2>在对象中封装请求，保存命令并传递给方法以及像任何其他对象一样返回该命令。<br>优点：</li>
+<li>添加新命令不用修改已有类</li>
+<li>将操作对象与知道如何完成操作的对象相分离<br>适用场景：</li>
+<li>想要通过要执行的动作来参数化对象</li>
+<li>在不同的时间指定、排序以及执行请求<h2 id="解释器模式-Interpreter"><a href="#解释器模式-Interpreter" class="headerlink" title="解释器模式 Interpreter"></a>解释器模式 Interpreter</h2>解释定义其语法表示的语言。<br>优点：</li>
+<li>容易修改并扩展语法</li>
+<li>容易实现语法<br>适用场景：</li>
+<li>语言的语法比较简单</li>
+<li>效率并不是最主要的问题<h2 id="迭代器模式-Iterator"><a href="#迭代器模式-Iterator" class="headerlink" title="迭代器模式 Iterator"></a>迭代器模式 Iterator</h2>提供一方法顺序地访问一个聚合对象中的各个元素，而又不暴露该对象的内部表示。<br>优点：</li>
+<li>支持集合的不同遍历</li>
+<li>简化集合接口<br>适用场景：</li>
+<li>在不开放集合对象内部表示的前提下，访问集合对象内容</li>
+<li>支持集合对象的多重遍历</li>
+<li>为遍历集合中的不同结构提供了统一的接口<h2 id="备忘录模式-Memento"><a href="#备忘录模式-Memento" class="headerlink" title="备忘录模式 Memento"></a>备忘录模式 Memento</h2>保持对象状态的“快照”，在不向外界公开其内容的情况下返回到它的最初状态。<br>优点：</li>
+<li>保持封装完整</li>
+<li>简化了返回到初始状态所需的操作<br>适用场景：</li>
+<li>必须保存对象的快照</li>
+<li>使用直接接口来获得状态可能会公开对象的实现细节，从而破坏对象的封装性<h2 id="观察者模式-Observer"><a href="#观察者模式-Observer" class="headerlink" title="观察者模式 Observer"></a>观察者模式 Observer</h2>为组件向相关接受方广播消息提供了灵活的方法。<br>优点：</li>
+<li>抽象了主体与Observer之间的耦合关系</li>
+<li>支持广播方式的通信<br>适用场景：</li>
+<li>对一个对象修改涉及其他对象修改，而不知道有多少对象需进行修改</li>
+<li>对象应该能够在不用假设对象标识的前提下通知其他对象<h2 id="状态模式-State"><a href="#状态模式-State" class="headerlink" title="状态模式 State"></a>状态模式 State</h2>运行对象在内部状态变化时变更其行为，并且修改其类。<br>优点：</li>
+<li>定位指定状态的行为，并根据不同状态来划分行为<br>适用场景：</li>
+<li>对象行为依赖于其状态，且对象必须在运行时根据其状态修改行为</li>
+<li>操作具有大量以及多部分组成的取决于对象状态的条件语句<h2 id="策略模式-Strategy"><a href="#策略模式-Strategy" class="headerlink" title="策略模式 Strategy"></a>策略模式 Strategy</h2>定义了一组用来表示可能行为集合的类。<br>优点：</li>
+<li>另一种子类化方法</li>
+<li>在类自身中定义行为，减少条件语句</li>
+<li>更容易扩展模型<br>适用场景：</li>
+<li>许多相关类只是在行为方面有所区别</li>
+<li>需要算法的不同变体</li>
+<li>算法使用客户端未知的数据<h2 id="模板方法模式-Template-Method"><a href="#模板方法模式-Template-Method" class="headerlink" title="模板方法模式 Template Method"></a>模板方法模式 Template Method</h2>提供了在不重写方法的前提下运行子类重载部分方法的方法。<br>优点：</li>
+<li>代码使用<br>适用场景：</li>
+<li>想要一次实现算法的不变部分，使用子类实现算法的可变部分</li>
+<li>子类间通用行为需要分解，定位到通用类，可以避免代码重复问题<h2 id="访问者模式-Visitor"><a href="#访问者模式-Visitor" class="headerlink" title="访问者模式 Visitor"></a>访问者模式 Visitor</h2>提供了一种方便的、可维护的方法来表示在对象结构元素上进行的操作。该模式允许在不改变操作元素的类的前提下定义一个新操作。<br>优点：</li>
+<li>容易添加新操作</li>
+<li>集中相关操作并且排除不相关操作<br>适用场景：</li>
+<li>定义对象结构的类很少被修改，但想要在此结构上定义新的操作</li>
+<li>对象结构包含许多具有不同接口的对象类，并且想要对这些依赖于具体类的对象进行操作<h2 id="中介者模式-Mediater"><a href="#中介者模式-Mediater" class="headerlink" title="中介者模式 Mediater"></a>中介者模式 Mediater</h2>通过引入一个能够管理对象间消息分布的对象，简化了系统中对象的通信。<br>优点：</li>
+<li>去除对象间的影响</li>
+<li>简化对象间的协议</li>
+<li>集中化了控制<br>适用场景：</li>
+<li>对象集合需要以一个定义规范但复杂的方式进行通信</li>
+<li>想要在不使用子类的情况下自定义分布在几个对象之间的行为</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 软件开发 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 设计模式 </tag>
+            
+            <tag> 软件架构 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[靖靖的脑洞大开（3）——元宇宙]]></title>
       <url>https://hubojing.github.io/2021/10/28/%E5%85%83%E5%AE%87%E5%AE%99/</url>
       <content type="html"><![CDATA[<div align="left"><br><img src="/images/柯南闪电.jpg" width="300" height="180" style="float:right;"><br><br><br>　　<strong>有点科幻哦</strong><br><br><br> </div>
