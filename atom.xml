@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://hubojing.github.io/"/>
-  <updated>2021-11-16T15:44:01.382Z</updated>
+  <updated>2021-12-07T07:23:27.299Z</updated>
   <id>https://hubojing.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>解决Valine评论不显示的问题</title>
+    <link href="https://hubojing.github.io/2021/12/07/%E8%A7%A3%E5%86%B3Valine%E8%AF%84%E8%AE%BA%E4%B8%8D%E6%98%BE%E7%A4%BA%E7%9A%84%E9%97%AE%E9%A2%98/"/>
+    <id>https://hubojing.github.io/2021/12/07/解决Valine评论不显示的问题/</id>
+    <published>2021-12-07T06:49:31.000Z</published>
+    <updated>2021-12-07T07:23:27.299Z</updated>
+    
+    <content type="html"><![CDATA[<div align="left"><br><img src="\images\假装有图片.jpg" width="300" height="180" style="float:right;"><br><br><br>　　<strong>今天认真排查了一下</strong><br>　　<strong>附上解决方案</strong><br><br><br> </div><a id="more"></a><h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>博客大概有十多天无法显示评论也无法提交新评论，而我这段时间并未对博客评论进行过修改。（不是我的锅）</p><p>我寻思着该不会是Valine更新了什么把自己给更没了吧？（强行背锅）</p><p>后来在Valine的官方群中，有部分网友表示最近遇到相同问题，共性是都使用的LeadCloud国际版。</p><p>哦，原来是LeadCloud的锅。</p><h1 id="具体排查"><a href="#具体排查" class="headerlink" title="具体排查"></a>具体排查</h1><p>查看网页控制台，我发现，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Failed to load resource: net::ERR_EMPTY_RESPONSE</span><br><span class="line"></span><br><span class="line">us-api.leancloud.cn/后面还有一长串</span><br></pre></td></tr></table></figure></p><p>调试过程中还报过别的错，我没有记录，但总之，都是围绕这个域名解析的问题。反正就是这个域名无法正确得到结果。</p><p>那怎么办呢？根据群里大佬讨论可得，似乎是现在国际版对这个域名不再支持了，也有人说是不稳定，推荐自定义服务器URL。</p><p>那就换呗。</p><h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>法一：导出数据，更换到国内节点，快准狠。</p><p>法二：懒得换（比如我），那就改代码吧。<br>如果主题中已配置的Valine有<code>severURLs</code>字段，直接设置即可。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">serverURLs: https://xxxxxxxx.api.lncldglobal.com # 把xxxxxxxx替换为自己AppID的前8位字符</span><br></pre></td></tr></table></figure></p><p>如果主题未配置该参数，就需要找到valine的js文件，比如我这里的<code>\hexo\themes\indigo\layout\_partial\plugins\valine.ejs</code><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Valine(&#123;</span><br><span class="line">    el: <span class="string">'#comments'</span>,</span><br><span class="line">    notify: <span class="string">'&lt;%= theme.valine.notify %&gt;'</span> == <span class="string">'true'</span>,</span><br><span class="line">    verify: <span class="string">'&lt;%= theme.valine.verify %&gt;'</span> == <span class="string">'true'</span>,</span><br><span class="line">    appId: <span class="string">"&lt;%= theme.valine.appId %&gt;"</span>,</span><br><span class="line">    appKey: <span class="string">"&lt;%= theme.valine.appKey %&gt;"</span>,</span><br><span class="line">    avatar: <span class="string">"&lt;%= theme.valine.avatar %&gt;"</span>,</span><br><span class="line">    placeholder: <span class="string">"&lt;%= theme.valine.placeholder %&gt;"</span>,</span><br><span class="line">    guest_info: guest_info.length == <span class="number">0</span> ? GUEST_INFO : guest_info,</span><br><span class="line">    pageSize: <span class="string">"&lt;%= theme.valine.pageSize %&gt;"</span>,</span><br><span class="line">    serverURLs: <span class="string">'&lt;%= theme.valine.serverURLs %&gt;'</span>  <span class="comment">// 增加这一行！！！</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p><p>然后再配置上面的serverURLs。</p><p>然而我在配置完这一步后，仍然不能显示正确的评论。群里大佬已经撤了，剩下一个前端菜狗在风中凌乱。</p><p>为什么不行呢？</p><p>我认真地排查后发现评论这块并没有跳转到我设定的serverURLs，还是<code>us-api.leancloud.cn</code>啊。</p><p>为什么呢？</p><p>我开始翻Valine的Github的Issues区，从一个大佬提出的Issue中发现了端倪。详见：<a href="https://github.com/xCss/Valine/issues/376" target="_blank" rel="noopener">https://github.com/xCss/Valine/issues/376</a><br>这个大佬提问说这个av.js是不是有bug啊？</p><p>看了大佬的截图，我懂了。</p><p>这个cdn是版本不对了吧？</p><p>于是我找到LeadClond官网手册，查询最新的CDN链接。<a href="https://leancloud.cn/docs/sdk_setup-js.html" target="_blank" rel="noopener">https://leancloud.cn/docs/sdk_setup-js.html</a></p><p>将这一行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;//cdn1.lncld.net/static/js/3.0.4/av-min.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure></p><p>替换为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;//code.bdstatic.com/npm/leancloud-storage@4.12.0/dist/av-min.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure></p><p>再重新部署，评论已经能成功显示了。</p><p>回顾三部曲：</p><ol><li>设置serverURLs。 </li><li>若Valine的js文件未定义，需增加定义serverURLs。</li><li>更新av-min.js文件。</li></ol><p>完成。</p><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://github.com/xCss/Valine/issues/340" target="_blank" rel="noopener">https://github.com/xCss/Valine/issues/340</a><br><a href="https://github.com/xCss/Valine/issues/376" target="_blank" rel="noopener">https://github.com/xCss/Valine/issues/376</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;img src=&quot;\images\假装有图片.jpg&quot; width=&quot;300&quot; height=&quot;180&quot; style=&quot;float:right;&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;　　&lt;strong&gt;今天认真排查了一下&lt;/strong&gt;&lt;br&gt;　　&lt;strong&gt;附上解决方案&lt;/strong&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt; &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="博客" scheme="https://hubojing.github.io/categories/%E5%8D%9A%E5%AE%A2/"/>
+    
+    
+      <category term="Hexo" scheme="https://hubojing.github.io/tags/Hexo/"/>
+    
+      <category term="Valine" scheme="https://hubojing.github.io/tags/Valine/"/>
+    
+      <category term="评论" scheme="https://hubojing.github.io/tags/%E8%AF%84%E8%AE%BA/"/>
+    
+  </entry>
   
   <entry>
     <title>迟到四年的评测——一加5T</title>
@@ -465,30 +491,6 @@
       <category term="深度学习" scheme="https://hubojing.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
       <category term="数学" scheme="https://hubojing.github.io/tags/%E6%95%B0%E5%AD%A6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hulu AI Class Quiz</title>
-    <link href="https://hubojing.github.io/2020/07/23/Hulu%20AI%20Class%20Quiz/"/>
-    <id>https://hubojing.github.io/2020/07/23/Hulu AI Class Quiz/</id>
-    <published>2020-07-23T08:00:29.000Z</published>
-    <updated>2020-09-04T03:51:41.754Z</updated>
-    
-    <content type="html"><![CDATA[<div align="left"><br><img src="\images\Hulu AI Class Quiz1-cover.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>Quiz for traditional recommendation models.</strong><br><br><br> </div><a id="more"></a><h1 id="Quiz1"><a href="#Quiz1" class="headerlink" title="Quiz1"></a>Quiz1</h1><ol><li>从基于用户的协同过滤和基于物品的协同过滤的原理思考，下列场景中使用哪种协同过滤算法更加合适？为什么？<br>(1)新闻资讯推荐<br>(2)电商网站推荐</li></ol><p><strong>参考答案</strong><br>（1）在新闻推荐的场景中，我们更推荐使用基于用户的协同过滤。<br>　　主要原因在于：<br>　　1.新闻推荐通常具有一定的社交属性，通过User-based CF，用户能够通过朋友的浏览行为更新自己的推荐列表。<br>　　2.新闻推荐的实时性和热点性往往比较重要，使用User-based CF能够快速发现热点，跟踪热点趋势。</p><p>（2）在电商推荐的场景中，我们更推荐使用基于物品的协同过滤，主要原因在于:<br>　　1.用户在短时间内的兴趣点往往比较稳定，利用Item-CF推荐相似商品比较符合用户的动机，也方便用户进行物品之间的比较。<br>　　2.电商网站的物品列表相对来讲比较稳定，通过积累大量的历史数据更容易准确地反映物品之间的相似性。<br>　　3.电商网站中通常用户数量远远大于商品的数量，进行Item-based CF的计算量更小。</p><ol start="2"><li>为什么逻辑回归模型在工业界受到的了广泛应用？LR相对于其他的模型，尤其是GBOT模型，突出的优点是什么？</li></ol><p><strong>参考答案</strong><br>　　逻辑回归模型形式比较简单，可解释性强，模型训练的速度快，适合线上学习。相对于GBDT模型，其突出的优点在于可以支持并行化训练以及线上学习。<br>　　<br>　　点评:<br>　　设计这个问题的目的是复习课程中所讲的逻辑回归算法，强化逻辑回归可以用于线上学习的概念。所谓“天下武功，无坚不破，唯快不破”，希望大家能够意识到模型实时性的重要性。</p><ol start="3"><li>为什么说提升树模型(GBOT)难以并行化？从Boosting方法的原理上给出简单的解释。</li></ol><p><strong>参考答案</strong><br>　　Boosting方法的本质上是构建一系列的弱学习器去不断逼近目标，每个弱学习器的训练目标是修正之前学习器的错误，需要依赖于前面学习器的结果，是一个串行训练过程。<br>　　<br>　　点评：<br>　　设计这个问题的目的是复习课程中所讲的提升算法原理，并加深大家对于Boosting串行训练的理解与思考。</p><h1 id="Quiz2"><a href="#Quiz2" class="headerlink" title="Quiz2"></a>Quiz2</h1><ol><li>在一个机器学习项目中，特征工程是否对模型效果起到决定性作用？<br>A.是 B.否</li></ol><p><strong>参考答案</strong><br>　　B数据决定算法的上限，特征工程帮助算法逼近上限。</p><p>2.一个算法工程师面对一个分类问题，打算将花10天时间来清洗数据，花10天时间来做特征工程，最后花1天的时间简单的训练出一个逻辑回归模型，请问他的时间安排是否合理？<br>A.合理<br>B.不合理，他应该花10天时间来调优模型</p><p><strong>参考答案</strong><br>　　A 不必纠结于具体的天数，本题着重强调数据的重要性，在实践中可以发现，同样的数据，交替不同的模型(例如lr或者gbdt) , 在效果上提升和下降有限。相反，数据和特征的不同对预测的结果有巨大的意义。</p><ol start="3"><li>深度学习模型具备了自动特征工程的能力，算法工程师只需将数据输入模型，模型会自动寻找最优特征工程，请问是否还有必要做特征工程？请给出理由。</li></ol><p><strong>参考答案</strong><br>　　有必要:<br>　　1)更好的特征工程可以减弱噪声的影响，提高数据表达能力，提升效果;<br>　　2) 如果特征工程足够好，可使用更简单的模型，快速训练快速部署，这对实际生产具有重要的意义<br>　　3)特征工程往往具有很强的业务意义，可以提高模型解释性。</p><ol start="4"><li>芒果台最新综艺《乘风破浪的姐姐》吸粉无数，作为一名学过hulu AI Class 的优秀学员，请你思考一个利用人工智能来更好的帮助节目的方案。</li></ol><p><strong>参考答案</strong><br>　　本题为开放问题，强调算法工程师需要有将业务需求抽象成算法问题的能力。下面是示例答案。<br>　　1) 以不同的姐姐分cluster, 筛选用户特征<br>　　2)对微博的相关的话题做文本挖掘，舆情分析，以便更好提前制作爆点。<br>　　3)第一个点是本节目的修音有点过于失真了，可以引入一个基于GAN的声音修正技术提高现场的真实感；第二在广告投放上，可以利用look-alike等技术对潜在的节目目标人群进行筛选，提高广告投放的效率，减少对用户的打扰，提升用户体验。</p><h1 id="Quiz3"><a href="#Quiz3" class="headerlink" title="Quiz3"></a>Quiz3</h1><p>1.对于-系列电影，如果有以下几种类型的数据，想要为每个电影生成嵌入(Embdding)表示，你会选用何种算法/模型，为什么？<br>(1)每个电影的标题、描述文本、风格类型(提示:如何建模纯文本信息？)</p><p><strong>参考答案</strong><br>　　这道题涉及的知识点是如何对文本类信息进行嵌入表示。我们拥有三个数据源:标题、描述文本和风格类型，其中前两个数据源是纯文本，最后一个数据源可以理解为纯文本，也可以解读为类别信息，因为电影的风格类型是共享且有限的。<br>　　对于建模标题和描述文本这类纯文本信息，最简单的方法是使用Word2Vec或者其它预训练的词向量模型对文本中每个词查到一个嵌入表示（词向量），再通过一些聚合方法聚合得到标题和描述文本的整体嵌入表示。最简单且容易想到的聚合方法就是把句子中所有单词的词向量计算其平均向量作为句子的嵌入表示，更复杂的聚合方法也可考虑如Word mover embedding等等。在得到电影的标题/描述文本的嵌入表示之后，我们就可以选择加权或者拼接加PCA降维的方式得到最后的电影的嵌入表示。<br>　　相对于以上通过词向量聚合得到句子嵌入表示的方法，我们也可以选择利用文本序列建模方法端到端地生成标题/描述文本的句子表示，进而得到电影的嵌入表示。此类方法有本课中提到的BERT，也包含Seq2Seq等经典方法。值得一提的是，这类方法为句子生成表示时往往需要一些标签信息如句子和词的类别（当然BERT这类模型我们可以使用一一些无监督的伪任务），这时我们就可以利用第三个数据源:电影的风格类型，来作为训练句子嵌入表示的标签。使用这类方法，我们既可以得到电影的标题和描述文本的单独的表示，也可以将它们串联成一一个句子得到一个整体表示，最后就可以使用这个表示作为电影的嵌入表示啦。</p><p>(2)电影和电影间的相关度矩阵，大小为M * M, M为电影的数目，矩阵值为-1.0到1.0间的浮点数</p><p><strong>参考答案</strong><br>　　这道题的数据源是电影间的相关度矩阵，不难理解矩阵分解是最直观的方法:我们为每个电影初始化一一个嵌入表示，然后进一步学习和调整这些表示，使不同电影间嵌入表示的相关度(如余弦相关度)能和给定的相关度矩阵保持一致。</p><p>(3)用户一周内的观影历史，一共有N个用户， 每个用户的观影历史为一长度不定的向量，向量值为0到M-1范围内的整数，表示电影的ID。</p><p><strong>参考答案</strong><br>　　首先，这道题的数据源是序列信息，每个用户的观影序列可以理解为一个一个的句子，句子中的单词(Word)就是电影，因此首先想到的方法应该是使用Word2Vec直接学习每个电影的嵌入表示。另一方面，既然有用户的观影序列，我们就可以进一步统计以上信息得到用户-电影的交互矩阵，这样就可以参照(2)中的方法就行矩阵分解得到电影的嵌入表示。<br>　　<br>　　点评:<br>　　这道题的目的是考察大家对不同的嵌入表示生成方法对数据的要求的理解。在算法研发过程中，除了目标指标，影响算法选型的另外一个重要因素往往是我们有什么类型、多大体量以及多高质量的数据，了解这些算法的适用条件是在工作中正确应用它们的重要前提。</p><ol start="2"><li>基于深度神经网络的排序模型相对于传统的逻辑回归模型(LR)有什么优劣，试从模型准确度、推断效率和工程代价进行分析。</li></ol><p><strong>参考答案</strong><br>　　模型准确度上，深度神经网络由于模型复杂、自由度大，从而拥有更强的理论建模能力，其准确度往往优于逻辑回归。但是由于用户的个体差异性，其准确度领先幅度并不特别显著，在近年的学术论文上看，目标数据集上，基于深度神经网络的排序模型在离线AUC这个指标上领先逻辑回归通常不超过1%-2%。<br>　　推断效率上，深度神经网络明显劣于逻辑回归模型。深度神经网络的理论计算量巨大，比逻辑回归高几个量级，且网络内部各层计算量均一性差，因此单次推断的并行效率也劣于逻辑回归，最终体现在模型推断时延较高且对计算资源需求较大。<br>　　工程代价上，深度神经网络更大的计算复杂度会在多个环节带来问题，如如何及时地完成模型的离线训练和高效地进行在线推断等。这对推荐系统框架在部署、任务和资源调度、运行效率优化等多个方面都会带来额外复杂度。一个例子是，有的深度神经网络模型由于计算复杂度大，无法直接在线部署，而需要将部分计算离线/近线(Nearline)化以减轻线上的计算压力，以空间换时间，同时还需付出更多额外的努力对在线推断部分进行效率优化，这就是典型的模型复杂度升高对工程框架的挑战。<br>　　<br>　　点评：<br>　　这道题的目的是考察大家对深度神经网络的优劣的整体认识，在工程实践中，模型准确度只是决定选型的部分因素，计算量和实现框架的约束，以及复杂度的增加和准确度提升间的取舍也是非常重要的。</p><ol start="3"><li>在推荐模型中，为什么有的连续的特征，如年龄，要按范围被离散化(把用户年龄分成互不交叉的几组)？这样做的好处是什么？</li></ol><p><strong>参考答案</strong><br>　　简单而言，是为了平滑特征。用户之间存在个体差异，像年龄值这样的涉及用户属性的连续特征有时会过于“精确”， 从而不利于提升模型的泛化能力。<br>　　具体来说，首先在推荐的场景下，年龄一定是影响用户兴趣的重要因素，但是这种影响通常是来自于“年龄段”而非具体的“年龄值”。在“年轻人比老年人更喜欢看恐怖片”的假设下，“18-26岁的用户比大于56岁的用户更喜欢看恐怖片”往往比“X岁的用户A比(X+1)岁的用户B更喜欢看恐怖片”这样的推论更加准确和鲁棒。<br>　　更进一步而言，年龄值和兴趣之间的关联性存在个体差异，这种差异远比年龄段和兴趣的关联的个体差异大的多。如用户A可能在18-26岁间爱看恐怖片，但是用户B可能在30岁才发展出看恐怖片的兴趣。这种关联的强个体差异意味着模型的学习没有统一且有效的ground truth，从而导致训练过程的震荡和推断能力的退化。</p><p>　　点评：<br>　　这道题的目的是考察对推荐模型输入特征的一个细节理解，也是检验同学们是否有仔细听课。模型的准确度不仅仅取决于模型结构数据，输入特征的属性和表示方式也是非常重要的。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;img src=&quot;\images\Hulu AI Class Quiz1-cover.png&quot; width=&quot;300&quot; height=&quot;180&quot; style=&quot;float:right;&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;　　&lt;strong&gt;Quiz for traditional recommendation models.&lt;/strong&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt; &lt;/div&gt;
-    
-    </summary>
-    
-      <category term="推荐系统" scheme="https://hubojing.github.io/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/"/>
-    
-    
-      <category term="推荐算法" scheme="https://hubojing.github.io/tags/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/"/>
-    
-      <category term="Hulu" scheme="https://hubojing.github.io/tags/Hulu/"/>
     
   </entry>
   
