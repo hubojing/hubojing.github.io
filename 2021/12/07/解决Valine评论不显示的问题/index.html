@@ -36,7 +36,7 @@
 <meta property="og:description" content="今天认真排查了一下　　附上解决方案">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://hubojing.github.io/images/假装有图片.jpg">
-<meta property="og:updated_time" content="2021-12-08T07:53:37.142Z">
+<meta property="og:updated_time" content="2021-12-09T05:29:00.212Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="解决Valine评论不显示的问题">
 <meta name="twitter:description" content="今天认真排查了一下　　附上解决方案">
@@ -259,6 +259,7 @@
 <p>后来在Valine的官方群中，有部分网友表示最近遇到相同问题，共性是都使用的LeanCloud国际版。</p>
 <p>哦，原来是LeanCloud的锅。</p>
 <h1 id="具体排查"><a href="#具体排查" class="headerlink" title="具体排查"></a>具体排查</h1><p>查看网页控制台，我发现，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Failed to load resource: net::ERR_EMPTY_RESPONSE</span><br><span class="line"></span><br><span class="line">us-api.leancloud.cn/后面还有一长串</span><br></pre></td></tr></table></figure></p>
+<p>或者<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Failed to load resource: net::ERR_NAME_NOT_RESOLVED</span><br><span class="line"></span><br><span class="line">us-api.leancloud.cn/后面还有一长串</span><br></pre></td></tr></table></figure></p>
 <p>调试过程中还报过别的错，我没有记录，但总之，都是围绕这个域名解析的问题。反正就是这个域名无法正确得到结果。</p>
 <p>那怎么办呢？根据群里大佬讨论可得，似乎是现在国际版对这个域名不再支持了，也有人说是不稳定，推荐自定义服务器URL。</p>
 <p>那就换呗。</p>
@@ -270,7 +271,8 @@
 <p>为什么不行呢？</p>
 <p>我认真地排查后发现评论这块并没有跳转到我设定的serverURLs，还是<code>us-api.leancloud.cn</code>啊。</p>
 <p>为什么呢？</p>
-<p>我开始翻Valine的Github的Issues区，从一个大佬提出的Issue中发现了端倪。详见：<a href="https://github.com/xCss/Valine/issues/376" target="_blank" rel="noopener">https://github.com/xCss/Valine/issues/376</a><br>这个大佬提问说这个av.js是不是有bug啊？</p>
+<p>我开始翻Valine的Github的Issues区，从一个大佬提出的Issue中发现了端倪。详见：<a href="https://github.com/xCss/Valine/issues/376" target="_blank" rel="noopener">https://github.com/xCss/Valine/issues/376</a></p>
+<p>这个大佬提问说这个av.js是不是有bug啊？</p>
 <p>看了大佬的截图，我懂了。</p>
 <p>这个cdn是版本不对了吧？</p>
 <p>于是我找到LeadClond官网手册，查询最新的CDN链接。<a href="https://leancloud.cn/docs/sdk_setup-js.html" target="_blank" rel="noopener">https://leancloud.cn/docs/sdk_setup-js.html</a></p>
@@ -293,7 +295,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2021-12-08T07:53:37.142Z" itemprop="dateUpdated">2021-12-08 15:53:37</time>
+    最后更新时间：<time datetime="2021-12-09T05:29:00.212Z" itemprop="dateUpdated">2021-12-09 13:29:00</time>
 </span><br>
 
 
