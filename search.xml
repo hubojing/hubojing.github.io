@@ -4,6 +4,83 @@
   
     
     <entry>
+      <title><![CDATA[CHAML]]></title>
+      <url>https://hubojing.github.io/2022/01/22/Paper_CHAML/</url>
+      <content type="html"><![CDATA[<div align="left"><br><img src="\images\CHAML-2.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>Curriculum Meta-Learning for Next POI Recommendation</strong><br>　　基于课程元学习的下一个兴趣点推荐<br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="论文背景"><a href="#论文背景" class="headerlink" title="论文背景"></a>论文背景</h1><p>　　Curriculum Meta-Learning for Next POI Recommendation<br>　　基于课程元学习的下一个兴趣点推荐<br>　　KDD 21<br>　　<a href="https://dl.acm.org/doi/abs/10.1145/3447548.3467132" target="_blank" rel="noopener">PDF</a></p>
+<h1 id="现有问题"><a href="#现有问题" class="headerlink" title="现有问题"></a>现有问题</h1><p>　　在下一个兴趣点推荐的研究中，在有限的用户-兴趣点交互数据下，在冷启动城市中提供满意的推荐是重要问题，这需要许多其它城市丰富数据下隐含的知识进行迁移。现有文献没有考虑到城市转移的问题或者不能同时处理数据稀疏和用户在多个城市的模式多样性的问题。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\CHAML-1.png" alt="问题描述" title="">
+                </div>
+                <div class="image-caption">问题描述</div>
+            </figure>
+<p>　　问题描述如图所示。<br>　　该问题关键是提出一个合适的迁移算法，但难点有二：<br>　　1. 不同城市的数据太少<br>　　2. 用户在不同城市下有不同的多样性表达<br>　　现有算法不能同时解决这两个问题。传统的预训练和微调技术不能解决问题2，跨域推荐不能解决问题1。</p>
+<h1 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h1><p>　　提出 Curriculum Hardness Aware Meta-Learning (CHAML) 框架。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\CHAML-2.png" alt="架构" title="">
+                </div>
+                <div class="image-caption">架构</div>
+            </figure><br>　　架构分为两部分，一部分是基础推荐器，另一部分是MAML扩展。后者用于将元学习引入到POI推荐中。<br>　　两种采用策略组件，一种是硬意识元学习(hardness aware meta-learning)，另一种是城市级别采样课程(city-level sampling curriculum)。这用于细致思考采样多样性问题。<br>　　一些概念：<br>　　Curriculum Learning，主张让模型先从容易的样本开始学习，并逐渐进阶到复杂的样本和知识。<br>　　meta-learning，又叫learning to learn，即学习如何学习，元学习围绕任务（task）展开。元学习是要去学习任务中的特征表示，从而在新的任务上泛化。</p>
+<h2 id="基础推荐器"><a href="#基础推荐器" class="headerlink" title="基础推荐器"></a>基础推荐器</h2><p>　　使用DIN作为基础推荐器，由三部分组成，嵌入模块（Embedding module）、注意力模块（Attention module）和输出模块（Output module）。</p>
+<h2 id="元学习"><a href="#元学习" class="headerlink" title="元学习"></a>元学习</h2><p>　　使用MAML策略。<br>　　MAML论文：Model-agnostic meta-learning for fast adaptation of deep networks</p>
+<p>　　每轮MAML包括两步骤：局部更新和全局更新。见图中左上部分。<br>　　每一次元学习任务都有支持训练集$D^{spt}$用于训练，query训练集$D^{qry}$用于测试。<br>　　元学习目标就是学习一个选学习器F，F可以预测推荐器f中的参数$\theta$，使损失函数最小化。</p>
+<h2 id="硬意识元学习-Hardness-Aware-Meta-Learning"><a href="#硬意识元学习-Hardness-Aware-Meta-Learning" class="headerlink" title="硬意识元学习 Hardness Aware Meta-Learning"></a>硬意识元学习 Hardness Aware Meta-Learning</h2><p>　　这里的”hardness”是模型在query样本上的现有性能自判的。<br>　　分为两个阶段，hard_city阶段和hard_user阶段。两个任务交替循环。对应图右上。</p>
+<h2 id="城市级别采样课程-City-level-Sampling-Curriculum"><a href="#城市级别采样课程-City-level-Sampling-Curriculum" class="headerlink" title="城市级别采样课程 City-level Sampling Curriculum"></a>城市级别采样课程 City-level Sampling Curriculum</h2><p>　　见图下方。<br>　　分为两阶段，一是困难度测量，使用诸如AUC指标来衡量。二是调度器用于城市pool，定义了一个函数g。课程学习使模型有更大的概率在优化过程中选择容易的梯度步骤。</p>
+<h1 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h1><p>　　数据集：百度地图MapSmall、MapLarge（未开源）<br>　　输入：POI ID, POI category, time, user-POI dist<br>　　输出：POI预测分数$y^{hat}_i$</p>
+<h2 id="基线"><a href="#基线" class="headerlink" title="基线"></a>基线</h2><p>　　针对POI推荐：</p>
+<ul>
+<li>NeuMF</li>
+<li>HGN</li>
+<li>ATST-LSTM</li>
+<li>PLSPL</li>
+<li>iMTL</li>
+<li>DIN</li>
+</ul>
+<p>　　针对迁移策略：</p>
+<ul>
+<li>No transfer</li>
+<li>Pretrain and Fine-Tune(FT)</li>
+<li>MAML</li>
+<li>$s^2$Meta</li>
+<li>HAML</li>
+</ul>
+<h1 id="贡献点"><a href="#贡献点" class="headerlink" title="贡献点"></a>贡献点</h1><ol>
+<li>第一个探索城市迁移的下一个兴趣点推荐，并将元学习用于该问题。</li>
+<li>提出CHAML框架，通过使用用户和城市级别的硬采样挖掘以及城市级别的课程学习（curriculum learning）增强元学习器，达到同时解决数据稀疏和冷启动城市的样本多样性的问题。</li>
+<li>在两个真实世界地图查找数据集中性能超越SOTA方法。<br>该框架已在百度地图上进行过A/B测试。</li>
+</ol>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p><a href="https://github.com/PaddlePaddle/Research/tree/master/ST_DM/KDD2021-CHAML" target="_blank" rel="noopener">https://github.com/PaddlePaddle/Research/tree/master/ST_DM/KDD2021-CHAML</a><br><a href="https://github.com/victorsoda/chaml" target="_blank" rel="noopener">https://github.com/victorsoda/chaml</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 论文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 推荐算法 </tag>
+            
+            <tag> 兴趣点推荐 </tag>
+            
+            <tag> CHAML </tag>
+            
+            <tag> 元学习 </tag>
+            
+            <tag> 课程学习 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[博客更换为Waline评论系统]]></title>
       <url>https://hubojing.github.io/2022/01/14/%E5%8D%9A%E5%AE%A2%E6%9B%B4%E6%8D%A2%E4%B8%BAWaline%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F/</url>
       <content type="html"><![CDATA[<div align="left"><br><img src="\images\waline.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>数据安全挺重要的</strong><br><br><br> </div>
