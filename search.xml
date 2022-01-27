@@ -4,6 +4,89 @@
   
     
     <entry>
+      <title><![CDATA[STAN]]></title>
+      <url>https://hubojing.github.io/2022/01/24/Paper_STAN/</url>
+      <content type="html"><![CDATA[<div align="left"><br><img src="\images\STAN-2.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>STAN: Spatio-Temporal Attention Network for Next Location Recommendation</strong><br>　　STAN：基于时空注意力网络的下一个兴趣点推荐<br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="论文背景"><a href="#论文背景" class="headerlink" title="论文背景"></a>论文背景</h1><p>　　STAN: Spatio-Temporal Attention Network for Next Location Recommendation<br>　　STAN：基于时空注意力网络的下一个兴趣点推荐<br>　　WWW 21<br>　　<a href="https://arxiv.org/pdf/2102.04095.pdf" target="_blank" rel="noopener">PDF</a></p>
+<h1 id="现有问题"><a href="#现有问题" class="headerlink" title="现有问题"></a>现有问题</h1><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\STAN-1.png" alt="引入" title="">
+                </div>
+                <div class="image-caption">引入</div>
+            </figure>
+<p>　　0、1、2分别代表家、工作地、商场，3、4、5、6分别代表餐馆。虽然3、4、5、6时间和空间都不连续，但它们是有关联的。现有文献很少关注这种非相邻位置和非连续签到的情况。</p>
+<h1 id="说明和定义"><a href="#说明和定义" class="headerlink" title="说明和定义"></a>说明和定义</h1><p>　　用户U=${u_1, u_2, …, u_U}$<br>　　兴趣点L=${l_1, l_2, …, l_L}$<br>　　时间T=${t_1, t_2, …, t_T}$</p>
+<p>　　用户轨迹$tra(u_i) = (r_1, r_2, …, r_{m_i})$</p>
+<h1 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h1><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\STAN-2.png" alt="架构" title="">
+                </div>
+                <div class="image-caption">架构</div>
+            </figure>
+<p>　　STAN包括多模态嵌入模块、一个自注意力聚合层、一个注意力匹配层、一个平衡采样器。</p>
+<h2 id="多模态嵌入模块"><a href="#多模态嵌入模块" class="headerlink" title="多模态嵌入模块"></a>多模态嵌入模块</h2><p>　　该模块分为两部分：轨迹嵌入层和时空嵌入层。</p>
+<h3 id="用户轨迹嵌入层"><a href="#用户轨迹嵌入层" class="headerlink" title="用户轨迹嵌入层"></a>用户轨迹嵌入层</h3><p>　　使用了用户、地理位置、时间，嵌入向量记为$e^u$、$e^l$、$e^t$。时间戳被分为7*24=168个维度。所以，$e^u$、$e^l$、$e^t$的维度是U，L和168。<br>　　输出$e^r = e^u + e^l + e^t$</p>
+<h3 id="时空嵌入层"><a href="#时空嵌入层" class="headerlink" title="时空嵌入层"></a>时空嵌入层</h3><p>　　创造了两种矩阵，轨迹时空关系矩阵$△^{t, s}$和候选关系矩阵$N^{t, s}$。前者将两个轨迹间的时间差和地理距离作为关联信息，后者将轨迹中的兴趣点与候选集中可能的预测兴趣点采用同样的信息关联起来。使用线性插值方法。<br>　　这一层将这两种矩阵进行映射和求和，得到最终的嵌入表示E(△)和E(N)。</p>
+<h2 id="自注意力聚合层"><a href="#自注意力聚合层" class="headerlink" title="自注意力聚合层"></a>自注意力聚合层</h2><p>　　这一层是用来考虑轨迹中有不同距离和时间间隔的两次兴趣点签到的关联程度的。自注意力层可以捕捉长时依赖并为轨迹中的兴趣点分配不同的权重。将轨迹E(u)和时空关系矩阵E(△)通过自注意力聚合层，计算得到新的序列S表示。</p>
+<h2 id="注意力匹配层"><a href="#注意力匹配层" class="headerlink" title="注意力匹配层"></a>注意力匹配层</h2><p>　　这一层的作用是根据用户轨迹的最新表示在L中召回最合适的兴趣点候选。<br>　　A(u) = Matching(E(l), S(u), E(N))，得到的是概率。<br>　　$Matching(Q, K, N) = Sum(softmax(\frac{QK^T+N}{\sqrt{d}}))$<br>　　这个公式减少了其它自注意力模型中的PIF信息。</p>
+<h2 id="平衡采样器"><a href="#平衡采样器" class="headerlink" title="平衡采样器"></a>平衡采样器</h2><p>　　因为正负样本不均衡，优化交叉熵损失不再有用。本文修改了交叉熵损失公式中负样本数量，对于每个正样本$a_k$，需要同时计算L-1个负样本，这称为作为平衡采样器。</p>
+<h1 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h1><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\STAN-3.png" alt="数据" title="">
+                </div>
+                <div class="image-caption">数据</div>
+            </figure>
+<p>　　数据集：Gowalla, SIN, TKY, NYC.<br>　　输入：$(u_i, l_k, t_k)$, $(l_k, lon_k, lat_k)$<br>　　输出：候选兴趣点概率值</p>
+<h2 id="基线"><a href="#基线" class="headerlink" title="基线"></a>基线</h2><ul>
+<li>STRNN</li>
+<li>DeepMove</li>
+<li>STGN</li>
+<li>ARNN</li>
+<li>LSTPM</li>
+<li>TiSARec</li>
+<li>GeoSAN</li>
+</ul>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\STAN-4.png" alt="性能" title="">
+                </div>
+                <div class="image-caption">性能</div>
+            </figure>
+<h1 id="贡献点"><a href="#贡献点" class="headerlink" title="贡献点"></a>贡献点</h1><ul>
+<li>提出STAN，一种时空双向注意力模型，全面考虑了聚合相关联位置的时空效应。第一个将非相邻位置和非相邻签到时间的兴趣点的时空联系应用在兴趣点推荐中。</li>
+<li>使用简单的线性插值技术替代GPS网格进行空间离散化，它能恢复空间距离和反映时空偏好，而不仅仅是聚合邻居。</li>
+<li>提出了一种双向注意力架构用于PIF（personalized item frequency），第一层聚合了轨迹信息中相关的兴趣点用于更新表示，那么第二层就可以给全部的签到信息匹配目标。</li>
+<li>在四个真实世界数据集上性能比SOTA模型超过10%。</li>
+</ul>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p><a href="https://github.com/yingtaoluo/Spatial-Temporal-Attention-Network-for-POI-Recommendation" target="_blank" rel="noopener">https://github.com/yingtaoluo/Spatial-Temporal-Attention-Network-for-POI-Recommendation</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 论文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 推荐算法 </tag>
+            
+            <tag> 兴趣点推荐 </tag>
+            
+            <tag> STAN </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[CHAML]]></title>
       <url>https://hubojing.github.io/2022/01/22/Paper_CHAML/</url>
       <content type="html"><![CDATA[<div align="left"><br><img src="\images\CHAML-2.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>Curriculum Meta-Learning for Next POI Recommendation</strong><br>　　基于课程元学习的下一个兴趣点推荐<br><br><br> </div>
