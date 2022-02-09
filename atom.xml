@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://hubojing.github.io/"/>
-  <updated>2022-01-27T15:39:58.710Z</updated>
+  <updated>2022-02-09T09:22:32.359Z</updated>
   <id>https://hubojing.github.io/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ASGNN</title>
+    <link href="https://hubojing.github.io/2022/01/29/Paper_ASGNN/"/>
+    <id>https://hubojing.github.io/2022/01/29/Paper_ASGNN/</id>
+    <published>2022-01-29T06:27:42.000Z</published>
+    <updated>2022-02-09T09:22:32.359Z</updated>
+    
+    <content type="html"><![CDATA[<div align="left"><br><img src="/images/ASGNN-1.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>Attentive sequential model based on graph neuralnetwork for next poi recommendation</strong><br>　　基于图神经网络的注意力序列模型用于下一个兴趣点推荐<br><br><br> </div><a id="more"></a><h1 id="论文背景"><a href="#论文背景" class="headerlink" title="论文背景"></a>论文背景</h1><p>　　Attentive sequential model based on graph neuralnetwork for next poi recommendation<br>　　基于图神经网络的注意力序列模型用于下一个兴趣点推荐<br>　　WWW21<br><a href="https://link.springer.com/content/pdf/10.1007/s11280-021-00961-9.pdf" target="_blank" rel="noopener">PDF</a><br>　　关键词：推荐系统、序列推荐、兴趣点推荐、图神经网络、注意力机制</p><h1 id="现有问题"><a href="#现有问题" class="headerlink" title="现有问题"></a>现有问题</h1><p>　　传统推荐方法忽略了用户短时偏好的动态变化。另外，许多现有方法不能完全探索兴趣点签到序列中复杂的联系和转变形式。</p><h1 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h1><p>　　提出ASGNN。<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/images/ASGNN-1.png" alt="架构" title="">                </div>                <div class="image-caption">架构</div>            </figure><br>　　ASGNN包括四部分：兴趣点签到序列图构建、特征表示学习、长短时偏好获取、兴趣点推荐</p><h2 id="兴趣点签到序列图构建"><a href="#兴趣点签到序列图构建" class="headerlink" title="兴趣点签到序列图构建"></a>兴趣点签到序列图构建</h2><p>　　G(V, E), V = (U, L)，U是用户集，L是兴趣点集。E包括用户-兴趣点边和兴趣点-兴趣点边。<br>　　图中边的权重代表用户在兴趣点的签到次数。</p><h2 id="特征表示学习"><a href="#特征表示学习" class="headerlink" title="特征表示学习"></a>特征表示学习</h2><p>　　图构建好后，使用GNN学习到用户和兴趣点的低维表示。这避免了马尔科夫决策过程需要的大量状态。<br>　　为了提高效率更新节点，使用了GGNN。<br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/images/ASGNN-3.png" alt="矩阵表示" title="">                </div>                <div class="image-caption">矩阵表示</div>            </figure></p><h2 id="长短时偏好获取"><a href="#长短时偏好获取" class="headerlink" title="长短时偏好获取"></a>长短时偏好获取</h2><p>　　设计了两层注意力机制分别捕获长短时用户偏好。</p><h2 id="兴趣点推荐"><a href="#兴趣点推荐" class="headerlink" title="兴趣点推荐"></a>兴趣点推荐</h2><p>　　上一步得到的个性化用户偏好参数和兴趣点特征点乘，得到每个兴趣点分数，通过softmax标准化输出概率值。<br>　　训练的损失函数为交叉熵函数。</p><h1 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h1><p>　　围绕下列问题展开：</p><ul><li>ASGNN在序列兴趣点推荐任务上性能如何（基线对比）</li><li>ASGNN的关键组件效果如何（组件实验）</li><li>ASGNN的嵌入维度对推荐的影响（维度分析）</li><li>ASGNN和基线在不同稀疏性的数据集上的性能如何（数据稀疏性影响）</li><li>ASGNN学习兴趣点嵌入是否有效（可视化说明）</li></ul><h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><p>　　Gowalla, FourSquare, Brightkite<br><a href="https://snap.stanford.edu/data/loc-gowalla.html" target="_blank" rel="noopener">https://snap.stanford.edu/data/loc-gowalla.html</a><br><a href="https://sites.google.com/site/yangdingqi/home/foursquare-dataset" target="_blank" rel="noopener">https://sites.google.com/site/yangdingqi/home/foursquare-dataset</a><br><a href="https://snap.stanford.edu/data/loc-brightkite.html" target="_blank" rel="noopener">https://snap.stanford.edu/data/loc-brightkite.html</a><br><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/images/ASGNN-2.png" alt="数据集" title="">                </div>                <div class="image-caption">数据集</div>            </figure></p><h2 id="基线"><a href="#基线" class="headerlink" title="基线"></a>基线</h2><ul><li>POP</li><li>BPR</li><li>FPMC</li><li>HRM</li><li>CPAM</li><li>SHAN</li><li>SRGNN<h2 id="评测指标"><a href="#评测指标" class="headerlink" title="评测指标"></a>评测指标</h2></li><li>召回率Recall</li><li>MRR</li></ul><h2 id="基线对比"><a href="#基线对比" class="headerlink" title="基线对比"></a>基线对比</h2><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/images/ASGNN-RQ1.png" alt="性能" title="">                </div>                <div class="image-caption">性能</div>            </figure><h2 id="组件实验"><a href="#组件实验" class="headerlink" title="组件实验"></a>组件实验</h2><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/images/ASGNN-RQ2.png" alt="组件分析" title="">                </div>                <div class="image-caption">组件分析</div>            </figure><h2 id="维度分析"><a href="#维度分析" class="headerlink" title="维度分析"></a>维度分析</h2><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/images/ASGNN-RQ3.png" alt="维度分析" title="">                </div>                <div class="image-caption">维度分析</div>            </figure><h2 id="数据稀疏性影响"><a href="#数据稀疏性影响" class="headerlink" title="数据稀疏性影响"></a>数据稀疏性影响</h2><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/images/ASGNN-RQ4.png" alt="不同数据集" title="">                </div>                <div class="image-caption">不同数据集</div>            </figure><h2 id="可视化说明"><a href="#可视化说明" class="headerlink" title="可视化说明"></a>可视化说明</h2><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="/images/ASGNN-RQ5.png" alt="可视化" title="">                </div>                <div class="image-caption">可视化</div>            </figure><h1 id="贡献点"><a href="#贡献点" class="headerlink" title="贡献点"></a>贡献点</h1><ol><li>提出ASGNN，它将用户签到行为视为图，并使用GNN局部方式学习用户行为模式和他们的偏好用于下一个兴趣点推荐。</li><li>设计了一个个性化层级注意力机制捕捉用户长短时偏好，并将它们适应于序列推荐。</li><li>实验结果显示ASGNN超过基线和部分SOTA模型。</li></ol><h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p><a href="https://github.com/HduDBSI/ASGNN" target="_blank" rel="noopener">https://github.com/HduDBSI/ASGNN</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;img src=&quot;/images/ASGNN-1.png&quot; width=&quot;300&quot; height=&quot;180&quot; style=&quot;float:right;&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;　　&lt;strong&gt;Attentive sequential model based on graph neuralnetwork for next poi recommendation&lt;/strong&gt;&lt;br&gt;　　基于图神经网络的注意力序列模型用于下一个兴趣点推荐&lt;br&gt;&lt;br&gt;&lt;br&gt; &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="论文" scheme="https://hubojing.github.io/categories/%E8%AE%BA%E6%96%87/"/>
+    
+    
+      <category term="推荐算法" scheme="https://hubojing.github.io/tags/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="兴趣点推荐" scheme="https://hubojing.github.io/tags/%E5%85%B4%E8%B6%A3%E7%82%B9%E6%8E%A8%E8%8D%90/"/>
+    
+      <category term="图神经网络" scheme="https://hubojing.github.io/tags/%E5%9B%BE%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="注意力机制" scheme="https://hubojing.github.io/tags/%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6/"/>
+    
+      <category term="ASGNN" scheme="https://hubojing.github.io/tags/ASGNN/"/>
+    
+  </entry>
   
   <entry>
     <title>STAN</title>
@@ -477,30 +507,6 @@
     
     
       <category term="推荐算法" scheme="https://hubojing.github.io/tags/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【Paper】Factorization Machines</title>
-    <link href="https://hubojing.github.io/2020/12/09/%E3%80%90Paper%E3%80%91Factorization%20Machines/"/>
-    <id>https://hubojing.github.io/2020/12/09/【Paper】Factorization Machines/</id>
-    <published>2020-12-09T03:18:31.000Z</published>
-    <updated>2020-12-14T12:08:40.000Z</updated>
-    
-    <content type="html"><![CDATA[<div align="left"><br><img src="\images\Paper-FM-feature_x.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>FM算法原文。</strong><br><br><br> </div><a id="more"></a><h1 id="论文背景"><a href="#论文背景" class="headerlink" title="论文背景"></a>论文背景</h1><p>　　2010 IEEE International Conference on Data Mining<br>　　Steffen Rendle<br>　　Department of Reasoning for Intelligence<br>　　The Institute of Scientific and Industrial Research Osaka University, Japan<br>    谷歌学术被引用次数1396（截至2020年12月14日）<br>　　论文关键词：factorization machine; sparse data; tensor factorization; support vector machine<br>　　<a href="https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=5694074" target="_blank" rel="noopener">PDF</a></p><h1 id="Introduction-引言"><a href="#Introduction-引言" class="headerlink" title="Introduction 引言"></a>Introduction 引言</h1><p>　　FM优点：<br>　1. FM能在很稀疏的数据上进行参数估计，但SVM不行。<br>　2. FM是线性复杂度，不需要类似于SVM中的支持向量。<br>　3. FM是通用预测方法，适用于任何特征向量。其它的因子分解方法都受限于特定的输入。（对比biased MF, SVD++, PITF和FPMC）</p><h1 id="Prediction-under-sparsity-稀疏情况下的预测"><a href="#Prediction-under-sparsity-稀疏情况下的预测" class="headerlink" title="Prediction under sparsity 稀疏情况下的预测"></a>Prediction under sparsity 稀疏情况下的预测</h1><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="\images\Paper-FM-feature_x.png" alt="feature x" title="">                </div>                <div class="image-caption">feature x</div>            </figure><h1 id="Factorization-machines-FM-因子分解机"><a href="#Factorization-machines-FM-因子分解机" class="headerlink" title="Factorization machines(FM) 因子分解机"></a>Factorization machines(FM) 因子分解机</h1><h2 id="Factorization-machine-model-因子分解机模型"><a href="#Factorization-machine-model-因子分解机模型" class="headerlink" title="Factorization machine model 因子分解机模型"></a>Factorization machine model 因子分解机模型</h2><p>　　degree d = 2<br>$$\hat{y}(x):=w_0 + \sum_{i=1}^nw_ix_i + \sum_{i=1}^n\sum_{j=i+1}^n&lt;v_i,v_j&gt;x_ix_j$$<br>　　其中$w_0∈R$，$w∈R^n$,$V∈R^{n×k}$，&lt;·,·&gt;表示点乘。<br>$$&lt;v_i,v_j&gt;:=\sum_{f=1}^kv_{i,f}·v_{j,f}$$<br>　　V中的$v_i$描述k个因素中的第i个变量。$Ks∈N_0^+$是定义因子分解的维度的超参数。<br>　　2-way FM捕捉所有变量的单个和成对交互：<br>　　$w_0$是全局偏置，$w_i$模拟了第i个变量的程度。<br>　　$\hat{w}_{i,j}:=&lt;v_i, v_j&gt;$模拟了第i和第j个变量间的交互。这个在高阶交互时（d &gt; 2）高质量估计的关键。<br>　　时间复杂度O($kn^2$)，因为所有的交互对都要被计算。但可以变形使之化为O(kn)。</p><h2 id="Factorization-machines-as-predictors-FM作为预测器"><a href="#Factorization-machines-as-predictors-FM作为预测器" class="headerlink" title="Factorization machines as predictors FM作为预测器"></a>Factorization machines as predictors FM作为预测器</h2><p>　　可用于回归、二分类和排序问题。</p><h2 id="Learning-factorization-machines-FM学习策略"><a href="#Learning-factorization-machines-FM学习策略" class="headerlink" title="Learning factorization machines FM学习策略"></a>Learning factorization machines FM学习策略</h2><p>　　使用随机梯度下降（SGD）来学习。</p><h2 id="d-way-factorization-machine-多维FM"><a href="#d-way-factorization-machine-多维FM" class="headerlink" title="d-way factorization machine 多维FM"></a>d-way factorization machine 多维FM</h2><p>　　同时2-way FM可以拓展为d-way。</p><h2 id="Summary-总结"><a href="#Summary-总结" class="headerlink" title="Summary 总结"></a>Summary 总结</h2><p>　　FM优点：<br>　　1. 在高稀疏下可估计特征交互，尤其是不可观测的交互。<br>　　2. 预测和学习的时间复杂度是线性的。使SGD优化可行，并允许多种损失函数优化。</p><h1 id="FMs-vs-SVMs-因子分解机对比支持向量机"><a href="#FMs-vs-SVMs-因子分解机对比支持向量机" class="headerlink" title="FMs vs. SVMs 因子分解机对比支持向量机"></a>FMs vs. SVMs 因子分解机对比支持向量机</h1><h2 id="SVM-model-支持向量机模型"><a href="#SVM-model-支持向量机模型" class="headerlink" title="SVM model 支持向量机模型"></a>SVM model 支持向量机模型</h2><p>　　SVM等式$$\hat{y}(x) = &lt;\Phi(x), w&gt;$$<br>　　其中$\Phi$是从空间$R^n$到F的映射。$\Phi$和下式的核相关：<br>$$K:R^n × R^n → R, K(x, z) = &lt;\Phi(x), \Phi(z)&gt;$$<br>1) 线性核<br>　　$K_l(x, z) = 1 + &lt;x, z&gt;$，对应$\Phi(x) := (1, x_1, … , x_n)$<br>　　SVM等式为<br>$$\hat{y}(x) = w_0 + \sum^n_{i=1}w_ix_i, w_0∈R, w∈R^n$$<br>　　这等价于FM中d = 1的情况。</p><p>2) 多项式核<br>　　多项式核使SVM能模拟变量间的高阶交互。<br>$K(x, z) := (&lt;x, z&gt; + 1)^d$，对于d = 2有<br>$\Phi(x) := (1, \sqrt{2}x_1, … , \sqrt{2}x_n, x_1^2, … , x_n^2, \sqrt{2} x_1x_2, … , \sqrt{2}x_1x_n, \sqrt{2}x_2x_3, … , \sqrt{2}x_{n-1}x_n$<br>　　SVM等式为<br>$$\hat{y}(x) = w_0 + \sqrt{2}\sum^n_{i=1}w_ix_i + \sum^n_{i = 1}w_{i,i}^{(2)}x_i^2 + \sqrt{2}\sum^n_{i=1}\sum^n_{j=i+1}w_{i,j}^{(2)}x_ix_j$$<br>　　其中$w_0∈R, w∈R^n, w^(2)∈R^{n×n}$。<br>　　d = 2时，FM和SVM的区别在于SVM中$w_{i,j}$是完全独立的，而FM中参数是因子分解的，所以$&lt;v_i, v_j&gt;$依赖于彼此。</p><h2 id="Parameter-Estimation-Under-Sparsity-在稀疏情况下的参数估计"><a href="#Parameter-Estimation-Under-Sparsity-在稀疏情况下的参数估计" class="headerlink" title="Parameter Estimation Under Sparsity 在稀疏情况下的参数估计"></a>Parameter Estimation Under Sparsity 在稀疏情况下的参数估计</h2><p>　　举例：使用协同过滤（上图中蓝色和红色部分数据）。<br>1) 线性SVM<br>$$\hat{y}(x) = w_0 + w_u + w_i$$<br>　　只有j = u 或 j = i时$x_j$ = 1，即只有用户和物品偏好被选中时才有用。由于模型简单，在稀疏情况也能进不错的参数估计，但预测质量低。<br>2) 多项式SVM<br>$$\hat{y}(x) = w_0 + \sqrt{2}(w_u + w_i) + w_{u,u}^{(2)} +  w_{i,i}^{(2)} + \sqrt{2}w_{u,i}^{(2)}$$<br>　　$w_u$和$w_{u,u}^{(2)}$是一样的。该等式除了一个额外的$w_{u,i}$，等价于线性SVM。在训练集中，对于每一个$w_{u,i}$最多只有一条记录，在测试集中通常没有。因此，2-way的SVM效果也不比线性SVM好。</p><h2 id="Summary-总结-1"><a href="#Summary-总结-1" class="headerlink" title="Summary 总结"></a>Summary 总结</h2><p>1) SVM需要直接观测交互数据，但稀疏数据集经常没有。FM参数可以在系数情况下进行不错的参数估计。<br>2) FM可以一开始就直接学习，但非线性SVM需要成对学习。<br>3) FM是独立于训练集的，SVM的预测是基于部分训练数据的。</p><h1 id="FMs-VS-Other-Factorization-Models-其它因子分解方法对比"><a href="#FMs-VS-Other-Factorization-Models-其它因子分解方法对比" class="headerlink" title="FMs VS. Other Factorization Models 其它因子分解方法对比"></a>FMs VS. Other Factorization Models 其它因子分解方法对比</h1><p>　　改写FM公式形式，分别与Matrix and Tensor Factorization矩阵和张量分解、SVD++、PITF for Tag Recommendation、Factorized Personalized Markov Chains(FPMC)方法对比，FM改写后性能与这些方法实现效果类似。</p><h2 id="Summary-总结-2"><a href="#Summary-总结-2" class="headerlink" title="Summary 总结"></a>Summary 总结</h2><p>1) 标准因子分解模型（比如PARAFAC或者MF）不像FM一样是通用预测模型。<br>2) 修改特征提取部分，FM可以模拟在特定任务下的成功模型（比如MF,PARAFAC,SVD++,PITF,FPMC)。</p><h1 id="Conclusion-and-Future-Work-总结和展望"><a href="#Conclusion-and-Future-Work-总结和展望" class="headerlink" title="Conclusion and Future Work 总结和展望"></a>Conclusion and Future Work 总结和展望</h1><p>　　与SVM对比，<br>1) 在数据稀疏情况下，FM可以进行参数估计。<br>2) 模型时间复杂度是线性的，并且只依赖于模型参数。<br>3) 从最开始就能直接优化。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;img src=&quot;\images\Paper-FM-feature_x.png&quot; width=&quot;300&quot; height=&quot;180&quot; style=&quot;float:right;&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;　　&lt;strong&gt;FM算法原文。&lt;/strong&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt; &lt;/div&gt;
-    
-    </summary>
-    
-      <category term="论文" scheme="https://hubojing.github.io/categories/%E8%AE%BA%E6%96%87/"/>
-    
-    
-      <category term="推荐算法" scheme="https://hubojing.github.io/tags/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/"/>
-    
-      <category term="FM" scheme="https://hubojing.github.io/tags/FM/"/>
     
   </entry>
   

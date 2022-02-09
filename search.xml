@@ -4,6 +4,123 @@
   
     
     <entry>
+      <title><![CDATA[ASGNN]]></title>
+      <url>https://hubojing.github.io/2022/01/29/Paper_ASGNN/</url>
+      <content type="html"><![CDATA[<div align="left"><br><img src="/images/ASGNN-1.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>Attentive sequential model based on graph neuralnetwork for next poi recommendation</strong><br>　　基于图神经网络的注意力序列模型用于下一个兴趣点推荐<br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="论文背景"><a href="#论文背景" class="headerlink" title="论文背景"></a>论文背景</h1><p>　　Attentive sequential model based on graph neuralnetwork for next poi recommendation<br>　　基于图神经网络的注意力序列模型用于下一个兴趣点推荐<br>　　WWW21<br><a href="https://link.springer.com/content/pdf/10.1007/s11280-021-00961-9.pdf" target="_blank" rel="noopener">PDF</a><br>　　关键词：推荐系统、序列推荐、兴趣点推荐、图神经网络、注意力机制</p>
+<h1 id="现有问题"><a href="#现有问题" class="headerlink" title="现有问题"></a>现有问题</h1><p>　　传统推荐方法忽略了用户短时偏好的动态变化。另外，许多现有方法不能完全探索兴趣点签到序列中复杂的联系和转变形式。</p>
+<h1 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h1><p>　　提出ASGNN。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/ASGNN-1.png" alt="架构" title="">
+                </div>
+                <div class="image-caption">架构</div>
+            </figure><br>　　ASGNN包括四部分：兴趣点签到序列图构建、特征表示学习、长短时偏好获取、兴趣点推荐</p>
+<h2 id="兴趣点签到序列图构建"><a href="#兴趣点签到序列图构建" class="headerlink" title="兴趣点签到序列图构建"></a>兴趣点签到序列图构建</h2><p>　　G(V, E), V = (U, L)，U是用户集，L是兴趣点集。E包括用户-兴趣点边和兴趣点-兴趣点边。<br>　　图中边的权重代表用户在兴趣点的签到次数。</p>
+<h2 id="特征表示学习"><a href="#特征表示学习" class="headerlink" title="特征表示学习"></a>特征表示学习</h2><p>　　图构建好后，使用GNN学习到用户和兴趣点的低维表示。这避免了马尔科夫决策过程需要的大量状态。<br>　　为了提高效率更新节点，使用了GGNN。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/ASGNN-3.png" alt="矩阵表示" title="">
+                </div>
+                <div class="image-caption">矩阵表示</div>
+            </figure></p>
+<h2 id="长短时偏好获取"><a href="#长短时偏好获取" class="headerlink" title="长短时偏好获取"></a>长短时偏好获取</h2><p>　　设计了两层注意力机制分别捕获长短时用户偏好。</p>
+<h2 id="兴趣点推荐"><a href="#兴趣点推荐" class="headerlink" title="兴趣点推荐"></a>兴趣点推荐</h2><p>　　上一步得到的个性化用户偏好参数和兴趣点特征点乘，得到每个兴趣点分数，通过softmax标准化输出概率值。<br>　　训练的损失函数为交叉熵函数。</p>
+<h1 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h1><p>　　围绕下列问题展开：</p>
+<ul>
+<li>ASGNN在序列兴趣点推荐任务上性能如何（基线对比）</li>
+<li>ASGNN的关键组件效果如何（组件实验）</li>
+<li>ASGNN的嵌入维度对推荐的影响（维度分析）</li>
+<li>ASGNN和基线在不同稀疏性的数据集上的性能如何（数据稀疏性影响）</li>
+<li>ASGNN学习兴趣点嵌入是否有效（可视化说明）</li>
+</ul>
+<h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><p>　　Gowalla, FourSquare, Brightkite<br><a href="https://snap.stanford.edu/data/loc-gowalla.html" target="_blank" rel="noopener">https://snap.stanford.edu/data/loc-gowalla.html</a><br><a href="https://sites.google.com/site/yangdingqi/home/foursquare-dataset" target="_blank" rel="noopener">https://sites.google.com/site/yangdingqi/home/foursquare-dataset</a><br><a href="https://snap.stanford.edu/data/loc-brightkite.html" target="_blank" rel="noopener">https://snap.stanford.edu/data/loc-brightkite.html</a><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/ASGNN-2.png" alt="数据集" title="">
+                </div>
+                <div class="image-caption">数据集</div>
+            </figure></p>
+<h2 id="基线"><a href="#基线" class="headerlink" title="基线"></a>基线</h2><ul>
+<li>POP</li>
+<li>BPR</li>
+<li>FPMC</li>
+<li>HRM</li>
+<li>CPAM</li>
+<li>SHAN</li>
+<li>SRGNN<h2 id="评测指标"><a href="#评测指标" class="headerlink" title="评测指标"></a>评测指标</h2></li>
+<li>召回率Recall</li>
+<li>MRR</li>
+</ul>
+<h2 id="基线对比"><a href="#基线对比" class="headerlink" title="基线对比"></a>基线对比</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/ASGNN-RQ1.png" alt="性能" title="">
+                </div>
+                <div class="image-caption">性能</div>
+            </figure>
+<h2 id="组件实验"><a href="#组件实验" class="headerlink" title="组件实验"></a>组件实验</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/ASGNN-RQ2.png" alt="组件分析" title="">
+                </div>
+                <div class="image-caption">组件分析</div>
+            </figure>
+<h2 id="维度分析"><a href="#维度分析" class="headerlink" title="维度分析"></a>维度分析</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/ASGNN-RQ3.png" alt="维度分析" title="">
+                </div>
+                <div class="image-caption">维度分析</div>
+            </figure>
+<h2 id="数据稀疏性影响"><a href="#数据稀疏性影响" class="headerlink" title="数据稀疏性影响"></a>数据稀疏性影响</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/ASGNN-RQ4.png" alt="不同数据集" title="">
+                </div>
+                <div class="image-caption">不同数据集</div>
+            </figure>
+<h2 id="可视化说明"><a href="#可视化说明" class="headerlink" title="可视化说明"></a>可视化说明</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/ASGNN-RQ5.png" alt="可视化" title="">
+                </div>
+                <div class="image-caption">可视化</div>
+            </figure>
+<h1 id="贡献点"><a href="#贡献点" class="headerlink" title="贡献点"></a>贡献点</h1><ol>
+<li>提出ASGNN，它将用户签到行为视为图，并使用GNN局部方式学习用户行为模式和他们的偏好用于下一个兴趣点推荐。</li>
+<li>设计了一个个性化层级注意力机制捕捉用户长短时偏好，并将它们适应于序列推荐。</li>
+<li>实验结果显示ASGNN超过基线和部分SOTA模型。</li>
+</ol>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p><a href="https://github.com/HduDBSI/ASGNN" target="_blank" rel="noopener">https://github.com/HduDBSI/ASGNN</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 论文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 推荐算法 </tag>
+            
+            <tag> 兴趣点推荐 </tag>
+            
+            <tag> 图神经网络 </tag>
+            
+            <tag> 注意力机制 </tag>
+            
+            <tag> ASGNN </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[STAN]]></title>
       <url>https://hubojing.github.io/2022/01/24/Paper_STAN/</url>
       <content type="html"><![CDATA[<div align="left"><br><img src="\images\STAN-2.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>STAN: Spatio-Temporal Attention Network for Next Location Recommendation</strong><br>　　STAN：基于时空注意力网络的下一个兴趣点推荐<br><br><br> </div>
@@ -2585,9 +2702,9 @@
         
         <tags>
             
-            <tag> 论文笔记 </tag>
-            
             <tag> 注意力机制 </tag>
+            
+            <tag> 论文笔记 </tag>
             
         </tags>
         
