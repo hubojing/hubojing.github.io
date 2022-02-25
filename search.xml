@@ -4,6 +4,109 @@
   
     
     <entry>
+      <title><![CDATA[LSTPM]]></title>
+      <url>https://hubojing.github.io/2022/02/25/Paper_LSTPM/</url>
+      <content type="html"><![CDATA[<p><div align="left"><br><img src="/images/LSTPM架构.png" width="300" height="180" style="float:right;"></div></p>
+<p>　　<strong>Where to Go Next: Modeling Long- and Short-Term User Preferences for Point-of-Interest Recommendation</strong><br>　　下一步去哪儿：用户长短期偏好建模用于兴趣点推荐</p>
+<p><br><a id="more"></a></p>
+<h1 id="论文背景"><a href="#论文背景" class="headerlink" title="论文背景"></a>论文背景</h1><p>　　Where to Go Next: Modeling Long- and Short-Term User Preferences for Point-of-Interest Recommendation<br>　　下一步去哪儿：用户长短期偏好建模用于兴趣点推荐<br>　　AAAI 2020<br>　　<a href="https://ojs.aaai.org/index.php/AAAI/article/view/5353" target="_blank" rel="noopener">PDF</a><br>　　<a href="https://github.com/NLPWM-WHU/LSTPM" target="_blank" rel="noopener">CODE</a></p>
+<h1 id="问题提出"><a href="#问题提出" class="headerlink" title="问题提出"></a>问题提出</h1><p>　　现有的基于RNN的方法在对用户的短期偏好建模时，要么忽略了用户的长期偏好，要么忽略了最近访问的兴趣点之间的地理关系，从而使得推荐结果不可靠。（所有基于RNN/LSTM的短期偏好建模方法都存在不能对两个非连续兴趣点之间的关系建模的缺点。）<br>　　为此，提出LSTPM（Long- and Short-Term Preference Modeling）架构。</p>
+<h1 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h1><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/LSTPM架构.png" alt="架构" title="">
+                </div>
+                <div class="image-caption">架构</div>
+            </figure>
+<p>　　它包含三个部分：长期偏好建模、短期偏好建模和预测模块。</p>
+<h2 id="长期偏好建模"><a href="#长期偏好建模" class="headerlink" title="长期偏好建模"></a>长期偏好建模</h2><p>　　核心：使用非局部神经操作（nonlocal neural operation）建模长期偏好。<br>　　以前的做法是直接用LSTM建模签到序列，但是对时间戳的认识不够深。比如人们会在中午时间去餐馆，在晚上去酒吧。所以本文提出了融合时间戳去捕捉时间敏感的属性。论文将一周分成48个段slot（24个工作日段和24个周末段）。计算每两个时间段之间用户签到的兴趣点集合相似性。重合的兴趣点越多，相似性越高。<br>　　所以历史签到轨迹就可以用这些时间段的兴趣点来表示，从而可以给这些时间段加权重。时间越近影响越大。<br>　　同时，地理方面计算了各轨迹的中心，计算中心与最近轨迹相似度，得出距离加权公式。</p>
+<p>　　<strong>关键理解</strong>：非局部神经操作是什么意思呢？<br>　　这个基本想法来自计算机视觉任务，论文<a href="https://arxiv.org/pdf/1711.07971v1.pdf" target="_blank" rel="noopener">Non-local Neural Networks</a>它主张在输入信号的每一个位置的表示都通过全部位置的特征加权求和来对非局部的、长范围的依赖进行建模。<br>$$y_i = \frac{1}{C(x)}\sum{_{\forall j}f(x_i, x_j)g(x_j)}$$<br>　　<code>f</code>用来度量输出位置和周围其他位置的尺度（例如相似度），<code>g</code>是在位置j对于输入信号的表示（如卷积操作）。对于non-local behaiver来说，上式中的<code>j</code>是取遍所有可能的邻居，而对于local操作，如3*3的卷积来说，<code>j</code>只是取了周围8个像素点。<br>　　所以这里借鉴这个思想，将每个轨迹S都和历史轨迹和当前轨迹进行了分数计算，并除以标准化因素（全部特征求和）。</p>
+<h2 id="短期偏好建模"><a href="#短期偏好建模" class="headerlink" title="短期偏好建模"></a>短期偏好建模</h2><p>　　核心：使用联合方式的地理扩张LSTM建模短期偏好。<br>　　RNN本身只能用于序列建模，所以有人提出了跳步RNN。但是跳步RNN总是事先定义好和固定好的。所以提出geo-dilated LSTM根据地理和时间因素，来自动决定使用哪些相关输入。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/LSTPM架构2.png" alt="geo-dilated LSTM" title="">
+                </div>
+                <div class="image-caption">geo-dilated LSTM</div>
+            </figure><br>　　直观地，我们的地理扩张LSTM首先从当前轨迹中挑选poi作为输入，其具有由地理相关性确定的不同跳跃长度，然后通过扩展LSTM方案学习短期用户偏好。具体的算法论文给出了伪代码。</p>
+<p>　　<strong>关键理解</strong>：那它究竟是怎么自动确定跳跃长度的呢？<br>　　如上图所示，标准的LSTM序列是从l1-&gt;l2-&gt;l3-&gt;l4-&gt;l5。但是加入地理距离后发现，对于l3的前面两个兴趣点l1和l2来说，l1到l3的距离比l1到l2的距离要近，所以留下{l1, l2}路径。依次类推，留下{l1, l2}{l2, l5}路径，也就是两跳。所以，将LSTM设计为两跳。</p>
+<p>　　最后的表示，是标准LSTM和geo-dilated LSTM的平均向量。</p>
+<h2 id="预测"><a href="#预测" class="headerlink" title="预测"></a>预测</h2><p>　　将长短期偏好联结起来，设置一个W全部兴趣点的可训练投影矩阵参数。预测的是下一个时间段t内目标用户最可能访问的兴趣点。损失函数是负对数似然函数。</p>
+<h1 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h1><h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><p>　　Foursqure, Gowalla</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/LSTPM_datasets.png" alt="数据集" title="">
+                </div>
+                <div class="image-caption">数据集</div>
+            </figure>
+<h2 id="基线"><a href="#基线" class="headerlink" title="基线"></a>基线</h2><ul>
+<li>LSTM</li>
+<li>Time-LSTM</li>
+<li>ST-RNN</li>
+<li>TMCA</li>
+<li>CARA</li>
+<li>DCRF</li>
+<li>DeepMove</li>
+<li>STGN<h2 id="评价指标"><a href="#评价指标" class="headerlink" title="评价指标"></a>评价指标</h2></li>
+<li>召回率Recall</li>
+<li>NDCG</li>
+</ul>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><h3 id="基线对比"><a href="#基线对比" class="headerlink" title="基线对比"></a>基线对比</h3><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/LSTPM性能.png" alt="性能" title="">
+                </div>
+                <div class="image-caption">性能</div>
+            </figure>
+<h3 id="消融实验"><a href="#消融实验" class="headerlink" title="消融实验"></a>消融实验</h3><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/LSTPM自身对比.png" alt="消融实验" title="">
+                </div>
+                <div class="image-caption">消融实验</div>
+            </figure>
+<h3 id="参数分析"><a href="#参数分析" class="headerlink" title="参数分析"></a>参数分析</h3><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/LSTPM参数分析.png" alt="参数分析" title="">
+                </div>
+                <div class="image-caption">参数分析</div>
+            </figure>
+<h3 id="跳数自动化"><a href="#跳数自动化" class="headerlink" title="跳数自动化"></a>跳数自动化</h3><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/LSTPM_LSTM对比.png" alt="LSTM对比" title="">
+                </div>
+                <div class="image-caption">LSTM对比</div>
+            </figure>
+<h1 id="贡献点"><a href="#贡献点" class="headerlink" title="贡献点"></a>贡献点</h1><ol>
+<li>提出LSTPM框架解决上述存在的问题。</li>
+<li>LSTPM受非局部操作（nonlocal operations）和dilated RNNs的启发，在构建长期偏好时，设计了非局部操作网络结构来探索历史和最近轨迹的时空联系。在克服RNN在短期用户偏好建模的限制时，提出geo-dilated RNN来全面探索非连续兴趣点间的地理联系。</li>
+<li>在真实世界数据集上效果超过SOTA模型。</li>
+</ol>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://blog.csdn.net/py184473894/article/details/85322937" target="_blank" rel="noopener">https://blog.csdn.net/py184473894/article/details/85322937</a><br><a href="https://zhuanlan.zhihu.com/p/85776086" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/85776086</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 论文 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 兴趣点推荐 </tag>
+            
+            <tag> LSTPM </tag>
+            
+            <tag> Non-local Neural Networks </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[ASGNN]]></title>
       <url>https://hubojing.github.io/2022/01/29/Paper_ASGNN/</url>
       <content type="html"><![CDATA[<div align="left"><br><img src="/images/ASGNN-1.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>Attentive sequential model based on graph neuralnetwork for next poi recommendation</strong><br>　　基于图神经网络的注意力序列模型用于下一个兴趣点推荐<br><br><br> </div>
