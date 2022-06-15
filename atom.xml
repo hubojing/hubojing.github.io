@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://hubojing.github.io/"/>
-  <updated>2022-06-11T11:19:36.805Z</updated>
+  <updated>2022-06-15T09:06:01.591Z</updated>
   <id>https://hubojing.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>《推荐系统：原理与实践》笔记</title>
+    <link href="https://hubojing.github.io/2022/06/15/%E3%80%8A%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%EF%BC%9A%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E8%B7%B5%E3%80%8B%E7%AC%94%E8%AE%B0/"/>
+    <id>https://hubojing.github.io/2022/06/15/《推荐系统：原理与实践》笔记/</id>
+    <published>2022-06-15T02:41:55.000Z</published>
+    <updated>2022-06-15T09:06:01.591Z</updated>
+    
+    <content type="html"><![CDATA[<div align="left"><br><img src="\images\假装有图片.jpg" width="300" height="180" style="float:right;"><br><br><br>　　<strong>砖头书笔记（自用）</strong><br><br><br> </div><a id="more"></a><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>　　有几本砖头书在图书馆里我不断续借，网上又没有PDF，现在要毕业了，只有勉强把它看完了……</p><h1 id="高级论问题和应用"><a href="#高级论问题和应用" class="headerlink" title="高级论问题和应用"></a>高级论问题和应用</h1><ul><li>推荐系统中的冷启动问题<br>太常见不说了。</li><li>抗攻击推荐系统<br>只要指恶意评论。</li><li>组推荐系统<br>针对一组用户推荐，而不是单一用户。</li><li>多标准推荐系统<br>如，用户可以给予情节、音乐、特效等对电影进行评分。在多标准推荐系统中，用户可能根本没有给出整体评分。</li><li>推荐系统中的主动学习<br>鼓励用户输入评分以完善系统的机制。例如，用户可能会为某些物品评分获得奖励。因此，必须明智地选择由特定用户进行评分的物品。如，某用户已评价大量动作片，那么要求该用户去评价另一部动作电影对预测其他的动作电影评分帮助不大，并且对预测属于无关种类的电影评分的帮助甚至更少。另一方面，要求用户评价不太热门种类的电影将对预测这种类型的电影评分有显著帮助。当然，如果用户被要求评价无关的电影，他不一定能够提供反馈，因为他可能根本没有看过那部电影。<strong>（此处举例我存疑）</strong>因此，在推荐系统的主动学习问题中有许多在其他问题领域（如分类问题）没有遇到的有趣权衡问题。</li><li>推荐系统中的隐私问题</li><li>保护隐私的推荐算法。</li><li>应用领域</li></ul><h1 id="推荐系统评估"><a href="#推荐系统评估" class="headerlink" title="推荐系统评估"></a>推荐系统评估</h1><h2 id="评估设计的总体目标"><a href="#评估设计的总体目标" class="headerlink" title="评估设计的总体目标"></a>评估设计的总体目标</h2><ul><li>精确性</li><li>覆盖率</li><li>置信度和信任度</li><li>新颖度</li><li>惊喜度</li><li>多样性</li><li>健壮性和稳定性</li><li>可扩展性<h2 id="离线评估的精确性指标"><a href="#离线评估的精确性指标" class="headerlink" title="离线评估的精确性指标"></a>离线评估的精确性指标</h2><h3 id="独立预测评分的精确性"><a href="#独立预测评分的精确性" class="headerlink" title="独立预测评分的精确性"></a>独立预测评分的精确性</h3>　　RMSE, MAE<br>　　RMSE计算时用的是误差的平方，所以它更加显著地被大的误差值或者异常值所影响。一些被预测失败的评分会显著地破坏RMSE方法。在各种评分的预测健壮性非常重要的应用中，RMSE可能是一个更加合适的方法。另一方面，当评估的异常值有限时，MAE能更好地反映精确性。RMSE主要的问题是它不是平均误差的真实反映，而且它又是会导致有误导的结果。<h3 id="通过相关性评估排名"><a href="#通过相关性评估排名" class="headerlink" title="通过相关性评估排名"></a>通过相关性评估排名</h3></li><li>Spearman等级相关系数</li><li>肯德尔等级相关系数<h3 id="通过效用评估排名"><a href="#通过效用评估排名" class="headerlink" title="通过效用评估排名"></a>通过效用评估排名</h3>　　基于效用方法的总体目标就是给出用户可能找到推荐系统排名的有用程度的简单量化。这种方法下隐含的一个重要准则就是相对于物品的总量而言，推荐列表是简短的。因此一个具体评分的效用大部分情况下应该基于在推荐列表中相关性高的物品。这种情况下，RMSE指标有一个缺点，因为它对低排名物品和那些高排名物品赋予了同样的权重。</li></ul><p>　　NDCG, ARHR（平均逆命中率）<br>　　ARHR也被称作是平均倒数排名（MRR）</p><h3 id="通过ROC曲线评估排名"><a href="#通过ROC曲线评估排名" class="headerlink" title="通过ROC曲线评估排名"></a>通过ROC曲线评估排名</h3><h1 id="抵抗攻击的推荐系统"><a href="#抵抗攻击的推荐系统" class="headerlink" title="抵抗攻击的推荐系统"></a>抵抗攻击的推荐系统</h1><h2 id="攻击类型"><a href="#攻击类型" class="headerlink" title="攻击类型"></a>攻击类型</h2><ul><li>随机攻击</li><li>均值攻击</li><li>bandwagon攻击</li><li>流行攻击</li><li>爱/憎攻击</li><li>反向bandwagon攻击</li><li>探测攻击</li><li>分段攻击<h2 id="健壮推荐设计策略"><a href="#健壮推荐设计策略" class="headerlink" title="健壮推荐设计策略"></a>健壮推荐设计策略</h2></li><li>用CAPTCHA防止自动攻击</li><li>使用社会信任</li><li>设计健壮的推荐算法</li></ul><h1 id="排名学习"><a href="#排名学习" class="headerlink" title="排名学习"></a>排名学习</h1><p>　　pointwise<br>　　pairwise: BPR, Eigen Rank, pLPA, CR<br>　　listwise: NDCG, MRR</p><h1 id="多臂赌博机算法"><a href="#多臂赌博机算法" class="headerlink" title="多臂赌博机算法"></a>多臂赌博机算法</h1><h1 id="组推荐系统"><a href="#组推荐系统" class="headerlink" title="组推荐系统"></a>组推荐系统</h1><ul><li>协同和基于内容的系统</li><li>基于知识的系统<h1 id="多标准推荐系统"><a href="#多标准推荐系统" class="headerlink" title="多标准推荐系统"></a>多标准推荐系统</h1></li><li>基于近邻的方法</li><li>基于集成的方法</li><li>无整体评分的多标准系统<h1 id="推荐系统中的主动学习"><a href="#推荐系统中的主动学习" class="headerlink" title="推荐系统中的主动学习"></a>推荐系统中的主动学习</h1></li><li>基于异质性的模型</li><li>基于性能的模型<h1 id="推荐系统中的隐私"><a href="#推荐系统中的隐私" class="headerlink" title="推荐系统中的隐私"></a>推荐系统中的隐私</h1></li><li>基于冷凝的隐私</li><li>高维数据的挑战</li></ul><h1 id="应用领域"><a href="#应用领域" class="headerlink" title="应用领域"></a>应用领域</h1><ul><li>门户内容个性化</li><li>计算广告与推荐系统</li><li>互惠推荐系统<br>　　基本思想是当考虑多个具有不对称兴趣的利益相关人的推荐的效用时，推荐的任务会发生改变。如在线约会的互惠推荐系统。</li></ul><ol><li>用户意识到交易的成功取决于另一方的许可。另一方是互惠环境中的“物品”。</li><li>用户和物品在系统中可能只出现一次，在一次成功的事物后它们可能永远不会重现。冷启动问题在互惠场景中更加显著。<br>　　方法：</li><li>利用混合方法<br>在这些方法中，两个传统的推荐方法被构造出来，分别对应着两个互惠方的喜好。然后，这两个互惠方的预测被组合起来。</li><li>利用链路预测方法<br>当冷启动问题不是很严重或者可以用来自类似用户和物品的数据来增加评分数据时，可以在系统中采用链路预测方法。</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      &lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;img src=&quot;\images\假装有图片.jpg&quot; width=&quot;300&quot; height=&quot;180&quot; style=&quot;float:right;&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;　　&lt;strong&gt;砖头书笔记（自用）&lt;/strong&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt; &lt;/div&gt;
+    
+    </summary>
+    
+      <category term="推荐系统" scheme="https://hubojing.github.io/categories/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/"/>
+    
+    
+      <category term="推荐算法" scheme="https://hubojing.github.io/tags/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
   
   <entry>
     <title>2022年最新教程！Hexo + GitLab搭建个人博客详细教程</title>
@@ -485,28 +507,6 @@
       <category term="ESMM" scheme="https://hubojing.github.io/tags/ESMM/"/>
     
       <category term="推荐算法" scheme="https://hubojing.github.io/tags/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>多机共用一套键鼠方案</title>
-    <link href="https://hubojing.github.io/2021/03/05/%E5%A4%9A%E6%9C%BA%E5%85%B1%E7%94%A8%E4%B8%80%E5%A5%97%E9%94%AE%E9%BC%A0%E6%96%B9%E6%A1%88/"/>
-    <id>https://hubojing.github.io/2021/03/05/多机共用一套键鼠方案/</id>
-    <published>2021-03-05T03:35:43.000Z</published>
-    <updated>2021-03-05T04:33:54.016Z</updated>
-    
-    <content type="html"><![CDATA[<div align="left"><br><img src="\images\假装有图片.jpg" width="300" height="180" style="float:right;"><br><br><br>　　<strong>零成本 半小时内 极速解决问题</strong><br><br><br> </div><a id="more"></a><h1 id="由现实问题引发的思考（可不看）"><a href="#由现实问题引发的思考（可不看）" class="headerlink" title="由现实问题引发的思考（可不看）"></a>由现实问题引发的思考（可不看）</h1><p>　　日常在实验室学习，目前在实验室常用四台设备：台式电脑、笔记本、ipad、手机。</p><p>　　受限：<br>　　1. 台式电脑鼠标坏了。<br>　　2. 笔记本键盘舒适度不如机械键盘。<br>　　3. 实验室桌子小，除了设备还有一堆书籍纸张，已经放置不下更多的键盘鼠标。<br>　　4. 校园网只能同时在线三个设备。<br>　　5. 懒惰（滑稽），不愿意在两个设备间用U盘拷来拷去。</p><p>　　之前的痛：一个鼠标发射器每日从台式主机插拔换到笔记本上，伸手去够笔记本键盘敲，来回反复。</p><p>　　简直了，受够了，买新的键鼠是不可能买的（穷），就一套键鼠在两台电脑中游走还可以勉强办公的样子。</p><h1 id="改造方案"><a href="#改造方案" class="headerlink" title="改造方案"></a>改造方案</h1><p>　　双机下载软件<a href="https://www.microsoft.com/en-us/download/details.aspx?id=35460" target="_blank" rel="noopener">无界鼠标</a>，在副机上填写主机显示的主机名和密码即可。<br>　　<strong>注意：前提是在同一局域网下！</strong><br>　　如果连上了，下文都不用看了！</p><h1 id="可能遇到的问题"><a href="#可能遇到的问题" class="headerlink" title="可能遇到的问题"></a>可能遇到的问题</h1><ul><li>不在同一局域网<br>　　是我遇到的问题没错了，明明两台电脑都连的校园wifi啊，它怎么连不上呢？遂查看各自ip。怎么是公网ip…</li></ul><p>　　<strong>解决方案：用一台电脑给另一台开热点，即可保证在同一网络内。</strong></p><p>　　引申问题：<br>　　1. 台式如何连wifi？<br>　　解决方案：买个无线网卡。</p><p>　　2. 老旧电脑连不上5G频段wifi？<br>　　又是我遇到的问题没错了。<br>　　网上有方法说更改网络属性-配置-适配器设置-高级，更改信道到1~11，可以解决。但我没成功。主要原因是我可怜的2013年买的笔记本，不配5G wifi，压根就没有首选频段设置。只能曲线救国了，用笔记本给台式开热点，委屈台式连2.4G wifi了。</p><h1 id="改造后"><a href="#改造后" class="headerlink" title="改造后"></a>改造后</h1><p>　　懒人表示极其舒适…<br>　　不仅一套键鼠用两台设备，鼠标键盘自动跨屏，还可以在两台设备间自由拷贝文件。<br>　　手机和ipad也刚好能连上校园网了。<br>　　还省了一套键鼠的钱…</p><p>　　嗯，懒是程序员的第一生产力。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;div align=&quot;left&quot;&gt;&lt;br&gt;&lt;img src=&quot;\images\假装有图片.jpg&quot; width=&quot;300&quot; height=&quot;180&quot; style=&quot;float:right;&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;　　&lt;strong&gt;零成本 半小时内 极速解决问题&lt;/strong&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt; &lt;/div&gt;
-    
-    </summary>
-    
-      <category term="数码" scheme="https://hubojing.github.io/categories/%E6%95%B0%E7%A0%81/"/>
-    
-    
-      <category term="多机协作" scheme="https://hubojing.github.io/tags/%E5%A4%9A%E6%9C%BA%E5%8D%8F%E4%BD%9C/"/>
     
   </entry>
   
