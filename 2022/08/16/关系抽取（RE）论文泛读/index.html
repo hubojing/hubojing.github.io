@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://hubojing.github.io//2022/08/16/关系抽取（RE）论文泛读/">
+    
+    
+    <title>关系抽取（RE）论文泛读 | 靖待的技术博客 | 小清新IT旅程 | 为中华之崛起而读书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="关系抽取,RE">
+    <meta name="description" content="论文泛读不定期更新。">
+<meta name="keywords" content="关系抽取,RE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关系抽取（RE）论文泛读">
+<meta property="og:url" content="https://hubojing.github.io/2022/08/16/关系抽取（RE）论文泛读/index.html">
+<meta property="og:site_name" content="靖待的技术博客">
+<meta property="og:description" content="论文泛读不定期更新。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://hubojing.github.io/images/沉醉于知识的芬芳.png">
+<meta property="og:image" content="https://hubojing.github.io/images/KD-DocRE.png">
+<meta property="og:image" content="https://hubojing.github.io/images/PL-Marker.png">
+<meta property="og:image" content="https://hubojing.github.io/images/CRL.png">
+<meta property="og:image" content="https://hubojing.github.io/images/MCMN.png">
+<meta property="og:updated_time" content="2022-08-16T12:22:37.247Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关系抽取（RE）论文泛读">
+<meta name="twitter:description" content="论文泛读不定期更新。">
+<meta name="twitter:image" content="https://hubojing.github.io/images/沉醉于知识的芬芳.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<!--google adsense code-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-2097896583568287",
+    enable_page_level_ads: true
+  });
+</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">靖待</h5>
+          <a href="mailto:hubojing@outlook.com" title="hubojing@outlook.com" class="mail">hubojing@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archive"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hubojing/"  >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/friends"  >
+                <i class="icon icon-lg icon-users"></i>
+                友情链接
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/Chinese"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/comment"  >
+                <i class="icon icon-lg icon-book"></i>
+                留言板
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/littletalk"  >
+                <i class="icon icon-lg icon-edit"></i>
+                自言自语
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://blog.csdn.net/hubojing/"  >
+                <i class="icon icon-lg icon-pencil"></i>
+                CSDN博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/advertising"  >
+                <i class="icon icon-lg icon-link"></i>
+                推广
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes"  >
+                <i class="icon icon-lg icon-qq"></i>
+                和我在线交流
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">关系抽取（RE）论文泛读</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">关系抽取（RE）论文泛读</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2022-08-16T11:37:35.000Z" itemprop="datePublished" class="page-time">
+  2022-08-16
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Document-Level-Relation-Extraction-with-Adaptive-Focal-Loss-and-Knowledge-Distillation"><span class="post-toc-number">1.</span> <span class="post-toc-text">Document-Level Relation Extraction with Adaptive Focal Loss and Knowledge Distillation</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#论文概况"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">论文概况</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#笔记"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">笔记</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Packed-Levitated-Marker-for-Entity-and-Relation-Extraction"><span class="post-toc-number">2.</span> <span class="post-toc-text">Packed Levitated Marker for Entity and Relation Extraction</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#论文概述"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">论文概述</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#笔记-1"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">笔记</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Consistent-Representation-Learning-for-Continual-Relation-Extraction"><span class="post-toc-number">3.</span> <span class="post-toc-text">Consistent Representation Learning for Continual Relation Extraction</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#论文概况-1"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">论文概况</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#笔记-2"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">笔记</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Pre-training-to-Match-for-Unified-Low-shot-Relation-Extraction"><span class="post-toc-number">4.</span> <span class="post-toc-text">Pre-training to Match for Unified Low-shot Relation Extraction</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#论文概况-2"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">论文概况</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#笔记-3"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">笔记</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-关系抽取（RE）论文泛读"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">关系抽取（RE）论文泛读</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2022-08-16 19:37:35" datetime="2022-08-16T11:37:35.000Z"  itemprop="datePublished">2022-08-16</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div align="left"><br><img src="/images/沉醉于知识的芬芳.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>论文泛读不定期更新。</strong><br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="Document-Level-Relation-Extraction-with-Adaptive-Focal-Loss-and-Knowledge-Distillation"><a href="#Document-Level-Relation-Extraction-with-Adaptive-Focal-Loss-and-Knowledge-Distillation" class="headerlink" title="Document-Level Relation Extraction with Adaptive Focal Loss and Knowledge Distillation"></a>Document-Level Relation Extraction with Adaptive Focal Loss and Knowledge Distillation</h1><p>具有自适应焦点损失和知识蒸馏的文档级关系抽取<br>阅读时间：2022-08-15</p>
+<h2 id="论文概况"><a href="#论文概况" class="headerlink" title="论文概况"></a>论文概况</h2><p>ACL 2022<br>阿里达摩院<br>Qingyu Tan, Ruidan He, Lidong Bing, Hwee Tou Ng<br><a href="https://arxiv.org/pdf/2203.10900" target="_blank" rel="noopener">PDF</a><br><a href="https://github.com/tonytan48/KD-DocRE" target="_blank" rel="noopener">CODE</a></p>
+<h2 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h2><p>文档级关系抽取要同时从多个句子中提取关系。本文提出DocRE算法，一个用于文档级别的关系抽取半监督算法，它有三个新组件。第一，用轴向注意力模块学习实体对之间的依赖关系。第二，提出了一个自适应的焦点损失来解决DocRE中类的不平衡问题。最后，利用知识蒸馏来克服人工标注数据与远程监督数据之间的差异。<br>现有问题：现存的方法关注实体对的句法特征，而忽略了实体对之间的交互作用；目前还没有工作可以直接的解决类的不平衡问题。现存的工作仅仅关注阈值学习来平衡正例和负例，但正例内部的类不平衡问题并没有得到解决；关于将远程监督数据应用于DocRE任务的研究很少。<br>贡献点：轴向注意力（提升two-hop关系的推理能力）、自适应焦点损失（解决标签分配不平衡的问题，长尾类在总的损失中占比较多）、知识蒸馏（克服标注数据和远程监督数据之间的差异）<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/KD-DocRE.png" alt="KD-DocRE" title="">
+                </div>
+                <div class="image-caption">KD-DocRE</div>
+            </figure></p>
+<h1 id="Packed-Levitated-Marker-for-Entity-and-Relation-Extraction"><a href="#Packed-Levitated-Marker-for-Entity-and-Relation-Extraction" class="headerlink" title="Packed Levitated Marker for Entity and Relation Extraction"></a>Packed Levitated Marker for Entity and Relation Extraction</h1><p>打包悬浮标记用于实体和关系抽取<br>阅读时间：2022-08-15</p>
+<h2 id="论文概述"><a href="#论文概述" class="headerlink" title="论文概述"></a>论文概述</h2><p>ACL 2022<br>Deming Ye, Yankai Lin, Peng Li, Maosong Sun<br>清华大学与腾讯微信模式识别中心合作<br><a href="https://aclanthology.org/2022.acl-long.337/" target="_blank" rel="noopener">PDF</a><br><a href="https://github.com/thunlp/PL-Marker" target="_blank" rel="noopener">CODE</a></p>
+<h2 id="笔记-1"><a href="#笔记-1" class="headerlink" title="笔记"></a>笔记</h2><p>最近的命名实体识别和关系抽取工作专注于研究如何从预训练模型中获得更好的span表示。然而，许多工作忽略了span之间的相互关系。本文提出了一种基于悬浮标记的span表示方法，在编码过程中通过特定策略打包标记来考虑span之间的相互关系。对于命名实体识别任务，提出了一种面向邻居span的打包策略，以更好地建模实体边界信息。对于关系抽取任务，设计了一种面向头实体的打包策略，将每个头实体以及可能的尾实体打包，以共同建模同头实体的span对。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/PL-Marker.png" alt="PL-Marker" title="">
+                </div>
+                <div class="image-caption">PL-Marker</div>
+            </figure></p>
+<h1 id="Consistent-Representation-Learning-for-Continual-Relation-Extraction"><a href="#Consistent-Representation-Learning-for-Continual-Relation-Extraction" class="headerlink" title="Consistent Representation Learning for Continual Relation Extraction"></a>Consistent Representation Learning for Continual Relation Extraction</h1><p>一致表示学习用于连续关系抽取<br>阅读时间：2022-08-12</p>
+<h2 id="论文概况-1"><a href="#论文概况-1" class="headerlink" title="论文概况"></a>论文概况</h2><p>ACL 2022<br>Kang Zhao, Hua Xu, Jiangong Yang, Kai Gao<br><a href="https://arxiv.org/pdf/2203.02721" target="_blank" rel="noopener">PDF</a><br><a href="https://github.com/thuiar/CRL" target="_blank" rel="noopener">CODE</a></p>
+<h2 id="笔记-2"><a href="#笔记-2" class="headerlink" title="笔记"></a>笔记</h2><p>通过对比学习和回放记忆时的知识蒸馏，提出一种新颖的一致性表示学习方法。使用基于记忆库的监督对比学习来训练每一个新的任务，以使模型高效学习特征表示。为了防止对老任务的遗忘，构造了记忆样本的连续回放，同时让模型保留在知识蒸馏中历史任务之间的关系。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/CRL.png" alt="CRL" title="">
+                </div>
+                <div class="image-caption">CRL</div>
+            </figure></p>
+<h1 id="Pre-training-to-Match-for-Unified-Low-shot-Relation-Extraction"><a href="#Pre-training-to-Match-for-Unified-Low-shot-Relation-Extraction" class="headerlink" title="Pre-training to Match for Unified Low-shot Relation Extraction"></a>Pre-training to Match for Unified Low-shot Relation Extraction</h1><p>预训练用于匹配统一少样本关系抽取<br>阅读时间：2022-08-12</p>
+<h2 id="论文概况-2"><a href="#论文概况-2" class="headerlink" title="论文概况"></a>论文概况</h2><p>ACL 2022<br>Fangchao Liu, Hongyu Lin, Xianpei Han, Boxi Cao, Le Sun<br><a href="https://arxiv.org/pdf/2203.12274" target="_blank" rel="noopener">PDF</a><br><a href="https://github.com/fc-liu/MCMN" target="_blank" rel="noopener">CODE</a></p>
+<h2 id="笔记-3"><a href="#笔记-3" class="headerlink" title="笔记"></a>笔记</h2><p>低样本关系抽取旨在少样本甚至零样本场景下的关系抽取。由于低样本关系抽取所包含任务形式多样，传统方法难以统一处理。本文针对这一问题，提出了一种统一的低样本匹配网络：（1）基于语义提示（prompt）范式，构造了从关系描述到句子实例的匹配网络模型；（2）针对匹配网络模型学习，设计了三元组-复述的预训练方法，以增强模型对关系描述与实例之间语义匹配的泛化性。在零样本、小样本以及带负例的小样本关系抽取评测基准上的实验结果表明，该方法能有效提升低样本场景下关系抽取的性能，并且具备了较好的任务自适应能力。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/MCMN.png" alt="MCMN" title="">
+                </div>
+                <div class="image-caption">MCMN</div>
+            </figure></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2022-08-16T12:22:37.247Z" itemprop="dateUpdated">2022-08-16 20:22:37</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2022/08/16/关系抽取（RE）论文泛读/" target="_blank" rel="external">https://hubojing.github.io/2022/08/16/关系抽取（RE）论文泛读/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hubojing.github.io">
+            <img src="/img/avatar.jpg" alt="靖待">
+            靖待
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RE/">RE</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/关系抽取/">关系抽取</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2022/08/16/关系抽取（RE）论文泛读/&title=《关系抽取（RE）论文泛读》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2022/08/16/关系抽取（RE）论文泛读/&title=《关系抽取（RE）论文泛读》 — 靖待的技术博客&source=　　论文泛读不定期更新。 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2022/08/16/关系抽取（RE）论文泛读/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《关系抽取（RE）论文泛读》 — 靖待的技术博客&url=https://hubojing.github.io/2022/08/16/关系抽取（RE）论文泛读/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2022/08/16/关系抽取（RE）论文泛读/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2022/08/14/兴趣点推荐（POI Recommendation）论文泛读/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">兴趣点推荐（POI Recommendation）论文泛读</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+
+    <script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@waline/client@v2/dist/waline.css"
+    />
+    
+    <!-- Valine Comments script -->
+    <div id='waline'></div>
+    <script>
+        //var GUEST_INFO = ['nick','mail','link'];
+        //var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          //return GUEST_INFO.indexOf(item) > -1
+        //});
+        //new Valine({
+        Waline.init({
+            el: '#comments',
+            avatar: "identicon",
+            pageSize: 20,
+            serverURL: 'https://blogcomments-sepia.vercel.app',
+            
+            //recordip: false,
+            locale: {
+              // level0: '初评',
+              // level1: '偶尔',
+              // level2: '经常',
+              // level3: '熟悉',
+              // level4: '频繁',
+              // level5: '话痨',
+              placeholder: '据说评论的人看这行字又浪费了生命中的三秒（哈哈哈）',
+            },
+        });
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        码代码和码字，都是人生乐趣
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>靖待 &copy; 2015 - 2022</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2022/08/16/关系抽取（RE）论文泛读/&title=《关系抽取（RE）论文泛读》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2022/08/16/关系抽取（RE）论文泛读/&title=《关系抽取（RE）论文泛读》 — 靖待的技术博客&source=　　论文泛读不定期更新。 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2022/08/16/关系抽取（RE）论文泛读/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《关系抽取（RE）论文泛读》 — 靖待的技术博客&url=https://hubojing.github.io/2022/08/16/关系抽取（RE）论文泛读/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2022/08/16/关系抽取（RE）论文泛读/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACt0lEQVR42u3aQW7jMBAEwPz/07tAzpHcPSMqu0D5ZMgxzeKBnDTn6yt+/fl+Xb2/+jQZ5+pJO/LqhYeHhzea+mzoq7+/X5T2u/dLcz8OHh4e3jlevokn1HyjT5YgWazL53h4eHi/yku29Vl5nVfCeHh4eP8XL9nc8wVKRpiNhoeHh/cOb1b+JvHuZrR2fDw8PLx3ePsLsPffv3q/h4eHhxcfCW10215izUrqYrZ4eHh4B3j5JO6nkgey7X7eNmxFaTEeHh7egnc/UHI8tNdd+5GL2AIPDw/vAO9ESNE+SQ6nWZsXHh4e3glesjXP2q32I+QHSZG14OHh4a15bevAbHJtI9cs/viQteDh4eEd4222/vsp5iFFUr4Xn+Lh4eE9ymuL6VnpPGsIaA+Y+iYNDw8Pb34zVV/Jb+La2Ubflt2XTVd4eHh4D/HyC/sTl/ezu7jhPR4eHh7eQ7xkw501V7UF+iy2+EDFw8PDO8CbTXEGaCc0i4bx8PDwzvHaltCk4N7HB7MmsB+e4OHh4R3jbcKFFtA2sG5+EQ8PD+8dXtuAlUx00xBwP5MPBxUeHh7eMd4+Km2bq9oGgrbcj1IQPDw8vBEvST431135p7MjZ5hP4+Hh4R3bJ5Ogtg1e83hiHwfj4eHhneO1AUQbPSSL0hbl0bfw8PDwjvHaaGD23aeK++KSDA8PD+8AL9ncNwfGrHBvy+sPT/Dw8PAe5SWNULPSuQ1t2xgiikXw8PDwXuFtjofZ9VVbxBcj4OHh4R3gPdVSsAl8k+OhfV+D8fDw8EpeW/jmTQOrjGR9XYeHh4d3mvdUOZsEFptFqS/n8PDw8H6VN2MkT5JDqF16PDw8vH+Tt5/i5motKbjx8PDwzvHyS682yMiXLDkw6iMKDw8P7wCv/Vc/b5Bqi/JZ29YDDQR4eHh4Ke8vJO8NAaxXIjcAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来嘛！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)抱抱~你回来了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
