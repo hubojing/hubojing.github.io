@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    <link rel="canonical" href="https://hubojing.github.io//2022/12/03/Python深拷贝与浅拷贝bug实例浅析/">
+    
+    
+    <title>Python深拷贝与浅拷贝bug实例浅析 | 靖待的技术博客 | 小清新IT旅程 | 为中华之崛起而读书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Python,浅拷贝,深拷贝">
+    <meta name="description" content="一个bug引起的……thinking">
+<meta name="keywords" content="Python,浅拷贝,深拷贝">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python深拷贝与浅拷贝bug实例浅析">
+<meta property="og:url" content="https://hubojing.github.io/2022/12/03/Python深拷贝与浅拷贝bug实例浅析/index.html">
+<meta property="og:site_name" content="靖待的技术博客">
+<meta property="og:description" content="一个bug引起的……thinking">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://hubojing.github.io/images/假装有图片.jpg">
+<meta property="og:updated_time" content="2022-12-03T15:38:22.762Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python深拷贝与浅拷贝bug实例浅析">
+<meta name="twitter:description" content="一个bug引起的……thinking">
+<meta name="twitter:image" content="https://hubojing.github.io/images/假装有图片.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<!--google adsense code-->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-2097896583568287",
+    enable_page_level_ads: true
+  });
+</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">靖待</h5>
+          <a href="mailto:hubojing@outlook.com" title="hubojing@outlook.com" class="mail">hubojing@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archive"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hubojing/"  >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/friends"  >
+                <i class="icon icon-lg icon-users"></i>
+                友情链接
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/Chinese"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/comment"  >
+                <i class="icon icon-lg icon-book"></i>
+                留言板
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/littletalk"  >
+                <i class="icon icon-lg icon-edit"></i>
+                自言自语
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://blog.csdn.net/hubojing/"  >
+                <i class="icon icon-lg icon-pencil"></i>
+                CSDN博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/advertising"  >
+                <i class="icon icon-lg icon-link"></i>
+                推广
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes"  >
+                <i class="icon icon-lg icon-qq"></i>
+                和我在线交流
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Python深拷贝与浅拷贝bug实例浅析</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Python深拷贝与浅拷贝bug实例浅析</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2022-12-03T15:26:08.000Z" itemprop="datePublished" class="page-time">
+  2022-12-03
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程语言/">编程语言</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#需求简述"><span class="post-toc-number">1.</span> <span class="post-toc-text">需求简述</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#原代码"><span class="post-toc-number">2.</span> <span class="post-toc-text">原代码</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Bug定位"><span class="post-toc-number">3.</span> <span class="post-toc-text">Bug定位</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#解决方法"><span class="post-toc-number">4.</span> <span class="post-toc-text">解决方法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#分析"><span class="post-toc-number">5.</span> <span class="post-toc-text">分析</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Python深拷贝与浅拷贝bug实例浅析"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Python深拷贝与浅拷贝bug实例浅析</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2022-12-03 23:26:08" datetime="2022-12-03T15:26:08.000Z"  itemprop="datePublished">2022-12-03</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程语言/">编程语言</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div align="left"><br><img src="/images/假装有图片.jpg" width="300" height="180" style="float:right;"><br><br><br>　　<strong>一个bug引起的……thinking</strong><br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="需求简述"><a href="#需求简述" class="headerlink" title="需求简述"></a>需求简述</h1><p>　　将excel学生信息表转换为json格式。<br>　　其中代码有一步要将excel每行的数据按照json模板格式替换掉默认值。</p>
+<h1 id="原代码"><a href="#原代码" class="headerlink" title="原代码"></a>原代码</h1><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> xlrd</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GetStudentInfo</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, student_info_path)</span>:</span></span><br><span class="line">        self.student_info_path = student_info_path</span><br><span class="line">        self.template = &#123;</span><br><span class="line">            <span class="string">"name"</span>: <span class="string">"ZhangSan"</span>,</span><br><span class="line">            <span class="string">"sex"</span>: <span class="string">"female"</span>,</span><br><span class="line">            <span class="string">"grade"</span>: <span class="string">"6"</span>,</span><br><span class="line">            <span class="string">"age"</span>: <span class="string">"12"</span>,</span><br><span class="line">            <span class="string">"id"</span>: <span class="string">"0"</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">create_new_student</span><span class="params">(self, name, student_id)</span>:</span></span><br><span class="line">        new_student = self.template</span><br><span class="line">        new_student[<span class="string">'name'</span>] = name</span><br><span class="line">        new_student[<span class="string">'id'</span>] = student_id</span><br><span class="line">        <span class="keyword">return</span> new_student</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_whole_stu_info</span><span class="params">(self)</span>:</span></span><br><span class="line">        students = &#123;&#125;</span><br><span class="line">        tables = xlrd.open_workbook(self.student_info_path)</span><br><span class="line">        table = tables.sheets()[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">for</span> row <span class="keyword">in</span> range(<span class="number">0</span>, table.nrows - <span class="number">1</span>):</span><br><span class="line">            name = table.cell_value(row + <span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line">            student_id = table.cell_value(row + <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">            new_student = self.create_new_student(name, student_id)</span><br><span class="line">            students[str(row)] = new_student</span><br><span class="line">        self.get_new_file(students)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_new_file</span><span class="params">(self, students)</span>:</span></span><br><span class="line">        <span class="keyword">with</span> open(<span class="string">'./output.json'</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> file:</span><br><span class="line">            json.dump(students, file, indent=<span class="number">4</span>, ensure_ascii=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ ==  <span class="string">'__main__'</span>:</span><br><span class="line">    student_info_path = <span class="string">'./student_info.xlsx'</span></span><br><span class="line">    data = GetStudentInfo(student_info_path)</span><br><span class="line">    data.get_whole_stu_info()</span><br></pre></td></tr></table></figure>
+<p>　　输出文件为</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"0"</span>: &#123;</span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"GouDong"</span>,</span><br><span class="line">        <span class="attr">"sex"</span>: <span class="string">"female"</span>,</span><br><span class="line">        <span class="attr">"grade"</span>: <span class="string">"6"</span>,</span><br><span class="line">        <span class="attr">"age"</span>: <span class="string">"12"</span>,</span><br><span class="line">        <span class="attr">"id"</span>: <span class="number">4.0</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"1"</span>: &#123;</span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"GouDong"</span>,</span><br><span class="line">        <span class="attr">"sex"</span>: <span class="string">"female"</span>,</span><br><span class="line">        <span class="attr">"grade"</span>: <span class="string">"6"</span>,</span><br><span class="line">        <span class="attr">"age"</span>: <span class="string">"12"</span>,</span><br><span class="line">        <span class="attr">"id"</span>: <span class="number">4.0</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"2"</span>: &#123;</span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"GouDong"</span>,</span><br><span class="line">        <span class="attr">"sex"</span>: <span class="string">"female"</span>,</span><br><span class="line">        <span class="attr">"grade"</span>: <span class="string">"6"</span>,</span><br><span class="line">        <span class="attr">"age"</span>: <span class="string">"12"</span>,</span><br><span class="line">        <span class="attr">"id"</span>: <span class="number">4.0</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"3"</span>: &#123;</span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"GouDong"</span>,</span><br><span class="line">        <span class="attr">"sex"</span>: <span class="string">"female"</span>,</span><br><span class="line">        <span class="attr">"grade"</span>: <span class="string">"6"</span>,</span><br><span class="line">        <span class="attr">"age"</span>: <span class="string">"12"</span>,</span><br><span class="line">        <span class="attr">"id"</span>: <span class="number">4.0</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Bug定位"><a href="#Bug定位" class="headerlink" title="Bug定位"></a>Bug定位</h1><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_new_student</span><span class="params">(self, name, student_id)</span>:</span></span><br><span class="line">    new_student = self.template <span class="comment"># 这一行有问题！</span></span><br><span class="line">    print(id(new_student))</span><br><span class="line">    new_student[<span class="string">'name'</span>] = name</span><br><span class="line">    new_student[<span class="string">'id'</span>] = student_id</span><br><span class="line">    <span class="keyword">return</span> new_student</span><br></pre></td></tr></table></figure>
+<p>　　发现每一次的<code>new_student</code>的id是一样的<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2110590375320</span></span><br><span class="line"><span class="number">2110590375320</span></span><br><span class="line"><span class="number">2110590375320</span></span><br><span class="line"><span class="number">2110590375320</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>修改为</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_new_student</span><span class="params">(self, name, student_id)</span>:</span></span><br><span class="line">    new_student = copy.deepcopy(self.template) <span class="comment"># 修改后（法一）</span></span><br><span class="line">    <span class="comment"># new_student = copy.copy(self.template) # 修改后（法二）</span></span><br><span class="line">    print(id(new_student))</span><br><span class="line">    new_student[<span class="string">'name'</span>] = name</span><br><span class="line">    new_student[<span class="string">'id'</span>] = student_id</span><br><span class="line">    <span class="keyword">return</span> new_student</span><br></pre></td></tr></table></figure>
+<p>　　此时输出的id不同了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">2392740865832</span><br><span class="line">2392740866072</span><br><span class="line">2392740866152</span><br><span class="line">2392740865752</span><br></pre></td></tr></table></figure></p>
+<p>　　新的输出文件为</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"0"</span>: &#123;</span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"LiuBo"</span>,</span><br><span class="line">        <span class="attr">"sex"</span>: <span class="string">"female"</span>,</span><br><span class="line">        <span class="attr">"grade"</span>: <span class="string">"6"</span>,</span><br><span class="line">        <span class="attr">"age"</span>: <span class="string">"12"</span>,</span><br><span class="line">        <span class="attr">"id"</span>: <span class="number">1.0</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"1"</span>: &#123;</span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"BoCai"</span>,</span><br><span class="line">        <span class="attr">"sex"</span>: <span class="string">"female"</span>,</span><br><span class="line">        <span class="attr">"grade"</span>: <span class="string">"6"</span>,</span><br><span class="line">        <span class="attr">"age"</span>: <span class="string">"12"</span>,</span><br><span class="line">        <span class="attr">"id"</span>: <span class="number">2.0</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"2"</span>: &#123;</span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"CaiGou"</span>,</span><br><span class="line">        <span class="attr">"sex"</span>: <span class="string">"female"</span>,</span><br><span class="line">        <span class="attr">"grade"</span>: <span class="string">"6"</span>,</span><br><span class="line">        <span class="attr">"age"</span>: <span class="string">"12"</span>,</span><br><span class="line">        <span class="attr">"id"</span>: <span class="number">3.0</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"3"</span>: &#123;</span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"GouDong"</span>,</span><br><span class="line">        <span class="attr">"sex"</span>: <span class="string">"female"</span>,</span><br><span class="line">        <span class="attr">"grade"</span>: <span class="string">"6"</span>,</span><br><span class="line">        <span class="attr">"age"</span>: <span class="string">"12"</span>,</span><br><span class="line">        <span class="attr">"id"</span>: <span class="number">4.0</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><p>　　原代码中，<code>new_student = self.template</code>每一次都将*<code>new_student</code>指向<code>self.template</code>，<code>students[str(row)] = new_student</code>每一次都将<code>students[str(row)]</code>指向<code>new_student</code>。所以每次<code>new_student</code>修改后，<code>students[str(row)]</code>的全部值都会更改为最新版。</p>
+<p>　　若要避免该问题，就涉及到浅拷贝和深拷贝的问题。</p>
+<ul>
+<li><strong>赋值</strong>：仅仅是个别名，引用，指向原有地址，id的地址和原有地址相同。（就像快捷方式。）</li>
+<li><strong>浅拷贝</strong>：第一层拷贝了，里面子文件全是引用。（先建一个新对象，对象地址是新的，里面放原数据的地址，就像一个文件夹里放的全是快捷方式。）</li>
+<li><strong>深拷贝</strong>：新对象的内存地址也会重新分配，跟原来的内存地址不一样。完全弄一个克隆版，克隆体和本体没有关系了，本体改了克隆体不变。（先建一个新对象，对象地址是新的，里面放的全是克隆体，其地址也是新的。就像一个文件夹里放的全是文件，而不是快捷方式。）</li>
+</ul>
+<p>　　再要分清Python里，“=”号、<code>copy.copy</code>和<code>copy.deepcopy</code>三者的区别。</p>
+<ul>
+<li>“=”号：对应赋值<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br><span class="line">b = a</span><br><span class="line">print(<span class="string">'原来的a'</span>, a, <span class="string">'地址'</span>, id(a))</span><br><span class="line">print(<span class="string">'b'</span>, b, <span class="string">'地址'</span>, id(b))</span><br><span class="line">b = <span class="number">2</span></span><br><span class="line">print(<span class="string">'此时的a'</span>, a, <span class="string">'地址'</span>, id(a))</span><br><span class="line">print(<span class="string">'修改后的b'</span>, b, <span class="string">'地址'</span>, id(b))</span><br><span class="line"><span class="comment"># output</span></span><br><span class="line"><span class="comment"># 原来的a 1 地址 140720364485696</span></span><br><span class="line"><span class="comment"># b 1 地址 140720364485696</span></span><br><span class="line"><span class="comment"># 此时的a 1 地址 140720364485696</span></span><br><span class="line"><span class="comment"># 修改后的b 2 地址 140720364485728</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>修改后b此时地址变了，因为赋给一个全新完整的变量会重新生成新地址。<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">c = [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line">print(<span class="string">'原来的c'</span>, c, <span class="string">'地址'</span>, id(c))</span><br><span class="line">d = c</span><br><span class="line">print(<span class="string">'d'</span>, d, <span class="string">'地址'</span>, id(d))</span><br><span class="line">d[<span class="number">0</span>] = <span class="number">3</span></span><br><span class="line">print(<span class="string">'此时的c'</span>, c, <span class="string">'地址'</span>, id(c))</span><br><span class="line">print(<span class="string">'修改后的d'</span>, d, <span class="string">'地址'</span>, id(d))</span><br><span class="line"><span class="comment"># output</span></span><br><span class="line"><span class="comment"># 原来的c [1, 2] 地址 2758022890888</span></span><br><span class="line"><span class="comment"># d [1, 2] 地址 2758022890888</span></span><br><span class="line"><span class="comment"># 此时的c [3, 2] 地址 2758022890888</span></span><br><span class="line"><span class="comment"># 修改后的d [3, 2] 地址 2758022890888</span></span><br></pre></td></tr></table></figure></p>
+<p>　　修改后d地址没变，因为只修改了d内的部分值。<br><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">e = &#123;</span><br><span class="line">    <span class="string">"name"</span>: <span class="string">"ZhangSan"</span>,</span><br><span class="line">    <span class="string">"id"</span>: <span class="string">"0"</span></span><br><span class="line">&#125;</span><br><span class="line">print(<span class="string">'原来的e'</span>, e, <span class="string">'地址'</span>, id(e))</span><br><span class="line">f = e</span><br><span class="line">print(<span class="string">'f'</span>, f, <span class="string">'地址'</span>, id(f))</span><br><span class="line">f[<span class="string">'id'</span>] = <span class="string">'1'</span></span><br><span class="line">print(<span class="string">'此时的e'</span>, e, <span class="string">'地址'</span>, id(e))</span><br><span class="line">print(<span class="string">'修改后的f'</span>, f, <span class="string">'地址'</span>, id(f))</span><br><span class="line"><span class="comment"># output</span></span><br><span class="line"><span class="comment"># 原来的e &#123;'name': 'ZhangSan', 'id': '0'&#125; 地址 2001978290072</span></span><br><span class="line"><span class="comment"># f &#123;'name': 'ZhangSan', 'id': '0'&#125; 地址 2001978290072</span></span><br><span class="line"><span class="comment"># 此时的e &#123;'name': 'ZhangSan', 'id': '1'&#125; 地址 2001978290072</span></span><br><span class="line"><span class="comment"># 修改后的f &#123;'name': 'ZhangSan', 'id': '1'&#125; 地址 2001978290072</span></span><br></pre></td></tr></table></figure></p>
+<p>　　修改后f地址没变，因为只修改了f内的部分值。</p>
+<ul>
+<li><code>copy.copy</code>：对应浅拷贝</li>
+<li><code>copy.deepcopy</code>：对应深拷贝<br>　　官方文档：<a href="https://docs.python.org/3/library/copy.html" target="_blank" rel="noopener">copy函数</a><blockquote>
+<p>The difference between shallow and deep copying is only relevant for compound objects (objects that contain other objects, like lists or class instances):<br>A shallow copy constructs a new compound object and then (to the extent possible) inserts <strong>references</strong> into it to the objects found in the original.<br>A deep copy constructs a new compound object and then, recursively, inserts <strong>copies</strong> into it of the objects found in the original.</p>
+</blockquote>
+</li>
+</ul>
+<p>　　注意加粗字体，区别在于一个是引用，一个是复制体本身。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2022-12-03T15:38:22.762Z" itemprop="dateUpdated">2022-12-03 23:38:22</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2022/12/03/Python深拷贝与浅拷贝bug实例浅析/" target="_blank" rel="external">https://hubojing.github.io/2022/12/03/Python深拷贝与浅拷贝bug实例浅析/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hubojing.github.io">
+            <img src="/img/avatar.jpg" alt="靖待">
+            靖待
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/浅拷贝/">浅拷贝</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/深拷贝/">深拷贝</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2022/12/03/Python深拷贝与浅拷贝bug实例浅析/&title=《Python深拷贝与浅拷贝bug实例浅析》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2022/12/03/Python深拷贝与浅拷贝bug实例浅析/&title=《Python深拷贝与浅拷贝bug实例浅析》 — 靖待的技术博客&source=　　一个bug引起的……thinking " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2022/12/03/Python深拷贝与浅拷贝bug实例浅析/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Python深拷贝与浅拷贝bug实例浅析》 — 靖待的技术博客&url=https://hubojing.github.io/2022/12/03/Python深拷贝与浅拷贝bug实例浅析/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2022/12/03/Python深拷贝与浅拷贝bug实例浅析/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2022/10/06/Python数据处理代码笔记/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Python数据处理代码笔记</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+
+    <script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@waline/client@v2/dist/waline.css"
+    />
+    
+    <!-- Valine Comments script -->
+    <div id='waline'></div>
+    <script>
+        //var GUEST_INFO = ['nick','mail','link'];
+        //var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          //return GUEST_INFO.indexOf(item) > -1
+        //});
+        //new Valine({
+        Waline.init({
+            el: '#comments',
+            avatar: "identicon",
+            pageSize: 20,
+            serverURL: 'https://bld70s.deta.dev', //https://blogcomments-sepia.vercel.app
+            
+            //recordip: false,
+            locale: {
+              // level0: '初评',
+              // level1: '偶尔',
+              // level2: '经常',
+              // level3: '熟悉',
+              // level4: '频繁',
+              // level5: '话痨',
+              placeholder: '据说评论的人看这行字又浪费了生命中的三秒（哈哈哈）',
+            },
+        });
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        码代码和码字，都是人生乐趣
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>靖待 &copy; 2015 - 2022</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2022/12/03/Python深拷贝与浅拷贝bug实例浅析/&title=《Python深拷贝与浅拷贝bug实例浅析》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2022/12/03/Python深拷贝与浅拷贝bug实例浅析/&title=《Python深拷贝与浅拷贝bug实例浅析》 — 靖待的技术博客&source=　　一个bug引起的……thinking " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2022/12/03/Python深拷贝与浅拷贝bug实例浅析/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Python深拷贝与浅拷贝bug实例浅析》 — 靖待的技术博客&url=https://hubojing.github.io/2022/12/03/Python深拷贝与浅拷贝bug实例浅析/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2022/12/03/Python深拷贝与浅拷贝bug实例浅析/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACv0lEQVR42u3aQW4jMQwEwPz/09nrLja2u0nJ8aHmZCDOSKUAIkPy6yt+vv968u8/+vz/8+ins9XrBw8PD2+x9XyBZPlkQ49WnB3TDyvi4eHhXePNLvf8+8lazwNA/h48PDy8T+NtgkHOzsMSHh4e3ufz8q2cSpR/Ie7h4eHhBbxTr95vNwlCV2oteHh4eDFv39B6/+cr/T08PDy8dVc9L63mDbM81W6bXj+8GQ8PD+8Cb9bgbwsKeSk2L1sUw2F4eHh4R3n7kusmQc8HufKQ88978PDw8C7w2uGntoWfj23lKfuqaIuHh4d3iNdezZv3nA0b9WQEHh4e3iFevqEcv3/D2SIFHh4e3lnepu00O6x8xOrA3vDw8PAu89oLeh9sTs2LPVTg4eHhHeXlY1WbIDE7rPZoopkyPDw8vEO8WeE1KbbmSfNsLPXFinh4eHgXePlim8JBO4gwa7y9+I8BDw8P7xBvFgwSapI65y23YYkEDw8P7xqvvdbb5tYsyZ6VlV9EPDw8PLwLvJY0K+a2Iwj50NWLKjUeHh7eIV5SYN1c7rOA0ZYqXjTA8PDw8K7x2vJBOwqQbC65+qM94+Hh4V3gtSFh1cJfhJ827X74l8TDw8N7C+/UEMDmm+0h4uHh4b2Hlyy/GRFoSxuzN7wIJHh4eHiHeG3jKrmOn59iu9H8bc1MFh4eHt6WN0uU2986deknhV08PDy827zZsFResLiRaq+6fHh4eHgj3nf5tOWDZDwrT47rYgQeHh7eBV574RaJ7KjdlR9TuxM8PDy8s7x83GqTZLfJ9PPScBFU8PDw8K7x2rQ4aXolTbJN6SFqvOHh4eF9AK8tLmxKFbNjXQUGPDw8vMu8vHjaHlayVhRI8PDw8K7x2rGAvHixGdJKjj6ajMDDw8M7ymv/4U9KD3nTqx35OlvIwMPDwyt5fwCNhlS5IM3uOwAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来嘛！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)抱抱~你回来了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
