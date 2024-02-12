@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="https://hubojing.github.io//2018/02/22/ffmpeg开发环境搭建/">
+    
+    
+    <title>ffmpeg开发环境搭建 | 靖待的技术博客 | 小清新IT旅程 | 为中华之崛起而读书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="CPP,ffmpeg">
+    <meta name="description" content="VS2013+ffmpeg开发环境搭建。">
+<meta name="keywords" content="CPP,ffmpeg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ffmpeg开发环境搭建">
+<meta property="og:url" content="https://hubojing.github.io/2018/02/22/ffmpeg开发环境搭建/index.html">
+<meta property="og:site_name" content="靖待的技术博客">
+<meta property="og:description" content="VS2013+ffmpeg开发环境搭建。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1519277154249&di=8b9a60a72da8a1979c84f0f3bd11dfc1&imgtype=jpg&src=http%3A%2F%2Fimg0.imgtn.bdimg.com%2Fit%2Fu%3D1768997415%2C378959485%26fm%3D214%26gp%3D0.jpg">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/ffmpeg%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E2%80%94%E2%80%94test%E7%BB%93%E6%9E%9C.png?raw=true">
+<meta property="og:updated_time" content="2018-02-22T11:36:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ffmpeg开发环境搭建">
+<meta name="twitter:description" content="VS2013+ffmpeg开发环境搭建。">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1519277154249&di=8b9a60a72da8a1979c84f0f3bd11dfc1&imgtype=jpg&src=http%3A%2F%2Fimg0.imgtn.bdimg.com%2Fit%2Fu%3D1768997415%2C378959485%26fm%3D214%26gp%3D0.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">靖待</h5>
+          <a href="mailto:hubojing@outlook.com" title="hubojing@outlook.com" class="mail">hubojing@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archive"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hubojing/"  >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/friends"  >
+                <i class="icon icon-lg icon-users"></i>
+                友情链接
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/Chinese"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/comment"  >
+                <i class="icon icon-lg icon-book"></i>
+                留言板
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/littletalk"  >
+                <i class="icon icon-lg icon-edit"></i>
+                自言自语
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://blog.csdn.net/hubojing/"  >
+                <i class="icon icon-lg icon-pencil"></i>
+                CSDN博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/advertising"  >
+                <i class="icon icon-lg icon-link"></i>
+                推广
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes"  >
+                <i class="icon icon-lg icon-qq"></i>
+                和我在线交流
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">ffmpeg开发环境搭建</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">ffmpeg开发环境搭建</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-02-22T10:23:51.000Z" itemprop="datePublished" class="page-time">
+  2018-02-22
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/软件开发/">软件开发</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#下载"><span class="post-toc-number">1.</span> <span class="post-toc-text">下载</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#配置"><span class="post-toc-number">2.</span> <span class="post-toc-text">配置</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#测试"><span class="post-toc-number">3.</span> <span class="post-toc-text">测试</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-ffmpeg开发环境搭建"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">ffmpeg开发环境搭建</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-02-22 10:23:51" datetime="2018-02-22T10:23:51.000Z"  itemprop="datePublished">2018-02-22</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/软件开发/">软件开发</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div align="left"><br><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1519277154249&di=8b9a60a72da8a1979c84f0f3bd11dfc1&imgtype=jpg&src=http%3A%2F%2Fimg0.imgtn.bdimg.com%2Fit%2Fu%3D1768997415%2C378959485%26fm%3D214%26gp%3D0.jpg" width="300" height="180" style="float:right;"><br><br><br>　　<strong>VS2013+ffmpeg开发环境搭建。</strong><br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h1><p>　　<a href="https://ffmpeg.zeranoe.com/builds/" target="_blank" rel="noopener">https://ffmpeg.zeranoe.com/builds/</a></p>
+<ul>
+<li>Static版本包含ffmpeg.exe 、ffplay.exe 、ffprobe.exe，相关的DLL已经被编译到exe里。</li>
+<li>Shared版本除了ffmpeg.exe , ffplay.exe , ffprobe.exe之外还有一些DLL，exe体积很小，在运行时到相应的DLL中调用功能。</li>
+<li>Dev开发者（developer）版本，包含了库文件xxx.lib以及头文件xxx.h，不含exe文件。</li>
+</ul>
+<p>这里选择下载Shared版本和Dev版本。（ffmpeg.exe 、ffplay.exe 、ffprobe.exe可以直接通过命令行运行使用）</p>
+<p>或者直接下载我打包好的环境配置文件：<br><a href="http://download.csdn.net/download/hubojing/10254452" target="_blank" rel="noopener">http://download.csdn.net/download/hubojing/10254452</a><br>（csdn现在没免费的了，就勾了最低的2分）</p>
+<h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><ol>
+<li>将dev版本文件夹中的Include和lib目录复制到所需工程项目目录下，并在工程属性中设置附加包含目录<code>$(ProjectDir)\include</code>和附加库目录<code>$(ProjectDir)\lib</code>。</li>
+<li>将share版本文件夹中bin目录下对应的所有dll复制到项目路径下。</li>
+<li>附加依赖项填入（根据所需）<br>avcodec.lib<br>avdevice.lib<br>avfilter.lib<br>avformat.lib<br>avutil.lib<br>postproc.lib<br>swresample.lib<br>swscale.lib</li>
+</ol>
+<p>　　由于ffmpeg是C语言所写，include头文件时需使用extern “C”标明。</p>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line">extern &quot;C&quot;</span><br><span class="line">&#123;</span><br><span class="line">#include &lt;libavformat/avformat.h&gt;</span><br><span class="line">#include &lt;libavutil/dict.h&gt;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main(int argc, char **argv)</span><br><span class="line">&#123;</span><br><span class="line">	AVFormatContext *fmt_ctx = NULL;</span><br><span class="line">	AVDictionaryEntry *tag = NULL;</span><br><span class="line">	int ret;</span><br><span class="line"></span><br><span class="line">	if (argc != 2) &#123;</span><br><span class="line">		printf(&quot;usage: %s &lt;input_file&gt;\n&quot;</span><br><span class="line">			&quot;example program to demonstrate the use of the libavformat metadata API.\n&quot;</span><br><span class="line">			&quot;\n&quot;, argv[0]);</span><br><span class="line">		system(&quot;pause&quot;);</span><br><span class="line">		return 1;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	if ((ret = avformat_open_input(&amp;fmt_ctx, argv[1], NULL, NULL)))</span><br><span class="line">		return ret;</span><br><span class="line"></span><br><span class="line">	while ((tag = av_dict_get(fmt_ctx-&gt;metadata, &quot;&quot;, tag, AV_DICT_IGNORE_SUFFIX)))</span><br><span class="line">		printf(&quot;%s=%s\n&quot;, tag-&gt;key, tag-&gt;value);</span><br><span class="line"></span><br><span class="line">	avformat_close_input(&amp;fmt_ctx);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试结果：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/ffmpeg%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E2%80%94%E2%80%94test%E7%BB%93%E6%9E%9C.png?raw=true" alt="test" title>
+                </div>
+                <div class="image-caption">test</div>
+            </figure></p>
+<p>至此，开发环境已就位。</p>
+<p>参考：<a href="http://blog.csdn.net/spaceyqy/article/details/43115391" target="_blank" rel="noopener">vs2013+ffmpeg开发环境搭建</a></p>
+<p>资料：<a href="http://blog.csdn.net/leixiaohua1020/article/details/15811977#comments" target="_blank" rel="noopener">FFMPEG视音频编解码零基础学习方法</a><br><a href="http://ffmpeg.org/documentation.html" target="_blank" rel="noopener">ffmpeg官方文档</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2018-02-22T11:36:49.000Z" itemprop="dateUpdated">2018-02-22 11:36:49</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2018/02/22/ffmpeg开发环境搭建/" target="_blank" rel="external">https://hubojing.github.io/2018/02/22/ffmpeg开发环境搭建/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hubojing.github.io">
+            <img src="/img/avatar.jpg" alt="靖待">
+            靖待
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CPP/">CPP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ffmpeg/">ffmpeg</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2018/02/22/ffmpeg开发环境搭建/&title=《ffmpeg开发环境搭建》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2018/02/22/ffmpeg开发环境搭建/&title=《ffmpeg开发环境搭建》 — 靖待的技术博客&source=　　VS2013+ffmpeg开发环境搭建。 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2018/02/22/ffmpeg开发环境搭建/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《ffmpeg开发环境搭建》 — 靖待的技术博客&url=https://hubojing.github.io/2018/02/22/ffmpeg开发环境搭建/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2018/02/22/ffmpeg开发环境搭建/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/02/22/递归中的return/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">递归中的return</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/02/20/联想Y400拆机/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">联想Y400拆机</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+	<script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css"/>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+	Waline.init({
+      el: '#comments',
+      serverURL: 'https://waline-1-r2604942.deta.app/',
+    });
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        码代码和码字，都是人生乐趣
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>靖待 &copy; 2015 - 2024</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2018/02/22/ffmpeg开发环境搭建/&title=《ffmpeg开发环境搭建》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2018/02/22/ffmpeg开发环境搭建/&title=《ffmpeg开发环境搭建》 — 靖待的技术博客&source=　　VS2013+ffmpeg开发环境搭建。 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2018/02/22/ffmpeg开发环境搭建/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《ffmpeg开发环境搭建》 — 靖待的技术博客&url=https://hubojing.github.io/2018/02/22/ffmpeg开发环境搭建/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2018/02/22/ffmpeg开发环境搭建/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtklEQVR42u3aQVLDMBAEQP7/abiSAjsz0iqEqvaJwomt1kFSZvfjI74+g+v7J39+6+ru/beu3jJ84eHh4Y0OPRno1dPu33j19vux1VOAh4eHd4yXDGJ/Bc7B91OWjBkPDw/v3XjJIt5uD8nmgYeHh/ffeWuvnA0y8PDw8P6Kl4ezebiQRw9rUzmcteDh4eEdqCK9z99H6nt4eHh4Qw0B9wtuXipb237a5zw8Ew8PD+8Ab6e4lTQKtEfz2SIcHh4e3mle2/aUxBBr59udgOOXicDDw8Mb5eVx6s6gdzaJ5HAf5dN4eHh4Q7y2nJ80BOQhQou5f+OTKcPDw8Mb5bUtAvsH62JBL6dyK8/Aw8PDC8acH4LbRbndNvbjj6K+h4eHhzfKaw+sU5tK+5xoe8PDw8M7wKvL8GVGOnW1MS4eHh7eOV5bvM9na63w3zanDoQReHh4eEu8JBRYi4DXWhPyaX0yuXh4eHgv4e2fytsjeDv0IoDAw8PDewlvrdift6i2A21bVB/+g4eHh3eMlyNni1V5+Jsfoy9bB/Dw8PBGeVPbQBvjroW/RYsYHh4e3jFeHj20R+doEBuB75NNCA8PD+8A7/VDzxsC2jYFPDw8vNfw8gJY2yy1E+OOPR8PDw/vAC/fJNptYG3j2Yl9o1AYDw8Pb4iXRwB5iLAW1CZT3Bbb8PDw8M7x9mOCPJBt7+ZT9qT1Cg8PD2+Ut7ZYr32m7SZtLzw8PLxzvLXS1NYBd638Hx/WH+7i4eHhHeC1S20bE6y1IEy1YeHh4eGd4+WbQbKs56WstaaEdprw8PDwzvHywthUQWvneF2MEw8PD+8NePkP/qRYlW8Mi3EwHh4e3hvw2qHnk5U3FhSxCB4eHt4xXl70ymOCnSV+rISGh4eHd4DX/uDPy1HJ1rI2oHZbwsPDwxvifQGDCErff3AS/gAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来嘛！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)抱抱~你回来了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

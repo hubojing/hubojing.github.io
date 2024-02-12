@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="https://hubojing.github.io//2020/01/15/词的向量表示方法/">
+    
+    
+    <title>词的向量表示方法 | 靖待的技术博客 | 小清新IT旅程 | 为中华之崛起而读书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="NLP,Embedding">
+    <meta name="description" content="思想简记">
+<meta name="keywords" content="NLP,Embedding">
+<meta property="og:type" content="article">
+<meta property="og:title" content="词的向量表示方法">
+<meta property="og:url" content="https://hubojing.github.io/2020/01/15/词的向量表示方法/index.html">
+<meta property="og:site_name" content="靖待的技术博客">
+<meta property="og:description" content="思想简记">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——Word2Vec.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——独热编码.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——词袋模型.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——Word2Vec.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——空间平移性.png?raw=true">
+<meta property="og:updated_time" content="2020-01-15T20:14:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="词的向量表示方法">
+<meta name="twitter:description" content="思想简记">
+<meta name="twitter:image" content="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——Word2Vec.png?raw=true">
+    
+        <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">靖待</h5>
+          <a href="mailto:hubojing@outlook.com" title="hubojing@outlook.com" class="mail">hubojing@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archive"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hubojing/"  >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/friends"  >
+                <i class="icon icon-lg icon-users"></i>
+                友情链接
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/Chinese"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/comment"  >
+                <i class="icon icon-lg icon-book"></i>
+                留言板
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/littletalk"  >
+                <i class="icon icon-lg icon-edit"></i>
+                自言自语
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://blog.csdn.net/hubojing/"  >
+                <i class="icon icon-lg icon-pencil"></i>
+                CSDN博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/advertising"  >
+                <i class="icon icon-lg icon-link"></i>
+                推广
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes"  >
+                <i class="icon icon-lg icon-qq"></i>
+                和我在线交流
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">词的向量表示方法</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">词的向量表示方法</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2020-01-15T20:14:49.000Z" itemprop="datePublished" class="page-time">
+  2020-01-15
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/数据挖掘/">数据挖掘</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#独热编码（One-Hot-Encoding）"><span class="post-toc-number">1.</span> <span class="post-toc-text">独热编码（One-Hot Encoding）</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#词袋模型（Bag-of-Words-BoW）"><span class="post-toc-number">2.</span> <span class="post-toc-text">词袋模型（Bag-of-Words, BoW）</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#词向量-词嵌入（Word-Embedding）"><span class="post-toc-number">3.</span> <span class="post-toc-text">词向量/词嵌入（Word Embedding）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#连续词袋模型（Continuous-Bag-of-Words-CBoW）"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">连续词袋模型（Continuous Bag-of-Words, CBoW）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Skip-gram模型（Continuous-skip-gram-Model）"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">Skip-gram模型（Continuous skip-gram Model）</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文"><span class="post-toc-number">4.</span> <span class="post-toc-text">论文</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-词的向量表示方法"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">词的向量表示方法</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2020-01-15 20:14:49" datetime="2020-01-15T20:14:49.000Z"  itemprop="datePublished">2020-01-15</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/数据挖掘/">数据挖掘</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div align="left"><br><img src="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——Word2Vec.png?raw=true" width="300" height="180" style="float:right;"><br><br><br>　　<strong>思想简记</strong><br><br><br> </div>
+
+<a id="more"></a>
+<p>NLP中，离散符号化的词语不能包含语义信息，所以把词映射到向量空间。</p>
+<h1 id="独热编码（One-Hot-Encoding）"><a href="#独热编码（One-Hot-Encoding）" class="headerlink" title="独热编码（One-Hot Encoding）"></a>独热编码（One-Hot Encoding）</h1><p>思想：将一个词表示成很长的向量，该向量的维度是整个词表的大小。对某一具体词，除了该词编号的维度为1，其余都为0。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——独热编码.png?raw=true" alt="独热编码" title>
+                </div>
+                <div class="image-caption">独热编码</div>
+            </figure></p>
+<h1 id="词袋模型（Bag-of-Words-BoW）"><a href="#词袋模型（Bag-of-Words-BoW）" class="headerlink" title="词袋模型（Bag-of-Words, BoW）"></a>词袋模型（Bag-of-Words, BoW）</h1><p>思想：将文本视为装词的袋子，不考虑词的上下文关系和顺序，只记录每个词在该文本（词袋）中出现的次数。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——词袋模型.png?raw=true" alt="词袋模型" title>
+                </div>
+                <div class="image-caption">词袋模型</div>
+            </figure></p>
+<h1 id="词向量-词嵌入（Word-Embedding）"><a href="#词向量-词嵌入（Word-Embedding）" class="headerlink" title="词向量/词嵌入（Word Embedding）"></a>词向量/词嵌入（Word Embedding）</h1><p>上面对词的表示方法没有考虑语义层面信息。为表示词与词之间的语义相似程度，提出词的分布式表示，即基于上下文的稠密向量表示法，通常称为词向量或词嵌入（Word Embedding）。<br>产生词向量的手段：</p>
+<ul>
+<li>Count-based。基于计数的方法，即记录词的出现次数。</li>
+<li>Predictive。基于预测的方法，即可通过上下文预测中心词，又可通过中心词预测上下文。</li>
+<li>Task-based。基于任务的，即通过任务驱动的方法。通过对词向量在具体任务上的表现效果对词向量进行学习。</li>
+</ul>
+<p>下面是经典开源工具word2vec中的CBoW模型和Skip-gram模型。</p>
+<h2 id="连续词袋模型（Continuous-Bag-of-Words-CBoW）"><a href="#连续词袋模型（Continuous-Bag-of-Words-CBoW）" class="headerlink" title="连续词袋模型（Continuous Bag-of-Words, CBoW）"></a>连续词袋模型（Continuous Bag-of-Words, CBoW）</h2><p>和BoW相同点：不考虑词的顺序。<br>思想：将上下文词的独热表示与词向量矩阵相乘，提取相应的词向量并求和得到投影层，然后再经过一个Softmax层最终得到输出，输出的每一维表达的就是词表中每个词作为该上下文中心词的概率。整个模型训练时类似于一个窗口在训练语料上滑动，所以得名连续词袋模型。</p>
+<h2 id="Skip-gram模型（Continuous-skip-gram-Model）"><a href="#Skip-gram模型（Continuous-skip-gram-Model）" class="headerlink" title="Skip-gram模型（Continuous skip-gram Model）"></a>Skip-gram模型（Continuous skip-gram Model）</h2><p>思想：与CBoW思想刚好相反，它用中心词来预测上下文词。先通过中心词的独热表示从词向量矩阵中得到中心词的词向量，得到投影层，再经过一层Softmax得到输出，输出的每一维中代表某个词作为输入中心词的上下文出现的概率。</p>
+<p>这两种模型都包含三层，输入层、投影层、输出层：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——Word2Vec.png?raw=true" alt="Word2Vec" title>
+                </div>
+                <div class="image-caption">Word2Vec</div>
+            </figure></p>
+<p>训练好的词向量中，具有一定的空间平移性。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——空间平移性.png?raw=true" alt="空间平移性" title>
+                </div>
+                <div class="image-caption">空间平移性</div>
+            </figure></p>
+<p>如图，Rome和Italy之间存在is-capital-of关系，而Paris和France也同样存在。可以理解为知识图谱中的relation，即（Rome, is-capital-of, Italy）和（Paris, is-capital-of, France）。<br>通过两对在语义上关系相同的词向量相减可得相似结果，这种连续向量可近似地平移到其它具有类似关系的两个词向量之间。<br>如：<br>vector(‘Paris’) - Vector(‘France’) + Vector(‘Italy’) ≈ Vector(‘Rome’)</p>
+<h1 id="论文"><a href="#论文" class="headerlink" title="论文"></a>论文</h1><p><a href="https://arxiv.org/abs/1301.3781v3" target="_blank" rel="noopener">Efficient Estimation of Word Representations in Vector Space</a><br><a href="https://arxiv.org/abs/1405.4053" target="_blank" rel="noopener">Distributed Representations of Sentences and Documents</a><br><a href="https://arxiv.org/abs/1607.04606" target="_blank" rel="noopener">Enriching Word Vectors with Subword Information</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2020-01-15T20:14:49.000Z" itemprop="dateUpdated">2020-01-15 20:14:49</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2020/01/15/词的向量表示方法/" target="_blank" rel="external">https://hubojing.github.io/2020/01/15/词的向量表示方法/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hubojing.github.io">
+            <img src="/img/avatar.jpg" alt="靖待">
+            靖待
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Embedding/">Embedding</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NLP/">NLP</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2020/01/15/词的向量表示方法/&title=《词的向量表示方法》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2020/01/15/词的向量表示方法/&title=《词的向量表示方法》 — 靖待的技术博客&source=　　思想简记 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2020/01/15/词的向量表示方法/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《词的向量表示方法》 — 靖待的技术博客&url=https://hubojing.github.io/2020/01/15/词的向量表示方法/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2020/01/15/词的向量表示方法/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2020/04/08/Echarts笔记/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">ECharts笔记</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/01/02/2020——新的启航/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">2020——新的启航</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+	<script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css"/>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+	Waline.init({
+      el: '#comments',
+      serverURL: 'https://waline-1-r2604942.deta.app/',
+    });
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        码代码和码字，都是人生乐趣
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>靖待 &copy; 2015 - 2024</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2020/01/15/词的向量表示方法/&title=《词的向量表示方法》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2020/01/15/词的向量表示方法/&title=《词的向量表示方法》 — 靖待的技术博客&source=　　思想简记 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2020/01/15/词的向量表示方法/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《词的向量表示方法》 — 靖待的技术博客&url=https://hubojing.github.io/2020/01/15/词的向量表示方法/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2020/01/15/词的向量表示方法/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACpUlEQVR42u3aMXaDQAwFQN//0kmbBviSVg7FUPFiAx6KlfK1n098/Pw5rj69+sv8/P7pBw48PDy8wU+/ut39Y+7ZCf7+m8nvuXwFeHh4eGu8++X+6tY5735ZnxSPBwseHh7eC3jVBb1Kmr9QPDw8vLfxqst9tVFOSHh4eHhv4CVhRHJV79UksPWsBQ8PDy/m5VOk95yvzPfw8PDwxlP1ZMGdL+K9SCK6Jx4eHt4CL19w8yA1b50nBakQf+Dh4eEd5VWjhN4wrLqs5yXh4dXj4eHhrfGSIHXSRvdKy4E8AQ8PD2+ZN2mIe2FEjmluHcDDw8Nb45UvK86e8heRRBKF++Dh4eEt8/IGuhe5VsOO6guK5nt4eHh4Y161me4BklLRKw/lURkeHh7eUd7ZYdhnfMy3KeDh4eFt8/JlOv9OUlSSUpTHu82MBA8PD6/Im4yjqi9ifp4P4fDw8PA2ePOGuFokku0Fx6IKPDw8vH/iTTaM5jFBrxg8IPHw8PAWeNWFe9I05816PjaL7oaHh4e3xssvSB5Z3YhQfW4hHMHDw8Nb5lXnZtUNB71NXdUSclkY8PDw8Ma8SZSQtLnfiTMu74OHh4e3wMtHX0mDO+ljJ3cuNNZ4eHh4h3jzEKE3QptgCiUEDw8P7+u8Uw3uPMytDsnw8PDw/ouXxwq90X5eeJqjODw8PLw1Xq9RzsOLBJOM3Jp7cvHw8PAO8XqjqTyWTULb6lX5QA4PDw9vg1ddanthxHy7VfW8TMXDw8Mr8ibFIGmaqw168tMLz8XDw8Nb4yUbofJgohfj9lrkh2/i4eHhvYCXj6PyyCAvAHmIjIeHh/dOXu+R840FhY1ZeHh4eGu86tbS3tareUkoN+J4eHh4C7zqP/zzcHYyi1vcOoCHh4f3zPsFjlIr8Mrd1X8AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来嘛！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)抱抱~你回来了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

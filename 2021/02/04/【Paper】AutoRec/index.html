@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="https://hubojing.github.io//2021/02/04/【Paper】AutoRec/">
+    
+    
+    <title>【paper】AutoRec - Autoencoders Meet Collaborative Filtering | 靖待的技术博客 | 小清新IT旅程 | 为中华之崛起而读书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="推荐算法,CF,Autoencoder">
+    <meta name="description" content="推荐系统 + 深度学习 1">
+<meta name="keywords" content="推荐算法,CF,Autoencoder">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【paper】AutoRec - Autoencoders Meet Collaborative Filtering">
+<meta property="og:url" content="https://hubojing.github.io/2021/02/04/【Paper】AutoRec/index.html">
+<meta property="og:site_name" content="靖待的技术博客">
+<meta property="og:description" content="推荐系统 + 深度学习 1">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://hubojing.github.io/images/Paper-AutoRec-Itembased.png">
+<meta property="og:image" content="https://hubojing.github.io/images/Paper-AutoRec-Itembased.png">
+<meta property="og:image" content="https://hubojing.github.io/images/Paper-AutoRec-k.png">
+<meta property="og:image" content="https://hubojing.github.io/images/Paper-AutoRec-baselines.png">
+<meta property="og:updated_time" content="2024-02-12T13:30:22.754Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【paper】AutoRec - Autoencoders Meet Collaborative Filtering">
+<meta name="twitter:description" content="推荐系统 + 深度学习 1">
+<meta name="twitter:image" content="https://hubojing.github.io/images/Paper-AutoRec-Itembased.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">靖待</h5>
+          <a href="mailto:hubojing@outlook.com" title="hubojing@outlook.com" class="mail">hubojing@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archive"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hubojing/"  >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/friends"  >
+                <i class="icon icon-lg icon-users"></i>
+                友情链接
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/Chinese"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/comment"  >
+                <i class="icon icon-lg icon-book"></i>
+                留言板
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/littletalk"  >
+                <i class="icon icon-lg icon-edit"></i>
+                自言自语
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://blog.csdn.net/hubojing/"  >
+                <i class="icon icon-lg icon-pencil"></i>
+                CSDN博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/advertising"  >
+                <i class="icon icon-lg icon-link"></i>
+                推广
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes"  >
+                <i class="icon icon-lg icon-qq"></i>
+                和我在线交流
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">【paper】AutoRec - Autoencoders Meet Collaborative Filtering</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">【paper】AutoRec - Autoencoders Meet Collaborative Filtering</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2021-02-04T10:19:03.000Z" itemprop="datePublished" class="page-time">
+  2021-02-04
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#INTRODUCTION-引言"><span class="post-toc-number">2.</span> <span class="post-toc-text">INTRODUCTION 引言</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#THE-AUTOREC-MODEL-模型"><span class="post-toc-number">3.</span> <span class="post-toc-text">THE AUTOREC MODEL 模型</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#EXPERIMENTAL-EVALUATION-实验评估"><span class="post-toc-number">4.</span> <span class="post-toc-text">EXPERIMENTAL EVALUATION 实验评估</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#代码"><span class="post-toc-number">5.</span> <span class="post-toc-text">代码</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结"><span class="post-toc-number">6.</span> <span class="post-toc-text">总结</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-【Paper】AutoRec"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">【paper】AutoRec - Autoencoders Meet Collaborative Filtering</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2021-02-04 10:19:03" datetime="2021-02-04T10:19:03.000Z"  itemprop="datePublished">2021-02-04</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div align="left"><br><img src="\images\Paper-AutoRec-Itembased.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>推荐系统 + 深度学习 1</strong><br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="论文背景"><a href="#论文背景" class="headerlink" title="论文背景"></a>论文背景</h1><p>WWW’15<br>作者：Suvash  Sedhain, Aditya Krishna Menon, Scott Patrick Sanner, Lexing Xie  </p>
+<p>谷歌学术引用次数580（截至2021年2月4日）  </p>
+<p>关键词：Recommender Systems; Collaborative Filtering; Autoencoders  </p>
+<h1 id="INTRODUCTION-引言"><a href="#INTRODUCTION-引言" class="headerlink" title="INTRODUCTION 引言"></a>INTRODUCTION 引言</h1><p>本文提出一种新的基于自动编码器范例的CF模型，思路来自于针对视觉和语音任务的深度神经网络模型。<br>和CF相比，具有表示和计算的优越性。    </p>
+<h1 id="THE-AUTOREC-MODEL-模型"><a href="#THE-AUTOREC-MODEL-模型" class="headerlink" title="THE AUTOREC MODEL 模型"></a>THE AUTOREC MODEL 模型</h1><p>每个用户U={1,…,m}可表示为$r^{(i)} = (R_{u1},…,R_{un})∈\mathbb{R}^n$。<br>每个物品I={1,…,n}可表示为$r^{(i)} = (R_{1i},…,R_{mi})∈\mathbb{R}^m$，评分矩阵R。<br>目标：设计一种基于物品（用户）的自动编码器，可以输入部分显式$r_{(i)}$($r_{(u)}$)，将其映射到低维潜在空间，然后在输出空间重建$r_{(i)}$($r_{(u)}$)来预测缺失的评分用于推荐。<br>自动编码器解决<br>$$min_{\theta}\sum_{r∈S}||r - h(r;\theta)||^2_2$$<br>$h(r;\theta)$是输入r的重构<br>$$h(r;\theta) = f(W · g(Vr + μ) + b)$$<br>f、g是激活函数。$\theta = {W, V, μ, b}$<br>$W∈\mathbb{R}^{d×k}$, $V∈\mathbb{R}^{k×d}$, $μ∈\mathbb{R}^k$, $b∈\mathbb{R}^d$<br>该目标对应于具有单个k维隐藏层的自连接神经网络。使用反向传播来学习参数θ。  </p>
+<p>基于物品的AutoRec模型I-AutoRec<br>${r^{(i)}}^n_{i=1}$<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\Paper-AutoRec-Itembased.png" alt="基于物品的AutoRec" title>
+                </div>
+                <div class="image-caption">基于物品的AutoRec</div>
+            </figure><br>两点改变：  </p>
+<ol>
+<li>每个$r^{(i)}$通过反向传播更新和输入有关的权重得到，这在矩阵分解和RBM策略中常用。    </li>
+<li>设计了学习参数正则化防止过拟合。  </li>
+</ol>
+<p>I-AutoRec需要估计2mk + m + k个参数。<br>对于给定的已学习参数$\theta$，对于用户u和物品i的预测评分为<br>$$\hat{R}_{ui} = (h(r^{(i)};\hat{\theta}))_u$$</p>
+<p>目标函数：<br>$$min_{\theta}||r^{(i)}-h(r^{(i)};\theta)||^2_o + \frac{\lambda}{2}·(||W||^2_F + ||V||^2_F)$$<br>$||||^2_o$代表只考虑可观测评分的贡献。  </p>
+<p>基于用户的AutoRec模型U-AutoRec<br>${r^{(u)}}^m_{u=1}$</p>
+<p>和CF策略的区别：<br>对比基于RBM的CF模型（RBM-CF）  </p>
+<ol>
+<li>RBM-CF是基于限制玻尔兹曼机的生成概率模型，AutoRec是一个基于自动编码器的判别模型。  </li>
+<li>RBM-CF通过最大化似然log函数估计参数，AutoRec直接最小化RMSE。  </li>
+<li>训练RBM-CF需要使用对比散度，训练AutoRec需要相对更快的基于梯度的反向传播。   </li>
+<li>RBM-CF只使用于离散评分，并对每个评分估计一个分散的参数集。对r个可能的评分，它使用了基于RBM的nkr或者mkr个参数用于用户（物品）。AutoRec与r无关，因此需要较少的参数。 较少的参数使AutoRec的内存占用量更少，更不容易过度拟合。  </li>
+</ol>
+<p>对比矩阵分解（MF）<br>MF学习线性潜在表示，AutoRec可以通过激活函数学习非线性潜在表示。</p>
+<h1 id="EXPERIMENTAL-EVALUATION-实验评估"><a href="#EXPERIMENTAL-EVALUATION-实验评估" class="headerlink" title="EXPERIMENTAL EVALUATION 实验评估"></a>EXPERIMENTAL EVALUATION 实验评估</h1><p>基线：RBM-CF, BiasedMF, LLORMA.<br>数据集：Movielens 1M, 10M 和Nerflix数据集<br>没有训练数据的测试集默认评分为3。<br>训练集：测试集=9：1<br>将训练集10%作为验证集。<br>重复划分步骤5次并记录平均RMSE。<br>每次实验95%在RMSE偶然的间隔在±0.003之间。<br>正则化参数λ∈{0.001, 0.01, 0.1, 1, 100, 1000}<br>潜在维度k∈{10, 20, 40, 80, 100, 200, 300, 400, 500}</p>
+<p>三种实验</p>
+<ol>
+<li>和RBM对比</li>
+<li>激活函数选取对比</li>
+<li>隐藏单元k的数量<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\Paper-AutoRec-k.png" alt="k" title>
+                </div>
+                <div class="image-caption">k</div>
+            </figure></li>
+<li>基线性能对比<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\Paper-AutoRec-baselines.png" alt="基线" title>
+                </div>
+                <div class="image-caption">基线</div>
+            </figure></li>
+<li>深度扩展对Auto的帮助</li>
+</ol>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p><a href="https://github.com/mesuvash/NNRec" target="_blank" rel="noopener">https://github.com/mesuvash/NNRec</a></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>AutoRec是最简单的深度学习推荐系统。<br>它是一种单隐层神经网络推荐模型，将自动编码器与协同过滤相结合。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2024-02-12T13:30:22.754Z" itemprop="dateUpdated">2024-02-12 13:30:22</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2021/02/04/【Paper】AutoRec/" target="_blank" rel="external">https://hubojing.github.io/2021/02/04/【Paper】AutoRec/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hubojing.github.io">
+            <img src="/img/avatar.jpg" alt="靖待">
+            靖待
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Autoencoder/">Autoencoder</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CF/">CF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/推荐算法/">推荐算法</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2021/02/04/【Paper】AutoRec/&title=《【paper】AutoRec - Autoencoders Meet Collaborative Filtering》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2021/02/04/【Paper】AutoRec/&title=《【paper】AutoRec - Autoencoders Meet Collaborative Filtering》 — 靖待的技术博客&source=　　推荐系统 + 深度学习 1 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2021/02/04/【Paper】AutoRec/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【paper】AutoRec - Autoencoders Meet Collaborative Filtering》 — 靖待的技术博客&url=https://hubojing.github.io/2021/02/04/【Paper】AutoRec/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2021/02/04/【Paper】AutoRec/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2021/03/02/【Paper】Wide & Deep Learning for Recommender Systems/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">【Paper】Wide &amp; Deep Learning for Recommender Systems</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2020/12/31/2020年终总结/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">打脸现场——2020年终总结</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+	<script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css"/>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+	Waline.init({
+      el: '#comments',
+      serverURL: 'https://waline-1-r2604942.deta.app/',
+    });
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        码代码和码字，都是人生乐趣
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>靖待 &copy; 2015 - 2024</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2021/02/04/【Paper】AutoRec/&title=《【paper】AutoRec - Autoencoders Meet Collaborative Filtering》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2021/02/04/【Paper】AutoRec/&title=《【paper】AutoRec - Autoencoders Meet Collaborative Filtering》 — 靖待的技术博客&source=　　推荐系统 + 深度学习 1 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2021/02/04/【Paper】AutoRec/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【paper】AutoRec - Autoencoders Meet Collaborative Filtering》 — 靖待的技术博客&url=https://hubojing.github.io/2021/02/04/【Paper】AutoRec/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2021/02/04/【Paper】AutoRec/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACL0lEQVR42u3aO3LDMAxFUe1/00qTLhF9H2BnQvCqysSSyOMCJj7Xha/74fr56fo/T29+eurNlwwZMrZl3MtrvQB56unONYbvTYYMGecwSChcb4gj1yE1DdMyZMiQkb6ag9N1ZciQIaPGqPFIgJYhQ4aMWhK7Xp68LS3MfSQXlyFDxoYMXnX/+78/0t+QIUPGVow7vNJnSUugE7K/n5IhQ8ZoBg9wnUS01uyM9yNDhozRjFoY5SW2tGHJV2kdFmXIkLEVo990JG+uHftIGU6GDBmzGZ1xhzQFJd9oLaDLkCFjNoOMc/FDGzkCkk3z98iQIeMcRr9Mn+LJ/YR99X8HZMiQsSEjLZ+liwW5dekoKUOGjHkM3pJMYe86DhbLbTJkyBjEIAeyTlqbbittKqDuqwwZMkYweIuRh9R/PTMiQ4aMrRidBkA6OkbAxYRWhgwZBzM6w2GcjQYp+K+EDBkyjmGQxLJThkuHMF4cE2XIkDGawctbtTtrgx21ZqcMGTJmM3hYrJXt0uDOA/0vLUwZMmSMZqThtRM6O+W8x53IkCHjAEY/seSlurTNiY6hMmTIGMq4w4sH6HTYgrc20S+GDBkyBjHeNS5WGwLrpKzFAp8MGTK2ZfAgyxfjiSsfI3vxpciQIeMARlo+Sw98KZKHfhkyZMjolORqg2W1kp8MGTJk8LGJWmuzP7ohQ4aMExidZkBa6Oeh/CPlNhkyZGzI4CGvk8TyFgJvXsqQIeMAxhe6edE/wHeo0wAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来嘛！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)抱抱~你回来了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

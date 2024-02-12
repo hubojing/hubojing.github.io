@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="https://hubojing.github.io//2021/05/06/DIN/">
+    
+    
+    <title>【Paper】DIN模型 | 靖待的技术博客 | 小清新IT旅程 | 为中华之崛起而读书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="DIN,推荐算法">
+    <meta name="description" content="阿里DIN模型　　10.21总算写完了……">
+<meta name="keywords" content="DIN,推荐算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Paper】DIN模型">
+<meta property="og:url" content="https://hubojing.github.io/2021/05/06/DIN/index.html">
+<meta property="og:site_name" content="靖待的技术博客">
+<meta property="og:description" content="阿里DIN模型　　10.21总算写完了……">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://hubojing.github.io/images/DIN架构.png">
+<meta property="og:image" content="https://hubojing.github.io/images/DIN-1.png">
+<meta property="og:image" content="https://hubojing.github.io/images/DIN-2.png">
+<meta property="og:image" content="https://hubojing.github.io/images/DIN-特征表示.png">
+<meta property="og:image" content="https://hubojing.github.io/images/DIN架构.png">
+<meta property="og:image" content="https://hubojing.github.io/images/DIN-dice.png">
+<meta property="og:image" content="https://hubojing.github.io/images/DIN-data.png">
+<meta property="og:image" content="https://hubojing.github.io/images/DIN-F4.png">
+<meta property="og:image" content="https://hubojing.github.io/images/DIN-T3.png">
+<meta property="og:image" content="https://hubojing.github.io/images/DIN-T4.png">
+<meta property="og:image" content="https://hubojing.github.io/images/DIN-T5.png">
+<meta property="og:image" content="https://hubojing.github.io/images/DIN-F5.png">
+<meta property="og:image" content="https://hubojing.github.io/images/DIN-F6.png">
+<meta property="og:updated_time" content="2021-10-21T17:03:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【Paper】DIN模型">
+<meta name="twitter:description" content="阿里DIN模型　　10.21总算写完了……">
+<meta name="twitter:image" content="https://hubojing.github.io/images/DIN架构.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">靖待</h5>
+          <a href="mailto:hubojing@outlook.com" title="hubojing@outlook.com" class="mail">hubojing@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archive"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hubojing/"  >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/friends"  >
+                <i class="icon icon-lg icon-users"></i>
+                友情链接
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/Chinese"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/comment"  >
+                <i class="icon icon-lg icon-book"></i>
+                留言板
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/littletalk"  >
+                <i class="icon icon-lg icon-edit"></i>
+                自言自语
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://blog.csdn.net/hubojing/"  >
+                <i class="icon icon-lg icon-pencil"></i>
+                CSDN博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/advertising"  >
+                <i class="icon icon-lg icon-link"></i>
+                推广
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes"  >
+                <i class="icon icon-lg icon-qq"></i>
+                和我在线交流
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">【Paper】DIN模型</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">【Paper】DIN模型</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2021-05-06T10:55:35.000Z" itemprop="datePublished" class="page-time">
+  2021-05-06
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#现有问题"><span class="post-toc-number">2.</span> <span class="post-toc-text">现有问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#关键词"><span class="post-toc-number">3.</span> <span class="post-toc-text">关键词</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#引言-INTRODUCTION"><span class="post-toc-number">4.</span> <span class="post-toc-text">引言 INTRODUCTION</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#背景-BACKGROUND"><span class="post-toc-number">5.</span> <span class="post-toc-text">背景 BACKGROUND</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#深度兴趣网络-DEEP-INTEREST-NETWORK"><span class="post-toc-number">6.</span> <span class="post-toc-text">深度兴趣网络 DEEP INTEREST NETWORK</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#特征表示-Feature-Representation"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">特征表示 Feature Representation</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基线模型-Base-Model-Embedding-amp-MLP"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">基线模型 Base Model(Embedding&amp;MLP)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#DIN架构-The-structure-of-Deep-Interest-Network"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">DIN架构 The structure of Deep Interest Network</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#训练方法-TRAINING-TECHNIQUES"><span class="post-toc-number">7.</span> <span class="post-toc-text">训练方法 TRAINING TECHNIQUES</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#小批量感知正则化-Mini-batch-Aware-Regularization"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">小批量感知正则化 Mini-batch Aware Regularization</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据自适应激活函数-Data-Adaptive-Activation-Function"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">数据自适应激活函数 Data Adaptive Activation Function</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验-EXPERIMENTS"><span class="post-toc-number">8.</span> <span class="post-toc-text">实验 EXPERIMENTS</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据集和实验步骤-Datasets-and-Experimental-Setup"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">数据集和实验步骤 Datasets and Experimental Setup</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基线实验"><span class="post-toc-number">8.2.</span> <span class="post-toc-text">基线实验</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#策略"><span class="post-toc-number">8.3.</span> <span class="post-toc-text">策略</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#亚马逊数据集和MovieLens数据集模型对比结果-Result-from-model-comparison-on-Amazon-Dataset-and-MovieLens-Dataset"><span class="post-toc-number">8.4.</span> <span class="post-toc-text">亚马逊数据集和MovieLens数据集模型对比结果 Result from model comparison on Amazon Dataset and MovieLens Dataset</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#正则化性能-Performance-of-regularization"><span class="post-toc-number">8.5.</span> <span class="post-toc-text">正则化性能 Performance of regularization</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#阿里巴巴数据集模型对比结果-Result-from-model-comparison-on-Alibaba-Dataset"><span class="post-toc-number">8.6.</span> <span class="post-toc-text">阿里巴巴数据集模型对比结果 Result from model comparison on Alibaba Dataset</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#DIN可视化-Visualization-of-DIN"><span class="post-toc-number">8.7.</span> <span class="post-toc-text">DIN可视化 Visualization of DIN</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结-CONCLUSIONS"><span class="post-toc-number">9.</span> <span class="post-toc-text">总结 CONCLUSIONS</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-DIN"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">【Paper】DIN模型</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2021-05-06 10:55:35" datetime="2021-05-06T10:55:35.000Z"  itemprop="datePublished">2021-05-06</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div align="left"><br><img src="\images\DIN架构.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>阿里DIN模型</strong><br>　　<strong>10.21总算写完了……</strong><br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="论文背景"><a href="#论文背景" class="headerlink" title="论文背景"></a>论文背景</h1><p>论文：Deep Interesting Network for Click-Through Rate Prediction<br><a href="https://arxiv.org/abs/1706.06978" target="_blank" rel="noopener">下载地址</a><br>2018年 阿里</p>
+<h1 id="现有问题"><a href="#现有问题" class="headerlink" title="现有问题"></a>现有问题</h1><p>　　目前的深度学习模型都是先将稀疏输入特征映射为低维嵌入向量，再转换为固定长度的向量，最后联结起来送入MLP。这个固定长度的向量会成为瓶颈，无法从历史行为中捕获用户不同的兴趣。因此，本文提出深度兴趣网络Deep Interest Network（DIN）。它设计了一个局部激活单元从用户历史行为中自适应学习用户兴趣。另外，本文提出了两大技术：小批量感知正则化（mini-batch aware regularization）和数据自适应激活函数（data adaptive activation function）。</p>
+<h1 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h1><p>点击率预测（Click-Through Rate Prediction）、展示广告（Display Advertising），线上贸易（E-commerce）</p>
+<h1 id="引言-INTRODUCTION"><a href="#引言-INTRODUCTION" class="headerlink" title="引言 INTRODUCTION"></a>引言 INTRODUCTION</h1><p>　　Embedding &amp; MLP方法通过将用户行为嵌入向量转换为一个固定长度的向量来学习用户所有兴趣的表示，所有的表示向量是欧式空间。换言之，将用户不同的兴趣压缩到一个固定长度的向量，限制了表达能力。为了更好地表达用户不同兴趣，就要扩展向量长度。这会增多学习参数，并且增加过拟合的风险。也加重了计算和存储的压力，对于工业线上系统来说很困难。<br>　　另一方面，没有必要把用户全部兴趣压缩到同一个向量里，因为只有部分兴趣会影响用户下一个动作（点击或不点击）。</p>
+<p>　　训练的问题：<br>　　基于SGD的优化方法只更新出现在每个小批量中的稀疏特征的参数。然而，加上传统的ℓ2正则化，计算变得不可接受，这需要为每个小批量计算整个参数的L2范数(在阿里的场景，大小按比例增加到数十亿)。本文提出了一种新的小批量正则化方法，在L2范数的计算中，每个小批量正则化中只出现非零特征参数，使得计算是可接受的。另外，设计了一个数据自适应激活函数，推广到常用的PReLU，它通过自适应地调整输入的校正点，也就是输入的分布，并被证明有助于训练具有稀疏特征的工业网络。</p>
+<p><strong>贡献点</strong></p>
+<ol>
+<li>指出了使用固定长度向量来表达用户不同兴趣的局限性，并设计了一种新的深度兴趣网络(DIN)，它引入了一个局部激活单元来自适应地从给定广告的历史行为中学习用户兴趣的表示。DIN可以大大提高模型的表达能力，更好地捕捉用户兴趣的多样性特征。</li>
+<li>开发了两种新的技术来帮助训练工业深度网络:I)一种小批量感知正则化器，这种正则化器在具有大量参数的深度网络上节省了大量的正则化计算，并且有助于避免过拟合；ii)一种数据自适应激活函数，这种函数通过考虑输入的分布来推广PReLU，并且表现出良好的性能。</li>
+<li>在公共数据集和AI-ibaba数据集上进行了大量实验。结果验证了所提出的DIN和训练技术的有效性。所提出的方法已经在全球最大的广告平台之一阿里巴巴的商业展示广告系统中得到了应用，为业务的发展做出了重大贡献。</li>
+</ol>
+<p>代码：<a href="https://github.com/zhougr1993/DeepInterestNetwork" target="_blank" rel="noopener">https://github.com/zhougr1993/DeepInterestNetwork</a></p>
+<h1 id="背景-BACKGROUND"><a href="#背景-BACKGROUND" class="headerlink" title="背景 BACKGROUND"></a>背景 BACKGROUND</h1><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\DIN-1.png" alt="图1 - 阿里广告系统" title>
+                </div>
+                <div class="image-caption">图1 - 阿里广告系统</div>
+            </figure>
+<p>预测每个给定广告的点击率，然后选择排名最高的广告。</p>
+<h1 id="深度兴趣网络-DEEP-INTEREST-NETWORK"><a href="#深度兴趣网络-DEEP-INTEREST-NETWORK" class="headerlink" title="深度兴趣网络 DEEP INTEREST NETWORK"></a>深度兴趣网络 DEEP INTEREST NETWORK</h1><h2 id="特征表示-Feature-Representation"><a href="#特征表示-Feature-Representation" class="headerlink" title="特征表示 Feature Representation"></a>特征表示 Feature Representation</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\DIN-2.png" alt="表1 - 特征处理" title>
+                </div>
+                <div class="image-caption">表1 - 特征处理</div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\DIN-特征表示.png" alt="特征表示" title>
+                </div>
+                <div class="image-caption">特征表示</div>
+            </figure>
+<p>　　表中描述了我们系统中使用的全部特征集，它由四类组成，其中用户行为特征是典型的多热点编码向量，包含丰富的用户兴趣信息。注意，在我们的设置中，没有组合特性。我们利用深度神经网络捕获特征的交互作用。</p>
+<h2 id="基线模型-Base-Model-Embedding-amp-MLP"><a href="#基线模型-Base-Model-Embedding-amp-MLP" class="headerlink" title="基线模型 Base Model(Embedding&amp;MLP)"></a>基线模型 Base Model(Embedding&amp;MLP)</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\DIN架构.png" alt="基础架构 vs DIN架构" title>
+                </div>
+                <div class="image-caption">基础架构 vs DIN架构</div>
+            </figure>
+<p><strong>嵌入层（Embedding layer)</strong></p>
+<p><strong>池化层和连接层（Pooling layer and Concat layer）</strong></p>
+<p>　　得到定长向量：$e_i = pooling(e_{i_1}, e_{i_2}, …, e_{i_k})$</p>
+<p>　　最常用的是sum pooling和average pooling。</p>
+<p><strong>MLP</strong></p>
+<p><strong>Loss</strong></p>
+<p>$$L = - \frac{1}{N}\sum_{(x,y)∈S}(ylogp(x) + (1 - y)log(1 - p(x)))$$</p>
+<p>　　S是尺寸为N的训练集，x是输入，y是标签。p(x)是经过softmax层后的输出，代表样本x被点击的概率。</p>
+<h2 id="DIN架构-The-structure-of-Deep-Interest-Network"><a href="#DIN架构-The-structure-of-Deep-Interest-Network" class="headerlink" title="DIN架构 The structure of Deep Interest Network"></a>DIN架构 The structure of Deep Interest Network</h2><p>　　基线模型对一个用户使用定长向量表示，无论候选广告是什么。</p>
+<p>　　为了表示用户兴趣多样化，一种简单的方法是扩展嵌入维度，但这会增加学习参数规模。有过拟合的风险，并且增加了计算和存储的负担。</p>
+<p>　　DIN模拟了关于给定广告的用户局部激活兴趣。</p>
+<p>　　DIN引入了一个用于用户行为特征的局部激活单元，使用了加权求和池化（weighted sum pooling）来自适应计算当给定一个候选广告A时，用户的表示$V_U$。</p>
+<p>　　局部激活单元公式：<br>$$v_U = f(v_A, e_1, e_2, …, e_H) = \sum_{j=1}^{H}a(e_j, v_A)e_j = \sum_{j = 1}^{H}w_je_j$$<br>　　其中，${e_1, e_2, …, e_H}$是用户U的行为嵌入向量（长度为H），$v_U(A)$是广告A的嵌入向量。<br>　　在这种方式下，$v_U(A)$在不同的广告下，a(·)是一个带有激活权重输入的前向反馈网络。除了这两部分输入嵌入向量，a(·)将它们的外积喂入后续网络。<br>a(·)softmax输出后的标准化被舍弃。</p>
+<h1 id="训练方法-TRAINING-TECHNIQUES"><a href="#训练方法-TRAINING-TECHNIQUES" class="headerlink" title="训练方法 TRAINING TECHNIQUES"></a>训练方法 TRAINING TECHNIQUES</h1><h2 id="小批量感知正则化-Mini-batch-Aware-Regularization"><a href="#小批量感知正则化-Mini-batch-Aware-Regularization" class="headerlink" title="小批量感知正则化 Mini-batch Aware Regularization"></a>小批量感知正则化 Mini-batch Aware Regularization</h2><p>　　工业训练网络面临过拟合的问题。模型训练在第一轮训练后（不加正则化）性能迅速下降。传统的正则策略在面对稀疏输入和成千上万的参数时并不适用（比如l2和l1正则化)。<br>　　为此，提出小批量感知正则化，即只在每次小批量中对稀疏特征的参数计算$L_2-norm$。</p>
+<p>$$L_2(W)=||W||_{2}^{2}$$</p>
+<p>$$= \sum_{j = 1}^{K}||w_j||_{2}^{2}$$</p>
+<p>$$= \sum_{(x,y)∈S}\sum_{j = 1}^{K}\frac{I(x_j≠0)}{n_j}||w_j||_2^2$$</p>
+<p>　　$I(x_j≠0)$表示x有特征j，$n_j$表示特征id j出现的数量。上述公式可以被转换为下面的小批量感知形式：</p>
+<p>$$L_2(W) =  \sum_{j = 1}^{K}\sum_{m = 1}^{B}\sum_{(x,y)∈B_m}\frac{I(x_j≠0)}{n_j}||w_j||_2^2$$</p>
+<p>　　其中，B表示小批量的数量，$B_m$表示第m次小批量。定义$α<em>{mj} = max</em>{(x,y)∈B_m}I(x_j ≠ 0)$为小批量$B_m$中至少有一次有特征id j。<br>　　上述近似为</p>
+<p>$$L_2(W) ≈ \sum_{j = 1}^{K}\sum_{m = 1}^{B}\frac{α_{mj}}{n_j}||w_j||_2^2$$<br>　　<br>通过这种方式，推导出了一种$l_2$正则化的近似小批量感知形式。<br>　　对于第m次小批量，关于特征j的嵌入权重的梯度为</p>
+<p>$$w_j\leftarrow w_j - \eta[\frac{1}{|B_m|}\sum_{(x,y)∈B_m}\frac{\partial L(p(x), y)}{\partial w_j} + \lambda \frac{α_{mj}}{n_j}w_j]$$<br>　　<br>　　在这里只有出现在第m次小批量的特征参数才会参与正则计算。</p>
+<h2 id="数据自适应激活函数-Data-Adaptive-Activation-Function"><a href="#数据自适应激活函数-Data-Adaptive-Activation-Function" class="headerlink" title="数据自适应激活函数 Data Adaptive Activation Function"></a>数据自适应激活函数 Data Adaptive Activation Function</h2><p>　　PReLU是常用的激活函数。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\DIN-dice.png" alt="PReLU和Dice" title>
+                </div>
+                <div class="image-caption">PReLU和Dice</div>
+            </figure><br>　　如图所示，PReLU在0附近有一个固定的转折点，这对于每层不同分布的输入是不合适的。于是，本文设计了一个自适应激活函数Dice。<br>$$f(s) = p(s)·s + (1-p(s))·αs, p(s) = \frac{1}{1 + e^{-\frac{s-E[s]}{\sqrt{Var[s] + \epsilon}}}}$$<br>　　E[s]和Var[s]代表每次小批量输入的均值和方差。$\epsilon$是一个常量，此处设为$10^{-8}$。<br>　　Dice的主要思想是根据输入数据分布自适应调整转折点，值设置为输入的平均值。另外，Dice在两个函数间切换很顺滑。当E(s) = 0且Var[s] = 0时，Dice退化到PReLU。</p>
+<h1 id="实验-EXPERIMENTS"><a href="#实验-EXPERIMENTS" class="headerlink" title="实验 EXPERIMENTS"></a>实验 EXPERIMENTS</h1><h2 id="数据集和实验步骤-Datasets-and-Experimental-Setup"><a href="#数据集和实验步骤-Datasets-and-Experimental-Setup" class="headerlink" title="数据集和实验步骤 Datasets and Experimental Setup"></a>数据集和实验步骤 Datasets and Experimental Setup</h2><p>　　数据集三个：Amazon Dataset， MovieLens Dataset和Alibaba Dataset。<br>　　Amazon Dataset：<a href="http://jmcauley.ucsd.edu/data/amazon/" target="_blank" rel="noopener">http://jmcauley.ucsd.edu/data/amazon/</a><br>　　MovieLens Dataset：<a href="https://grouplens.org/datasets/movielens/20m/" target="_blank" rel="noopener">https://grouplens.org/datasets/movielens/20m/</a><br>　　数据集情况如图。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/DIN-data.png" alt="数据" title>
+                </div>
+                <div class="image-caption">数据</div>
+            </figure></p>
+<h2 id="基线实验"><a href="#基线实验" class="headerlink" title="基线实验"></a>基线实验</h2><ul>
+<li>LR</li>
+<li>BaseModel</li>
+<li>Wide&amp;Deep</li>
+<li>PNN</li>
+<li>DeepFM<h2 id="策略"><a href="#策略" class="headerlink" title="策略"></a>策略</h2>$$AUC = \frac{\sum_{i = 1}^{n}impression_i \times AUC_i}{\sum_{i = 1}^{n}impression_i}$$</li>
+</ul>
+<p>$$RelaImpr = (\frac{AUC(measured model) - 0.5}{AUC(base model) - 0.5} - 1) \times 100\%$$<br>　　RelaImpr用来衡量模型间的相对提升。</p>
+<h2 id="亚马逊数据集和MovieLens数据集模型对比结果-Result-from-model-comparison-on-Amazon-Dataset-and-MovieLens-Dataset"><a href="#亚马逊数据集和MovieLens数据集模型对比结果-Result-from-model-comparison-on-Amazon-Dataset-and-MovieLens-Dataset" class="headerlink" title="亚马逊数据集和MovieLens数据集模型对比结果 Result from model comparison on Amazon Dataset and MovieLens Dataset"></a>亚马逊数据集和MovieLens数据集模型对比结果 Result from model comparison on Amazon Dataset and MovieLens Dataset</h2><p>　　如图所示。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/DIN-F4.png" alt="图4" title>
+                </div>
+                <div class="image-caption">图4</div>
+            </figure><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/DIN-T3.png" alt="表3" title>
+                </div>
+                <div class="image-caption">表3</div>
+            </figure></p>
+<h2 id="正则化性能-Performance-of-regularization"><a href="#正则化性能-Performance-of-regularization" class="headerlink" title="正则化性能 Performance of regularization"></a>正则化性能 Performance of regularization</h2><p>　　对比试验：</p>
+<ul>
+<li>Dropout</li>
+<li>Filter</li>
+<li>Regularization in DiFacto</li>
+<li>MBA<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/DIN-T4.png" alt="表4" title>
+                </div>
+                <div class="image-caption">表4</div>
+            </figure>
+<h2 id="阿里巴巴数据集模型对比结果-Result-from-model-comparison-on-Alibaba-Dataset"><a href="#阿里巴巴数据集模型对比结果-Result-from-model-comparison-on-Alibaba-Dataset" class="headerlink" title="阿里巴巴数据集模型对比结果 Result from model comparison on Alibaba Dataset"></a>阿里巴巴数据集模型对比结果 Result from model comparison on Alibaba Dataset</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/DIN-T5.png" alt="表5" title>
+                </div>
+                <div class="image-caption">表5</div>
+            </figure>
+<h2 id="DIN可视化-Visualization-of-DIN"><a href="#DIN可视化-Visualization-of-DIN" class="headerlink" title="DIN可视化 Visualization of DIN"></a>DIN可视化 Visualization of DIN</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/DIN-F5.png" alt="图5" title>
+                </div>
+                <div class="image-caption">图5</div>
+            </figure>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/DIN-F6.png" alt="图6" title>
+                </div>
+                <div class="image-caption">图6</div>
+            </figure>
+<h1 id="总结-CONCLUSIONS"><a href="#总结-CONCLUSIONS" class="headerlink" title="总结 CONCLUSIONS"></a>总结 CONCLUSIONS</h1>　　传统CTR模型适用定长向量代表用户兴趣是有缺陷的。为了提高用户兴趣多样性，提出DIN模型来激活相关的用户行为，并且针对不同的广告有一个自适应用户兴趣表示向量。另外，提出两种技术帮助训练工业深度网络，并提升了DIN性能。DIN已被部署到阿里巴巴的在线广告展示系统。</li>
+</ul>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2021-10-21T17:03:21.000Z" itemprop="dateUpdated">2021-10-21 17:03:21</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2021/05/06/DIN/" target="_blank" rel="external">https://hubojing.github.io/2021/05/06/DIN/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hubojing.github.io">
+            <img src="/img/avatar.jpg" alt="靖待">
+            靖待
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DIN/">DIN</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/推荐算法/">推荐算法</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2021/05/06/DIN/&title=《【Paper】DIN模型》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2021/05/06/DIN/&title=《【Paper】DIN模型》 — 靖待的技术博客&source=　　阿里DIN模型　　10.21总算写完了…… " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2021/05/06/DIN/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【Paper】DIN模型》 — 靖待的技术博客&url=https://hubojing.github.io/2021/05/06/DIN/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2021/05/06/DIN/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2021/06/16/CRF++/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">CRF++</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2021/04/27/ESMM/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">【Paper】Entire Space Multi-Task Model-An Effective Approach for Estimating Post-Click Conversion Rate</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+	<script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css"/>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+	Waline.init({
+      el: '#comments',
+      serverURL: 'https://waline-1-r2604942.deta.app/',
+    });
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        码代码和码字，都是人生乐趣
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>靖待 &copy; 2015 - 2024</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2021/05/06/DIN/&title=《【Paper】DIN模型》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2021/05/06/DIN/&title=《【Paper】DIN模型》 — 靖待的技术博客&source=　　阿里DIN模型　　10.21总算写完了…… " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2021/05/06/DIN/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【Paper】DIN模型》 — 靖待的技术博客&url=https://hubojing.github.io/2021/05/06/DIN/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2021/05/06/DIN/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABsklEQVR42u3aMXLDMAwEQP//006bRsyBIDF2ZlWp0IjLhkMc8HrFz3v5/P7m6funf75uPLi4uG1uTlnjElC+vcet4uLiDnLXi60Pnf4mC4cdLi7uB3OrC+Pi4v5v7voKkpQ9uLi438LtRB5JwJEXV8dqNVxc3AY3TynvvV/Jd3Fxcbe47+JTDUSqwegfq+Pi4o5w8wMlv5rkUWl1XVxc3EludeHqraM/X9Hq3uDi4ha5ew2S6qDVqc3j4uJOcvvjU2tKv7mCi4s7ye0cNFGJsvwmuRL9cdHBxcW9xj02GFE8tlq1Gi4u7kjOkMedeWFz+IjExcUd5O4VLcmW9tqoj3/GxcUd4ebL5yMU/QmrcpMVFxf3Grf6u9vFTz4agouLe4NbbXWUd3+0oMLFxZ3ndg6mvdGu8sZwcXEHuXkU0unb5H8o3IBwcXGPck8FmtV/tnq/uLi4l7n9kYjOMtWQBRcXd5JbjUdPNUI2iyVcXNxBbqcDU41OjtVquLi4H8bNS5rWABYuLu4XcpP3fuTx2ErBxcW9zK2Gm53Dq9p0wcXFnefuhZv98ayE3sp3cXFxd7g/2+8LCd/snxwAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来嘛！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)抱抱~你回来了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
