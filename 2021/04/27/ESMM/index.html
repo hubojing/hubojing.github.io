@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://hubojing.github.io/images/ESMM-f2.png">
 <meta property="og:image" content="https://hubojing.github.io/images/ESMM-f1.png">
 <meta property="og:image" content="https://hubojing.github.io/images/ESMM-f2.png">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.171Z">
+<meta property="og:updated_time" content="2021-05-06T09:39:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Paper】Entire Space Multi-Task Model-An Effective Approach for Estimating Post-Click Conversion Rate">
 <meta name="twitter:description" content="多任务学习之ESMM">
@@ -54,8 +54,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -198,7 +284,7 @@
         <h1 class="title">【Paper】Entire Space Multi-Task Model-An Effective Approach for Estimating Post-Click Conversion Rate</h1>
         <h5 class="subtitle">
             
-                <time datetime="2021-04-27T10:23:10.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2021-04-27T02:23:10.000Z" itemprop="datePublished" class="page-time">
   2021-04-27
 </time>
 
@@ -220,7 +306,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#摘要-ABSTRACT"><span class="post-toc-number">2.</span> <span class="post-toc-text">摘要 ABSTRACT</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#介绍-INTRODUCTION"><span class="post-toc-number">3.</span> <span class="post-toc-text">介绍 INTRODUCTION</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#提出的方法-THE-PROPOSED-APPROACH"><span class="post-toc-number">4.</span> <span class="post-toc-text">提出的方法 THE PROPOSED APPROACH</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#注释-Notation"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">注释 Notation</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CVR建模和挑战-CVR-Modeling-and-Challenges"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">CVR建模和挑战 CVR Modeling and Challenges</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多任务全空间模型-Entire-Space-Multi-Task-Model"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">多任务全空间模型 Entire Space Multi-Task Model</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#摘要-ABSTRACT"><span class="post-toc-text">摘要 ABSTRACT</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#介绍-INTRODUCTION"><span class="post-toc-text">介绍 INTRODUCTION</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#提出的方法-THE-PROPOSED-APPROACH"><span class="post-toc-text">提出的方法 THE PROPOSED APPROACH</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#注释-Notation"><span class="post-toc-text">注释 Notation</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CVR建模和挑战-CVR-Modeling-and-Challenges"><span class="post-toc-text">CVR建模和挑战 CVR Modeling and Challenges</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多任务全空间模型-Entire-Space-Multi-Task-Model"><span class="post-toc-text">多任务全空间模型 Entire Space Multi-Task Model</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -231,7 +317,7 @@
     <div class="post-card">
         <h1 class="post-card-title">【Paper】Entire Space Multi-Task Model-An Effective Approach for Estimating Post-Click Conversion Rate</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-04-27 10:23:10" datetime="2021-04-27T10:23:10.000Z"  itemprop="datePublished">2021-04-27</time>
+            <time class="post-time" title="2021-04-27 02:23:10" datetime="2021-04-27T02:23:10.000Z"  itemprop="datePublished">2021-04-27</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
@@ -255,7 +341,7 @@
 <h1 id="介绍-INTRODUCTION"><a href="#介绍-INTRODUCTION" class="headerlink" title="介绍 INTRODUCTION"></a>介绍 INTRODUCTION</h1><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\ESMM-f1.png" alt="ESMM" title>
+                    <img src="\images\ESMM-f1.png" alt="ESMM" title="">
                 </div>
                 <div class="image-caption">ESMM</div>
             </figure>
@@ -269,7 +355,7 @@
 <h2 id="CVR建模和挑战-CVR-Modeling-and-Challenges"><a href="#CVR建模和挑战-CVR-Modeling-and-Challenges" class="headerlink" title="CVR建模和挑战 CVR Modeling and Challenges"></a>CVR建模和挑战 CVR Modeling and Challenges</h2><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\ESMM-f2.png" alt="ESMM架构" title>
+                    <img src="\images\ESMM-f2.png" alt="ESMM架构" title="">
                 </div>
                 <div class="image-caption">ESMM架构</div>
             </figure>
@@ -287,7 +373,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.171Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2021-05-06T09:39:04.000Z" itemprop="dateUpdated">2021-05-06 09:39:04</time>
 </span><br>
 
 
@@ -473,6 +559,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -537,6 +627,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJElEQVR42u3aMW7DMAwF0Nz/0u7SLY39STkFTD1NRZLaehoIUuTrFa8jXue///Tk9/96fWNhYGA8llHd1vvrz3/T+yTfGwYGxj6MJBTmgPImgvde7BkDAwOjtcVz3vmTMTAwMNYZ0aM/gJMUEAMDA6MXOu8NxHnAvbkWx8DAeCAjv3X//7+/0t/AwMB4FOMoriSNy0vZ9f38PhMDA2M0o1qgrmw6h/X2g4GBMZVRLTjPAUlTszqcEcEwMDBGM3pX/L1WQW/sLGkkYGBgzGbkl19JUph/u37eGBgYuzF6qVjeVuy1HgtjGRgYGNszeldpebDuBe6oYsbAwBjB6F17rV+xrR/QH59gYGBsxuglf70YmG/0go2BgTGaUQ2dvXBcbS18JVnEwMB4LGPl+j4pTauw5rAFBgbGUEYvLaumj/kRVAvai04sBgbGCEY1RasOQ1SL4aWFgYExlLG+rbxVeVc6eFG+YmBgjGOcvzK/VqsOh/WmJi6eg4GBsQHjrg7D+aFUD6JQEmNgYGzAWClHq42E/NquUPpiYGBswKi2NnuFbnP6Izl0DAyMoYyjuFYak737sWjUFQMDYzSjF+Z64TJPGZOtN1uhGBgYj2XkpWkV2ctV8+dgYGDsxqgGvur1fX6pVw39GBgYGMlv8tGuPDSXi1gMDAyMYiOzWpTeUEJjYGBswMhHKHplaj6c0UtPMTAwZjPykNcLlL2DyNsDGBgYoxk/xY4i4K9Mmo8AAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 

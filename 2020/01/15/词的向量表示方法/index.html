@@ -56,8 +56,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -222,7 +308,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#独热编码（One-Hot-Encoding）"><span class="post-toc-number">1.</span> <span class="post-toc-text">独热编码（One-Hot Encoding）</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#词袋模型（Bag-of-Words-BoW）"><span class="post-toc-number">2.</span> <span class="post-toc-text">词袋模型（Bag-of-Words, BoW）</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#词向量-词嵌入（Word-Embedding）"><span class="post-toc-number">3.</span> <span class="post-toc-text">词向量/词嵌入（Word Embedding）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#连续词袋模型（Continuous-Bag-of-Words-CBoW）"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">连续词袋模型（Continuous Bag-of-Words, CBoW）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Skip-gram模型（Continuous-skip-gram-Model）"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">Skip-gram模型（Continuous skip-gram Model）</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文"><span class="post-toc-number">4.</span> <span class="post-toc-text">论文</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#独热编码（One-Hot-Encoding）"><span class="post-toc-text">独热编码（One-Hot Encoding）</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#词袋模型（Bag-of-Words-BoW）"><span class="post-toc-text">词袋模型（Bag-of-Words, BoW）</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#词向量-词嵌入（Word-Embedding）"><span class="post-toc-text">词向量/词嵌入（Word Embedding）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#连续词袋模型（Continuous-Bag-of-Words-CBoW）"><span class="post-toc-text">连续词袋模型（Continuous Bag-of-Words, CBoW）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Skip-gram模型（Continuous-skip-gram-Model）"><span class="post-toc-text">Skip-gram模型（Continuous skip-gram Model）</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文"><span class="post-toc-text">论文</span></a></li></ol>
         </nav>
     </aside>
 
@@ -485,6 +571,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -549,6 +639,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACpUlEQVR42u3aMXaDQAwFQN//0kmbBviSVg7FUPFiAx6KlfK1n098/Pw5rj69+sv8/P7pBw48PDy8wU+/ut39Y+7ZCf7+m8nvuXwFeHh4eGu8++X+6tY5735ZnxSPBwseHh7eC3jVBb1Kmr9QPDw8vLfxqst9tVFOSHh4eHhv4CVhRHJV79UksPWsBQ8PDy/m5VOk95yvzPfw8PDwxlP1ZMGdL+K9SCK6Jx4eHt4CL19w8yA1b50nBakQf+Dh4eEd5VWjhN4wrLqs5yXh4dXj4eHhrfGSIHXSRvdKy4E8AQ8PD2+ZN2mIe2FEjmluHcDDw8Nb45UvK86e8heRRBKF++Dh4eEt8/IGuhe5VsOO6guK5nt4eHh4Y161me4BklLRKw/lURkeHh7eUd7ZYdhnfMy3KeDh4eFt8/JlOv9OUlSSUpTHu82MBA8PD6/Im4yjqi9ifp4P4fDw8PA2ePOGuFokku0Fx6IKPDw8vH/iTTaM5jFBrxg8IPHw8PAWeNWFe9I05816PjaL7oaHh4e3xssvSB5Z3YhQfW4hHMHDw8Nb5lXnZtUNB71NXdUSclkY8PDw8Ma8SZSQtLnfiTMu74OHh4e3wMtHX0mDO+ljJ3cuNNZ4eHh4h3jzEKE3QptgCiUEDw8P7+u8Uw3uPMytDsnw8PDw/ouXxwq90X5eeJqjODw8PLw1Xq9RzsOLBJOM3Jp7cvHw8PAO8XqjqTyWTULb6lX5QA4PDw9vg1ddanthxHy7VfW8TMXDw8Mr8ibFIGmaqw168tMLz8XDw8Nb4yUbofJgohfj9lrkh2/i4eHhvYCXj6PyyCAvAHmIjIeHh/dOXu+R840FhY1ZeHh4eGu86tbS3tareUkoN+J4eHh4C7zqP/zzcHYyi1vcOoCHh4f3zPsFjlIr8Mrd1X8AAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 

@@ -41,7 +41,7 @@
 <meta property="og:image" content="https://hubojing.github.io/images/STAN-2.png">
 <meta property="og:image" content="https://hubojing.github.io/images/STAN-3.png">
 <meta property="og:image" content="https://hubojing.github.io/images/STAN-4.png">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.175Z">
+<meta property="og:updated_time" content="2022-01-27T15:40:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="STAN">
 <meta name="twitter:description" content="STAN: Spatio-Temporal Attention Network for Next Location Recommendation　　STAN：基于时空注意力网络的下一个兴趣点推荐">
@@ -56,8 +56,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -200,7 +286,7 @@
         <h1 class="title">STAN</h1>
         <h5 class="subtitle">
             
-                <time datetime="2022-01-24T11:20:37.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2022-01-24T03:20:37.000Z" itemprop="datePublished" class="page-time">
   2022-01-24
 </time>
 
@@ -222,7 +308,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#现有问题"><span class="post-toc-number">2.</span> <span class="post-toc-text">现有问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#说明和定义"><span class="post-toc-number">3.</span> <span class="post-toc-text">说明和定义</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#架构"><span class="post-toc-number">4.</span> <span class="post-toc-text">架构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多模态嵌入模块"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">多模态嵌入模块</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#用户轨迹嵌入层"><span class="post-toc-number">4.1.1.</span> <span class="post-toc-text">用户轨迹嵌入层</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#时空嵌入层"><span class="post-toc-number">4.1.2.</span> <span class="post-toc-text">时空嵌入层</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#自注意力聚合层"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">自注意力聚合层</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#注意力匹配层"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">注意力匹配层</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#平衡采样器"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">平衡采样器</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验"><span class="post-toc-number">5.</span> <span class="post-toc-text">实验</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基线"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">基线</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#性能"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">性能</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#贡献点"><span class="post-toc-number">6.</span> <span class="post-toc-text">贡献点</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#代码"><span class="post-toc-number">7.</span> <span class="post-toc-text">代码</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#现有问题"><span class="post-toc-text">现有问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#说明和定义"><span class="post-toc-text">说明和定义</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#架构"><span class="post-toc-text">架构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多模态嵌入模块"><span class="post-toc-text">多模态嵌入模块</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#用户轨迹嵌入层"><span class="post-toc-text">用户轨迹嵌入层</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#时空嵌入层"><span class="post-toc-text">时空嵌入层</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#自注意力聚合层"><span class="post-toc-text">自注意力聚合层</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#注意力匹配层"><span class="post-toc-text">注意力匹配层</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#平衡采样器"><span class="post-toc-text">平衡采样器</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验"><span class="post-toc-text">实验</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基线"><span class="post-toc-text">基线</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#性能"><span class="post-toc-text">性能</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#贡献点"><span class="post-toc-text">贡献点</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#代码"><span class="post-toc-text">代码</span></a></li></ol>
         </nav>
     </aside>
 
@@ -233,7 +319,7 @@
     <div class="post-card">
         <h1 class="post-card-title">STAN</h1>
         <div class="post-meta">
-            <time class="post-time" title="2022-01-24 11:20:37" datetime="2022-01-24T11:20:37.000Z"  itemprop="datePublished">2022-01-24</time>
+            <time class="post-time" title="2022-01-24 03:20:37" datetime="2022-01-24T03:20:37.000Z"  itemprop="datePublished">2022-01-24</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
@@ -255,7 +341,7 @@
 <h1 id="现有问题"><a href="#现有问题" class="headerlink" title="现有问题"></a>现有问题</h1><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\STAN-1.png" alt="引入" title>
+                    <img src="\images\STAN-1.png" alt="引入" title="">
                 </div>
                 <div class="image-caption">引入</div>
             </figure>
@@ -265,7 +351,7 @@
 <h1 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h1><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\STAN-2.png" alt="架构" title>
+                    <img src="\images\STAN-2.png" alt="架构" title="">
                 </div>
                 <div class="image-caption">架构</div>
             </figure>
@@ -279,7 +365,7 @@
 <h1 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h1><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\STAN-3.png" alt="数据" title>
+                    <img src="\images\STAN-3.png" alt="数据" title="">
                 </div>
                 <div class="image-caption">数据</div>
             </figure>
@@ -296,7 +382,7 @@
 <h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\STAN-4.png" alt="性能" title>
+                    <img src="\images\STAN-4.png" alt="性能" title="">
                 </div>
                 <div class="image-caption">性能</div>
             </figure>
@@ -315,7 +401,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.175Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2022-01-27T15:40:00.000Z" itemprop="dateUpdated">2022-01-27 15:40:00</time>
 </span><br>
 
 
@@ -501,6 +587,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -565,6 +655,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACNUlEQVR42u3aS47DIBBFUe9/084kg0iR8X2UEwnqMmp1p4GTQak+HAde58f6/M34r9/rauerfR5eMmTIWJZxDtfVZziV8MgXdHMHGTJkNGCQUDgmfe8TXAKce3NnGTJkyAAHk4BLTpQhQ4aMZwNuerl6EJchQ0ZnBi8seZCtlKk/rMVlyJCxIIN33f//80/mGzJkyFiKcYZrnJylpWz9Pu89ZciQsTWDB7i0rT9m8+cXwSkyZMjYlMEfRpCLpp+pN/LQFjJkyFicwYPpXMLHH5ZVmnQyZMjoyeCBmJey49KX3ARluDJkyNiOkT6nmGvopwVwOiKVIUNGBwYPoLx9X/lfHtwPHqdlyJCxNSMF1x9t8D2DgCtDhoxlGZWnD2RTHoLn2DJkyOjGGG9NtpsrU8mJcZooQ4aMjRhpwkfGik+12OI3IzJkyNiawcNfWoJWdg6+UBkyZDRjpM19HpR5CA5aaXOTTxkyZCzFuHkvFpaU6dMxHtAns10ZMmRsyuCDAZ7SpQnfXKErQ4aMvRk8CSNhcYzk6WPcT5MhQ0YbRqntFYbRSnCXIUNGT0Z6GD++/kQjfnIhQ4aMjRhnuNLgSEabPE28SQplyJCxKeOpyeBTBTAvWSfvI0OGjGUZaWLHS9D0wQdpvV3eR4YMGQ0YPPBVxgBzSWRQi8uQIUNGYdyYhuY06MuQIUMGH1tOPpUoDDhlyJDRh8GHAeNgOleOVoagMmTI6MCoN8UIlV8i3UeGDBlbM178y3+tMIM8NAAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

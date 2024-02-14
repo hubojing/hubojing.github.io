@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#数据结构系列"><span class="post-toc-number">1.</span> <span class="post-toc-text">数据结构系列</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#顺序表"><span class="post-toc-number">2.</span> <span class="post-toc-text">顺序表</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#List-h"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">List.h</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#List-cpp"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">List.cpp</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Coordinate-h"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">Coordinate.h</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Coordinate-cpp"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">Coordinate.cpp</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#demo-cpp"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">demo.cpp</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#链式表"><span class="post-toc-number">3.</span> <span class="post-toc-text">链式表</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Node-h"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">Node.h</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Node-cpp"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">Node.cpp</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#List-h-1"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">List.h</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#List-cpp-1"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">List.cpp</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#demo-cpp-1"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">demo.cpp</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#链表应用之通讯录"><span class="post-toc-number">4.</span> <span class="post-toc-text">链表应用之通讯录</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Person-h"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">Person.h</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Person-cpp"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">Person.cpp</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Node-h-1"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">Node.h</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Node-cpp-1"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">Node.cpp</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#List-h-2"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">List.h</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#List-cpp-2"><span class="post-toc-number">4.6.</span> <span class="post-toc-text">List.cpp</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#demo-cpp-2"><span class="post-toc-number">4.7.</span> <span class="post-toc-text">demo.cpp</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#数据结构系列"><span class="post-toc-text">数据结构系列</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#顺序表"><span class="post-toc-text">顺序表</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#List-h"><span class="post-toc-text">List.h</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#List-cpp"><span class="post-toc-text">List.cpp</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Coordinate-h"><span class="post-toc-text">Coordinate.h</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Coordinate-cpp"><span class="post-toc-text">Coordinate.cpp</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#demo-cpp"><span class="post-toc-text">demo.cpp</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#链式表"><span class="post-toc-text">链式表</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Node-h"><span class="post-toc-text">Node.h</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Node-cpp"><span class="post-toc-text">Node.cpp</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#List-h-1"><span class="post-toc-text">List.h</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#List-cpp-1"><span class="post-toc-text">List.cpp</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#demo-cpp-1"><span class="post-toc-text">demo.cpp</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#链表应用之通讯录"><span class="post-toc-text">链表应用之通讯录</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Person-h"><span class="post-toc-text">Person.h</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Person-cpp"><span class="post-toc-text">Person.cpp</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Node-h-1"><span class="post-toc-text">Node.h</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Node-cpp-1"><span class="post-toc-text">Node.cpp</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#List-h-2"><span class="post-toc-text">List.h</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#List-cpp-2"><span class="post-toc-text">List.cpp</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#demo-cpp-2"><span class="post-toc-text">demo.cpp</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -459,6 +545,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -523,6 +613,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLElEQVR42u3awY7rMAgF0P7/T+dtR5qRe4HkSbGPV1XVOj5ZIAx8PvG6fqzf3/z8fv37fM/PEwsDA+O1jGu5Jo9M2GtwcjYMDIxzGMkh7vpXEqzzp2BgYGAkjHXwzdNHDAwMjCcYk4SymiZiYGBgJA/IL5nr/fPA/chdHAMD44WMvOr+/z8/0t/AwMB4FeMqrmqToBour9bCwMDYm5EHuCRlTK6d1dQzH/7AwMA4gTEJr8nlszqQkbya8nvCwMB4IaPadFz/915wPi6GgYGBkV9EqwX9JLBGLxoDA+MARn6se9PKXiIYVQ0xMDC2Y1RHKObl/kkCWu6vYmBgHMDoBcocVj3hH2fGwMA4gNErgfXKZFVSodyGgYGxKaM6SJo0A6oDE71n/bE/BgbGpoxewldtBuShdjRsgYGBsTWjd+2cFN2SnQunxcDAOIbRi12Tlmd1wCIKuBgYGNsx5sX63shFUtRrNjUxMDA2Zaw3qg5pJcF0MnLxpWqIgYFxDKPaSkwCYu+yWmgnYGBgHMDoFe6r1+C7Rl2/DFtgYGBszagmdnnr8QpWtZ6GgYFxAuMqrvxA1abmev9CbouBgbEdo9cZ7JXYqm3O5HOzZ4uBgfFCRvVwt5XyqznsujCHgYFxAGMe+Krfz5FRPwEDA+NIxqQx2WsSRBdXDAwMjLhhkJTbekH2yw4YGBgHMHrNgN7IRX5lfaTchoGB8ULGJORVG5P5cMaktYCBgbER4x/N9PAuePchqAAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

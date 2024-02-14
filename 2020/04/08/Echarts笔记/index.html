@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#浏览器画图原理"><span class="post-toc-number">1.</span> <span class="post-toc-text">浏览器画图原理</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#下载安装"><span class="post-toc-number">2.</span> <span class="post-toc-text">下载安装</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#快速上手"><span class="post-toc-number">3.</span> <span class="post-toc-text">快速上手</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#常用图"><span class="post-toc-number">4.</span> <span class="post-toc-text">常用图</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#标题"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">标题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#工具箱"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">工具箱</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#弹窗"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">弹窗</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#标记线和标记点"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">标记线和标记点</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#饼图"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">饼图</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#仪表图"><span class="post-toc-number">4.6.</span> <span class="post-toc-text">仪表图</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#地图"><span class="post-toc-number">4.7.</span> <span class="post-toc-text">地图</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#散点图"><span class="post-toc-number">4.8.</span> <span class="post-toc-text">散点图</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#K线图"><span class="post-toc-number">4.9.</span> <span class="post-toc-text">K线图</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#雷达图"><span class="post-toc-number">4.10.</span> <span class="post-toc-text">雷达图</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#高级使用"><span class="post-toc-number">5.</span> <span class="post-toc-text">高级使用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多个坐标轴"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">多个坐标轴</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#dataZoom"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">dataZoom</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#值域选择"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">值域选择</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#小项目"><span class="post-toc-number">6.</span> <span class="post-toc-text">小项目</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考"><span class="post-toc-number">7.</span> <span class="post-toc-text">参考</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#浏览器画图原理"><span class="post-toc-text">浏览器画图原理</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#下载安装"><span class="post-toc-text">下载安装</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#快速上手"><span class="post-toc-text">快速上手</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#常用图"><span class="post-toc-text">常用图</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#标题"><span class="post-toc-text">标题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#工具箱"><span class="post-toc-text">工具箱</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#弹窗"><span class="post-toc-text">弹窗</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#标记线和标记点"><span class="post-toc-text">标记线和标记点</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#饼图"><span class="post-toc-text">饼图</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#仪表图"><span class="post-toc-text">仪表图</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#地图"><span class="post-toc-text">地图</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#散点图"><span class="post-toc-text">散点图</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#K线图"><span class="post-toc-text">K线图</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#雷达图"><span class="post-toc-text">雷达图</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#高级使用"><span class="post-toc-text">高级使用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多个坐标轴"><span class="post-toc-text">多个坐标轴</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#dataZoom"><span class="post-toc-text">dataZoom</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#值域选择"><span class="post-toc-text">值域选择</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#小项目"><span class="post-toc-text">小项目</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考"><span class="post-toc-text">参考</span></a></li></ol>
         </nav>
     </aside>
 
@@ -474,6 +560,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -538,6 +628,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACK0lEQVR42u3aS27DMAwFwNz/0u62RWH3kZILSBqtisCNNVkQ/H0+8bl+ne+fPz+fPHn3X5MPBgbGsozr8eTP5FdM3lV+LwYGxgGM5BLPIbX6X7333n6OgYGBESRw1TQx+WkwMDAwZjGShPI51cPAwMBIGHlhOZJEVoPsK7U4BgbGgoy86/7/f78y38DAwFiKcRXPrJRx/CY/vhMDA2NrRh7gkvRuZKmiGnAxMDDOYSSFZV6CjoTa3sghmqZiYGBswah+3sOMPPkHGAMDY2tG3vRP0sFqQ7/6nUMZLgYGxrKMkbZaFZMvW+RvwcDAOIHRK2V7jbZZCeK0ihwDA2MRxkjozMeQebnbWzjDwMDYm1Ft1ichtdomq44NhgIxBgbGgoxqI6zXOKsuwuZ3KEdxDAyMxRkjq2B5YZwXtxN2RjAwMLZm9GC9pl5vOew2NcTAwDiA0VuSmFXuNg8GBsYBjGrI6zXUqvgkNGNgYJzASMYA+ZCg13SrVqO3PwoGBsYBjDyM5ktd+VV6y2flKQcGBsamjOS6SSpZrUPLYRcDA+MAxkhbP0kN8wS011vDwMDYlXEVz3PA7Q07q4E+SgoxMDA2YowPO0dK0N5Espp0YmBg7MGoLljMLUp7wRoDA+NMRi/wJStf1bQvD/0YGBgYsxa/qqlkXioXNjgwMDAOY1QTu5HRZuGHw8DAOIDRS+ny4WX+za+32zAwMBZk9FYckqv0LlHFYGBgbM34AneFf62emlWEAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
+
 
 
 

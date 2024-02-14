@@ -37,7 +37,7 @@
 <meta property="og:description" content="记得比较乱，自用。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1565459219422&di=24d422892e8989d6bd18a2a93aae8230&imgtype=0&src=http%3A%2F%2Fpic.51yuansu.com%2Fpic3%2Fcover%2F03%2F05%2F94%2F5b2c9f2655ac0_610.jpg">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.175Z">
+<meta property="og:updated_time" content="2024-02-14T11:03:25.034Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="推荐那些事儿">
 <meta name="twitter:description" content="记得比较乱，自用。">
@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#POI推荐——2019-11-10"><span class="post-toc-number">1.</span> <span class="post-toc-text">POI推荐——2019.11.10</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#LBSN基于位置的社交网络——2019-07-21"><span class="post-toc-number">2.</span> <span class="post-toc-text">LBSN基于位置的社交网络——2019.07.21</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#协同过滤算法-collaborative-filtering-CF"><span class="post-toc-number">3.</span> <span class="post-toc-text">协同过滤算法(collaborative filtering, CF)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基于Memory-based-基于记忆-基于Content-based基于内容-基于邻域"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">基于Memory-based(基于记忆)/基于Content-based基于内容/基于邻域</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基于Model-based-基于模型"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">基于Model-based(基于模型)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基于关联规则的推荐算法"><span class="post-toc-number">3.2.1.</span> <span class="post-toc-text">基于关联规则的推荐算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#聚类"><span class="post-toc-number">3.2.2.</span> <span class="post-toc-text">聚类</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#分类"><span class="post-toc-number">3.2.3.</span> <span class="post-toc-text">分类</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#回归"><span class="post-toc-number">3.2.4.</span> <span class="post-toc-text">回归</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#隐语义"><span class="post-toc-number">3.2.5.</span> <span class="post-toc-text">隐语义</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#神经网络"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">神经网络</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基于混合的推荐算法"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">基于混合的推荐算法</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#基于位置的推荐算法"><span class="post-toc-number">4.</span> <span class="post-toc-text">基于位置的推荐算法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#LBSN用户行为预测"><span class="post-toc-number">5.</span> <span class="post-toc-text">LBSN用户行为预测</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基于用户个人的数据"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">基于用户个人的数据</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基于所有用户产生的数据"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">基于所有用户产生的数据</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基于前两种数据的结合"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">基于前两种数据的结合</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考资料"><span class="post-toc-number">6.</span> <span class="post-toc-text">参考资料</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#POI推荐——2019-11-10"><span class="post-toc-text">POI推荐——2019.11.10</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#LBSN基于位置的社交网络——2019-07-21"><span class="post-toc-text">LBSN基于位置的社交网络——2019.07.21</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#协同过滤算法-collaborative-filtering-CF"><span class="post-toc-text">协同过滤算法(collaborative filtering, CF)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基于Memory-based-基于记忆-基于Content-based基于内容-基于邻域"><span class="post-toc-text">基于Memory-based(基于记忆)/基于Content-based基于内容/基于邻域</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基于Model-based-基于模型"><span class="post-toc-text">基于Model-based(基于模型)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基于关联规则的推荐算法"><span class="post-toc-text">基于关联规则的推荐算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#聚类"><span class="post-toc-text">聚类</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#分类"><span class="post-toc-text">分类</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#回归"><span class="post-toc-text">回归</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#隐语义"><span class="post-toc-text">隐语义</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#神经网络"><span class="post-toc-text">神经网络</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基于混合的推荐算法"><span class="post-toc-text">基于混合的推荐算法</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#基于位置的推荐算法"><span class="post-toc-text">基于位置的推荐算法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#LBSN用户行为预测"><span class="post-toc-text">LBSN用户行为预测</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基于用户个人的数据"><span class="post-toc-text">基于用户个人的数据</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基于所有用户产生的数据"><span class="post-toc-text">基于所有用户产生的数据</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基于前两种数据的结合"><span class="post-toc-text">基于前两种数据的结合</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考资料"><span class="post-toc-text">参考资料</span></a></li></ol>
         </nav>
     </aside>
 
@@ -294,7 +380,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.175Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2024-02-14T11:03:25.034Z" itemprop="dateUpdated">2024-02-14 11:03:25</time>
 </span><br>
 
 
@@ -480,6 +566,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -544,6 +634,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACG0lEQVR42u3aQY7DMAgF0N7/0um2m6QfSCvFfl6NUk3i5wUCw+sVr+NjnT3//PU4WWdvvv7KbQsDA+OxjONyJds928TkSb43DAyMfRhJKEw+Uz2g/Ltf9oyBgYERB98k1bveKAYGBsacUS0+q2klBgYGxqSIrRaZ1bf9qRbHwMB4ICO/df//3z/pb2BgYDyK0QuXSZOy15g8WgsDA2NtRh7gElL1iq1QoCbDHxgYGIsyrsNo9bIsGSPLv1WAYWBgbM/Iw25S+ubtz/yaDwMDY21GLx3sNSOTreQNAAwMjH0YVetkhKvaeiwcEwYGxjaMeXMxD815mhjhMTAwtmHk91eTwaxqURqFeAwMjKUZ1bJzEl7zArjJxsDAWJTRK2J77F6iGRXDGBgYGzAm6dq8BL1t2AIDA2MbRvWKvzdyUU0xo9QQAwNjG0aV1Bu/qCaFhakQDAyM5Rh5lpU0IO8aDqv2JTEwMHZg5Jdr1a3kBzRvdmJgYOzAmBSiCb7XyCwPW2BgYCzNyF86H6HIj6A8xoqBgbE0I3+SXKVVL+BuuEnDwMBYlHEUVy9o9pLIQhDHwMBYmtELc/k1XLVdmhe0vWCNgYHxXEY1sZs0QecNidMjw8DA2IBRbQbcNXhx2zFhYGBgjIckrvGTdgUGBgZGL+BWi9L8aL4UsRgYGEszeuld9b/yQY3qYBkGBsbajHnCNxnLmHwdAwNjA8Yb/NRqmCbCYnkAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 

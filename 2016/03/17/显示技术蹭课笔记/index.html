@@ -62,8 +62,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -228,7 +314,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#显示技术实验部分-Experimental-part"><span class="post-toc-number">1.</span> <span class="post-toc-text">显示技术实验部分 Experimental part</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#几个名词-Several-noums"><span class="post-toc-number">2.</span> <span class="post-toc-text">几个名词 Several noums</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#声表面波滤波器-Surface-acoustic-wave-filter"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">声表面波滤波器 Surface acoustic wave filter</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#行可变电容-Line-variable-capacitor"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">行可变电容 Line variable capacitor</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#行可变电感-Row-variable-inductor"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">行可变电感 Row variable inductor</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#中周-Medium-cycle-transformer"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">中周 Medium cycle transformer</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验现场"><span class="post-toc-number">3.</span> <span class="post-toc-text">实验现场</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#平板显示器-Flat-panel-display"><span class="post-toc-number">4.</span> <span class="post-toc-text">平板显示器 Flat panel display</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#简介-Brief-introduction"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">简介 Brief introduction</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#种类-Type"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">种类 Type</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#CRT显示器-CRT-display"><span class="post-toc-number">5.</span> <span class="post-toc-text">CRT显示器 CRT display</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#简介-Brief-introduction-1"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">简介 Brief introduction</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#液晶显示器-liquid-crystal-display"><span class="post-toc-number">6.</span> <span class="post-toc-text">液晶显示器 liquid-crystal display</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#简介-Brief-introduction-2"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">简介 Brief introduction</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#显示原理-Revelation-principle"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">显示原理 Revelation principle</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#等离子显示器-Plasma-Display-Panel"><span class="post-toc-number">7.</span> <span class="post-toc-text">等离子显示器 Plasma Display Panel</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#简介-Brief-introduction-3"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">简介 Brief introduction</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#原理-Principle"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">原理 Principle</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#云电视-Cloud-TV"><span class="post-toc-number">8.</span> <span class="post-toc-text">云电视 Cloud TV</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#简介-Brief-introduciton"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">简介 Brief introduciton</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#3D显示器-3D-display"><span class="post-toc-number">9.</span> <span class="post-toc-text">3D显示器 3D display</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#简介-Brief-introduciton-1"><span class="post-toc-number">9.1.</span> <span class="post-toc-text">简介 Brief introduciton</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#OLED显示器-OLED-display"><span class="post-toc-number">10.</span> <span class="post-toc-text">OLED显示器 OLED display</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#简介-Brief-introduction-4"><span class="post-toc-number">10.1.</span> <span class="post-toc-text">简介 Brief introduction</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#发光原理-Principle-of-luminescence"><span class="post-toc-number">10.2.</span> <span class="post-toc-text">发光原理 Principle of luminescence</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#户外大屏幕显示器-Outside-big-screen-display"><span class="post-toc-number">11.</span> <span class="post-toc-text">户外大屏幕显示器 Outside big screen display</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#记忆比较深的知识-Knowledge-deeply-remember"><span class="post-toc-number">12.</span> <span class="post-toc-text">记忆比较深的知识 Knowledge deeply remember</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#段子或注意的地方-Something-fun-or-details-It-may-lost-its-fun-when-translated-into-English"><span class="post-toc-number">13.</span> <span class="post-toc-text">段子或注意的地方 Something fun or details (It may lost its fun when translated into English)</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#显示技术实验部分-Experimental-part"><span class="post-toc-text">显示技术实验部分 Experimental part</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#几个名词-Several-noums"><span class="post-toc-text">几个名词 Several noums</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#声表面波滤波器-Surface-acoustic-wave-filter"><span class="post-toc-text">声表面波滤波器 Surface acoustic wave filter</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#行可变电容-Line-variable-capacitor"><span class="post-toc-text">行可变电容 Line variable capacitor</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#行可变电感-Row-variable-inductor"><span class="post-toc-text">行可变电感 Row variable inductor</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#中周-Medium-cycle-transformer"><span class="post-toc-text">中周 Medium cycle transformer</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验现场"><span class="post-toc-text">实验现场</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#平板显示器-Flat-panel-display"><span class="post-toc-text">平板显示器 Flat panel display</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#简介-Brief-introduction"><span class="post-toc-text">简介 Brief introduction</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#种类-Type"><span class="post-toc-text">种类 Type</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#CRT显示器-CRT-display"><span class="post-toc-text">CRT显示器 CRT display</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#简介-Brief-introduction-1"><span class="post-toc-text">简介 Brief introduction</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#液晶显示器-liquid-crystal-display"><span class="post-toc-text">液晶显示器 liquid-crystal display</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#简介-Brief-introduction-2"><span class="post-toc-text">简介 Brief introduction</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#显示原理-Revelation-principle"><span class="post-toc-text">显示原理 Revelation principle</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#等离子显示器-Plasma-Display-Panel"><span class="post-toc-text">等离子显示器 Plasma Display Panel</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#简介-Brief-introduction-3"><span class="post-toc-text">简介 Brief introduction</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#原理-Principle"><span class="post-toc-text">原理 Principle</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#云电视-Cloud-TV"><span class="post-toc-text">云电视 Cloud TV</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#简介-Brief-introduciton"><span class="post-toc-text">简介 Brief introduciton</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#3D显示器-3D-display"><span class="post-toc-text">3D显示器 3D display</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#简介-Brief-introduciton-1"><span class="post-toc-text">简介 Brief introduciton</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#OLED显示器-OLED-display"><span class="post-toc-text">OLED显示器 OLED display</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#简介-Brief-introduction-4"><span class="post-toc-text">简介 Brief introduction</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#发光原理-Principle-of-luminescence"><span class="post-toc-text">发光原理 Principle of luminescence</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#户外大屏幕显示器-Outside-big-screen-display"><span class="post-toc-text">户外大屏幕显示器 Outside big screen display</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#记忆比较深的知识-Knowledge-deeply-remember"><span class="post-toc-text">记忆比较深的知识 Knowledge deeply remember</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#段子或注意的地方-Something-fun-or-details-It-may-lost-its-fun-when-translated-into-English"><span class="post-toc-text">段子或注意的地方 Something fun or details (It may lost its fun when translated into English)</span></a></li></ol>
         </nav>
     </aside>
 
@@ -541,6 +627,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -606,6 +696,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACr0lEQVR42u3a0W6DQAwEwP7/T6evlVJgbWOaSsMTigjcEOl82fPXV3y8fhzvn7+fH32ren7+9NsOPDw8vMHQ34/8mqPBHT3x6M7nY6uOBw8PD2+PlwwiGWIyuOqzetfg4eHhfQ4vmdZ75SEpV3h4eHj/nXceOty1UP6zwoCHh4d3yqveerJcrg79oawFDw8PL+blu0ifc76yv4eHh4c33lWvTuL5xF0tP8174uHh4S3wqpHrvUvn3txeHiceHh7erbzqNlVOnaxv86j3/BM8PDy8Dd5kEp9sbk3aC8qhLR4eHt4C796tqcmwVloH8PDw8Na6knqbYQmpek2+rC/8bnh4eHgLvLyNqRfX9qb4Xsm5CCPw8PDwBrx8Q6v3Hz8vFb0rL14fHh4e3iO8XtyQT/e9hXseKF8UBjw8PLxHePkD8tCh2iLQbHLFw8PDW+b1WgGS88m3RrEvHh4e3iO8ewOCfJk+uX95VY6Hh4c34PVCh/kU37vbpK0BDw8P715evkmfRA/VWTpvYM2LzWFnBB4eHt6Yl9y0utTOg9de+FsIR/Dw8PAWePlk3YsPkiEmoUOyyL4oM3h4eHiP8HoxQR5G9F5EGYaHh4e3wJsslJPhVl9KdUvsIgrBw8PDe5w33+afFIDklZVTajw8PLwFXq8la1Jseov7qDzg4eHhrfHKXVqtrazJoJNn/fIJHh4e3jIvuXUSsFZD3rvaufDw8PC2ea/ikQ+0GtrmDQSFhTgeHh7eAq861c6XztXYotrEgIeHh/cMr7rl3wtnJ68pLwyH/xjw8PDwFnhJcNCrLfmL68UQF1fi4eHhfQAvv6YXT1Rj4otXhoeHh/cxvGTBXS0zeetAITjGw8PDW+PlIew8eO2VhGbLAh4eHt4Cb/KHf1IweqHGbXt6eHh4eB3eNzpXc6jXV6KFAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
+
 
 
 

@@ -72,7 +72,7 @@
 <meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/计算机图形学学习笔记——梁算法步骤.png?raw=true">
 <meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/计算机图形学学习笔记——多边形裁剪.png?raw=true">
 <meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/计算机图形学学习笔记——顶点处理.png?raw=true">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.183Z">
+<meta property="og:updated_time" content="2024-02-14T11:03:25.042Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="计算机图形学学习笔记">
 <meta name="twitter:description" content="每周一点图形学重启，不弃坑。。。。。。　　几年之后的最新：多边形图像转换补完">
@@ -87,8 +87,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -253,7 +339,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#帧缓冲器及分辨率"><span class="post-toc-number">1.</span> <span class="post-toc-text">帧缓冲器及分辨率</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#二维图形变换"><span class="post-toc-number">2.</span> <span class="post-toc-text">二维图形变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#向量分析"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">向量分析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#图形变换"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">图形变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#分类"><span class="post-toc-number">2.2.1.</span> <span class="post-toc-text">分类</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#二维变换"><span class="post-toc-number">2.2.2.</span> <span class="post-toc-text">二维变换</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#窗口视区变换"><span class="post-toc-number">2.2.3.</span> <span class="post-toc-text">窗口视区变换</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#三维图形几何变换"><span class="post-toc-number">3.</span> <span class="post-toc-text">三维图形几何变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基本变换"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">基本变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#平移变换"><span class="post-toc-number">3.1.1.</span> <span class="post-toc-text">平移变换</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#比例变换"><span class="post-toc-number">3.1.2.</span> <span class="post-toc-text">比例变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#局部比例变换"><span class="post-toc-number">3.1.2.1.</span> <span class="post-toc-text">局部比例变换</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#整体比例变换"><span class="post-toc-number">3.1.2.2.</span> <span class="post-toc-text">整体比例变换</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#旋转变换"><span class="post-toc-number">3.1.3.</span> <span class="post-toc-text">旋转变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#绕z轴旋转θ"><span class="post-toc-number">3.1.3.1.</span> <span class="post-toc-text">绕z轴旋转θ</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#绕x轴旋转"><span class="post-toc-number">3.1.3.2.</span> <span class="post-toc-text">绕x轴旋转</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#绕y轴旋转"><span class="post-toc-number">3.1.3.3.</span> <span class="post-toc-text">绕y轴旋转</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#对称变换"><span class="post-toc-number">3.1.4.</span> <span class="post-toc-text">对称变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#关于坐标平面的对称"><span class="post-toc-number">3.1.4.1.</span> <span class="post-toc-text">关于坐标平面的对称</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#关于坐标轴对称"><span class="post-toc-number">3.1.4.2.</span> <span class="post-toc-text">关于坐标轴对称</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#投影变换"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">投影变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#三视图的计算"><span class="post-toc-number">3.2.1.</span> <span class="post-toc-text">三视图的计算</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#主视图"><span class="post-toc-number">3.2.1.1.</span> <span class="post-toc-text">主视图</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#俯视图"><span class="post-toc-number">3.2.1.2.</span> <span class="post-toc-text">俯视图</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#侧视图"><span class="post-toc-number">3.2.2.</span> <span class="post-toc-text">侧视图</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#正轴测图"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">正轴测图</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#透视投影"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">透视投影</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#一点透视"><span class="post-toc-number">3.4.1.</span> <span class="post-toc-text">一点透视</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#多点透视"><span class="post-toc-number">3.4.2.</span> <span class="post-toc-text">多点透视</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#光栅图形学算法"><span class="post-toc-number">4.</span> <span class="post-toc-text">光栅图形学算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#研究内容"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">研究内容</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#直线段的扫描转换算法"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">直线段的扫描转换算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#直线绘制的三个著名的常用算法"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">直线绘制的三个著名的常用算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#数值微分DDA（Digital-Differential-Analyzer）"><span class="post-toc-number">4.3.1.</span> <span class="post-toc-text">数值微分DDA（Digital Differential Analyzer）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#DDA算法代码"><span class="post-toc-number">4.3.2.</span> <span class="post-toc-text">DDA算法代码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#中点画线法"><span class="post-toc-number">4.3.3.</span> <span class="post-toc-text">中点画线法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#中点画线法代码"><span class="post-toc-number">4.3.4.</span> <span class="post-toc-text">中点画线法代码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Bresenham算法"><span class="post-toc-number">4.3.5.</span> <span class="post-toc-text">Bresenham算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Bresenham算法代码"><span class="post-toc-number">4.3.6.</span> <span class="post-toc-text">Bresenham算法代码</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多边形扫描转换"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">多边形扫描转换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#X-扫描线算法"><span class="post-toc-number">4.4.1.</span> <span class="post-toc-text">X-扫描线算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#改进的x扫描线算法"><span class="post-toc-number">4.4.2.</span> <span class="post-toc-text">改进的x扫描线算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#边缘填充算法"><span class="post-toc-number">4.4.3.</span> <span class="post-toc-text">边缘填充算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#栅栏填充算法"><span class="post-toc-number">4.4.4.</span> <span class="post-toc-text">栅栏填充算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#边界标志算法"><span class="post-toc-number">4.4.5.</span> <span class="post-toc-text">边界标志算法</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#区域填充算法"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">区域填充算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#简单四连通种子填充算法（区域填充递归算法）"><span class="post-toc-number">4.5.1.</span> <span class="post-toc-text">简单四连通种子填充算法（区域填充递归算法）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#多边形的扫描转换与区域填充算法小结"><span class="post-toc-number">4.5.2.</span> <span class="post-toc-text">多边形的扫描转换与区域填充算法小结</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#反走样"><span class="post-toc-number">4.6.</span> <span class="post-toc-text">反走样</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#裁剪算法"><span class="post-toc-number">5.</span> <span class="post-toc-text">裁剪算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#点的裁剪"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">点的裁剪</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#直线段的裁剪"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">直线段的裁剪</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Cohen-Sutherland算法"><span class="post-toc-number">5.2.1.</span> <span class="post-toc-text">Cohen-Sutherland算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#中点分割算法"><span class="post-toc-number">5.2.2.</span> <span class="post-toc-text">中点分割算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Liang-Barsky算法"><span class="post-toc-number">5.2.3.</span> <span class="post-toc-text">Liang-Barsky算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#步骤"><span class="post-toc-number">5.2.3.1.</span> <span class="post-toc-text">步骤</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多边形裁剪"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">多边形裁剪</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Sutherland-Hodgeman多边形裁剪"><span class="post-toc-number">5.3.1.</span> <span class="post-toc-text">Sutherland-Hodgeman多边形裁剪</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文字裁剪"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">文字裁剪</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#消隐算法"><span class="post-toc-number">6.</span> <span class="post-toc-text">消隐算法</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#帧缓冲器及分辨率"><span class="post-toc-text">帧缓冲器及分辨率</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#二维图形变换"><span class="post-toc-text">二维图形变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#向量分析"><span class="post-toc-text">向量分析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#图形变换"><span class="post-toc-text">图形变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#分类"><span class="post-toc-text">分类</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#二维变换"><span class="post-toc-text">二维变换</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#窗口视区变换"><span class="post-toc-text">窗口视区变换</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#三维图形几何变换"><span class="post-toc-text">三维图形几何变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基本变换"><span class="post-toc-text">基本变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#平移变换"><span class="post-toc-text">平移变换</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#比例变换"><span class="post-toc-text">比例变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#局部比例变换"><span class="post-toc-text">局部比例变换</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#整体比例变换"><span class="post-toc-text">整体比例变换</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#旋转变换"><span class="post-toc-text">旋转变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#绕z轴旋转θ"><span class="post-toc-text">绕z轴旋转θ</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#绕x轴旋转"><span class="post-toc-text">绕x轴旋转</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#绕y轴旋转"><span class="post-toc-text">绕y轴旋转</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#对称变换"><span class="post-toc-text">对称变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#关于坐标平面的对称"><span class="post-toc-text">关于坐标平面的对称</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#关于坐标轴对称"><span class="post-toc-text">关于坐标轴对称</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#投影变换"><span class="post-toc-text">投影变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#三视图的计算"><span class="post-toc-text">三视图的计算</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#主视图"><span class="post-toc-text">主视图</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#俯视图"><span class="post-toc-text">俯视图</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#侧视图"><span class="post-toc-text">侧视图</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#正轴测图"><span class="post-toc-text">正轴测图</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#透视投影"><span class="post-toc-text">透视投影</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#一点透视"><span class="post-toc-text">一点透视</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#多点透视"><span class="post-toc-text">多点透视</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#光栅图形学算法"><span class="post-toc-text">光栅图形学算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#研究内容"><span class="post-toc-text">研究内容</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#直线段的扫描转换算法"><span class="post-toc-text">直线段的扫描转换算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#直线绘制的三个著名的常用算法"><span class="post-toc-text">直线绘制的三个著名的常用算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#数值微分DDA（Digital-Differential-Analyzer）"><span class="post-toc-text">数值微分DDA（Digital Differential Analyzer）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#DDA算法代码"><span class="post-toc-text">DDA算法代码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#中点画线法"><span class="post-toc-text">中点画线法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#中点画线法代码"><span class="post-toc-text">中点画线法代码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Bresenham算法"><span class="post-toc-text">Bresenham算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Bresenham算法代码"><span class="post-toc-text">Bresenham算法代码</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多边形扫描转换"><span class="post-toc-text">多边形扫描转换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#X-扫描线算法"><span class="post-toc-text">X-扫描线算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#改进的x扫描线算法"><span class="post-toc-text">改进的x扫描线算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#边缘填充算法"><span class="post-toc-text">边缘填充算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#栅栏填充算法"><span class="post-toc-text">栅栏填充算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#边界标志算法"><span class="post-toc-text">边界标志算法</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#区域填充算法"><span class="post-toc-text">区域填充算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#简单四连通种子填充算法（区域填充递归算法）"><span class="post-toc-text">简单四连通种子填充算法（区域填充递归算法）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#多边形的扫描转换与区域填充算法小结"><span class="post-toc-text">多边形的扫描转换与区域填充算法小结</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#反走样"><span class="post-toc-text">反走样</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#裁剪算法"><span class="post-toc-text">裁剪算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#点的裁剪"><span class="post-toc-text">点的裁剪</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#直线段的裁剪"><span class="post-toc-text">直线段的裁剪</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Cohen-Sutherland算法"><span class="post-toc-text">Cohen-Sutherland算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#中点分割算法"><span class="post-toc-text">中点分割算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Liang-Barsky算法"><span class="post-toc-text">Liang-Barsky算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#步骤"><span class="post-toc-text">步骤</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多边形裁剪"><span class="post-toc-text">多边形裁剪</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Sutherland-Hodgeman多边形裁剪"><span class="post-toc-text">Sutherland-Hodgeman多边形裁剪</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文字裁剪"><span class="post-toc-text">文字裁剪</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#消隐算法"><span class="post-toc-text">消隐算法</span></a></li></ol>
         </nav>
     </aside>
 
@@ -686,7 +772,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.183Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2024-02-14T11:03:25.042Z" itemprop="dateUpdated">2024-02-14 11:03:25</time>
 </span><br>
 
 
@@ -872,6 +958,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -936,6 +1026,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACrUlEQVR42u3ay24bMRAEQP3/TzvXAInW3TOkH0DtSZBXFIsGllTPvF7x9fHX9fz+u3ueX78b89/rdePCw8PDW0z93XAJL59EgkyWJvp2PDw8vGu8duhkcs9L096Zbyp4eHh4v4WXHK+T7022HDw8PLzfy3s3lefx24Pyt20MeHh4eI+82dDtV+YxRxIWH85a8PDw8C5UkX7O6yv1PTw8PLx1VX12tM0f4rNoo5gtHh4e3gXerIiVxA1JsNsepoclNDw8PLwv580m1J5vc1j+Dh4eHt4N3r5kNTtYtxvScAQ8PDy8C7xZaDtrNcgP5bNFL8B4eHh4C167ASQT2jOSY3o0Dh4eHt4FXh4i7D/1vByzyLjuLMPDw8M7xMvbBdrCf1sMO7WgeHh4eLd5M+R+U5kFIm2DAh4eHt5Z3iaivd16NWufHXY94OHh4Y0aCM7GrDPYZiGiMhgeHh7eyZr7J9PKpz5ryWpnMuyJwMPDwzvE+zh07beWfUNqnbLg4eHhLXhtEetUPJFvQsOEAQ8PD+8C7/mmPN7NAW1DVT5mEebi4eHhLXj5Azov7c+at9rliBR4eHh4R3nJBjALGpKp598+vAcPDw/vGm/z8M2P1G2hKz86v30HDw8P7wLvRjDRPtzbT83mgIeHh3eWl4Shs4D1FGzWRoCHh4d3m5dPtw0pcuTsmB7tcnh4eHjXeHmIMIshkoUoYoV2Y8DDw8Nb8zZH4TZ+bZdmtnBRfQ8PDw9vwTv7iz6/f1/6mjU04OHh4Z3i7TeD9oicl//bBf3PaHh4eHjXeHlhrI0q8oXbZA71n/Hw8PC+iXcjlm3jjE/ux8PDw/sxvLxhaxMltK1dxzYGPDw8vICXt0bNWgEOPOLLfwkeHh7ePV77g7897CZBbTutAzU9PDw8vMl8/gAcZ8U6hVuniAAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

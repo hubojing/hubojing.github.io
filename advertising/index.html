@@ -35,7 +35,7 @@
 <meta property="og:site_name" content="靖待的技术博客">
 <meta property="og:description" content=".s{     margin: 0 auto;     text-align:center;     font-size: 20px; }   CPP教程MFC傻瓜式教程C++面向对象程序设计（侯捷）笔记C++程序设计之兼谈对象模型  Java教程再学Java  计算机图形学教程计算机图形学学习笔记计算机图形学实验  数据结构系列栈队列线性表树图  Linux系列一天一点linuxlinux C">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.187Z">
+<meta property="og:updated_time" content="2024-02-14T11:03:25.046Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="推广">
 <meta name="twitter:description" content=".s{     margin: 0 auto;     text-align:center;     font-size: 20px; }   CPP教程MFC傻瓜式教程C++面向对象程序设计（侯捷）笔记C++程序设计之兼谈对象模型  Java教程再学Java  计算机图形学教程计算机图形学学习笔记计算机图形学实验  数据结构系列栈队列线性表树图  Linux系列一天一点linuxlinux C">
@@ -49,8 +49,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -261,7 +347,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/advertising/&title=《推广》 — 靖待的技术博客&source=成长中的工程师|计算机|算法|研发|数据挖掘|软件开发|互联网" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/advertising/&title=《推广》 — 靖待的技术博客&source=算法工程师|自然语言处理|AI|人工智能|推荐算法|计算机|算法|研发|数据挖掘|软件开发|互联网" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -348,6 +434,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -384,7 +474,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/advertising/&title=《推广》 — 靖待的技术博客&source=成长中的工程师|计算机|算法|研发|数据挖掘|软件开发|互联网" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/advertising/&title=《推广》 — 靖待的技术博客&source=算法工程师|自然语言处理|AI|人工智能|推荐算法|计算机|算法|研发|数据挖掘|软件开发|互联网" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -412,6 +502,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABwklEQVR42u3aS26EMBAFQO5/aSJllQ3oPTdYRCqvogljF7No9cfHEa/zdyX/Pf+s++/e7zlauLi4Y+55u662vn/y6pPkW1fP4OLi7ufm4Sk/+OqTq/2jYIeLi/sxbpv05ERcXNz/y117gTzY4eLifo27Vpy0ac2kQMLFxd3JbRumb/z9Yn8XFxe35J7lynfLk6TidFxc3C3ctTKmbapOBjBHi8DFxX2Nmyc396BJOlUPWXFxcR/lto2MPFS1CVARWHFxcV/mtq3PHN2OWOq4i4uL+wI3T0Tui5b5uCUKf7i4uBu5k1Zm+6o5vf7NcHFxH+XmYWVtiDIJjri4uPu584OT59uwWP/euLi4j3InY5JJ2dMOdHFxcfdz8yHr2oWMtgS6PAUXF3cLtx2gPtVObUMYLi7uTm6CW2untuPVKD3CxcXdyM0vTORpTRsKo7YLLi7uRu5aQ3NSAi2+GC4u7hZuG1DyRufkldrAiouL+wZ3ErwmQfA+kOHi4n6B2/ZZ86FsMmqt+7u4uLif4SZBbW3cUuyJi4v7Se7aNYvHLmTg4uJu5CZFS3shY9IwfaBWw8XFHXAnx09GKdFgFRcXdzf3B1vKlYxVwyugAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
+
 
 
 

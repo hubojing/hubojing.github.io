@@ -54,8 +54,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -220,7 +306,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#目标"><span class="post-toc-number">1.</span> <span class="post-toc-text">目标</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#要求"><span class="post-toc-number">2.</span> <span class="post-toc-text">要求</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#成品"><span class="post-toc-number">3.</span> <span class="post-toc-text">成品</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考代码及注释"><span class="post-toc-number">4.</span> <span class="post-toc-text">参考代码及注释</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#目标"><span class="post-toc-text">目标</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#要求"><span class="post-toc-text">要求</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#成品"><span class="post-toc-text">成品</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考代码及注释"><span class="post-toc-text">参考代码及注释</span></a></li></ol>
         </nav>
     </aside>
 
@@ -458,6 +544,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -522,6 +612,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADKUlEQVR42u3awZLaMBAEUP7/p8k1qS283RqRwuL5RGVto6cchpnW4xFfzxfX339NPufPXj/1857HOy5sbGzsm7Cfl9fPe5L3tNtx/c52E68t2NjY2Key269si9xafbne1nZt2NjY2NhJ0Zq0Ljl47b8EGxsbGzv5uZ8XsLVx0nWDhI2Njf3N7LzktGOmSYSwFkhsnqVhY2Njfzy7HfF88ue35NvY2NjYH8z+n01Fu5K8WNYKbGxs7IPY82W1h2/yVicPBtr1Y2NjY5/HbkdLeRCbHLJpt2bzgSFsbGzsm7PzL0hg7f2T7V6LCrCxsbFPZRcPBGOj5Km1OHmynn8+Y2NjYx/Ezo/jtOXkumFoR/95LFG8DRsbG/sIdhuvtoueRLl521MPtrCxsbEPYieFYd487Apl25YjomJjY2Mfym6bh8nBnXYYNImNsbGxsU9lbwtQy0B38u3JgOmXooiNjY19BHvXwGgyisrLWF5ii4gXGxsb++bs6+F7/hM/OTrZLnd+EDPKt7GxsbGPYLcDoOf4yrd7reFZK4TY2NjYJ7HzkHVt0J9HCGsbtBj6YmNjY9+QvbeEvGP0n0cRo2YDGxsb+wh2HgxMotzJ8aBk4BVJsbGxsY9j503IGqAtcpNgIHoWGxsb+yB2PkLKg4F2ibs2MW9psLGxsb+HPWkDkrKXxwBrrcsvW4yNjY19EHttnJQP9/MAeG0r21ABGxsb+yR2W0LawzR5c5K0K9vKJzY2NvZx7LXRf1u62iM484bk5b9gY2NjH8ROmpD8aE57f/KeSXkbjZOwsbGxb8WOYtHxYKg9arMrolhMRbCxsbFvy26P3Tziqx3i5+1KfrgHGxsb+xvY7bU2YMrLUt6oLC4dGxsb++bsyU///DjOpLy18XN9LgkbGxv75ux5ocrHPZNR1NqbN5RqbGxs7Juw86OTSTnZ1RTtGjO93A5sbGzs49hri9gbA7THfSabiI2NjY2dtCh5Kdp7WDMqftjY2Nhfz06GRO0SJ2UyDz+wsbGxT2W3LUG7KfPAOA8Sok3ExsbGPoi9NrhfG8rPI95260cxBjY2Nvans/8AhTLjX8jcM5cAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 

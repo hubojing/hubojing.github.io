@@ -38,7 +38,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://hubojing.github.io/images/博客十万访问量.png">
 <meta property="og:image" content="https://hubojing.github.io/images/博客十万访问量.png">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.179Z">
+<meta property="og:updated_time" content="2022-04-13T09:27:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="技术博客访问量超过十万">
 <meta name="twitter:description" content="随手写之，有感而发。">
@@ -53,8 +53,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -197,7 +283,7 @@
         <h1 class="title">技术博客访问量超过十万</h1>
         <h5 class="subtitle">
             
-                <time datetime="2022-04-13T14:30:18.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2022-04-13T06:30:18.000Z" itemprop="datePublished" class="page-time">
   2022-04-13
 </time>
 
@@ -223,7 +309,7 @@
     <div class="post-card">
         <h1 class="post-card-title">技术博客访问量超过十万</h1>
         <div class="post-meta">
-            <time class="post-time" title="2022-04-13 14:30:18" datetime="2022-04-13T14:30:18.000Z"  itemprop="datePublished">2022-04-13</time>
+            <time class="post-time" title="2022-04-13 06:30:18" datetime="2022-04-13T06:30:18.000Z"  itemprop="datePublished">2022-04-13</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/杂谈/">杂谈</a></li></ul>
@@ -244,7 +330,7 @@
 <p>　　这两天，我突然发现这个技术博客总访问量超过十万了。<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/博客十万访问量.png" alt="记录" title>
+                    <img src="/images/博客十万访问量.png" alt="记录" title="">
                 </div>
                 <div class="image-caption">记录</div>
             </figure><br>　　这个统计值不一定非常准确，它只记录了现在的域名的访问量，以前的域名访问量都丢失了。不过无所谓啦，记录这个访问量本来也就图一乐。</p>
@@ -262,7 +348,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.179Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2022-04-13T09:27:06.000Z" itemprop="dateUpdated">2022-04-13 09:27:06</time>
 </span><br>
 
 
@@ -448,6 +534,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -512,6 +602,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtUlEQVR42u3ay07EMBAEwPz/T8MVCRK6PfaySOUTEnm4crC9PXNd8fi4GV//+/3653uT8f0J14mBh4eHt2nqyRTvMMldd5/m+TPlc8bDw8M7zcsfPSE9L/Hth3ueMx4eHt678dqtZdcz8fDw8P47L1no5wflP9sY8PDw8B557aOLOODmrjyizcMRPDw8vNfw8irS+/x9pL6Hh4eHN66qt4WrdntIDsSTFgQ8PDy8E7x8wW1j2bWIYRIl384TDw8P7wAvn9w8bG2vnH8UPDw8vL285KCcLNbzu543nsWSGB4eHt4x3q6j8Fo8sVYki+IMPDw8vD/iTTaStiFgLQQpkgk8PDy8w7zJ9tDGGfl2UrRe4eHh4R3gtSvqJOo92FzVPgEPDw9vwGuX3TxiyNu21iLg6F14eHh4B3j5wbRtCFgLcJP5jMpgeHh4eJt4bfkq2Qzyz7frvUVPGR4eHt6At7bcJ1HCWhiRF7qKAhgeHh7eAd5aJNHGsm2EcS2NX5qu8PDw8Ma89gVtW0Ae77bNW+0Gg4eHh7eX15ap2oN4Hra27QjRBoaHh4d3jNcuxHn82jYi5J8sejseHh7eVt5aQJBPpT0it9tS1FOGh4eHt5U3KY+1DVvJfyfXb67+4eHh4T3y1tqekq1iV19Y246Ah4eH90peG9fWB9ml2CI59Nf7Gx4eHt6Yl4xJxNCGHW1JrGgdwMPDw9vEW4ti28aCNqJtxw9PwMPDw9vK+yjHGnVS7hq1JuDh4eEd4LULbrKF5DHr/Jq8IQwPDw9vLy8v/7fUteaAvAwW/QzAw8PDO8Zrm67alqw8ntiQr+Dh4eG9MW/eLjApmy2m1Hh4eHgv5022hDzOSI7UUXSLh4eHd4yXhBGTBT15cj6HemPAw8PD28rb8IM/iHrXpttuGNfawMPDw0t5nwmMSt9TgtShAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
+
 
 
 

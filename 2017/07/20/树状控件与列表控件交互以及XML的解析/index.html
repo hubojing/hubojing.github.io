@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#方法记录"><span class="post-toc-number">1.</span> <span class="post-toc-text">方法记录</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#MSXML相关"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">MSXML相关</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#创建对象"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">创建对象</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#获取根节点"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">获取根节点</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#获取属性（法一）"><span class="post-toc-number">1.1.3.</span> <span class="post-toc-text">获取属性（法一）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#获取属性（法二）"><span class="post-toc-number">1.1.4.</span> <span class="post-toc-text">获取属性（法二）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#删除节点"><span class="post-toc-number">1.1.5.</span> <span class="post-toc-text">删除节点</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#树控件相关"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">树控件相关</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#插入"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">插入</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#存入数据"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">存入数据</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#获得根节点"><span class="post-toc-number">1.2.3.</span> <span class="post-toc-text">获得根节点</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#展开树"><span class="post-toc-number">1.2.4.</span> <span class="post-toc-text">展开树</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#获取选中树"><span class="post-toc-number">1.2.5.</span> <span class="post-toc-text">获取选中树</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#列表控件相关"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">列表控件相关</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#插入-1"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">插入</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#存入数据-1"><span class="post-toc-number">1.3.2.</span> <span class="post-toc-text">存入数据</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#删除全部项"><span class="post-toc-number">1.3.3.</span> <span class="post-toc-text">删除全部项</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#在列表最后插入"><span class="post-toc-number">1.3.4.</span> <span class="post-toc-text">在列表最后插入</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#其它C-相关"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">其它C++相关</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#MessageBox"><span class="post-toc-number">1.4.1.</span> <span class="post-toc-text">MessageBox</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#父对话框给子对话框传值"><span class="post-toc-number">1.4.2.</span> <span class="post-toc-text">父对话框给子对话框传值</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#在子对话框显示图片"><span class="post-toc-number">1.4.3.</span> <span class="post-toc-text">在子对话框显示图片</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#vector"><span class="post-toc-number">1.4.4.</span> <span class="post-toc-text">vector</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#map"><span class="post-toc-number">1.4.5.</span> <span class="post-toc-text">map</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#父子循环"><span class="post-toc-number">1.4.6.</span> <span class="post-toc-text">父子循环</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#几个函数"><span class="post-toc-number">1.4.7.</span> <span class="post-toc-text">几个函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#创建临时文件夹"><span class="post-toc-number">1.4.8.</span> <span class="post-toc-text">创建临时文件夹</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#复制文件夹及子文件"><span class="post-toc-number">1.4.9.</span> <span class="post-toc-text">复制文件夹及子文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#删除文件目录及子文件夹"><span class="post-toc-number">1.4.10.</span> <span class="post-toc-text">删除文件目录及子文件夹</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#文件遍历"><span class="post-toc-number">1.4.11.</span> <span class="post-toc-text">文件遍历</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#截取字符串"><span class="post-toc-number">1.4.12.</span> <span class="post-toc-text">截取字符串</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#禁用"><span class="post-toc-number">1.4.13.</span> <span class="post-toc-text">禁用</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#调用exe"><span class="post-toc-number">1.4.14.</span> <span class="post-toc-text">调用exe</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#窗口缩放"><span class="post-toc-number">1.4.15.</span> <span class="post-toc-text">窗口缩放</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#更新数据"><span class="post-toc-number">1.4.16.</span> <span class="post-toc-text">更新数据</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据类型转换"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">数据类型转换</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#MSDN参考"><span class="post-toc-number">2.</span> <span class="post-toc-text">MSDN参考</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#MSXML"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">MSXML</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#TreeControl控件"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">TreeControl控件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ListControl控件"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">ListControl控件</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#思维碰撞"><span class="post-toc-number">3.</span> <span class="post-toc-text">思维碰撞</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#方法记录"><span class="post-toc-text">方法记录</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#MSXML相关"><span class="post-toc-text">MSXML相关</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#创建对象"><span class="post-toc-text">创建对象</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#获取根节点"><span class="post-toc-text">获取根节点</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#获取属性（法一）"><span class="post-toc-text">获取属性（法一）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#获取属性（法二）"><span class="post-toc-text">获取属性（法二）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#删除节点"><span class="post-toc-text">删除节点</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#树控件相关"><span class="post-toc-text">树控件相关</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#插入"><span class="post-toc-text">插入</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#存入数据"><span class="post-toc-text">存入数据</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#获得根节点"><span class="post-toc-text">获得根节点</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#展开树"><span class="post-toc-text">展开树</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#获取选中树"><span class="post-toc-text">获取选中树</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#列表控件相关"><span class="post-toc-text">列表控件相关</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#插入-1"><span class="post-toc-text">插入</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#存入数据-1"><span class="post-toc-text">存入数据</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#删除全部项"><span class="post-toc-text">删除全部项</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#在列表最后插入"><span class="post-toc-text">在列表最后插入</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#其它C-相关"><span class="post-toc-text">其它C++相关</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#MessageBox"><span class="post-toc-text">MessageBox</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#父对话框给子对话框传值"><span class="post-toc-text">父对话框给子对话框传值</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#在子对话框显示图片"><span class="post-toc-text">在子对话框显示图片</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#vector"><span class="post-toc-text">vector</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#map"><span class="post-toc-text">map</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#父子循环"><span class="post-toc-text">父子循环</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#几个函数"><span class="post-toc-text">几个函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#创建临时文件夹"><span class="post-toc-text">创建临时文件夹</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#复制文件夹及子文件"><span class="post-toc-text">复制文件夹及子文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#删除文件目录及子文件夹"><span class="post-toc-text">删除文件目录及子文件夹</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#文件遍历"><span class="post-toc-text">文件遍历</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#截取字符串"><span class="post-toc-text">截取字符串</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#禁用"><span class="post-toc-text">禁用</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#调用exe"><span class="post-toc-text">调用exe</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#窗口缩放"><span class="post-toc-text">窗口缩放</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#更新数据"><span class="post-toc-text">更新数据</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据类型转换"><span class="post-toc-text">数据类型转换</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#MSDN参考"><span class="post-toc-text">MSDN参考</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#MSXML"><span class="post-toc-text">MSXML</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#TreeControl控件"><span class="post-toc-text">TreeControl控件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ListControl控件"><span class="post-toc-text">ListControl控件</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#思维碰撞"><span class="post-toc-text">思维碰撞</span></a></li></ol>
         </nav>
     </aside>
 
@@ -498,6 +584,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -562,6 +652,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADLklEQVR42u3aQU7EQAwEQP7/abhwQFrt0m0HicxWTigKydRwaGzPx0d8ff64nt35ef/xmcfr8flnd14/+ez5Cy5sbGzsm7Dzxb1e7uYryRqSbcrfg42NjX0e+3Vg5AH2+g3JF2cb2oYfNjY29juz83Li9Ruu2mhsbGxs7Bk7X0r7hrYgwcbGxsaeNfHz5lHbEkrW1m4ZNjY29tnsTePmv/38J/NtbGxs7H/M/ouxa7JxSfspf0+9fmxsbOyD2PmHZ4veFzn5saG6IMHGxsY+iD0bDMy2YzMqngVncRgIGxsb+4bsNh7yMNg8P8MXBQw2Njb2Qez24M4mYNrjPrNWUV3wYGNjY9+cPWvZbOLtqiHBqmmFjY2N/WbsGThZRBJdbRwmjTBsbGzsk9htG2hWSFxV3rR/qmS12NjY2GewN22jdpTbBljbMMp/CxsbG/skdh4Vs1FuEopRxl4UY9jY2Nhns5Pyo4W1g+RZY6t9AzY2NvYZ7NnYdR8ebUTtR8XY2NjY78lO4qEd/ebhl1dOeQPr+w42Njb2Qey2PTRr5efbtwcncYuNjY19EnvfskmCbXMYqB0nRxc2Njb2QezZAKCYFQek2WGgWUw+bS1hY2Nj35zdLi65nx+aaY/mtAd9isk2NjY29g3Zm0ZS0bUqo3F/P5qKYGNjYx/Hbv+Vz0uC9oBOHoF5EfXLeAAbGxv7tuwkGDZjhnyEcO0Ao2iEYWNjYx/Bviow8iZ+G42zQQU2Njb2+7DzpSeBtA+tfWTWB3qwsbGxb8tO2kCbRvwsZurGUFsUYWNjYx/Ebj+cx1jS7p9t66zx9EsFho2NjX1bdj7obRl5kTD8W5WjYmxsbOxT2Qksj4pNiZKsIS9IovYWNjY29hHsz/Jq20+rgBkdzYkOfWJjY2MfxJ4NVttCYr+U2da0zSlsbGzs+7I3oTXb49lXkrZXEa7Y2NjYx7Hz4mE23G2P++zDLxoPYGNjY78ZOzmskxcPmyFBvp4LAgwbGxv7IHZ7cCdfejJayAfMUeBhY2NjH8feLz1fUNISagOpbkhhY2NjH8RuR61XjWDzb7WFTVtQYWNjY9+W/QXkrgdKPvpcfwAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

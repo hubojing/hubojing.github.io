@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -437,6 +523,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -501,6 +591,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKUlEQVR42u3aSW6FMBAFQO5/abJNpA953TZfwi5WEWFwEanTg48jPs7b4/7632eurry6a/KBgYHxWkayxN4Lrp5wj0zu+rASDAyMDRjJIu6vT65MFlQN0xgYGBj50ntpIgYGBsZzATdJH+/P5NdjYGBg5EVsr1mWJ4JfqsUxMDBeyOg1zr7z8yPzDQwMjFcxzuIx3lybtZI/z8TAwFiakQe46tBxZFNFbz0YGBhrM5Jw2WvP9QYG+RuP5BtgYGC8nFG9odpQywcD1SHBhwwXAwNjA0Z1cdUxZ29gGW1Bw8DAWJrR2ySRl6bPLf2yFsfAwFiU0Qu4+aaH/KNMGG1iYGAsyqhu1UoweYDO3/tPsMbAwFiaUd36kDPGU72o3YaBgbEBY3w8kIfCKm9C+YqBgbEcI2+HFUaMw8VtuQrHwMBYlDHSvu813apLj1JDDAyM5Rj3CdysIjaJiklqWBgJYGBgLMeobvnqjSGTFDNPKDEwMPZh9IJs7/pqMG2WxxgYGIsy8iQsD52zksL8XwIGBsZujHzLV3U8kG+qKD8HAwNjA0YvzM1NJastQgwMjB0YZ/HIE8dq+ywZOUR/BwwMjOUY1TCXJ3YjjbNqoMfAwNiB0WvxV3+bDwmaiSMGBsYGjELV22rJJWXthFocAwMDozpWbIXg6sgTAwMDo8pIAu54kI0msRgYGMsxkiJ2JB3swR5pt2FgYLyQMRLyemeSD1EdFWBgYCzK+AFUkLJQcogAPQAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

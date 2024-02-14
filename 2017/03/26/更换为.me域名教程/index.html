@@ -72,8 +72,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -238,7 +324,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#注册-me域名"><span class="post-toc-number">1.</span> <span class="post-toc-text">注册.me域名</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#域名管理"><span class="post-toc-number">2.</span> <span class="post-toc-text">域名管理</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#转移到腾讯云"><span class="post-toc-number">3.</span> <span class="post-toc-text">转移到腾讯云</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#GitHub博客项目设置"><span class="post-toc-number">4.</span> <span class="post-toc-text">GitHub博客项目设置</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#致谢"><span class="post-toc-number">5.</span> <span class="post-toc-text">致谢</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#注册-me域名"><span class="post-toc-text">注册.me域名</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#域名管理"><span class="post-toc-text">域名管理</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#转移到腾讯云"><span class="post-toc-text">转移到腾讯云</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#GitHub博客项目设置"><span class="post-toc-text">GitHub博客项目设置</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#致谢"><span class="post-toc-text">致谢</span></a></li></ol>
         </nav>
     </aside>
 
@@ -620,6 +706,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -684,6 +774,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACw0lEQVR42u3awW7bMBAEUP//T6dATwFSyTNLUk6Bp5PhxqaeCnDp2X294uvr7/Xz9fd3rt6/+rarT92v8jpx4eHh4Y1u/epaWez+U1/BNfssHh4e3jO8thhclYT7d/KikqySPFA8PDy8z/KuFpgdqRPe/Yp4eHh4v5/XHpRnKQEeHh7e/8JLwohdy+ehcFKKtmUteHh4eDFvpQH2qdcP9ffw8PDwyq56e+RNtu88mEgKxpv7xMPDwzvAa+ODvOmVDxm00UbeDMPDw8N7hpds03ls0T6CtoUWPVA8PDy8A7z8+Jts6LOD7yzMLcobHh4e3iZegpkFEG3LqsVH/yV4eHh4B3jtWEAeAeSbfj62lZciPDw8vHO82RjTbOCpjSfa0Pmyv4eHh4e3lZf/7J/FuLM2WFuillJqPDw8vGXerOfelor2b1YO63h4eHgneCvjUPmIVfJ+Hlu07To8PDy8Z3izkawW2ZKSOyzAeHh4eCNeGyW0AUTe6No1TPBqkww8PDy8mJds9MnrfJvObzcpBm/uCg8PD+8AbzYUtRJA7HqIwyM1Hh4e3jJvJUJtj+OzGDcvNv9YCw8PD+8Yb7atz3LiJPzdVk7w8PDwDvCSbbr96vbYvXeg6s0qeHh4eMu8fJqgLQb5t7V/mTfM8PDw8E7w8uNs3tqfDRbkDbNZIIKHh4d3gpf87J/9631pSdpaeZF4tb0yPDw8vBFvNiaVXG2E0RaY6FHi4eHhHea1P/uTiKE9lBd1LHigeHh4eHt5e8OFWSurfWQbDtN4eHh4C7x2w10ZAlhvj23OXfDw8PAWeLMD7iyeaIvHesSMh4eHd47XbtDrN1TkJW2+kvTZ8PDw8B7krSy2UoSGrTU8PDy8j/Lam8jBbZutOMrj4eHhHePNBp4SzKy5lY8m4OHh4T3PmxWP5IZmx+j1B4SHh4d3jPcHjIa7YOedokoAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 

@@ -37,7 +37,7 @@
 <meta property="og:description" content="今天认真排查了一下　　附上解决方案">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://hubojing.github.io/images/valine.png">
-<meta property="og:updated_time" content="2021-12-09T13:29:00.000Z">
+<meta property="og:updated_time" content="2021-12-09T05:29:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="解决Valine评论不显示的问题">
 <meta name="twitter:description" content="今天认真排查了一下　　附上解决方案">
@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -196,7 +282,7 @@
         <h1 class="title">解决Valine评论不显示的问题</h1>
         <h5 class="subtitle">
             
-                <time datetime="2021-12-07T14:49:31.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2021-12-07T06:49:31.000Z" itemprop="datePublished" class="page-time">
   2021-12-07
 </time>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#具体排查"><span class="post-toc-number">2.</span> <span class="post-toc-text">具体排查</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#解决方法"><span class="post-toc-number">3.</span> <span class="post-toc-text">解决方法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考资料"><span class="post-toc-number">4.</span> <span class="post-toc-text">参考资料</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#背景"><span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#具体排查"><span class="post-toc-text">具体排查</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#解决方法"><span class="post-toc-text">解决方法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考资料"><span class="post-toc-text">参考资料</span></a></li></ol>
         </nav>
     </aside>
 
@@ -229,7 +315,7 @@
     <div class="post-card">
         <h1 class="post-card-title">解决Valine评论不显示的问题</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-12-07 14:49:31" datetime="2021-12-07T14:49:31.000Z"  itemprop="datePublished">2021-12-07</time>
+            <time class="post-time" title="2021-12-07 06:49:31" datetime="2021-12-07T06:49:31.000Z"  itemprop="datePublished">2021-12-07</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/博客/">博客</a></li></ul>
@@ -288,7 +374,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2021-12-09T13:29:00.000Z" itemprop="dateUpdated">2021-12-09 13:29:00</time>
+    最后更新时间：<time datetime="2021-12-09T05:29:00.000Z" itemprop="dateUpdated">2021-12-09 05:29:00</time>
 </span><br>
 
 
@@ -474,6 +560,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -538,6 +628,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACxUlEQVR42u3a0W7jMAwEwP7/T7fAPbVoYu9SUpoDxk9B0toaBRAZkh8f8fX577p+/f2d79ezuz37NFnD5gsPDw9vtPRn1zWjXfrve15vUPLOzYbi4eHhHePlwaA9vmfbNFsPHh4e3rvxkrCRLHd94/Dw8PD+F17ye3+26Ov0Gg8PD+89ecnRv76IvBiRvN5ca8HDw8OLebsaYK98/Qf9PTw8PLzgeN117M5aYslQws068fDw8A7wkse3La7879sRgWHhAw8PD28rb1YaSI7y5J12gCAPVD/iHh4eHt5WXv5Bfri36e/6xhXbhIeHh7fMmw1RJaT2Pm0RJPoBgIeHh3eYt9JXajcrOdwT0k3AwMPDw3s5b30Aa7bo2Wl/M02Gh4eHt5U3K0wk/5t34ZLkuw5meHh4eMd46+lv++AZO//fBzNleHh4eMd4bem2fuQIcL3pN4MCeHh4eFt57cGdJ9ltAr3S7qqDEx4eHt4yr9XPRgdONNKiLwAPDw/vGG82Kjobmdpb2L35YvDw8PC28pKlJ0d5PgQwKw23IwU/yrh4eHh4x3htWtyWZdeflaTaDxpgeHh4eFt5SaKcLGVlobONKEoSeHh4eAd47UGcF393FWfbCw8PD+81vJUHt0tpk+y8VVbMl+Hh4eEt8NoAkLe+VhLl2bf0tA2Gh4eHt5U3O8rbsYAiRo1GuJYuPDw8vE2ViXYYKy9A5GEmf+5NAwwPDw/vAK9NW9sw0A4BDJNjPDw8vMO8z/KalW5njbFZCy3q4+Hh4eEt8GaRZKVN1ZZx28R9CMbDw8MreXkTKy/L5uGkLTG0BWU8PDy8c7wkGKwEiVkavTLChYeHh/fOvPye7XPbsPTgnnh4eHh/ymuT3SRpnpWP8zCDh4eHd47XJsFJs2r9/nXpYaXWgoeHh7fcT0+WniTQRfo7KuxuYOPh4eGlvC/VG/fdUk+kggAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

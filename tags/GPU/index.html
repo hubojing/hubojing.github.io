@@ -28,16 +28,16 @@
     
     
     <meta name="keywords" content="undefined">
-    <meta name="description" content="成长中的工程师|计算机|算法|研发|数据挖掘|软件开发|互联网">
+    <meta name="description" content="算法工程师|自然语言处理|AI|人工智能|推荐算法|计算机|算法|研发|数据挖掘|软件开发|互联网">
 <meta property="og:type" content="website">
 <meta property="og:title" content="靖待的技术博客">
 <meta property="og:url" content="https://hubojing.github.io/tags/GPU/index.html">
 <meta property="og:site_name" content="靖待的技术博客">
-<meta property="og:description" content="成长中的工程师|计算机|算法|研发|数据挖掘|软件开发|互联网">
+<meta property="og:description" content="算法工程师|自然语言处理|AI|人工智能|推荐算法|计算机|算法|研发|数据挖掘|软件开发|互联网">
 <meta property="og:locale" content="zh-CN">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="靖待的技术博客">
-<meta name="twitter:description" content="成长中的工程师|计算机|算法|研发|数据挖掘|软件开发|互联网">
+<meta name="twitter:description" content="算法工程师|自然语言处理|AI|人工智能|推荐算法|计算机|算法|研发|数据挖掘|软件开发|互联网">
     
         <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
     
@@ -48,8 +48,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -202,7 +288,7 @@
             ">全部</a>
         
 
-            <a href="/tags/单片机/" style="-webkit-order:37;order:37" class="tags-list-item waves-effect waves-button waves-light">单片机</a>
+            <a href="/tags/杂谈/" style="-webkit-order:37;order:37" class="tags-list-item waves-effect waves-button waves-light">杂谈</a>
 
         
 
@@ -210,31 +296,31 @@
 
         
 
-            <a href="/tags/杂谈/" style="-webkit-order:39;order:39" class="tags-list-item waves-effect waves-button waves-light">杂谈</a>
+            <a href="/tags/单片机/" style="-webkit-order:39;order:39" class="tags-list-item waves-effect waves-button waves-light">单片机</a>
 
         
 
-            <a href="/tags/Android/" style="-webkit-order:40;order:40" class="tags-list-item waves-effect waves-button waves-light">Android</a>
+            <a href="/tags/CPP/" style="-webkit-order:40;order:40" class="tags-list-item waves-effect waves-button waves-light">CPP</a>
 
         
 
-            <a href="/tags/Java/" style="-webkit-order:41;order:41" class="tags-list-item waves-effect waves-button waves-light">Java</a>
+            <a href="/tags/GIS/" style="-webkit-order:41;order:41" class="tags-list-item waves-effect waves-button waves-light">GIS</a>
 
         
 
-            <a href="/tags/GIS/" style="-webkit-order:42;order:42" class="tags-list-item waves-effect waves-button waves-light">GIS</a>
+            <a href="/tags/BERT/" style="-webkit-order:42;order:42" class="tags-list-item waves-effect waves-button waves-light">BERT</a>
 
         
 
-            <a href="/tags/CPP/" style="-webkit-order:43;order:43" class="tags-list-item waves-effect waves-button waves-light">CPP</a>
+            <a href="/tags/NLP/" style="-webkit-order:43;order:43" class="tags-list-item waves-effect waves-button waves-light">NLP</a>
 
         
 
-            <a href="/tags/BERT/" style="-webkit-order:44;order:44" class="tags-list-item waves-effect waves-button waves-light">BERT</a>
+            <a href="/tags/Android/" style="-webkit-order:44;order:44" class="tags-list-item waves-effect waves-button waves-light">Android</a>
 
         
 
-            <a href="/tags/NLP/" style="-webkit-order:45;order:45" class="tags-list-item waves-effect waves-button waves-light">NLP</a>
+            <a href="/tags/Java/" style="-webkit-order:45;order:45" class="tags-list-item waves-effect waves-button waves-light">Java</a>
 
         
 
@@ -246,35 +332,35 @@
 
         
 
-            <a href="/tags/Web/" style="-webkit-order:48;order:48" class="tags-list-item waves-effect waves-button waves-light">Web</a>
+            <a href="/tags/DIN/" style="-webkit-order:48;order:48" class="tags-list-item waves-effect waves-button waves-light">DIN</a>
 
         
 
-            <a href="/tags/DIN/" style="-webkit-order:49;order:49" class="tags-list-item waves-effect waves-button waves-light">DIN</a>
+            <a href="/tags/推荐算法/" style="-webkit-order:49;order:49" class="tags-list-item waves-effect waves-button waves-light">推荐算法</a>
 
         
 
-            <a href="/tags/推荐算法/" style="-webkit-order:50;order:50" class="tags-list-item waves-effect waves-button waves-light">推荐算法</a>
+            <a href="/tags/Web/" style="-webkit-order:50;order:50" class="tags-list-item waves-effect waves-button waves-light">Web</a>
 
         
 
-            <a href="/tags/备忘/" style="-webkit-order:51;order:51" class="tags-list-item waves-effect waves-button waves-light">备忘</a>
+            <a href="/tags/ESMM/" style="-webkit-order:51;order:51" class="tags-list-item waves-effect waves-button waves-light">ESMM</a>
 
         
 
-            <a href="/tags/ESMM/" style="-webkit-order:52;order:52" class="tags-list-item waves-effect waves-button waves-light">ESMM</a>
+            <a href="/tags/备忘/" style="-webkit-order:52;order:52" class="tags-list-item waves-effect waves-button waves-light">备忘</a>
 
         
 
-            <a href="/tags/Flash/" style="-webkit-order:53;order:53" class="tags-list-item waves-effect waves-button waves-light">Flash</a>
+            <a href="/tags/Github/" style="-webkit-order:53;order:53" class="tags-list-item waves-effect waves-button waves-light">Github</a>
 
         
 
-            <a href="/tags/Github/" style="-webkit-order:54;order:54" class="tags-list-item waves-effect waves-button waves-light">Github</a>
+            <a href="/tags/SSH/" style="-webkit-order:54;order:54" class="tags-list-item waves-effect waves-button waves-light">SSH</a>
 
         
 
-            <a href="/tags/SSH/" style="-webkit-order:55;order:55" class="tags-list-item waves-effect waves-button waves-light">SSH</a>
+            <a href="/tags/Flash/" style="-webkit-order:55;order:55" class="tags-list-item waves-effect waves-button waves-light">Flash</a>
 
         
 
@@ -286,43 +372,43 @@
 
         
 
-            <a href="/tags/GitLab/" style="-webkit-order:58;order:58" class="tags-list-item waves-effect waves-button waves-light">GitLab</a>
+            <a href="/tags/Hexo/" style="-webkit-order:58;order:58" class="tags-list-item waves-effect waves-button waves-light">Hexo</a>
 
         
 
-            <a href="/tags/Hexo/" style="-webkit-order:59;order:59" class="tags-list-item waves-effect waves-button waves-light">Hexo</a>
+            <a href="/tags/Github-Action/" style="-webkit-order:59;order:59" class="tags-list-item waves-effect waves-button waves-light">Github Action</a>
 
         
 
-            <a href="/tags/Github-Action/" style="-webkit-order:60;order:60" class="tags-list-item waves-effect waves-button waves-light">Github Action</a>
+            <a href="/tags/GitLab/" style="-webkit-order:60;order:60" class="tags-list-item waves-effect waves-button waves-light">GitLab</a>
 
         
 
-            <a href="/tags/GPT/" style="-webkit-order:61;order:61" class="tags-list-item waves-effect waves-button waves-light">GPT</a>
+            <a href="/tags/Hulu/" style="-webkit-order:61;order:61" class="tags-list-item waves-effect waves-button waves-light">Hulu</a>
 
         
 
-            <a href="/tags/Hulu/" style="-webkit-order:62;order:62" class="tags-list-item waves-effect waves-button waves-light">Hulu</a>
+            <a href="/tags/截图/" style="-webkit-order:62;order:62" class="tags-list-item waves-effect waves-button waves-light">截图</a>
 
         
 
-            <a href="/tags/MFC/" style="-webkit-order:63;order:63" class="tags-list-item waves-effect waves-button waves-light">MFC</a>
+            <a href="/tags/链接/" style="-webkit-order:63;order:63" class="tags-list-item waves-effect waves-button waves-light">链接</a>
 
         
 
-            <a href="/tags/截图/" style="-webkit-order:64;order:64" class="tags-list-item waves-effect waves-button waves-light">截图</a>
+            <a href="/tags/markdown/" style="-webkit-order:64;order:64" class="tags-list-item waves-effect waves-button waves-light">markdown</a>
 
         
 
-            <a href="/tags/链接/" style="-webkit-order:65;order:65" class="tags-list-item waves-effect waves-button waves-light">链接</a>
+            <a href="/tags/软件开发/" style="-webkit-order:65;order:65" class="tags-list-item waves-effect waves-button waves-light">软件开发</a>
 
         
 
-            <a href="/tags/markdown/" style="-webkit-order:66;order:66" class="tags-list-item waves-effect waves-button waves-light">markdown</a>
+            <a href="/tags/GPT/" style="-webkit-order:66;order:66" class="tags-list-item waves-effect waves-button waves-light">GPT</a>
 
         
 
-            <a href="/tags/软件开发/" style="-webkit-order:67;order:67" class="tags-list-item waves-effect waves-button waves-light">软件开发</a>
+            <a href="/tags/MFC/" style="-webkit-order:67;order:67" class="tags-list-item waves-effect waves-button waves-light">MFC</a>
 
         
 
@@ -342,75 +428,75 @@
 
         
 
-            <a href="/tags/爬虫/" style="-webkit-order:72;order:72" class="tags-list-item waves-effect waves-button waves-light">爬虫</a>
+            <a href="/tags/C/" style="-webkit-order:72;order:72" class="tags-list-item waves-effect waves-button waves-light">C</a>
 
         
 
-            <a href="/tags/硬件/" style="-webkit-order:73;order:73" class="tags-list-item waves-effect waves-button waves-light">硬件</a>
+            <a href="/tags/爬虫/" style="-webkit-order:73;order:73" class="tags-list-item waves-effect waves-button waves-light">爬虫</a>
 
         
 
-            <a href="/tags/PPT/" style="-webkit-order:74;order:74" class="tags-list-item waves-effect waves-button waves-light">PPT</a>
+            <a href="/tags/硬件/" style="-webkit-order:74;order:74" class="tags-list-item waves-effect waves-button waves-light">硬件</a>
 
         
 
-            <a href="/tags/动画/" style="-webkit-order:75;order:75" class="tags-list-item waves-effect waves-button waves-light">动画</a>
+            <a href="/tags/PPT/" style="-webkit-order:75;order:75" class="tags-list-item waves-effect waves-button waves-light">PPT</a>
 
         
 
-            <a href="/tags/OpenCV/" style="-webkit-order:76;order:76" class="tags-list-item waves-effect waves-button waves-light">OpenCV</a>
+            <a href="/tags/动画/" style="-webkit-order:76;order:76" class="tags-list-item waves-effect waves-button waves-light">动画</a>
 
         
 
-            <a href="/tags/Python/" style="-webkit-order:77;order:77" class="tags-list-item waves-effect waves-button waves-light">Python</a>
+            <a href="/tags/OpenCV/" style="-webkit-order:77;order:77" class="tags-list-item waves-effect waves-button waves-light">OpenCV</a>
 
         
 
-            <a href="/tags/Pandas/" style="-webkit-order:78;order:78" class="tags-list-item waves-effect waves-button waves-light">Pandas</a>
+            <a href="/tags/兴趣点推荐/" style="-webkit-order:78;order:78" class="tags-list-item waves-effect waves-button waves-light">兴趣点推荐</a>
 
         
 
-            <a href="/tags/兴趣点推荐/" style="-webkit-order:79;order:79" class="tags-list-item waves-effect waves-button waves-light">兴趣点推荐</a>
+            <a href="/tags/图神经网络/" style="-webkit-order:79;order:79" class="tags-list-item waves-effect waves-button waves-light">图神经网络</a>
 
         
 
-            <a href="/tags/图神经网络/" style="-webkit-order:80;order:80" class="tags-list-item waves-effect waves-button waves-light">图神经网络</a>
+            <a href="/tags/注意力机制/" style="-webkit-order:80;order:80" class="tags-list-item waves-effect waves-button waves-light">注意力机制</a>
 
         
 
-            <a href="/tags/注意力机制/" style="-webkit-order:81;order:81" class="tags-list-item waves-effect waves-button waves-light">注意力机制</a>
+            <a href="/tags/ASGNN/" style="-webkit-order:81;order:81" class="tags-list-item waves-effect waves-button waves-light">ASGNN</a>
 
         
 
-            <a href="/tags/ASGNN/" style="-webkit-order:82;order:82" class="tags-list-item waves-effect waves-button waves-light">ASGNN</a>
+            <a href="/tags/Python/" style="-webkit-order:82;order:82" class="tags-list-item waves-effect waves-button waves-light">Python</a>
 
         
 
-            <a href="/tags/CHAML/" style="-webkit-order:83;order:83" class="tags-list-item waves-effect waves-button waves-light">CHAML</a>
+            <a href="/tags/Pandas/" style="-webkit-order:83;order:83" class="tags-list-item waves-effect waves-button waves-light">Pandas</a>
 
         
 
-            <a href="/tags/元学习/" style="-webkit-order:84;order:84" class="tags-list-item waves-effect waves-button waves-light">元学习</a>
+            <a href="/tags/STAN/" style="-webkit-order:84;order:84" class="tags-list-item waves-effect waves-button waves-light">STAN</a>
 
         
 
-            <a href="/tags/课程学习/" style="-webkit-order:85;order:85" class="tags-list-item waves-effect waves-button waves-light">课程学习</a>
+            <a href="/tags/CHAML/" style="-webkit-order:85;order:85" class="tags-list-item waves-effect waves-button waves-light">CHAML</a>
 
         
 
-            <a href="/tags/STAN/" style="-webkit-order:86;order:86" class="tags-list-item waves-effect waves-button waves-light">STAN</a>
+            <a href="/tags/元学习/" style="-webkit-order:86;order:86" class="tags-list-item waves-effect waves-button waves-light">元学习</a>
 
         
 
-            <a href="/tags/LSTPM/" style="-webkit-order:87;order:87" class="tags-list-item waves-effect waves-button waves-light">LSTPM</a>
+            <a href="/tags/课程学习/" style="-webkit-order:87;order:87" class="tags-list-item waves-effect waves-button waves-light">课程学习</a>
 
         
 
-            <a href="/tags/Non-local-Neural-Networks/" style="-webkit-order:88;order:88" class="tags-list-item waves-effect waves-button waves-light">Non-local Neural Networks</a>
+            <a href="/tags/LSTPM/" style="-webkit-order:88;order:88" class="tags-list-item waves-effect waves-button waves-light">LSTPM</a>
 
         
 
-            <a href="/tags/Photoshop/" style="-webkit-order:89;order:89" class="tags-list-item waves-effect waves-button waves-light">Photoshop</a>
+            <a href="/tags/Non-local-Neural-Networks/" style="-webkit-order:89;order:89" class="tags-list-item waves-effect waves-button waves-light">Non-local Neural Networks</a>
 
         
 
@@ -422,27 +508,27 @@
 
         
 
-            <a href="/tags/装机/" style="-webkit-order:92;order:92" class="tags-list-item waves-effect waves-button waves-light">装机</a>
+            <a href="/tags/Photoshop/" style="-webkit-order:92;order:92" class="tags-list-item waves-effect waves-button waves-light">Photoshop</a>
 
         
 
-            <a href="/tags/Waline/" style="-webkit-order:93;order:93" class="tags-list-item waves-effect waves-button waves-light">Waline</a>
+            <a href="/tags/装机/" style="-webkit-order:93;order:93" class="tags-list-item waves-effect waves-button waves-light">装机</a>
 
         
 
-            <a href="/tags/Deta/" style="-webkit-order:94;order:94" class="tags-list-item waves-effect waves-button waves-light">Deta</a>
+            <a href="/tags/Waline/" style="-webkit-order:94;order:94" class="tags-list-item waves-effect waves-button waves-light">Waline</a>
 
         
 
-            <a href="/tags/ffmpeg/" style="-webkit-order:95;order:95" class="tags-list-item waves-effect waves-button waves-light">ffmpeg</a>
+            <a href="/tags/Deta/" style="-webkit-order:95;order:95" class="tags-list-item waves-effect waves-button waves-light">Deta</a>
 
         
 
-            <a href="/tags/Django/" style="-webkit-order:96;order:96" class="tags-list-item waves-effect waves-button waves-light">Django</a>
+            <a href="/tags/ffmpeg/" style="-webkit-order:96;order:96" class="tags-list-item waves-effect waves-button waves-light">ffmpeg</a>
 
         
 
-            <a href="/tags/C/" style="-webkit-order:97;order:97" class="tags-list-item waves-effect waves-button waves-light">C</a>
+            <a href="/tags/Django/" style="-webkit-order:97;order:97" class="tags-list-item waves-effect waves-button waves-light">Django</a>
 
         
 
@@ -486,23 +572,23 @@
 
         
 
-            <a href="/tags/FM/" style="-webkit-order:108;order:108" class="tags-list-item waves-effect waves-button waves-light">FM</a>
+            <a href="/tags/MF/" style="-webkit-order:108;order:108" class="tags-list-item waves-effect waves-button waves-light">MF</a>
 
         
 
-            <a href="/tags/MF/" style="-webkit-order:109;order:109" class="tags-list-item waves-effect waves-button waves-light">MF</a>
+            <a href="/tags/FM/" style="-webkit-order:109;order:109" class="tags-list-item waves-effect waves-button waves-light">FM</a>
 
         
 
-            <a href="/tags/XML/" style="-webkit-order:110;order:110" class="tags-list-item waves-effect waves-button waves-light">XML</a>
+            <a href="/tags/Wide-Deep/" style="-webkit-order:110;order:110" class="tags-list-item waves-effect waves-button waves-light">Wide & Deep</a>
 
         
 
-            <a href="/tags/Wide-Deep/" style="-webkit-order:111;order:111" class="tags-list-item waves-effect waves-button waves-light">Wide & Deep</a>
+            <a href="/tags/深度学习/" style="-webkit-order:111;order:111" class="tags-list-item waves-effect waves-button waves-light">深度学习</a>
 
         
 
-            <a href="/tags/深度学习/" style="-webkit-order:112;order:112" class="tags-list-item waves-effect waves-button waves-light">深度学习</a>
+            <a href="/tags/XML/" style="-webkit-order:112;order:112" class="tags-list-item waves-effect waves-button waves-light">XML</a>
 
         
 
@@ -562,31 +648,31 @@
 
         
 
-            <a href="/tags/Weka/" style="-webkit-order:11;order:11" class="tags-list-item waves-effect waves-button waves-light">Weka</a>
+            <a href="/tags/数据结构/" style="-webkit-order:11;order:11" class="tags-list-item waves-effect waves-button waves-light">数据结构</a>
 
         
 
-            <a href="/tags/多机协作/" style="-webkit-order:12;order:12" class="tags-list-item waves-effect waves-button waves-light">多机协作</a>
+            <a href="/tags/Weka/" style="-webkit-order:12;order:12" class="tags-list-item waves-effect waves-button waves-light">Weka</a>
 
         
 
-            <a href="/tags/数据结构/" style="-webkit-order:13;order:13" class="tags-list-item waves-effect waves-button waves-light">数据结构</a>
+            <a href="/tags/多机协作/" style="-webkit-order:13;order:13" class="tags-list-item waves-effect waves-button waves-light">多机协作</a>
 
         
 
-            <a href="/tags/R语言/" style="-webkit-order:14;order:14" class="tags-list-item waves-effect waves-button waves-light">R语言</a>
+            <a href="/tags/大模型/" style="-webkit-order:14;order:14" class="tags-list-item waves-effect waves-button waves-light">大模型</a>
 
         
 
-            <a href="/tags/大模型/" style="-webkit-order:15;order:15" class="tags-list-item waves-effect waves-button waves-light">大模型</a>
+            <a href="/tags/LLM/" style="-webkit-order:15;order:15" class="tags-list-item waves-effect waves-button waves-light">LLM</a>
 
         
 
-            <a href="/tags/LLM/" style="-webkit-order:16;order:16" class="tags-list-item waves-effect waves-button waves-light">LLM</a>
+            <a href="/tags/论文/" style="-webkit-order:16;order:16" class="tags-list-item waves-effect waves-button waves-light">论文</a>
 
         
 
-            <a href="/tags/论文/" style="-webkit-order:17;order:17" class="tags-list-item waves-effect waves-button waves-light">论文</a>
+            <a href="/tags/R语言/" style="-webkit-order:17;order:17" class="tags-list-item waves-effect waves-button waves-light">R语言</a>
 
         
 
@@ -602,11 +688,11 @@
 
         
 
-            <a href="/tags/域名/" style="-webkit-order:21;order:21" class="tags-list-item waves-effect waves-button waves-light">域名</a>
+            <a href="/tags/显示技术/" style="-webkit-order:21;order:21" class="tags-list-item waves-effect waves-button waves-light">显示技术</a>
 
         
 
-            <a href="/tags/显示技术/" style="-webkit-order:22;order:22" class="tags-list-item waves-effect waves-button waves-light">显示技术</a>
+            <a href="/tags/域名/" style="-webkit-order:22;order:22" class="tags-list-item waves-effect waves-button waves-light">域名</a>
 
         
 
@@ -634,15 +720,15 @@
 
         
 
-            <a href="/tags/Embedding/" style="-webkit-order:29;order:29" class="tags-list-item waves-effect waves-button waves-light">Embedding</a>
+            <a href="/tags/设计模式/" style="-webkit-order:29;order:29" class="tags-list-item waves-effect waves-button waves-light">设计模式</a>
 
         
 
-            <a href="/tags/设计模式/" style="-webkit-order:30;order:30" class="tags-list-item waves-effect waves-button waves-light">设计模式</a>
+            <a href="/tags/软件架构/" style="-webkit-order:30;order:30" class="tags-list-item waves-effect waves-button waves-light">软件架构</a>
 
         
 
-            <a href="/tags/软件架构/" style="-webkit-order:31;order:31" class="tags-list-item waves-effect waves-button waves-light">软件架构</a>
+            <a href="/tags/Embedding/" style="-webkit-order:31;order:31" class="tags-list-item waves-effect waves-button waves-light">Embedding</a>
 
         
 
@@ -684,7 +770,7 @@
             <div class="waterfall-item">
   <article class="article-card archive-article">
     <div class="post-meta">
-      <time class="post-time" title="2022-04-18 22:13:41" datetime="2022-04-18T22:13:41.000Z"  itemprop="datePublished">2022-04-18</time>
+      <time class="post-time" title="2022-04-18 14:13:41" datetime="2022-04-18T14:13:41.000Z"  itemprop="datePublished">2022-04-18</time>
 
       
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/数据挖掘/">数据挖掘</a></li></ul>
@@ -733,6 +819,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -769,7 +859,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/tags/GPU/&title=靖待的技术博客&source=成长中的工程师|计算机|算法|研发|数据挖掘|软件开发|互联网" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/tags/GPU/&title=靖待的技术博客&source=算法工程师|自然语言处理|AI|人工智能|推荐算法|计算机|算法|研发|数据挖掘|软件开发|互联网" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -797,6 +887,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABwUlEQVR42u3aQW7DMAwEwPz/0ynQa2uXS0mMC4xPQeI4oxwIcanXq3y9v6/711ef/rzn6rvbLlxc3GXu+/bqIa7uv3/+/T24uLjz3ErxqpSwe0SlOP5hw8XFfRi3V5h6WyVcXNz/wq1sfe43T/WyiIuL+wRurzDVF7beIOHi4k5ydwWmK68/kO/i4uK2phKVUCMNQerF65en4eLijnArg9L79+sNz652CBcXd5KbFqZKU7SynQp6NVxc3APc9FBFZUCSlqpK8IqLizvJTR/aG7jWa1FwMAsXF/cYt77dqS9yZXwSbKFwcXEPc3vFa9cT4sEqLi7uMW6l9NQXlv5P6ZYIFxd3hpu2Ir2GJx2jlhaAi4t7mFuPMFYmnr0n4+LiznN7LU16Z/rOJR0XF3eEuzf4SLuVegnDxcWd5D7h6FVwaAMXF3eQWw9M6yXvyMJwcXEHueuB5nowGo9PcHFxj3HTgrIecKTD2mDsiouLu5WbDk3rBzjScUup6cLFxR3k1otX/ANhm1TKd3FxcR/DTePOtJxtLmS4uLiD3F6ksu1ABi4u7iC3F27u/e7mWAQXF3eB2wtM08FML0bBxcUd534BPOK0e53gemsAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 

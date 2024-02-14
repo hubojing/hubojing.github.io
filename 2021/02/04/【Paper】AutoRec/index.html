@@ -40,7 +40,7 @@
 <meta property="og:image" content="https://hubojing.github.io/images/Paper-AutoRec-Itembased.png">
 <meta property="og:image" content="https://hubojing.github.io/images/Paper-AutoRec-k.png">
 <meta property="og:image" content="https://hubojing.github.io/images/Paper-AutoRec-baselines.png">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.179Z">
+<meta property="og:updated_time" content="2021-02-05T08:26:08.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【paper】AutoRec - Autoencoders Meet Collaborative Filtering">
 <meta name="twitter:description" content="推荐系统 + 深度学习 1">
@@ -55,8 +55,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -199,7 +285,7 @@
         <h1 class="title">【paper】AutoRec - Autoencoders Meet Collaborative Filtering</h1>
         <h5 class="subtitle">
             
-                <time datetime="2021-02-04T10:19:03.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2021-02-04T02:19:03.000Z" itemprop="datePublished" class="page-time">
   2021-02-04
 </time>
 
@@ -221,7 +307,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#INTRODUCTION-引言"><span class="post-toc-number">2.</span> <span class="post-toc-text">INTRODUCTION 引言</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#THE-AUTOREC-MODEL-模型"><span class="post-toc-number">3.</span> <span class="post-toc-text">THE AUTOREC MODEL 模型</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#EXPERIMENTAL-EVALUATION-实验评估"><span class="post-toc-number">4.</span> <span class="post-toc-text">EXPERIMENTAL EVALUATION 实验评估</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#代码"><span class="post-toc-number">5.</span> <span class="post-toc-text">代码</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结"><span class="post-toc-number">6.</span> <span class="post-toc-text">总结</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#INTRODUCTION-引言"><span class="post-toc-text">INTRODUCTION 引言</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#THE-AUTOREC-MODEL-模型"><span class="post-toc-text">THE AUTOREC MODEL 模型</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#EXPERIMENTAL-EVALUATION-实验评估"><span class="post-toc-text">EXPERIMENTAL EVALUATION 实验评估</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#代码"><span class="post-toc-text">代码</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结"><span class="post-toc-text">总结</span></a></li></ol>
         </nav>
     </aside>
 
@@ -232,7 +318,7 @@
     <div class="post-card">
         <h1 class="post-card-title">【paper】AutoRec - Autoencoders Meet Collaborative Filtering</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-02-04 10:19:03" datetime="2021-02-04T10:19:03.000Z"  itemprop="datePublished">2021-02-04</time>
+            <time class="post-time" title="2021-02-04 02:19:03" datetime="2021-02-04T02:19:03.000Z"  itemprop="datePublished">2021-02-04</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
@@ -258,7 +344,7 @@
 <p>基于物品的AutoRec模型I-AutoRec<br>${r^{(i)}}^n_{i=1}$<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\Paper-AutoRec-Itembased.png" alt="基于物品的AutoRec" title>
+                    <img src="\images\Paper-AutoRec-Itembased.png" alt="基于物品的AutoRec" title="">
                 </div>
                 <div class="image-caption">基于物品的AutoRec</div>
             </figure><br>两点改变：  </p>
@@ -285,14 +371,14 @@
 <li>隐藏单元k的数量<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\Paper-AutoRec-k.png" alt="k" title>
+                    <img src="\images\Paper-AutoRec-k.png" alt="k" title="">
                 </div>
                 <div class="image-caption">k</div>
             </figure></li>
 <li>基线性能对比<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\Paper-AutoRec-baselines.png" alt="基线" title>
+                    <img src="\images\Paper-AutoRec-baselines.png" alt="基线" title="">
                 </div>
                 <div class="image-caption">基线</div>
             </figure></li>
@@ -308,7 +394,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.179Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2021-02-05T08:26:08.000Z" itemprop="dateUpdated">2021-02-05 08:26:08</time>
 </span><br>
 
 
@@ -494,6 +580,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -558,6 +648,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACL0lEQVR42u3aO3LDMAxFUe1/00qTLhF9H2BnQvCqysSSyOMCJj7Xha/74fr56fo/T29+eurNlwwZMrZl3MtrvQB56unONYbvTYYMGecwSChcb4gj1yE1DdMyZMiQkb6ag9N1ZciQIaPGqPFIgJYhQ4aMWhK7Xp68LS3MfSQXlyFDxoYMXnX/+78/0t+QIUPGVow7vNJnSUugE7K/n5IhQ8ZoBg9wnUS01uyM9yNDhozRjFoY5SW2tGHJV2kdFmXIkLEVo990JG+uHftIGU6GDBmzGZ1xhzQFJd9oLaDLkCFjNoOMc/FDGzkCkk3z98iQIeMcRr9Mn+LJ/YR99X8HZMiQsSEjLZ+liwW5dekoKUOGjHkM3pJMYe86DhbLbTJkyBjEIAeyTlqbbittKqDuqwwZMkYweIuRh9R/PTMiQ4aMrRidBkA6OkbAxYRWhgwZBzM6w2GcjQYp+K+EDBkyjmGQxLJThkuHMF4cE2XIkDGawctbtTtrgx21ZqcMGTJmM3hYrJXt0uDOA/0vLUwZMmSMZqThtRM6O+W8x53IkCHjAEY/seSlurTNiY6hMmTIGMq4w4sH6HTYgrc20S+GDBkyBjHeNS5WGwLrpKzFAp8MGTK2ZfAgyxfjiSsfI3vxpciQIeMARlo+Sw98KZKHfhkyZMjolORqg2W1kp8MGTJk8LGJWmuzP7ohQ4aMExidZkBa6Oeh/CPlNhkyZGzI4CGvk8TyFgJvXsqQIeMAxhe6edE/wHeo0wAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

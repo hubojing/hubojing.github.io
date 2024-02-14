@@ -37,7 +37,7 @@
 <meta property="og:description" content="效率在大数据量下是非常重要的。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://hubojing.github.io/images/cover-pandas.jpg">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.183Z">
+<meta property="og:updated_time" content="2021-09-16T14:04:32.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅析Pandas中append方法的效率问题">
 <meta name="twitter:description" content="效率在大数据量下是非常重要的。">
@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -196,7 +282,7 @@
         <h1 class="title">浅析Pandas中append方法的效率问题</h1>
         <h5 class="subtitle">
             
-                <time datetime="2021-09-16T17:08:06.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2021-09-16T09:08:06.000Z" itemprop="datePublished" class="page-time">
   2021-09-16
 </time>
 
@@ -222,7 +308,7 @@
     <div class="post-card">
         <h1 class="post-card-title">浅析Pandas中append方法的效率问题</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-09-16 17:08:06" datetime="2021-09-16T17:08:06.000Z"  itemprop="datePublished">2021-09-16</time>
+            <time class="post-time" title="2021-09-16 09:08:06" datetime="2021-09-16T09:08:06.000Z"  itemprop="datePublished">2021-09-16</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程语言/">编程语言</a></li></ul>
@@ -257,7 +343,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.183Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2021-09-16T14:04:32.000Z" itemprop="dateUpdated">2021-09-16 14:04:32</time>
 </span><br>
 
 
@@ -443,6 +529,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -507,6 +597,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACx0lEQVR42u3aQW7jQAwEwPz/0wmwpwCJ7G5So90FSifDkKUpHUS6hx8f8fH55/j5+eqb799f/fbqV1dXSM4fHnh4eHijpV8dr5eVUH+e/3rR+XqSq+Hh4eGd47XFIHlx55i2MCRrxsPDw/sXePltkuW2V8DDw8P7H3l563yFybOCtpXHw8PDe563+fO/OT8JL/JQAw8PD+8Z3qad/VufH9rfw8PDwyt31Tcv9M2DyyPjN2vDw8PDO8DLI4M2pJhFFUnIWwfBeHh4eAd4s2g1D2fbyLjdiqtLFB4eHt6at9ncSl7feQFox7yi8oaHh4d3Ky9pRpOAIFnivcFHUd/w8PDwDvBmf+zzkazXyE07/qbRx8PDwzvG2wSmbdzQhhqrmAMPDw/vAG9THpJQoB0FmEUb9fPAw8PDW/OSsCBpiJPfnmvci/KAh4eHt+DNBkyTuGE2FpBHw1GRwMPDwzvAm3WheZHY32UWGUd3x8PDw1vw8ovup2I34wLJw73MqvHw8PAO854fpWoLTx4r4+Hh4Z3jJS/c2TBBu+U2CxcuHwceHh7erbzXm/qzZjofrpqdWQw64OHh4R3mbbaU8uA1GcOaRQ+/fMbDw8N7kLcJCGZlYz+C8MuZeHh4eMd4+RZUnXMsAoU2HLkMI/Dw8PBu5bVxw+ult210XjxmZQkPDw/vHO/eAYJ23Cp5QLM74uHh4Z3jteFCHiLkW19twSgadzw8PLxjvHZbK2++22Z6M3qFh4eHd5r3WR7Jy739pm2yi4eCh4eHd4A3Kx7DIHVdtDZRCB4eHt69vLYtTrbK2nD2rg2zN/t7eHh4eLfy8pdyWypmQe1mVKvOWvDw8PAe4eUt7+aaeTlZpdR4eHh4x3izCHU2sDWLjy8HVfHw8PAO8JIwYhZDzDa38oZ+NUCAh4eHN+K1G1HtC7oNHWbI1cYbHh4eXsr7Am6XfYL1QCl4AAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
+
 
 
 

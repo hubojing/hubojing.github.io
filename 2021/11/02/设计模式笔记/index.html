@@ -37,7 +37,7 @@
 <meta property="og:description" content="23种设计模式总结">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://hubojing.github.io/images/假装有图片.jpg">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.183Z">
+<meta property="og:updated_time" content="2021-11-02T03:07:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式笔记">
 <meta name="twitter:description" content="23种设计模式总结">
@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -196,7 +282,7 @@
         <h1 class="title">设计模式笔记</h1>
         <h5 class="subtitle">
             
-                <time datetime="2021-11-02T09:18:50.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2021-11-02T01:18:50.000Z" itemprop="datePublished" class="page-time">
   2021-11-02
 </time>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总览"><span class="post-toc-number">1.</span> <span class="post-toc-text">总览</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#设计模式的六大原则"><span class="post-toc-number">2.</span> <span class="post-toc-text">设计模式的六大原则</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#创建型模式"><span class="post-toc-number">3.</span> <span class="post-toc-text">创建型模式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#抽象工厂模式-Abstract-Factory"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">抽象工厂模式 Abstract Factory</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#构建器模式-Builder"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">构建器模式 Builder</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#工厂方法模式-Factory-Method"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">工厂方法模式 Factory Method</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#原型模式-Prototype"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">原型模式 Prototype</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#单例模式-Singleton"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">单例模式 Singleton</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#结构型模式"><span class="post-toc-number">4.</span> <span class="post-toc-text">结构型模式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#适配器模式-Adapter"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">适配器模式 Adapter</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#桥接模式-Bridge"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">桥接模式 Bridge</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#组合模式-Composite"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">组合模式 Composite</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#装饰模式-Decorator"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">装饰模式 Decorator</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#外观模式-Facade"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">外观模式 Facade</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#享元模式-Flyweight"><span class="post-toc-number">4.6.</span> <span class="post-toc-text">享元模式 Flyweight</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#代理模式-Proxy"><span class="post-toc-number">4.7.</span> <span class="post-toc-text">代理模式 Proxy</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#行为型模式"><span class="post-toc-number">5.</span> <span class="post-toc-text">行为型模式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#责任链模式-Chain-of-Responsibility"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">责任链模式 Chain of Responsibility</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#命令模式-Command"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">命令模式 Command</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#解释器模式-Interpreter"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">解释器模式 Interpreter</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#迭代器模式-Iterator"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">迭代器模式 Iterator</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#备忘录模式-Memento"><span class="post-toc-number">5.5.</span> <span class="post-toc-text">备忘录模式 Memento</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#观察者模式-Observer"><span class="post-toc-number">5.6.</span> <span class="post-toc-text">观察者模式 Observer</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#状态模式-State"><span class="post-toc-number">5.7.</span> <span class="post-toc-text">状态模式 State</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#策略模式-Strategy"><span class="post-toc-number">5.8.</span> <span class="post-toc-text">策略模式 Strategy</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#模板方法模式-Template-Method"><span class="post-toc-number">5.9.</span> <span class="post-toc-text">模板方法模式 Template Method</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#访问者模式-Visitor"><span class="post-toc-number">5.10.</span> <span class="post-toc-text">访问者模式 Visitor</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#中介者模式-Mediater"><span class="post-toc-number">5.11.</span> <span class="post-toc-text">中介者模式 Mediater</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总览"><span class="post-toc-text">总览</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#设计模式的六大原则"><span class="post-toc-text">设计模式的六大原则</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#创建型模式"><span class="post-toc-text">创建型模式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#抽象工厂模式-Abstract-Factory"><span class="post-toc-text">抽象工厂模式 Abstract Factory</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#构建器模式-Builder"><span class="post-toc-text">构建器模式 Builder</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#工厂方法模式-Factory-Method"><span class="post-toc-text">工厂方法模式 Factory Method</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#原型模式-Prototype"><span class="post-toc-text">原型模式 Prototype</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#单例模式-Singleton"><span class="post-toc-text">单例模式 Singleton</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#结构型模式"><span class="post-toc-text">结构型模式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#适配器模式-Adapter"><span class="post-toc-text">适配器模式 Adapter</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#桥接模式-Bridge"><span class="post-toc-text">桥接模式 Bridge</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#组合模式-Composite"><span class="post-toc-text">组合模式 Composite</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#装饰模式-Decorator"><span class="post-toc-text">装饰模式 Decorator</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#外观模式-Facade"><span class="post-toc-text">外观模式 Facade</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#享元模式-Flyweight"><span class="post-toc-text">享元模式 Flyweight</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#代理模式-Proxy"><span class="post-toc-text">代理模式 Proxy</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#行为型模式"><span class="post-toc-text">行为型模式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#责任链模式-Chain-of-Responsibility"><span class="post-toc-text">责任链模式 Chain of Responsibility</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#命令模式-Command"><span class="post-toc-text">命令模式 Command</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#解释器模式-Interpreter"><span class="post-toc-text">解释器模式 Interpreter</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#迭代器模式-Iterator"><span class="post-toc-text">迭代器模式 Iterator</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#备忘录模式-Memento"><span class="post-toc-text">备忘录模式 Memento</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#观察者模式-Observer"><span class="post-toc-text">观察者模式 Observer</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#状态模式-State"><span class="post-toc-text">状态模式 State</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#策略模式-Strategy"><span class="post-toc-text">策略模式 Strategy</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#模板方法模式-Template-Method"><span class="post-toc-text">模板方法模式 Template Method</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#访问者模式-Visitor"><span class="post-toc-text">访问者模式 Visitor</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#中介者模式-Mediater"><span class="post-toc-text">中介者模式 Mediater</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -229,7 +315,7 @@
     <div class="post-card">
         <h1 class="post-card-title">设计模式笔记</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-11-02 09:18:50" datetime="2021-11-02T09:18:50.000Z"  itemprop="datePublished">2021-11-02</time>
+            <time class="post-time" title="2021-11-02 01:18:50" datetime="2021-11-02T01:18:50.000Z"  itemprop="datePublished">2021-11-02</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/软件开发/">软件开发</a></li></ul>
@@ -417,7 +503,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.183Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2021-11-02T03:07:22.000Z" itemprop="dateUpdated">2021-11-02 03:07:22</time>
 </span><br>
 
 
@@ -603,6 +689,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -667,6 +757,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACI0lEQVR42u3aS27DMAwFwNz/0ukBCruPpFzA0ngVtI6s8YLhR59PfH0vrt//Te7/vfLVOosvDAyM1zK+t9fVPVVecuc97I+XgoGBcQAjCYUJ6X7lZEP3a17+HQMDAyPYbh5G7xNBDAwMjLWMSZmaF8MYGBgYkyJz0vVK2m2P1OIYGBgvZORd9////Mh8AwMD41WMb/Gqfndt+nj5FAwMjK0ZeYBLWmPVJtok4GJgYJzDmITRpB2Wl7vVl/XpTUoxMDBeyFg7AOhtdFVjDgMD4xxGsunkYZMEMX9lGBgYJzCqg8n8EFi1h58ngpddQwwMjE0ZvVt7I4Hq+o+MNjEwMLZg5CPGJE3sPasafDEwMPZmVBfqfa4mneXXh4GBsTWj2uRKAutk09Xxark+xsDAeC2j2lbLh5S9gN48bIGBgbEpY34wqxqs8wOvBTAGBsbWjDwh6w0pewPI8q8EBgbG1oxqcHwCMy9uMTAw9mb0krbkmEVvODpKCjEwMI5hVB/WO47/yGgBAwPjYEbvgGmv9B31+TEwMI5hVJv1ebI4GXNG5TEGBsamjG/xut/EpLjN149+MTAwMDZi9MJcHlhXpYmFphsGBsamjLWbS76bt/AKwwYMDIwDGIUWfNy+XzX+jJAYGBgYQcDNw/SkuI0ySgwMjOMZ8wNhkyD7RxGLgYGxNaM3DJg0+qtHPTAwME5m5CEvXyI/bJGXvgsGmRgYGO9j/ACRA+Tzx5VaVQAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

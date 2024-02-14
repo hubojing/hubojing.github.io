@@ -37,7 +37,7 @@
 <meta property="og:description" content="和评论系统battle的第N年　　折腾不息">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://hubojing.github.io/images/假装有图片.jpg">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.175Z">
+<meta property="og:updated_time" content="2022-09-12T06:58:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Waline评论服务端转移至Deta">
 <meta name="twitter:description" content="和评论系统battle的第N年　　折腾不息">
@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -196,7 +282,7 @@
         <h1 class="title">Waline评论服务端转移至Deta</h1>
         <h5 class="subtitle">
             
-                <time datetime="2022-09-12T11:24:26.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2022-09-12T03:24:26.000Z" itemprop="datePublished" class="page-time">
   2022-09-12
 </time>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#问题"><span class="post-toc-number">1.</span> <span class="post-toc-text">问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#解决方法"><span class="post-toc-number">2.</span> <span class="post-toc-text">解决方法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#步骤"><span class="post-toc-number">3.</span> <span class="post-toc-text">步骤</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考资料"><span class="post-toc-number">4.</span> <span class="post-toc-text">参考资料</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#问题"><span class="post-toc-text">问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#解决方法"><span class="post-toc-text">解决方法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#步骤"><span class="post-toc-text">步骤</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考资料"><span class="post-toc-text">参考资料</span></a></li></ol>
         </nav>
     </aside>
 
@@ -229,7 +315,7 @@
     <div class="post-card">
         <h1 class="post-card-title">Waline评论服务端转移至Deta</h1>
         <div class="post-meta">
-            <time class="post-time" title="2022-09-12 11:24:26" datetime="2022-09-12T11:24:26.000Z"  itemprop="datePublished">2022-09-12</time>
+            <time class="post-time" title="2022-09-12 03:24:26" datetime="2022-09-12T03:24:26.000Z"  itemprop="datePublished">2022-09-12</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/博客/">博客</a></li></ul>
@@ -283,7 +369,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.175Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2022-09-12T06:58:40.000Z" itemprop="dateUpdated">2022-09-12 06:58:40</time>
 </span><br>
 
 
@@ -469,6 +555,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -533,6 +623,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACt0lEQVR42u3aQW7CQAwFUO5/6XZbqUrybY+hlV5WCMJkXpBiY/v1io+vH8fPd+4//f3+1ae/z7m6ymvjwMPDwxts/eqSyevkptzjk9XyPePh4eFt8/KH8v3590GiF37yG4GHh4f3N3n5d/OVczweHh7e/+JVCxD3KXXyuhec8PDw8N7DS4oReakiT6+TEDK5lXh4eHgbvLyL9Hder/T38PDw8MZd9fyBmz+y81T7wG7x8PDwFniT0YH7gYCkoNAb9qqWifHw8PDO8vJCQBISJgMEE/blTcTDw8Nb5uUpb97WmgeJZACr2frCw8PDG/DmzbBTayZpdJLE4+Hh4e3x8hLA/RLVAHCWl/8BwMPDw5vzJk2paqssDy3JdaM18fDw8BZ4+Um94kKvjHuWjYeHh7fHy9vzeWNs0lqrpvLHpg/w8PDwbleYj0/tNcPy5twlEg8PD2+BNy8xVMsNp9LufCd4eHh4G7w5Zl6eyI/kx3iVT8LDw8NLd14dq+qd2Wut5WMEUQEXDw8Pb403KbxOxg56QehhTTw8PLw38vLi6bzUmxRk8zIuHh4e3qd4eds+31zecssT6IcghIeHh7fAq7bqTxUjkneqra9mrRoPDw+vyKsWWMuF1HhDSbAp/wB4eHh4C7z8oZwn39Vt9Ua4Ckk5Hh4e3ht5vdS5t2b+6K822/Dw8PD2eHlLPl86b33NG2Z4eHh47+dV205JQpyfMymLPFwXDw8P7yhvo+nVvMetosbDbcLDw8Nb4I3iSav8mo8F5An0CIaHh4fX4lWDwSTlnSTT1b3h4eHhbfPyR3x1IKA3OlC9WQ+1Fjw8PLyP8uYF3Py61bbcZUqNh4eH91HevN1VDT9JIn44pcbDw8MLeL2mV+/BXW1l5WMNB8q4eHh4eAGv+oe/19yahJleUMHDw8Nb4H0DgWf0URLCi9UAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 

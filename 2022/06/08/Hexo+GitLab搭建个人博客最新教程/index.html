@@ -37,7 +37,7 @@
 <meta property="og:description" content="不是标题党，我自己刚写的，保证最新。（2022年6月）">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://hubojing.github.io/images/Hexo+Gitlab.png">
-<meta property="og:updated_time" content="2022-06-11T19:19:36.000Z">
+<meta property="og:updated_time" content="2022-06-11T11:19:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2022年最新教程！Hexo + GitLab搭建个人博客详细教程">
 <meta name="twitter:description" content="不是标题党，我自己刚写的，保证最新。（2022年6月）">
@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -196,7 +282,7 @@
         <h1 class="title">2022年最新教程！Hexo + GitLab搭建个人博客详细教程</h1>
         <h5 class="subtitle">
             
-                <time datetime="2022-06-08T10:19:16.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2022-06-08T02:19:16.000Z" itemprop="datePublished" class="page-time">
   2022-06-08
 </time>
 
@@ -216,7 +302,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#前言（可不看）"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言（可不看）</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Hexo"><span class="post-toc-number">2.</span> <span class="post-toc-text">Hexo</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#GitLab"><span class="post-toc-number">3.</span> <span class="post-toc-text">GitLab</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#GitLab自建Runners"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">GitLab自建Runners</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装"><span class="post-toc-number">3.1.1.</span> <span class="post-toc-text">安装</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#注册Runner"><span class="post-toc-number">3.1.2.</span> <span class="post-toc-text">注册Runner</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#配置"><span class="post-toc-number">3.1.3.</span> <span class="post-toc-text">配置</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#一些报错解决方法"><span class="post-toc-number">4.</span> <span class="post-toc-text">一些报错解决方法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#后记"><span class="post-toc-number">5.</span> <span class="post-toc-text">后记</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#前言（可不看）"><span class="post-toc-text">前言（可不看）</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Hexo"><span class="post-toc-text">Hexo</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#GitLab"><span class="post-toc-text">GitLab</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#GitLab自建Runners"><span class="post-toc-text">GitLab自建Runners</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装"><span class="post-toc-text">安装</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#注册Runner"><span class="post-toc-text">注册Runner</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#配置"><span class="post-toc-text">配置</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#一些报错解决方法"><span class="post-toc-text">一些报错解决方法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#后记"><span class="post-toc-text">后记</span></a></li></ol>
         </nav>
     </aside>
 
@@ -227,7 +313,7 @@
     <div class="post-card">
         <h1 class="post-card-title">2022年最新教程！Hexo + GitLab搭建个人博客详细教程</h1>
         <div class="post-meta">
-            <time class="post-time" title="2022-06-08 10:19:16" datetime="2022-06-08T10:19:16.000Z"  itemprop="datePublished">2022-06-08</time>
+            <time class="post-time" title="2022-06-08 02:19:16" datetime="2022-06-08T02:19:16.000Z"  itemprop="datePublished">2022-06-08</time>
 
             
 
@@ -320,7 +406,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2022-06-11T19:19:36.000Z" itemprop="dateUpdated">2022-06-11 19:19:36</time>
+    最后更新时间：<time datetime="2022-06-11T11:19:36.000Z" itemprop="dateUpdated">2022-06-11 11:19:36</time>
 </span><br>
 
 
@@ -506,6 +592,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -570,6 +660,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACrklEQVR42u3aQW7DMAwEwPz/0ynQa+pkSYpGUIxORdvEHh0kYsnHI17P35X/9fmyXn//+tnqU44tPDw8vNarX63kf97z8qckn61+Gx4eHt4e7/1BfPnhYJvyqyK/NpJ3xsPDw/sGXl7mJluTYPDw8PD+E28bcGy78fDw8NZ4eWmbXwOTiHYSjuDh4eFt86oNsG/4ebG/h4eHhzfoqudtqkloW70YCm+Lh4eHt8A7WwRPTuykvM6/M3oYHh4eXovXGwVIYtlJNNC7Zv7YDjw8PLwF3qlDP2+A5UV50ujKwXh4eHhneUk7vxpV9BpdK5uCh4eHd5TXay/lQ1qTca7miFX+GDw8PLwWL3m5U3HDqdA2b8jh4eHh7fHOHt9JKZw8pZygVNtgeHh4eC3eBDYPc5MQZLJBeHh4eHu83ojqPKKdDHtFpTweHh7eLby8tM2b972x1zwcufwZDw8P7xbe2fI3f90J8kMYgYeHh3eUNymIq8FEtRDPa+MoLsHDw8M7xEvK0+ojq2syoPDhYsPDw8Nb4yVHf46ZXBWT4YPLmQg8PDy8o7zqeFMVlocdvXZaeaYMDw8Pb8yr7sQzXr3xrGoUEg1d4eHh4R3l5Y35/ArpxRPVsr5weeDh4eGt8XoBbrV0rg5sJdEtHh4e3p28XqupesT3jv7exYOHh4d3P29Swlbb/L3EIP82PDw8vA1eoUvWaoYljbRkW3tXER4eHt4G71lc1QO6utOTMPePv+Lh4eEt8CYNqvlLJzHuJNrAw8PD2+Pl41N5iNAr2atbExX6eHh4eGu8eSsrb1ZVY+JHcV1ORuDh4eHdzsuD3cmWVRkf3g0PDw/vC3jV0rZXOk+ultHFgIeHhxfz8jAiZ5867ifBMR4eHt4Gb94Ae/+YvK2VBxx5oY+Hh4d3lPcD+cENAapg7VcAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 

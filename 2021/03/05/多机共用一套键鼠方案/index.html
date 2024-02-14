@@ -37,7 +37,7 @@
 <meta property="og:description" content="零成本 半小时内 极速解决问题">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://hubojing.github.io/images/假装有图片.jpg">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.179Z">
+<meta property="og:updated_time" content="2021-03-05T04:33:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="多机共用一套键鼠方案">
 <meta name="twitter:description" content="零成本 半小时内 极速解决问题">
@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -196,7 +282,7 @@
         <h1 class="title">多机共用一套键鼠方案</h1>
         <h5 class="subtitle">
             
-                <time datetime="2021-03-05T11:35:43.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2021-03-05T03:35:43.000Z" itemprop="datePublished" class="page-time">
   2021-03-05
 </time>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#由现实问题引发的思考（可不看）"><span class="post-toc-number">1.</span> <span class="post-toc-text">由现实问题引发的思考（可不看）</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#改造方案"><span class="post-toc-number">2.</span> <span class="post-toc-text">改造方案</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#可能遇到的问题"><span class="post-toc-number">3.</span> <span class="post-toc-text">可能遇到的问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#改造后"><span class="post-toc-number">4.</span> <span class="post-toc-text">改造后</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#由现实问题引发的思考（可不看）"><span class="post-toc-text">由现实问题引发的思考（可不看）</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#改造方案"><span class="post-toc-text">改造方案</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#可能遇到的问题"><span class="post-toc-text">可能遇到的问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#改造后"><span class="post-toc-text">改造后</span></a></li></ol>
         </nav>
     </aside>
 
@@ -229,7 +315,7 @@
     <div class="post-card">
         <h1 class="post-card-title">多机共用一套键鼠方案</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-03-05 11:35:43" datetime="2021-03-05T11:35:43.000Z"  itemprop="datePublished">2021-03-05</time>
+            <time class="post-time" title="2021-03-05 03:35:43" datetime="2021-03-05T03:35:43.000Z"  itemprop="datePublished">2021-03-05</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/数码/">数码</a></li></ul>
@@ -268,7 +354,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.179Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2021-03-05T04:33:56.000Z" itemprop="dateUpdated">2021-03-05 04:33:56</time>
 </span><br>
 
 
@@ -454,6 +540,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -518,6 +608,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACt0lEQVR42u3aQW7jQAwEwPz/05trgERyN0c0vEDpZDiyRjWHIUPy6yu+/v24rr7/ff285+rz1f33z3z4wsPDwzt49WTJ37+9v+dqxfvPj20BHh4e3hqvfYn7AJAElWStk3vw8PDwPo03Wz6//z7k4OHh4f1fvDzJniXKCQkPDw/vE3htKTYpsCZFjTzhXq+14OHh4S10kT7n80p/Dw8PD++4q35/4LYF3JPBguHb4uHh4S3w2pJrzsgLCueNsRfviYeHh7fGSw7i9ihvg0Q7uBC1x/Dw8PCWec8WIGbt/2SAoCjg4uHh4S3wkge1owDnDbMk5CTf4OHh4W3zEtjsFdtNfAyGh4eH9xZe/qCklLAHK9JrPDw8vId4bSlh1tTPn5nAirIvHh4e3gJvNud5Uj6YXbPWGh4eHt4e76Rc2ybQszCQhJxo6AoPDw/vmJcnvvkW3B/oJ+MFedkCDw8Pb4+XBIBZUTUPMLO2VvFfAh4eHt6jvNmAVBIM2pLELBi8+B4PDw9vmTcruc6e0P4qH1+4LEbg4eHhPcSbJdb5od+2x2YDClE4wcPDw1vgzUJCWyZINqsdt3oqf8bDw8NLeM8u3IKTjZg9v6hw4OHh4Y14s0GBvIhw0v5vE/1iMgIPDw9vxMsP7va4nyXZSWGiDlF4eHh4a7y2cdW+yuzozxP9SwUeHh7eGi9Zvl14Vtg9T7vx8PDw3slr212zUkJ9uJ936vDw8PAWYG1JIm9czcYO2tmHP36Fh4eHt8A7Dx75YhuJe5uU4+Hh4T3Fy0uuScKdjxTk23E0/oWHh4e3xstfuk2I2zLuLB+u/4yHh4f3dl4SPPKSwUk548X9eHh4eB/AawusbZhpB60eDgx4eHh4o6GrdnDqPBHPtyl/Gh4eHt4e7+Qf/lmbqsXkm3I0OoCHh4f3mvcN2B27YDMYjfIAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 

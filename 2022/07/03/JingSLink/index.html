@@ -38,7 +38,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://hubojing.github.io/images/假装有图片.jpg">
 <meta property="og:image" content="https://hubojing.github.io/images/JingSLink.png">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.171Z">
+<meta property="og:updated_time" content="2022-07-04T06:39:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JingSLink">
 <meta name="twitter:description" content="简单开发一个截图保存并返回链接的小工具JingSLink　　JingPic迎来重构版JingSLink　　自用简陋小工具系列">
@@ -53,8 +53,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -197,7 +283,7 @@
         <h1 class="title">JingSLink</h1>
         <h5 class="subtitle">
             
-                <time datetime="2022-07-03T21:26:39.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2022-07-03T13:26:39.000Z" itemprop="datePublished" class="page-time">
   2022-07-03
 </time>
 
@@ -219,7 +305,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#前言"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#需求"><span class="post-toc-number">2.</span> <span class="post-toc-text">需求</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#技术"><span class="post-toc-number">3.</span> <span class="post-toc-text">技术</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实现"><span class="post-toc-number">4.</span> <span class="post-toc-text">实现</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#代码"><span class="post-toc-number">5.</span> <span class="post-toc-text">代码</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#后期优化"><span class="post-toc-number">6.</span> <span class="post-toc-text">后期优化</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考资料"><span class="post-toc-number">7.</span> <span class="post-toc-text">参考资料</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#前言"><span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#需求"><span class="post-toc-text">需求</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#技术"><span class="post-toc-text">技术</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实现"><span class="post-toc-text">实现</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#代码"><span class="post-toc-text">代码</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#后期优化"><span class="post-toc-text">后期优化</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考资料"><span class="post-toc-text">参考资料</span></a></li></ol>
         </nav>
     </aside>
 
@@ -230,7 +316,7 @@
     <div class="post-card">
         <h1 class="post-card-title">JingSLink</h1>
         <div class="post-meta">
-            <time class="post-time" title="2022-07-03 21:26:39" datetime="2022-07-03T21:26:39.000Z"  itemprop="datePublished">2022-07-03</time>
+            <time class="post-time" title="2022-07-03 13:26:39" datetime="2022-07-03T13:26:39.000Z"  itemprop="datePublished">2022-07-03</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/软件开发/">软件开发</a></li></ul>
@@ -265,7 +351,7 @@
 <li>弹出一个输入框，输入图片名称。<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/JingSLink.png" alt="输入框" title>
+                    <img src="/images/JingSLink.png" alt="输入框" title="">
                 </div>
                 <div class="image-caption">输入框</div>
             </figure></li>
@@ -292,7 +378,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.171Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2022-07-04T06:39:34.000Z" itemprop="dateUpdated">2022-07-04 06:39:34</time>
 </span><br>
 
 
@@ -478,6 +564,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -542,6 +632,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKklEQVR42u3aSW7DQAwFUd//0so2QGC6PmkFELu0MgwN/XpBcOjXC1/Xr6v3P7/n751fu2TIkPFYxlVe9T3kze/eQMBkbTJkyDiHQRZRL6h+iofU+g1v/5chQ4YM8OH6PTVYhgwZMu5g9IpSnoDKkCFDRq+IJaSalzbmbqnFZciQ8UAG77r//+9b5hsyZMh4FOMKr0nTn4fdeFUyZMhYzeABblRehkPQ3npkyJCxm0GaaLxZRgpX3p4bJYsyZMhYwUgbZzyk8sEA+b/eJhkyZOxmkDCXFqi98rWXgMqQIeMExrfSvvTwBBlDBkmnDBkyDmBMmv69CWN6yAMVsTJkyFjKQMUhXsr/NNrebqUMGTKWMibpXa9Nlg4sg66hDBkyDmBMDpL2Esf6fh70ZciQsZsxGQykJevtZ0ZkyJCxmpE+EByAwItOD3l82CYZMmSsZqSlaW8p6WY1LxkyZCxi9AIcCa+T1JO8WYYMGWcyyOv4h+tneamMtk+GDBmHMdL07ltPpVvz4cyIDBky1jHIwQseRicJZXr4TIYMGSczegODtD3HG3DByREZMmQsYlzhlbbq5uEVJaAyZMhYzegNNXmQnRTJk4MdMmTI2McgQbZ286RwlMPWgV6GDBkHMHjg459vNs4mtbgMGTJkgPFAGpR7I89XWk/LkCHjSAYvMvnIc7QFMmTIOIDBUzo+mJwcsLix3SZDhowHMnjI40Fz0oCbjxZkyJCxiPEDeduJh0XN3hUAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 

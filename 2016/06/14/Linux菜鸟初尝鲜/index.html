@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验步骤-Experiment-steps"><span class="post-toc-number">1.</span> <span class="post-toc-text">实验步骤        Experiment steps</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#重难点-Important-point"><span class="post-toc-number">2.</span> <span class="post-toc-text">重难点 Important point</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#课堂笔记备忘"><span class="post-toc-number">3.</span> <span class="post-toc-text">课堂笔记备忘</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#服务器与客户端通信"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">服务器与客户端通信</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#挂载驱动-Mount-the-drive"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">挂载驱动    Mount the drive</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#附录-客户端和服务器程序-Appendix-Client-c-amp-Server-c"><span class="post-toc-number">4.</span> <span class="post-toc-text">附录    客户端和服务器程序    Appendix  Client.c &amp; Server.c</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#server-c"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">server.c</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#client-c"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">client.c</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验步骤-Experiment-steps"><span class="post-toc-text">实验步骤        Experiment steps</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#重难点-Important-point"><span class="post-toc-text">重难点 Important point</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#课堂笔记备忘"><span class="post-toc-text">课堂笔记备忘</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#服务器与客户端通信"><span class="post-toc-text">服务器与客户端通信</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#挂载驱动-Mount-the-drive"><span class="post-toc-text">挂载驱动    Mount the drive</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#附录-客户端和服务器程序-Appendix-Client-c-amp-Server-c"><span class="post-toc-text">附录    客户端和服务器程序    Appendix  Client.c &amp; Server.c</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#server-c"><span class="post-toc-text">server.c</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#client-c"><span class="post-toc-text">client.c</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -466,6 +552,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -531,6 +621,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACNElEQVR42u3awY7iMBAEUP7/p9nrSrOEqjaMNvbLCY1M4sehp9qdxyO+nn9dP//+6vPP6/qer1Z+7MLAwLgt43l5Jdtqv/VqZf5z/IOKgYFxAONVBbu+9fV92hJ8/dw3e8bAwMCIN91uIo+bGBgYGOuF73pN2wBjYGBgzJrY5JisaDsXAiUGBsZpjPzU/fc/f2W+gYGBcSvGs7xm7evsiK3YFQYGxtaMvMDlES1vWYsGNWmMMTAwDmC05fL6YXmRnQ1HH/ntMDAwtmAkj2/D4myj7fDgJQ8DA2MjxmwMkP+9DYjtOAEDA+M0Rj5cXFnfhssoqmJgYGzNyEPhrETORg5Fkm2zLQYGxs0Z+deKseLCU/IfEQMD4wRGfli2UkZnJbVorTEwMDZlzFrK2fp2TXGQh4GBsTUjL6MzdrvmAy9bYGBgHMOYnWutDDXzVzfe7BYDA2M7RjIazI/SWsx6uHzkE04MDIzbMj51cJ8PI2cx9OsxEQMD479nXDeNedRrY2I7ioiyLQYGxgGM/HBt9qpEG0yLXWFgYBzDWB9etpgkLEZRFQMD4xjGevuajCdnr73W0RADA2MLxrO8PjApHTXDUSjEwMDYlLEyDcxLZ9sM5011jcHAwLgtY1Zk24KYDwmSyPjmvTYMDIxNGfkx2Xp8XPkPUA8GMDAwjmesv7TRhtF6voGBgXEwox1AtqPTOlZiYGAcwEii3rcx7dEbBgbGOYxZyWsP3fJNzEYFGBgYmzL+ANy12xnnGNL/AAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
+
 
 
 

@@ -42,7 +42,7 @@
 <meta property="og:image" content="https://hubojing.github.io/images/Paper-YouTube-with_example_age.png">
 <meta property="og:image" content="https://hubojing.github.io/images/Paper-YouTube-predict_future_watch.png">
 <meta property="og:image" content="https://hubojing.github.io/images/Paper-YouTube-排序架构.png">
-<meta property="og:updated_time" content="2020-12-16T21:56:05.000Z">
+<meta property="og:updated_time" content="2020-12-16T13:56:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Paper】Deep Neural Networks for YouTube Recommendations">
 <meta name="twitter:description" content="YouTube经典推荐论文。">
@@ -57,8 +57,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -201,7 +287,7 @@
         <h1 class="title">【Paper】Deep Neural Networks for YouTube Recommendations</h1>
         <h5 class="subtitle">
             
-                <time datetime="2020-12-15T14:24:54.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2020-12-15T06:24:54.000Z" itemprop="datePublished" class="page-time">
   2020-12-15
 </time>
 
@@ -223,7 +309,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Introduction-引言"><span class="post-toc-number">2.</span> <span class="post-toc-text">Introduction 引言</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#System-Overview-系统概述"><span class="post-toc-number">3.</span> <span class="post-toc-text">System Overview 系统概述</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Candidate-Generation-候选生成"><span class="post-toc-number">4.</span> <span class="post-toc-text">Candidate Generation 候选生成</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Recommendation-as-Classification-作为分类推荐"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">Recommendation as Classification 作为分类推荐</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Effcient-Extreme-Multiclass-高效极端多分类"><span class="post-toc-number">4.1.1.</span> <span class="post-toc-text">Effcient Extreme Multiclass 高效极端多分类</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Model-Architecture-模型架构"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">Model Architecture 模型架构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Heterogeneous-Signals-混合信号"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">Heterogeneous Signals 混合信号</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#“Example-Age”-Feature-“示例年龄”特征"><span class="post-toc-number">4.3.1.</span> <span class="post-toc-text">“Example Age” Feature “示例年龄”特征</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Label-and-Context-Selection-标签和上下文选择"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">Label and Context Selection 标签和上下文选择</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Experiments-with-Features-and-Depth-特征和深度实验"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">Experiments with Features and Depth 特征和深度实验</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Ranking-排序"><span class="post-toc-number">5.</span> <span class="post-toc-text">Ranking 排序</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Feature-Representation-特征表示"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">Feature Representation 特征表示</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Feature-Engineering-特征工程"><span class="post-toc-number">5.1.1.</span> <span class="post-toc-text">Feature Engineering 特征工程</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Embedding-Categorical-Features-嵌入分类特征"><span class="post-toc-number">5.1.2.</span> <span class="post-toc-text">Embedding Categorical Features 嵌入分类特征</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Normalizing-Continuous-Features-归一化连续特征"><span class="post-toc-number">5.1.3.</span> <span class="post-toc-text">Normalizing Continuous Features 归一化连续特征</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Modeling-Expected-Watch-Time-预期观看时间建模"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">Modeling Expected Watch Time 预期观看时间建模</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Experiments-with-Hidden-Layers隐藏层实验"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">Experiments with Hidden Layers隐藏层实验</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Conclusions-总结"><span class="post-toc-number">6.</span> <span class="post-toc-text">Conclusions 总结</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Introduction-引言"><span class="post-toc-text">Introduction 引言</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#System-Overview-系统概述"><span class="post-toc-text">System Overview 系统概述</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Candidate-Generation-候选生成"><span class="post-toc-text">Candidate Generation 候选生成</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Recommendation-as-Classification-作为分类推荐"><span class="post-toc-text">Recommendation as Classification 作为分类推荐</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Effcient-Extreme-Multiclass-高效极端多分类"><span class="post-toc-text">Effcient Extreme Multiclass 高效极端多分类</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Model-Architecture-模型架构"><span class="post-toc-text">Model Architecture 模型架构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Heterogeneous-Signals-混合信号"><span class="post-toc-text">Heterogeneous Signals 混合信号</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#“Example-Age”-Feature-“示例年龄”特征"><span class="post-toc-text">“Example Age” Feature “示例年龄”特征</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Label-and-Context-Selection-标签和上下文选择"><span class="post-toc-text">Label and Context Selection 标签和上下文选择</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Experiments-with-Features-and-Depth-特征和深度实验"><span class="post-toc-text">Experiments with Features and Depth 特征和深度实验</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Ranking-排序"><span class="post-toc-text">Ranking 排序</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Feature-Representation-特征表示"><span class="post-toc-text">Feature Representation 特征表示</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Feature-Engineering-特征工程"><span class="post-toc-text">Feature Engineering 特征工程</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Embedding-Categorical-Features-嵌入分类特征"><span class="post-toc-text">Embedding Categorical Features 嵌入分类特征</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Normalizing-Continuous-Features-归一化连续特征"><span class="post-toc-text">Normalizing Continuous Features 归一化连续特征</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Modeling-Expected-Watch-Time-预期观看时间建模"><span class="post-toc-text">Modeling Expected Watch Time 预期观看时间建模</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Experiments-with-Hidden-Layers隐藏层实验"><span class="post-toc-text">Experiments with Hidden Layers隐藏层实验</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Conclusions-总结"><span class="post-toc-text">Conclusions 总结</span></a></li></ol>
         </nav>
     </aside>
 
@@ -234,7 +320,7 @@
     <div class="post-card">
         <h1 class="post-card-title">【Paper】Deep Neural Networks for YouTube Recommendations</h1>
         <div class="post-meta">
-            <time class="post-time" title="2020-12-15 14:24:54" datetime="2020-12-15T14:24:54.000Z"  itemprop="datePublished">2020-12-15</time>
+            <time class="post-time" title="2020-12-15 06:24:54" datetime="2020-12-15T06:24:54.000Z"  itemprop="datePublished">2020-12-15</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
@@ -264,7 +350,7 @@
 <h1 id="System-Overview-系统概述"><a href="#System-Overview-系统概述" class="headerlink" title="System Overview 系统概述"></a>System Overview 系统概述</h1><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\Paper-YouTube-整体架构.png" alt="系统架构" title>
+                    <img src="\images\Paper-YouTube-整体架构.png" alt="系统架构" title="">
                 </div>
                 <div class="image-caption">系统架构</div>
             </figure>
@@ -278,7 +364,7 @@
 <h2 id="Model-Architecture-模型架构"><a href="#Model-Architecture-模型架构" class="headerlink" title="Model Architecture 模型架构"></a>Model Architecture 模型架构</h2><p>　　学习每个视频的高维嵌入到固定词汇中，并将这些嵌入输入到前馈神经网络中。用户的观看历史记录由稀疏视频id的可变长度序列表示，该序列通过嵌入映射到稠密向量表示。该网络需要固定规模的密集输入，并简单地平均在不同策略中表现最好的嵌入。通过梯度下降反向传播更新，嵌入与所有其他模型参数联合学习。特征被连接成一个宽的第一层，然后是几层全连接的线性单元(ReLU)。如下图所示。<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\Paper-YouTube-候选生成架构.png" alt="候选生成架构" title>
+                    <img src="\images\Paper-YouTube-候选生成架构.png" alt="候选生成架构" title="">
                 </div>
                 <div class="image-caption">候选生成架构</div>
             </figure></p>
@@ -286,14 +372,14 @@
 <h3 id="“Example-Age”-Feature-“示例年龄”特征"><a href="#“Example-Age”-Feature-“示例年龄”特征" class="headerlink" title="“Example Age” Feature “示例年龄”特征"></a>“Example Age” Feature “示例年龄”特征</h3><p>　　用户往往喜欢新鲜的内容。除了简单地推荐用户想看的新视频的一级效应，还有一个重要的二级现象，即引导和传播病毒式内容。视频受欢迎程度是会变化的，但推荐系统反映的是几周内的平均观看可能性。为了纠正这一点，在训练期间将训练示例的年龄作为一个特征输入。在服务时间，这个特征被设置为零(或者稍微负一点)，以反映模型正在训练窗口的最后进行预测。<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\Paper-YouTube-with_example_age.png" alt="With Example Age" title>
+                    <img src="\images\Paper-YouTube-with_example_age.png" alt="With Example Age" title="">
                 </div>
                 <div class="image-caption">With Example Age</div>
             </figure></p>
 <h2 id="Label-and-Context-Selection-标签和上下文选择"><a href="#Label-and-Context-Selection-标签和上下文选择" class="headerlink" title="Label and Context Selection 标签和上下文选择"></a>Label and Context Selection 标签和上下文选择</h2><p>　　替代学习问题的选择对A/B测试的性能有很大的影响，但很难用离线实验来衡量。<br>　　训练示例是从所有YouTube视频中生成的而不是仅仅依靠推荐。否则新内容的出现将会非常困难，而且推荐器会有过度偏向。如果用户是通过推荐以外的方式发现视频，希望能够通过协同过滤快速传播这个发现给其他人。改进实时指标的另一个关键见解是，为每个用户生成固定数量的训练样例，有效平等地在损失函数中权衡我们的用户。这避免了一小部分高活跃用户主导损失。<br>　　必须非常小心地对分类器隐瞒信息，以防止模型利用站点的结构和过度拟合代理问题。<br>　　预测用户下一个观看的性能要比预测随机留出的观看好得多。许多协同过滤系统隐式地选择标签和上下文，方法是取出一个随机的物品，并从用户历史记录中的其他物品中预测它。这泄露了未来信息并忽视了非对称消费模式。相反，本文“回滚”用户的历史记录，通过选择一个随机的观看记录，并且只输入用户留出的有标签的观看记录之前采取的动作。<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\Paper-YouTube-predict_future_watch.png" alt="Predicting future watch" title>
+                    <img src="\images\Paper-YouTube-predict_future_watch.png" alt="Predicting future watch" title="">
                 </div>
                 <div class="image-caption">Predicting future watch</div>
             </figure></p>
@@ -301,7 +387,7 @@
 <h1 id="Ranking-排序"><a href="#Ranking-排序" class="headerlink" title="Ranking 排序"></a>Ranking 排序</h1><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\Paper-YouTube-排序架构.png" alt="排序架构" title>
+                    <img src="\images\Paper-YouTube-排序架构.png" alt="排序架构" title="">
                 </div>
                 <div class="image-caption">排序架构</div>
             </figure>
@@ -321,7 +407,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-12-16T21:56:05.000Z" itemprop="dateUpdated">2020-12-16 21:56:05</time>
+    最后更新时间：<time datetime="2020-12-16T13:56:05.000Z" itemprop="dateUpdated">2020-12-16 13:56:05</time>
 </span><br>
 
 
@@ -507,6 +593,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -571,6 +661,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADMklEQVR42u3ay27bQAwF0P7/T6dAVy0C2fcOFTRijlaCIVs84wXBx69f8fXx5/r7/vMnn+8/P588mbzl6ls3X9jY2NgPYX+8vM5emePbI3590IkFGxsbeyt7/vr8k7uSaJI+Lz/HxsbG/pHs5PkkEU6KijyZYWNjY2NPSoL2W+1RYmNjY2PflXheN3SSznxb0rQx3NBLw8bGxv727K9o6Pyv+y+fb2NjY2N/M/ZHebXppC0qkifzdHX5O9jY2NiL2O1otm3x5OnwbFUoKZku48HGxsZeym4ZZw2dSerKC483T2JjY2OvYOc/lI9XW3A7Bj473MsKDBsbG/vh7HZppk1g7YLO2UEfjnixsbGxV7Mn6zJtWHk6bCe2b+LHxsbGXsdujyBpD7Uhtos4ORIbGxt7N7sNOgfnr29LmqJ5lF/Y2NjYj2W3QbSly9mouF3TqZMxNjY29iJ2u5ozgbXpKk9gSVmCjY2NvZV9thCTHNm9Dam8sogWhrCxsbFXsCe8pDjJQ8m7X5MBAzY2NvY+dt7KaYcK7RGctZbahFr8EDY2NvbD2XlSOWvl55+fRR5Fi42Njb2CnaSQNriiGBikwFGqw8bGxl7NTsLKDyJvQuXDg8lI4zKBYWNjYz+cna+55MuXyeC2XdCZrGn+8zw2Njb2j2G3SzlJ0PODS9LVm3tsbGzsRew8xHYk0Dat5ukwaT8VeRUbGxv7Uex2pNq+OB8Yt02os1SKjY2NvYmdBNcuSrYtqrZcmQyPsbGxsfexJ233nJS3hPJDyRd0LlMgNjY29gp2G2jbikpCycuJfPz85o/BxsbGXsROXnCWKtqG1KSkORwnY2NjY69g5y9rm/Lz5ZuzdJWUTNjY2Nj72JOh79lw9wzcruBEGRsbGxt7BXuSQtqFnqQtdTaKKN6OjY2NvYjdJq27klxyEK+fnC8eYWNjY29iny3Q5K9vh8Tt0KJNtNjY2Nhb2WfpJF/caRPePLFFdRg2Njb2D2O3QUxSV15UJEkXGxsbG/suwFmI+W8WLTBsbGzsdex25XHy3TzoszWg6M/DxsbGXsRumzLtOGFSuuQp6q4hBzY2Nvaj2L8BgGsRJJxWED8AAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 

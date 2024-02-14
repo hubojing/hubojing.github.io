@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#制作过程中发现的问题及解决方案"><span class="post-toc-number">1.</span> <span class="post-toc-text">制作过程中发现的问题及解决方案</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实践后发现需要注意的地方"><span class="post-toc-number">2.</span> <span class="post-toc-text">实践后发现需要注意的地方</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#制作过程中发现的问题及解决方案"><span class="post-toc-text">制作过程中发现的问题及解决方案</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实践后发现需要注意的地方"><span class="post-toc-text">实践后发现需要注意的地方</span></a></li></ol>
         </nav>
     </aside>
 
@@ -456,6 +542,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -520,6 +610,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACrElEQVR42u3aMW7DQAwEwPz/00nrRtIu705wgFFlxIjEUXGkSf78xNfvx/X5l/tv8+vqWVdP3Hzh4eHhLYR+f+s8xKuAckxCjSLBw8PDO8a7D+7+1m06uX/i/XPzmPHw8PC+mZfj83CTkh0PDw/vv/BWjv5ZofxqYsDDw8OLefmt81bCrnL5pV4LHh4eXtdxjaZI3/P5yHwPDw8Pb3mqPjv020Zt24AoosXDw8M7tumUHLjJaH+GnzWLizjx8PDwtvJWYDk+OfpPtInx8PDw3uEV/7zczshf7jBV4OHh4R3gtbebLRzMCuJ8Yat49Xh4eHibeG1pu2FUf6BYH74zPDw8vAXe3vl7O8qawYqdMjw8PLxNvPx4XU8A7ef2iZebEXh4eHhbeflBnBzrbQLY26SIuix4eHh4B3izNDBbTl1/iUUKwcPDw9vEmzUakrDap8yienjdeHh4eAd4Kz/12xCT9NMOulaSGR4eHt6M1w6u8oO4vedsHeEhLeHh4eEd5s3yRt7STRLM7PVdgvHw8PBe4bVHfN5aTar7ZJEr/xYPDw/vNC8fR7VD/fVU0Zb1eHh4eOd4u9oHJ5YMZkO4hzUCPDw8vGXePSMH7yqF28HbQ2x4eHh4B3hJekgarHno7SpAvl4wzH54eHh4I17bYJ2V1A8t19FqV9SqwMPDwzvMmzUIhgXuwlpAQcXDw8N7hbcrrJVyvB19Rb8S8PDw8JZ5v+XV1qvt61uZ4xU7ZXh4eHgLvHbk3yaMdqi2/nl44eHh4ZW8tsWQtyraynbW/H0A4+Hh4R3j5WVxXl63qwNtGyKKDQ8PD+8LeDPAbDFrPWHg4eHhfScvGWjlpXCyiFCkHDw8PLxjvDy4laBngHyRq14gwMPDwxvxdrUG2nbtcMx/br6Hh4eH98z7AzWsfYKucC/DAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
+
 
 
 

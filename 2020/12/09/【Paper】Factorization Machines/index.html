@@ -38,7 +38,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://hubojing.github.io/images/Paper-FM-feature_x.png">
 <meta property="og:image" content="https://hubojing.github.io/images/Paper-FM-feature_x.png">
-<meta property="og:updated_time" content="2020-12-14T20:08:40.000Z">
+<meta property="og:updated_time" content="2020-12-14T12:08:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Paper】Factorization Machines">
 <meta name="twitter:description" content="FM算法原文。">
@@ -53,8 +53,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -197,7 +283,7 @@
         <h1 class="title">【Paper】Factorization Machines</h1>
         <h5 class="subtitle">
             
-                <time datetime="2020-12-09T11:18:31.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2020-12-09T03:18:31.000Z" itemprop="datePublished" class="page-time">
   2020-12-09
 </time>
 
@@ -219,7 +305,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Introduction-引言"><span class="post-toc-number">2.</span> <span class="post-toc-text">Introduction 引言</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Prediction-under-sparsity-稀疏情况下的预测"><span class="post-toc-number">3.</span> <span class="post-toc-text">Prediction under sparsity 稀疏情况下的预测</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Factorization-machines-FM-因子分解机"><span class="post-toc-number">4.</span> <span class="post-toc-text">Factorization machines(FM) 因子分解机</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Factorization-machine-model-因子分解机模型"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">Factorization machine model 因子分解机模型</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Factorization-machines-as-predictors-FM作为预测器"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">Factorization machines as predictors FM作为预测器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Learning-factorization-machines-FM学习策略"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">Learning factorization machines FM学习策略</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#d-way-factorization-machine-多维FM"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">d-way factorization machine 多维FM</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Summary-总结"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">Summary 总结</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#FMs-vs-SVMs-因子分解机对比支持向量机"><span class="post-toc-number">5.</span> <span class="post-toc-text">FMs vs. SVMs 因子分解机对比支持向量机</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#SVM-model-支持向量机模型"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">SVM model 支持向量机模型</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Parameter-Estimation-Under-Sparsity-在稀疏情况下的参数估计"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">Parameter Estimation Under Sparsity 在稀疏情况下的参数估计</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Summary-总结-1"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">Summary 总结</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#FMs-VS-Other-Factorization-Models-其它因子分解方法对比"><span class="post-toc-number">6.</span> <span class="post-toc-text">FMs VS. Other Factorization Models 其它因子分解方法对比</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Summary-总结-2"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">Summary 总结</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Conclusion-and-Future-Work-总结和展望"><span class="post-toc-number">7.</span> <span class="post-toc-text">Conclusion and Future Work 总结和展望</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Introduction-引言"><span class="post-toc-text">Introduction 引言</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Prediction-under-sparsity-稀疏情况下的预测"><span class="post-toc-text">Prediction under sparsity 稀疏情况下的预测</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Factorization-machines-FM-因子分解机"><span class="post-toc-text">Factorization machines(FM) 因子分解机</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Factorization-machine-model-因子分解机模型"><span class="post-toc-text">Factorization machine model 因子分解机模型</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Factorization-machines-as-predictors-FM作为预测器"><span class="post-toc-text">Factorization machines as predictors FM作为预测器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Learning-factorization-machines-FM学习策略"><span class="post-toc-text">Learning factorization machines FM学习策略</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#d-way-factorization-machine-多维FM"><span class="post-toc-text">d-way factorization machine 多维FM</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Summary-总结"><span class="post-toc-text">Summary 总结</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#FMs-vs-SVMs-因子分解机对比支持向量机"><span class="post-toc-text">FMs vs. SVMs 因子分解机对比支持向量机</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#SVM-model-支持向量机模型"><span class="post-toc-text">SVM model 支持向量机模型</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Parameter-Estimation-Under-Sparsity-在稀疏情况下的参数估计"><span class="post-toc-text">Parameter Estimation Under Sparsity 在稀疏情况下的参数估计</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Summary-总结-1"><span class="post-toc-text">Summary 总结</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#FMs-VS-Other-Factorization-Models-其它因子分解方法对比"><span class="post-toc-text">FMs VS. Other Factorization Models 其它因子分解方法对比</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Summary-总结-2"><span class="post-toc-text">Summary 总结</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Conclusion-and-Future-Work-总结和展望"><span class="post-toc-text">Conclusion and Future Work 总结和展望</span></a></li></ol>
         </nav>
     </aside>
 
@@ -230,7 +316,7 @@
     <div class="post-card">
         <h1 class="post-card-title">【Paper】Factorization Machines</h1>
         <div class="post-meta">
-            <time class="post-time" title="2020-12-09 11:18:31" datetime="2020-12-09T11:18:31.000Z"  itemprop="datePublished">2020-12-09</time>
+            <time class="post-time" title="2020-12-09 03:18:31" datetime="2020-12-09T03:18:31.000Z"  itemprop="datePublished">2020-12-09</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
@@ -253,7 +339,7 @@
 <h1 id="Prediction-under-sparsity-稀疏情况下的预测"><a href="#Prediction-under-sparsity-稀疏情况下的预测" class="headerlink" title="Prediction under sparsity 稀疏情况下的预测"></a>Prediction under sparsity 稀疏情况下的预测</h1><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\Paper-FM-feature_x.png" alt="feature x" title>
+                    <img src="\images\Paper-FM-feature_x.png" alt="feature x" title="">
                 </div>
                 <div class="image-caption">feature x</div>
             </figure>
@@ -277,7 +363,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2020-12-14T20:08:40.000Z" itemprop="dateUpdated">2020-12-14 20:08:40</time>
+    最后更新时间：<time datetime="2020-12-14T12:08:40.000Z" itemprop="dateUpdated">2020-12-14 12:08:40</time>
 </span><br>
 
 
@@ -463,6 +549,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -527,6 +617,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtUlEQVR42u3aQXLjMAwEwPz/09mqvW1l5cyAYOJD6+SSEovNAwED+PiIr8+/1+s7X+8/fX56+nTn69PlCw8PD2+09Ndfl2CeFpq/8enp6+34Zgvw8PDwrvHyI/5kiUlISIJTvt14eHh4v8tLAsbr5eYhp03Q8fDw8N6T17Jzap5G4+Hh4b0PL0+R2yP+pMDxo7UWPDw8vJjXNsDe4fPF/h4eHh7eQVc9uc7bYElyP1stHh4e3g1e24LK09yTUkW7cd+sHA8PD+8CLy/O5iWGvAGWF5RnQwZ4eHh4u7z2iM9LugkpDwnt+NcwguHh4eHFvOQ1SRKcLOI8tBQ/A/Dw8PAu8Nq0tc3Wt4ax8g16XCEeHh7eKm+WLufNrbxo27bBhr8b8PDw8K7xkmLEyUa0bbDhABYeHh7eNV6LSZZ+XvadDRbg4eHh3ePlB+6stHrv2+r6Ch4eHt4FXt70Oh/Gaguy+Ur+uYOHh4d3mXdSKj0pxW6VOeqhKzw8PLwRrx20ynmzgsWsJBFtKx4eHt4Sr02Xb4xVvabmja7/vBcPDw/vAu+k4ZSHjeTob4cMhm0wPDw8vFXerEQ7w+chZ6EYgYeHh3eNl1cvcljOzhP6JLHGw8PD+3leWwLID/fdNlvR+sLDw8P7EV6bCs9S8zZE1avFw8PDu8Brx6TOG13JduSlhygRx8PDw1vlzY7arfGC9o31RuPh4eFd481KurPEOmmPtcXcx//Fw8PDW+V9lldSkG2LF+3IV5F84+Hh4V3gHbXky0Xk35kwZm/Ew8PD2+KdJLjnI1b5Ub5Qa8HDw8Nb5RXVi9FBPxsRyIMWHh4e3jvz8lQ4Hw5om21FAMPDw8P7VV77l1tF4SRsLAQGPDw8vJI3O9bPF9qOIOQDCnh4eHj3eLORpvboz8cLdrcYDw8Pb5X3B00wsYYu73huAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
+
 
 
 

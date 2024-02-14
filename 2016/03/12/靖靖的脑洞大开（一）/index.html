@@ -54,8 +54,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -220,7 +306,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2017-8-20更新-关于超人工智能"><span class="post-toc-number">1.</span> <span class="post-toc-text">2017.8.20更新 关于超人工智能</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2017-6-7更新-关于量子传输"><span class="post-toc-number">2.</span> <span class="post-toc-text">2017.6.7更新 关于量子传输</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2017-5-13更新-关于电脑病毒"><span class="post-toc-number">3.</span> <span class="post-toc-text">2017.5.13更新  关于电脑病毒</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2016-6-13更新-关于电"><span class="post-toc-number">4.</span> <span class="post-toc-text">2016.6.13更新 关于电</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#电能无线传输技术"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">电能无线传输技术</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2016-3-15更新-关于人工智能"><span class="post-toc-number">5.</span> <span class="post-toc-text">2016.3.15更新    关于人工智能</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#AI向"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">AI向</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#人工智能"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">人工智能</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2017-8-20更新-关于超人工智能"><span class="post-toc-text">2017.8.20更新 关于超人工智能</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2017-6-7更新-关于量子传输"><span class="post-toc-text">2017.6.7更新 关于量子传输</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2017-5-13更新-关于电脑病毒"><span class="post-toc-text">2017.5.13更新  关于电脑病毒</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2016-6-13更新-关于电"><span class="post-toc-text">2016.6.13更新 关于电</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#电能无线传输技术"><span class="post-toc-text">电能无线传输技术</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#2016-3-15更新-关于人工智能"><span class="post-toc-text">2016.3.15更新    关于人工智能</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#AI向"><span class="post-toc-text">AI向</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#人工智能"><span class="post-toc-text">人工智能</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -503,6 +589,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -567,6 +657,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACsElEQVR42u3aQW4bMRAEQP3/084lt2Dl7uHQcoDakyBpV1M0QNLNeb3i6+vh+vfTp3ufXidPe//8hQsPDw9vqfTZTyalPIGT2vKa8fDw8G7zTopoJ/r83rYePDw8vN/JS17ne92TTTweHh7e/8J7X0pyb7tR/vC6h4eHh3cQRpxEwHmo0b6zlrXg4eHhxbxZiZ99feV8Dw8PD+/4VD2fcPMpuw1qZ0/+exceHh7eBd7scGtWSn7X1iEcHh4e3j3e+w+2QorZInESVeDh4eHd4OVF56WcjHGyMBRDjIeHh3eB18YBSczaNgQkwz0bDjw8PLwbvLatqn0/n+jz+bx4Dh4eHt4FXhtDJBvuFrY1QN8cgOHh4eEt8bbaBfLA9/12fLktDA8PD+8Cr52I253qa+lqIww8PDy8n+ElB1pbh2d5WJwsWvVQ4uHh4R3zzoubDdOwO6zcXuPh4eHd5rXLRlLKybZ7dizXfwkPDw8vrTzfsObB7sm9+cITRSd4eHh4F3jtVxf6YUfBa/67dWcEHh4e3oj3foLOm5/azXfbhLqQVePh4eEt8ZIb2tAhiW5/Zijx8PDwdnn5wX++eOShbRuC1G1eeHh4eJd5w0eU2/F8UcmXq8c/AB4eHt4F3uyAP9/+tgtAPqu3ixMeHh7eLi85OprFAW1QO2toGMa4eHh4eBd4edia//BJofmigoeHh/czvLZxKm9BaJsDXrsXHh4e3irvq7x2j/nz92chCB4eHt4N3tYc24a/+Ub5/dY8Dzjw8PDwdnn5YtBuplvkjF3HuHh4eHhLvLzQ5KjspInqJPh4XBjw8PDwfhkvLzcBtK0MUeKCh4eH91FeskVuB6sd1rrpCg8PD+8Crz30OglbZwHx0cKAh4eHt8pr/+FPNtZtpNuWdaV1AA8PD+973h8W5s8UTZp0QwAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

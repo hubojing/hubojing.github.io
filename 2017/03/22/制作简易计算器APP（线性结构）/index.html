@@ -54,8 +54,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -220,7 +306,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#目标"><span class="post-toc-number">1.</span> <span class="post-toc-text">目标</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#思路"><span class="post-toc-number">2.</span> <span class="post-toc-text">思路</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#成品"><span class="post-toc-number">3.</span> <span class="post-toc-text">成品</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#代码"><span class="post-toc-number">4.</span> <span class="post-toc-text">代码</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#MainActivity-java"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">MainActivity.java</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#activity-main-xml"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">activity_main.xml</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#color-xml"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">color.xml</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#white-bg-xml"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">white_bg.xml</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#white-selector-xml"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">white_selector.xml</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#出现的问题及解决方法"><span class="post-toc-number">5.</span> <span class="post-toc-text">出现的问题及解决方法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#笔记"><span class="post-toc-number">6.</span> <span class="post-toc-text">笔记</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#去掉标题栏"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">去掉标题栏</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#颜色需新建xml"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">颜色需新建xml</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#drawble下文件结构"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">drawble下文件结构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#注意"><span class="post-toc-number">6.4.</span> <span class="post-toc-text">注意</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#APP下载"><span class="post-toc-number">7.</span> <span class="post-toc-text">APP下载</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#目标"><span class="post-toc-text">目标</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#思路"><span class="post-toc-text">思路</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#成品"><span class="post-toc-text">成品</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#代码"><span class="post-toc-text">代码</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#MainActivity-java"><span class="post-toc-text">MainActivity.java</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#activity-main-xml"><span class="post-toc-text">activity_main.xml</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#color-xml"><span class="post-toc-text">color.xml</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#white-bg-xml"><span class="post-toc-text">white_bg.xml</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#white-selector-xml"><span class="post-toc-text">white_selector.xml</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#出现的问题及解决方法"><span class="post-toc-text">出现的问题及解决方法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#笔记"><span class="post-toc-text">笔记</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#去掉标题栏"><span class="post-toc-text">去掉标题栏</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#颜色需新建xml"><span class="post-toc-text">颜色需新建xml</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#drawble下文件结构"><span class="post-toc-text">drawble下文件结构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#注意"><span class="post-toc-text">注意</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#APP下载"><span class="post-toc-text">APP下载</span></a></li></ol>
         </nav>
     </aside>
 
@@ -483,6 +569,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -547,6 +637,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACuklEQVR42u3aQW7cMAwF0Nz/0inQVYDWxv+khA7Q51Uw47H0vBAZkl9f8fX9+3r/JP/25z0/r/fnJM8cXnh4eHijrT9dyTI5/s/nPP32/ZnJnvHw8PBu89pDuQUkm86DU7I6Hh4e3ifw3tPfNpnGw8PD+x94bVmh/VWSRuPh4eF9Di8pRuQLvD8hSdaTgsjhWgseHh5ezNuks//q74v9PTw8PLxFV32T8s42NEvBH/eJh4eHd4H33qpvN9GWd9v0uk3u8fDw8G7z3v/hz789NSgwG0T4yyp4eHh4R3kzTA5r0/HZMOtjkMDDw8O7wMtbWUmDqh0+OFsEedwJHh4e3lFefsjOGv/5PflrLZB4eHh4F3izh57a9GxMahiu8PDw8A7xNiXXU8d6O5RQpPJ4eHh4F3izg7tNxKNia8DOk/WvTVzCw8PDe+W1A0ybJHg2jNUOKDym1Hh4eHhHeZsDOvl8EwzyoPJYjMDDw8M7ytsv0waSZDigvacIWnh4eHgXeO8pbxsGZmWLJJC0YQMPDw/vLO9sQbZNf9viRT1YgIeHh3eUN2syJeXUtlybt9yK0jMeHh7eBd7sIP4urzbJztPrKFzh4eHhXea1ZYW26NC+uPaEL4oReHh4eGteWyBoE+i8GJGHnyi5x8PDw7vGa5dpxwXyMLCH4eHh4d3mJdvKG115gNm/pqKMgoeHh3eU145GzRpXCXUTAOouHx4eHt4FXnsoJy+i3e5mAAsPDw/vBm82BNAWLFreLCz95aXg4eHhXeC1Z2wbNtoC7mysqkiv8fDw8A7xZgd0DtswZg2zIrHGw8PDW/DaQ3kVZxYvoh7hwsPDw/sA3mZ0oF13lrLj4eHhfQ7v1MGdjwVsxhHw8PDwbvP2jfy2TNAih6EIDw8P7wKvbYAlBYikeNEWO2bDYXh4eHhHeb8Ap2GHXITeD0kAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 

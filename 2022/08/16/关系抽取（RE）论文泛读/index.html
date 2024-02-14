@@ -41,7 +41,7 @@
 <meta property="og:image" content="https://hubojing.github.io/images/PL-Marker.png">
 <meta property="og:image" content="https://hubojing.github.io/images/CRL.png">
 <meta property="og:image" content="https://hubojing.github.io/images/MCMN.png">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.179Z">
+<meta property="og:updated_time" content="2022-08-16T12:22:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关系抽取（RE）论文泛读">
 <meta name="twitter:description" content="论文泛读不定期更新。">
@@ -56,8 +56,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -200,7 +286,7 @@
         <h1 class="title">关系抽取（RE）论文泛读</h1>
         <h5 class="subtitle">
             
-                <time datetime="2022-08-16T19:37:35.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2022-08-16T11:37:35.000Z" itemprop="datePublished" class="page-time">
   2022-08-16
 </time>
 
@@ -222,7 +308,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Document-Level-Relation-Extraction-with-Adaptive-Focal-Loss-and-Knowledge-Distillation"><span class="post-toc-number">1.</span> <span class="post-toc-text">Document-Level Relation Extraction with Adaptive Focal Loss and Knowledge Distillation</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#论文概况"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">论文概况</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#笔记"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">笔记</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Packed-Levitated-Marker-for-Entity-and-Relation-Extraction"><span class="post-toc-number">2.</span> <span class="post-toc-text">Packed Levitated Marker for Entity and Relation Extraction</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#论文概述"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">论文概述</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#笔记-1"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">笔记</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Consistent-Representation-Learning-for-Continual-Relation-Extraction"><span class="post-toc-number">3.</span> <span class="post-toc-text">Consistent Representation Learning for Continual Relation Extraction</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#论文概况-1"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">论文概况</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#笔记-2"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">笔记</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Pre-training-to-Match-for-Unified-Low-shot-Relation-Extraction"><span class="post-toc-number">4.</span> <span class="post-toc-text">Pre-training to Match for Unified Low-shot Relation Extraction</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#论文概况-2"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">论文概况</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#笔记-3"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">笔记</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Document-Level-Relation-Extraction-with-Adaptive-Focal-Loss-and-Knowledge-Distillation"><span class="post-toc-text">Document-Level Relation Extraction with Adaptive Focal Loss and Knowledge Distillation</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#论文概况"><span class="post-toc-text">论文概况</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#笔记"><span class="post-toc-text">笔记</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Packed-Levitated-Marker-for-Entity-and-Relation-Extraction"><span class="post-toc-text">Packed Levitated Marker for Entity and Relation Extraction</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#论文概述"><span class="post-toc-text">论文概述</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#笔记-1"><span class="post-toc-text">笔记</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Consistent-Representation-Learning-for-Continual-Relation-Extraction"><span class="post-toc-text">Consistent Representation Learning for Continual Relation Extraction</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#论文概况-1"><span class="post-toc-text">论文概况</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#笔记-2"><span class="post-toc-text">笔记</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Pre-training-to-Match-for-Unified-Low-shot-Relation-Extraction"><span class="post-toc-text">Pre-training to Match for Unified Low-shot Relation Extraction</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#论文概况-2"><span class="post-toc-text">论文概况</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#笔记-3"><span class="post-toc-text">笔记</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -233,7 +319,7 @@
     <div class="post-card">
         <h1 class="post-card-title">关系抽取（RE）论文泛读</h1>
         <div class="post-meta">
-            <time class="post-time" title="2022-08-16 19:37:35" datetime="2022-08-16T19:37:35.000Z"  itemprop="datePublished">2022-08-16</time>
+            <time class="post-time" title="2022-08-16 11:37:35" datetime="2022-08-16T11:37:35.000Z"  itemprop="datePublished">2022-08-16</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
@@ -256,7 +342,7 @@
 <h2 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h2><p>文档级关系抽取要同时从多个句子中提取关系。本文提出DocRE算法，一个用于文档级别的关系抽取半监督算法，它有三个新组件。第一，用轴向注意力模块学习实体对之间的依赖关系。第二，提出了一个自适应的焦点损失来解决DocRE中类的不平衡问题。最后，利用知识蒸馏来克服人工标注数据与远程监督数据之间的差异。<br>现有问题：现存的方法关注实体对的句法特征，而忽略了实体对之间的交互作用；目前还没有工作可以直接的解决类的不平衡问题。现存的工作仅仅关注阈值学习来平衡正例和负例，但正例内部的类不平衡问题并没有得到解决；关于将远程监督数据应用于DocRE任务的研究很少。<br>贡献点：轴向注意力（提升two-hop关系的推理能力）、自适应焦点损失（解决标签分配不平衡的问题，长尾类在总的损失中占比较多）、知识蒸馏（克服标注数据和远程监督数据之间的差异）<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/KD-DocRE.png" alt="KD-DocRE" title>
+                    <img src="/images/KD-DocRE.png" alt="KD-DocRE" title="">
                 </div>
                 <div class="image-caption">KD-DocRE</div>
             </figure></p>
@@ -265,7 +351,7 @@
 <h2 id="笔记-1"><a href="#笔记-1" class="headerlink" title="笔记"></a>笔记</h2><p>最近的命名实体识别和关系抽取工作专注于研究如何从预训练模型中获得更好的span表示。然而，许多工作忽略了span之间的相互关系。本文提出了一种基于悬浮标记的span表示方法，在编码过程中通过特定策略打包标记来考虑span之间的相互关系。对于命名实体识别任务，提出了一种面向邻居span的打包策略，以更好地建模实体边界信息。对于关系抽取任务，设计了一种面向头实体的打包策略，将每个头实体以及可能的尾实体打包，以共同建模同头实体的span对。<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/PL-Marker.png" alt="PL-Marker" title>
+                    <img src="/images/PL-Marker.png" alt="PL-Marker" title="">
                 </div>
                 <div class="image-caption">PL-Marker</div>
             </figure></p>
@@ -274,7 +360,7 @@
 <h2 id="笔记-2"><a href="#笔记-2" class="headerlink" title="笔记"></a>笔记</h2><p>通过对比学习和回放记忆时的知识蒸馏，提出一种新颖的一致性表示学习方法。使用基于记忆库的监督对比学习来训练每一个新的任务，以使模型高效学习特征表示。为了防止对老任务的遗忘，构造了记忆样本的连续回放，同时让模型保留在知识蒸馏中历史任务之间的关系。<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/CRL.png" alt="CRL" title>
+                    <img src="/images/CRL.png" alt="CRL" title="">
                 </div>
                 <div class="image-caption">CRL</div>
             </figure></p>
@@ -283,7 +369,7 @@
 <h2 id="笔记-3"><a href="#笔记-3" class="headerlink" title="笔记"></a>笔记</h2><p>低样本关系抽取旨在少样本甚至零样本场景下的关系抽取。由于低样本关系抽取所包含任务形式多样，传统方法难以统一处理。本文针对这一问题，提出了一种统一的低样本匹配网络：（1）基于语义提示（prompt）范式，构造了从关系描述到句子实例的匹配网络模型；（2）针对匹配网络模型学习，设计了三元组-复述的预训练方法，以增强模型对关系描述与实例之间语义匹配的泛化性。在零样本、小样本以及带负例的小样本关系抽取评测基准上的实验结果表明，该方法能有效提升低样本场景下关系抽取的性能，并且具备了较好的任务自适应能力。<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/MCMN.png" alt="MCMN" title>
+                    <img src="/images/MCMN.png" alt="MCMN" title="">
                 </div>
                 <div class="image-caption">MCMN</div>
             </figure></p>
@@ -295,7 +381,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.179Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2022-08-16T12:22:38.000Z" itemprop="dateUpdated">2022-08-16 12:22:38</time>
 </span><br>
 
 
@@ -481,6 +567,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -545,6 +635,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACt0lEQVR42u3aQW7jMBAEwPz/07tAzpHcPSMqu0D5ZMgxzeKBnDTn6yt+/fl+Xb2/+jQZ5+pJO/LqhYeHhzea+mzoq7+/X5T2u/dLcz8OHh4e3jlevokn1HyjT5YgWazL53h4eHi/yku29Vl5nVfCeHh4eP8XL9nc8wVKRpiNhoeHh/cOb1b+JvHuZrR2fDw8PLx3ePsLsPffv3q/h4eHhxcfCW10215izUrqYrZ4eHh4B3j5JO6nkgey7X7eNmxFaTEeHh7egnc/UHI8tNdd+5GL2AIPDw/vAO9ESNE+SQ6nWZsXHh4e3glesjXP2q32I+QHSZG14OHh4a15bevAbHJtI9cs/viQteDh4eEd4222/vsp5iFFUr4Xn+Lh4eE9ymuL6VnpPGsIaA+Y+iYNDw8Pb34zVV/Jb+La2Ubflt2XTVd4eHh4D/HyC/sTl/ezu7jhPR4eHh7eQ7xkw501V7UF+iy2+EDFw8PDO8CbTXEGaCc0i4bx8PDwzvHaltCk4N7HB7MmsB+e4OHh4R3jbcKFFtA2sG5+EQ8PD+8dXtuAlUx00xBwP5MPBxUeHh7eMd4+Km2bq9oGgrbcj1IQPDw8vBEvST431135p7MjZ5hP4+Hh4R3bJ5Ogtg1e83hiHwfj4eHhneO1AUQbPSSL0hbl0bfw8PDwjvHaaGD23aeK++KSDA8PD+8AL9ncNwfGrHBvy+sPT/Dw8PAe5SWNULPSuQ1t2xgiikXw8PDwXuFtjofZ9VVbxBcj4OHh4R3gPdVSsAl8k+OhfV+D8fDw8EpeW/jmTQOrjGR9XYeHh4d3mvdUOZsEFptFqS/n8PDw8H6VN2MkT5JDqF16PDw8vH+Tt5/i5motKbjx8PDwzvHyS682yMiXLDkw6iMKDw8P7wCv/Vc/b5Bqi/JZ29YDDQR4eHh4Ke8vJO8NAaxXIjcAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 

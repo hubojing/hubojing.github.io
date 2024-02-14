@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://hubojing.github.io/images/CHAML-2.png">
 <meta property="og:image" content="https://hubojing.github.io/images/CHAML-1.png">
 <meta property="og:image" content="https://hubojing.github.io/images/CHAML-2.png">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.175Z">
+<meta property="og:updated_time" content="2022-01-23T15:37:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CHAML">
 <meta name="twitter:description" content="Curriculum Meta-Learning for Next POI Recommendation　　基于课程元学习的下一个兴趣点推荐">
@@ -54,8 +54,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -198,7 +284,7 @@
         <h1 class="title">CHAML</h1>
         <h5 class="subtitle">
             
-                <time datetime="2022-01-22T18:02:37.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2022-01-22T10:02:37.000Z" itemprop="datePublished" class="page-time">
   2022-01-22
 </time>
 
@@ -220,7 +306,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#现有问题"><span class="post-toc-number">2.</span> <span class="post-toc-text">现有问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#架构"><span class="post-toc-number">3.</span> <span class="post-toc-text">架构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基础推荐器"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">基础推荐器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#元学习"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">元学习</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#硬意识元学习-Hardness-Aware-Meta-Learning"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">硬意识元学习 Hardness Aware Meta-Learning</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#城市级别采样课程-City-level-Sampling-Curriculum"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">城市级别采样课程 City-level Sampling Curriculum</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验"><span class="post-toc-number">4.</span> <span class="post-toc-text">实验</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基线"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">基线</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#贡献点"><span class="post-toc-number">5.</span> <span class="post-toc-text">贡献点</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#代码"><span class="post-toc-number">6.</span> <span class="post-toc-text">代码</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#现有问题"><span class="post-toc-text">现有问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#架构"><span class="post-toc-text">架构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基础推荐器"><span class="post-toc-text">基础推荐器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#元学习"><span class="post-toc-text">元学习</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#硬意识元学习-Hardness-Aware-Meta-Learning"><span class="post-toc-text">硬意识元学习 Hardness Aware Meta-Learning</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#城市级别采样课程-City-level-Sampling-Curriculum"><span class="post-toc-text">城市级别采样课程 City-level Sampling Curriculum</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验"><span class="post-toc-text">实验</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基线"><span class="post-toc-text">基线</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#贡献点"><span class="post-toc-text">贡献点</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#代码"><span class="post-toc-text">代码</span></a></li></ol>
         </nav>
     </aside>
 
@@ -231,7 +317,7 @@
     <div class="post-card">
         <h1 class="post-card-title">CHAML</h1>
         <div class="post-meta">
-            <time class="post-time" title="2022-01-22 18:02:37" datetime="2022-01-22T18:02:37.000Z"  itemprop="datePublished">2022-01-22</time>
+            <time class="post-time" title="2022-01-22 10:02:37" datetime="2022-01-22T10:02:37.000Z"  itemprop="datePublished">2022-01-22</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
@@ -254,7 +340,7 @@
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\CHAML-1.png" alt="问题描述" title>
+                    <img src="\images\CHAML-1.png" alt="问题描述" title="">
                 </div>
                 <div class="image-caption">问题描述</div>
             </figure>
@@ -262,7 +348,7 @@
 <h1 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h1><p>　　提出 Curriculum Hardness Aware Meta-Learning (CHAML) 框架。<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\CHAML-2.png" alt="架构" title>
+                    <img src="\images\CHAML-2.png" alt="架构" title="">
                 </div>
                 <div class="image-caption">架构</div>
             </figure><br>　　架构分为两部分，一部分是基础推荐器，另一部分是MAML扩展。后者用于将元学习引入到POI推荐中。<br>　　两种采用策略组件，一种是硬意识元学习(hardness aware meta-learning)，另一种是城市级别采样课程(city-level sampling curriculum)。这用于细致思考采样多样性问题。<br>　　一些概念：<br>　　Curriculum Learning，主张让模型先从容易的样本开始学习，并逐渐进阶到复杂的样本和知识。<br>　　meta-learning，又叫learning to learn，即学习如何学习，元学习围绕任务（task）展开。元学习是要去学习任务中的特征表示，从而在新的任务上泛化。</p>
@@ -303,7 +389,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.175Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2022-01-23T15:37:58.000Z" itemprop="dateUpdated">2022-01-23 15:37:58</time>
 </span><br>
 
 
@@ -489,6 +575,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -553,6 +643,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMElEQVR42u3awY6DMAxFUf7/pxlpViwKus9OR4Nzs6qogJwuXMf2ceB1/q7r5+tKr1+/fb538ZIhQ8ZrGefjumPw5/C7yE92S5UhQ8YGDBJkeWBNwzf/9va6DBkyZIAAeoJFEkEZMmTIWBVw09DJfxoZMmTI6Bxi09DcCdlfPIvLkCHjhYxaY+BvPn+9vyFDhox/zzgb6zkQ87Zlfz8yZMiYzUgL+p2SHC+3pQdaGTJk7MDo51e1wJqOaywousmQIWMEgyR8zy9OAcsaAzJkyBjNSEcf0rYBTxzTpsLtIVaGDBmjGfxs2D8AcwB6lwwZMoYyyOY64xG1UBsPkMmQIWMbRu2h6cAEb4vyFqkMGTJmM0gZq/PQ4iYaZTgZMmTMY/CyOxmMeN7E2vGOD/8bMmTIGMrgjcliJQ/Hw066KUOGjNmMdLu1kYg4P+UTIjJkyNiAkSZ2axM+HohR21WGDBlDGaRM36lo8TZAKxmVIUPGaEbaYuTDYbVgmjYh4mOtDBkyXsvgx0seoGt38W+PWkYpQ4aMlzNqA15xRAfvJc/5cF2GDBmjGf3YRV65qj0Q3CVDhowRjNqRNd1o5wo69MqQIWM0ozbu0CnDrZqRkCFDxm6MThOxkxR2OhjFfqwMGTJezuANg06ojSM958mQIUNGuCEevtMEEWWvMmTI2JjBk7m0hcmPvmhmRIYMGUMZPNVLgyMfqkgLczJkyNiH0WkMkOGM2tbTEp4MGTKGMn4A1l7wLrkfvdsAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 

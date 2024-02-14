@@ -37,7 +37,7 @@
 <meta property="og:description" content="代码不写就会忘　　笔记不整理就会乱">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://hubojing.github.io/images/cover-pandas.jpg">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.175Z">
+<meta property="og:updated_time" content="2021-07-11T15:23:32.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Pandas自用笔记">
 <meta name="twitter:description" content="代码不写就会忘　　笔记不整理就会乱">
@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -196,7 +282,7 @@
         <h1 class="title">Pandas自用笔记</h1>
         <h5 class="subtitle">
             
-                <time datetime="2021-07-11T16:02:53.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2021-07-11T08:02:53.000Z" itemprop="datePublished" class="page-time">
   2021-07-11
 </time>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#读取文件"><span class="post-toc-number">1.</span> <span class="post-toc-text">读取文件</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#显示完整df"><span class="post-toc-number">2.</span> <span class="post-toc-text">显示完整df</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#groupby"><span class="post-toc-number">3.</span> <span class="post-toc-text">groupby</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#单分组"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">单分组</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多分组"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">多分组</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#agg"><span class="post-toc-number">4.</span> <span class="post-toc-text">agg</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#merge"><span class="post-toc-number">5.</span> <span class="post-toc-text">merge</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考文献"><span class="post-toc-number">6.</span> <span class="post-toc-text">参考文献</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#读取文件"><span class="post-toc-text">读取文件</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#显示完整df"><span class="post-toc-text">显示完整df</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#groupby"><span class="post-toc-text">groupby</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#单分组"><span class="post-toc-text">单分组</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多分组"><span class="post-toc-text">多分组</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#agg"><span class="post-toc-text">agg</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#merge"><span class="post-toc-text">merge</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考文献"><span class="post-toc-text">参考文献</span></a></li></ol>
         </nav>
     </aside>
 
@@ -229,7 +315,7 @@
     <div class="post-card">
         <h1 class="post-card-title">Pandas自用笔记</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-07-11 16:02:53" datetime="2021-07-11T16:02:53.000Z"  itemprop="datePublished">2021-07-11</time>
+            <time class="post-time" title="2021-07-11 08:02:53" datetime="2021-07-11T08:02:53.000Z"  itemprop="datePublished">2021-07-11</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程语言/">编程语言</a></li></ul>
@@ -276,7 +362,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.175Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2021-07-11T15:23:32.000Z" itemprop="dateUpdated">2021-07-11 15:23:32</time>
 </span><br>
 
 
@@ -462,6 +548,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -526,6 +616,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACK0lEQVR42u3aQW4CMRAEQP7/aXKNRHbT7SGRsMunCIhx7aGxPfN4xOP5bdy/8vru6ydfZ76a880DAwPjYxnP25F/QU5NHkG+NgwMjHMYSRQmi84f0NWC7ue8fB0DAwPj9svywG1nxsDAwPgLRnK6nIQ4BgbGyYzkEHt/fF2brT30vuEsjoGB8YGM/Nb9///+k/oGBgbGRzGe5WhnWytM1qvCwMDYmpEHXE7Kr9gmgYuBgXEOY9Lu0BYJ1pozIhgGBsbWjLWvzLd9SUPY5JLuh98NDAyMTRmTsEsW1JZFk20oBgbGmYy8MWItdiflzDy4MTAw9mO0rVptw1bePLH2gIpuMgwMjI9ltNuyUZbH8ZpsPS8fJQYGxnaM9qCYR/OkPFCzMTAwtmZMGh0Wt27l1VvR8IGBgbEpY3L5/izH5KHUZ3EMDIyNGO2lWx6g7fauxUSxi4GBsQVjckGWLDGP5vyh1L8bGBgY2zHaLV1bpJxHfNTRhoGBsRGj7VXIY7TdII72thgYGAcw3lsYWAviHHa5WgwMjAMYaxdh7bYvbzgb/VZgYGBszciLiHlpc3Lpls+PgYGxK2PSMNGG5gRcbAoxMDC2Y+RjDZaUS+dlUQwMjBMYSciuFSnXWj3ayMbAwDiHsdYQlv/vpLGjOItjYGBgDJoz2kjNZ8PAwMDIP9O+0obsLzNgYGAcwMjbHfISQhus7dUbBgbGOYw28vKrt7VFrJUKMDAwNmV8AUCB0T+DIGZzAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
+
 
 
 

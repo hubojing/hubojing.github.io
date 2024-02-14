@@ -37,7 +37,7 @@
 <meta property="og:description" content="嘤嘤嘤还要学统计">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1570279473&di=4d33479a18fb2e2b4de972424affd863&imgtype=jpg&er=1&src=http%3A%2F%2Fwww.raincent.com%2Fuploadfile%2F2017%2F0928%2F20170928104357284.jpg">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.183Z">
+<meta property="og:updated_time" content="2019-12-04T02:33:10.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="学习R语言">
 <meta name="twitter:description" content="嘤嘤嘤还要学统计">
@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -196,7 +282,7 @@
         <h1 class="title">学习R语言</h1>
         <h5 class="subtitle">
             
-                <time datetime="2019-09-27T21:21:27.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2019-09-27T13:21:27.000Z" itemprop="datePublished" class="page-time">
   2019-09-27
 </time>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#基本操作"><span class="post-toc-number">1.</span> <span class="post-toc-text">基本操作</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#最基本"><span class="post-toc-number">2.</span> <span class="post-toc-text">最基本</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#函数"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">函数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据框"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">数据框</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#读取"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">读取</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#从剪切板读取"><span class="post-toc-number">2.3.1.</span> <span class="post-toc-text">从剪切板读取</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#从文本文件读取"><span class="post-toc-number">2.3.2.</span> <span class="post-toc-text">从文本文件读取</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#读取csv格式"><span class="post-toc-number">2.3.3.</span> <span class="post-toc-text">读取csv格式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#读取excel格式"><span class="post-toc-number">2.3.4.</span> <span class="post-toc-text">读取excel格式</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#定性变量分析"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">定性变量分析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#单因素分析"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">单因素分析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#两因素分析"><span class="post-toc-number">2.6.</span> <span class="post-toc-text">两因素分析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#三因素分析"><span class="post-toc-number">2.7.</span> <span class="post-toc-text">三因素分析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#可视化"><span class="post-toc-number">2.8.</span> <span class="post-toc-text">可视化</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#多元相关及回归分析"><span class="post-toc-number">3.</span> <span class="post-toc-text">多元相关及回归分析</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#相关系数计算函数cor"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">相关系数计算函数cor()</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#广义线性模型"><span class="post-toc-number">4.</span> <span class="post-toc-text">广义线性模型</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#判别分析"><span class="post-toc-number">5.</span> <span class="post-toc-text">判别分析</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#基本操作"><span class="post-toc-text">基本操作</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#最基本"><span class="post-toc-text">最基本</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#函数"><span class="post-toc-text">函数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据框"><span class="post-toc-text">数据框</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#读取"><span class="post-toc-text">读取</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#从剪切板读取"><span class="post-toc-text">从剪切板读取</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#从文本文件读取"><span class="post-toc-text">从文本文件读取</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#读取csv格式"><span class="post-toc-text">读取csv格式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#读取excel格式"><span class="post-toc-text">读取excel格式</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#定性变量分析"><span class="post-toc-text">定性变量分析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#单因素分析"><span class="post-toc-text">单因素分析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#两因素分析"><span class="post-toc-text">两因素分析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#三因素分析"><span class="post-toc-text">三因素分析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#可视化"><span class="post-toc-text">可视化</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#多元相关及回归分析"><span class="post-toc-text">多元相关及回归分析</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#相关系数计算函数cor"><span class="post-toc-text">相关系数计算函数cor()</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#广义线性模型"><span class="post-toc-text">广义线性模型</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#判别分析"><span class="post-toc-text">判别分析</span></a></li></ol>
         </nav>
     </aside>
 
@@ -229,7 +315,7 @@
     <div class="post-card">
         <h1 class="post-card-title">学习R语言</h1>
         <div class="post-meta">
-            <time class="post-time" title="2019-09-27 21:21:27" datetime="2019-09-27T21:21:27.000Z"  itemprop="datePublished">2019-09-27</time>
+            <time class="post-time" title="2019-09-27 13:21:27" datetime="2019-09-27T13:21:27.000Z"  itemprop="datePublished">2019-09-27</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/数据挖掘/">数据挖掘</a></li></ul>
@@ -292,7 +378,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.183Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2019-12-04T02:33:10.000Z" itemprop="dateUpdated">2019-12-04 02:33:10</time>
 </span><br>
 
 
@@ -478,6 +564,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -542,6 +632,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMklEQVR42u3ay46DMAwF0P7/T3ekWY3UFq5tGJVwsqooIjkby488HvF6/q7X36/v/F2fnr9+YfvfwxYGBsZlGc/N9YmRHKWK395rh4qBgXEDRi/Ibh+o92aOx8DAwEiCbBIWq4fGwMDAmAfc5HfyZLvcxcDAwOgVsb13Jkc8pRbHwMC4IGMyGDj79z/NNzAwML6Y8RysXoisDh6iL2BgYCzNqDb081jXO1w+2hzNJTAwMC7I6LXDko3zNlx+gSz5DgYGxkqMXjOrlzLmo4Lq0AIDA+MOjCRc5m9OroIlaeWbJxgYGDdgTMrXM4YNSQF8cBWOgYHxxYy8pJykidX0cRu2MxjAwMBYlJGnbpMAun2gXhqKgYFxN0aekOUts6Q0raaGhaksBgbGQozqMDJJ/vIrF9WSuJDhYmBg3IZR3WCSVuYBOtoeAwNjaUavuZY32k65uoqBgbEoIz/EYVXyeLT5Zl8MDIylGb2GfjXKVUNzvu9oLoGBgXEpRlLQ5s24vKBNgmmzwMbAwFiOUW3WV9thVXYvKGNgYNyB0WvGVS9s9dpz5SIWAwNjOcZRI4HJeHJ0zQIDA2NpxrO4JiPP3pPtfXfmGxgYGEswjhorJuVor4ePgYGBkWRW+QWLXuhsTjCq2SsGBsYSjOoAID9K72JHtVWHgYGBUT1otQw+AIyBgYFRvKo1+Wb+BQwMjLsx8msQR12MqA5Ed8IuBgbG0ozJYCApVicp48E3RzAwMK7H+AHXx0upmwdfqQAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

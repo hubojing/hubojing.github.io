@@ -54,8 +54,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -220,7 +306,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#数据结构系列"><span class="post-toc-number">1.</span> <span class="post-toc-text">数据结构系列</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#二叉树的链式存储结构"><span class="post-toc-number">2.</span> <span class="post-toc-text">二叉树的链式存储结构</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#二叉树的遍历"><span class="post-toc-number">3.</span> <span class="post-toc-text">二叉树的遍历</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#先序遍历（PreOrder）"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">先序遍历（PreOrder）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#中序遍历（InOrder）"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">中序遍历（InOrder）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#后序遍历（PostOrder）"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">后序遍历（PostOrder）</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#中序遍历的非递归算法"><span class="post-toc-number">4.</span> <span class="post-toc-text">中序遍历的非递归算法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#二叉树的层次遍历"><span class="post-toc-number">5.</span> <span class="post-toc-text">二叉树的层次遍历</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#树的存储结构"><span class="post-toc-number">6.</span> <span class="post-toc-text">树的存储结构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#双亲表示法"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">双亲表示法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#孩子表示法"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">孩子表示法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#孩子兄弟表示法（二叉树表示法）"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">孩子兄弟表示法（二叉树表示法）</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#C-实现"><span class="post-toc-number">7.</span> <span class="post-toc-text">C++实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数组实现"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">数组实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#tree-h"><span class="post-toc-number">7.1.1.</span> <span class="post-toc-text">tree.h</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#tree-cpp"><span class="post-toc-number">7.1.2.</span> <span class="post-toc-text">tree.cpp</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#demo-cpp"><span class="post-toc-number">7.1.3.</span> <span class="post-toc-text">demo.cpp</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#链表实现"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">链表实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Node-h"><span class="post-toc-number">7.2.1.</span> <span class="post-toc-text">Node.h</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Node-cpp"><span class="post-toc-number">7.2.2.</span> <span class="post-toc-text">Node.cpp</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#tree-h-1"><span class="post-toc-number">7.2.3.</span> <span class="post-toc-text">tree.h</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#tree-cpp-1"><span class="post-toc-number">7.2.4.</span> <span class="post-toc-text">tree.cpp</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#demo-cpp-1"><span class="post-toc-number">7.2.5.</span> <span class="post-toc-text">demo.cpp</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考"><span class="post-toc-number">8.</span> <span class="post-toc-text">参考</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#数据结构系列"><span class="post-toc-text">数据结构系列</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#二叉树的链式存储结构"><span class="post-toc-text">二叉树的链式存储结构</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#二叉树的遍历"><span class="post-toc-text">二叉树的遍历</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#先序遍历（PreOrder）"><span class="post-toc-text">先序遍历（PreOrder）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#中序遍历（InOrder）"><span class="post-toc-text">中序遍历（InOrder）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#后序遍历（PostOrder）"><span class="post-toc-text">后序遍历（PostOrder）</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#中序遍历的非递归算法"><span class="post-toc-text">中序遍历的非递归算法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#二叉树的层次遍历"><span class="post-toc-text">二叉树的层次遍历</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#树的存储结构"><span class="post-toc-text">树的存储结构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#双亲表示法"><span class="post-toc-text">双亲表示法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#孩子表示法"><span class="post-toc-text">孩子表示法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#孩子兄弟表示法（二叉树表示法）"><span class="post-toc-text">孩子兄弟表示法（二叉树表示法）</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#C-实现"><span class="post-toc-text">C++实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数组实现"><span class="post-toc-text">数组实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#tree-h"><span class="post-toc-text">tree.h</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#tree-cpp"><span class="post-toc-text">tree.cpp</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#demo-cpp"><span class="post-toc-text">demo.cpp</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#链表实现"><span class="post-toc-text">链表实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Node-h"><span class="post-toc-text">Node.h</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Node-cpp"><span class="post-toc-text">Node.cpp</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#tree-h-1"><span class="post-toc-text">tree.h</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#tree-cpp-1"><span class="post-toc-text">tree.cpp</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#demo-cpp-1"><span class="post-toc-text">demo.cpp</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考"><span class="post-toc-text">参考</span></a></li></ol>
         </nav>
     </aside>
 
@@ -484,6 +570,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -548,6 +638,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAAB3klEQVR42u3ay4rDMBBEUf//TzuQVcBRu6ofiglXq4BnpGMvGqlaxyGP8z3ip59/c16GO2dpwIULt8w9w3GdesXS51Reb/mqcOHC3ciNC42yjF7m4k9wY4MLF+7DuHHR0TdDcOHC/SeucqSJNzrxYQkuXLhP4+YOJ0oskotRGs5qcOHCLXDdwHTi92C+CxcuXJN7mkPZgnQVry+rw4ULdws3t6QbevYeh+DChTvN1VukuQg1t+e6KWFw4cId5uolSb9+oXwC91B0k/LChQu3lZuLNZWkIhebJusuXLhwx7i5qaW2qBmLLP8LLly4W7i9C7iHqHjm8e8BFy7cMFtQ3klfwC15drILFy7cYa7eLKmEqm4btaELBBcu3DJXDzdz2x33AsdNhAoXLtxhrlJKjMBC3tC49RUuXLg7uW4h0zcuucaMVAThwoU7zNUPIbkLFs0hC1y4cDdy3WQy14g1YtC4JwwXLtwtXDfQdINUt1AavRe4cOEOcN2CohcsfUsUH8CSRRAuXLhlrl50Kpc23EK2fAoXLtyNXLd45WIRPTSxH8OFC/dHXKnQhDM3xK9w4cJ9JFf/rW9xjEYsXLhwN3LrU7sbI+XwU4pF4MKFW+D2NlkrMYp7hQsuXLgD3Bey6rR7Rb860gAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

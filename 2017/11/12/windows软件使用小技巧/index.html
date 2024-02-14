@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#word打开提示setup-error（win7）"><span class="post-toc-number">1.</span> <span class="post-toc-text">word打开提示setup error（win7）</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#各软件最近历史始终为空（win7）"><span class="post-toc-number">2.</span> <span class="post-toc-text">各软件最近历史始终为空（win7）</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#文件夹左边栏没有桌面选项（win7）"><span class="post-toc-number">3.</span> <span class="post-toc-text">文件夹左边栏没有桌面选项（win7）</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#完全卸载VS"><span class="post-toc-number">4.</span> <span class="post-toc-text">完全卸载VS</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#U盘格式转换"><span class="post-toc-number">5.</span> <span class="post-toc-text">U盘格式转换</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#word打开提示setup-error（win7）"><span class="post-toc-text">word打开提示setup error（win7）</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#各软件最近历史始终为空（win7）"><span class="post-toc-text">各软件最近历史始终为空（win7）</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#文件夹左边栏没有桌面选项（win7）"><span class="post-toc-text">文件夹左边栏没有桌面选项（win7）</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#完全卸载VS"><span class="post-toc-text">完全卸载VS</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#U盘格式转换"><span class="post-toc-text">U盘格式转换</span></a></li></ol>
         </nav>
     </aside>
 
@@ -469,6 +555,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -533,6 +623,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACu0lEQVR42u3awU7DQAwE0P7/T8MVCVpm7F1UpJcTgnSTF6TY9ezjER8fX45nv//+13a11+fk69cHHh4e3uLWn91uAvt+fv5QcnC9Ah4eHt41XrLc61d2Qt0UjKRI4OHh4b0zb3Zmfs5+ZTw8PLx34CW/mbXUeYHBw8PDex/erC1OSLNS0Q47Dsxa8PDw8CaT0semtf3Ln6/ke3h4eHjrVD0Pw5LIvy0bbWz2w/p4eHh4F3izrQOvG+u8vW7f57OoDA8PD+8ebzNcSC6/GRZsRiR4eHh4N3jtV/081poFZrMRczFNwcPDw1vz8i0CZ1vk2bghaeXx8PDwbvM2kdhmePF6lJA8ylMtOx4eHl7Om0Vf0fC03FaVr1aEZ3h4eHjXePuqkrS8syhrti3s0aZ2eHh4eKM5bRv/52OIvGlOIrS2eODh4eHd4CW3OxvCbqKv9rp1XoeHh4e34OXD003YPwvM8oguqnt4eHh4a17bpOZDh3bA0W6uiooEHh4e3gVe3grnzfSmFc4LSf5A8fDw8M7yktsaBk5lmWmvFRUMPDw8vAu89v3Zlo12c9WpAQceHh7e3/NmA9bZSzyPwerdEHh4eHgXeLMLb8rGPtNP2u4fAjA8PDy8o7z8BZ20ue1wISkzw9gMDw8P7wKvvUC++am9obZgJJ/Cw8PDu83Lb73dcJAPbfNxbVGK8PDw8K7xZtQ8AJsVj/yRPf1n4OHh4V3mzfKj2RbVdoSRHL/EYHh4eHhr3kd5JFuj8puYbTsoGnE8PDy8C7z2hdu2vMlY4UZBGtYTPDw8vJjXFoN24NtusTo7OMbDw8O7x9skR21Ulp8/nK/g4eHh/RNe0rmfGnPkn8XDw8N7B17e7LYjhlnAdrgw4OHh4cW8zfapdrXNcCF/iHh4eHj3ePsv/LNX+ewBJdfCw8PDu8b7BO2cy4iKHiEzAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
+
 
 
 

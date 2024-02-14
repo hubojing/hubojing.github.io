@@ -68,8 +68,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -234,7 +320,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#简单爬虫架构"><span class="post-toc-number">1.</span> <span class="post-toc-text">简单爬虫架构</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#URL管理器和实现方法"><span class="post-toc-number">2.</span> <span class="post-toc-text">URL管理器和实现方法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#网页下载器和urllib2模块"><span class="post-toc-number">3.</span> <span class="post-toc-text">网页下载器和urllib2模块</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#urllib2下载网页的三种方法"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">urllib2下载网页的三种方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#最简洁方法"><span class="post-toc-number">3.1.1.</span> <span class="post-toc-text">最简洁方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#代码"><span class="post-toc-number">3.1.1.1.</span> <span class="post-toc-text">代码</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#法2：添加data、http-header"><span class="post-toc-number">3.1.2.</span> <span class="post-toc-text">法2：添加data、http header</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#代码-1"><span class="post-toc-number">3.1.2.1.</span> <span class="post-toc-text">代码</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#法3：添加特殊情景的处理器"><span class="post-toc-number">3.1.3.</span> <span class="post-toc-text">法3：添加特殊情景的处理器</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#代码-2"><span class="post-toc-number">3.1.3.1.</span> <span class="post-toc-text">代码</span></a></li></ol></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Python3代码"><span class="post-toc-number">4.</span> <span class="post-toc-text">Python3代码</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#网页解析器和BeautifulSoup第三方模块"><span class="post-toc-number">5.</span> <span class="post-toc-text">网页解析器和BeautifulSoup第三方模块</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Beautiful-Soup安装"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">Beautiful Soup安装</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Beautiful-Soup语法"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">Beautiful Soup语法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#代码-3"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">代码</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#创建BeautifulSoup对象"><span class="post-toc-number">5.3.1.</span> <span class="post-toc-text">创建BeautifulSoup对象</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#搜索节点（find-all-find）"><span class="post-toc-number">5.3.2.</span> <span class="post-toc-text">搜索节点（find_all,find）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#访问节点信息"><span class="post-toc-number">5.3.3.</span> <span class="post-toc-text">访问节点信息</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Python3测试"><span class="post-toc-number">5.3.4.</span> <span class="post-toc-text">Python3测试</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#爬取百度百科1000个页面的数据"><span class="post-toc-number">6.</span> <span class="post-toc-text">爬取百度百科1000个页面的数据</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#分析"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">分析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#易错处及解决"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">易错处及解决</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#结果"><span class="post-toc-number">7.</span> <span class="post-toc-text">结果</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#全部代码下载地址"><span class="post-toc-number">8.</span> <span class="post-toc-text">全部代码下载地址</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#简单爬虫架构"><span class="post-toc-text">简单爬虫架构</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#URL管理器和实现方法"><span class="post-toc-text">URL管理器和实现方法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#网页下载器和urllib2模块"><span class="post-toc-text">网页下载器和urllib2模块</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#urllib2下载网页的三种方法"><span class="post-toc-text">urllib2下载网页的三种方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#最简洁方法"><span class="post-toc-text">最简洁方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#代码"><span class="post-toc-text">代码</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#法2：添加data、http-header"><span class="post-toc-text">法2：添加data、http header</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#代码-1"><span class="post-toc-text">代码</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#法3：添加特殊情景的处理器"><span class="post-toc-text">法3：添加特殊情景的处理器</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#代码-2"><span class="post-toc-text">代码</span></a></li></ol></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Python3代码"><span class="post-toc-text">Python3代码</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#网页解析器和BeautifulSoup第三方模块"><span class="post-toc-text">网页解析器和BeautifulSoup第三方模块</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Beautiful-Soup安装"><span class="post-toc-text">Beautiful Soup安装</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Beautiful-Soup语法"><span class="post-toc-text">Beautiful Soup语法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#代码-3"><span class="post-toc-text">代码</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#创建BeautifulSoup对象"><span class="post-toc-text">创建BeautifulSoup对象</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#搜索节点（find-all-find）"><span class="post-toc-text">搜索节点（find_all,find）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#访问节点信息"><span class="post-toc-text">访问节点信息</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Python3测试"><span class="post-toc-text">Python3测试</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#爬取百度百科1000个页面的数据"><span class="post-toc-text">爬取百度百科1000个页面的数据</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#分析"><span class="post-toc-text">分析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#易错处及解决"><span class="post-toc-text">易错处及解决</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#结果"><span class="post-toc-text">结果</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#全部代码下载地址"><span class="post-toc-text">全部代码下载地址</span></a></li></ol>
         </nav>
     </aside>
 
@@ -650,6 +736,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -714,6 +804,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACs0lEQVR42u3a0WrkMAwF0P7/T7evC0sm98pRSeHkKcxkYh8XLFfS11d8fV9c+fP/fp7ctyMeXXh4eHgPTf1qyM/v+f8+efLq/cl8bpYADw8Pb42XT/dkErOl+Rxgbix4eHh4L+AlW/wsPOSHeDw8PLy/xUsGOwkkySh4eHh4b+DlG3E7ieSQPTtSP5xrwcPDw1uoIr3nfqW+h4eHh3dcVW833Fmx6iSo3LwTDw8Pb4GXb7izEleb2M3HTZ7Hw8PD2+MlidFZa9TsfJs0ZtWFNzw8PLxHebOCVj6VkyDx+Q03wQAPDw9vgdf++NkkQhuEPi/6ZUjAw8PDe5QXxY2ycSpZrHzcWVMXHh4e3h6vTc7mm3U+oSRIJAsU1ffw8PDwjnkJ5mSDnqUSkmN33haGh4eHt8ErNtk8BXB8zRoUblK6eHh4eA/x8q15VtCatQXMmgyK1gE8PDy8EW+v5J/DZvdRoMLDw8Nb4M0Oyufl/FkoqhMQeHh4eAu8vPkp//bkyTzwRMuBh4eHt8A7f90smZs3sM6CTfQ3xMPDwxvxTopbeZHs2TRx0SiGh4eHt8Zr25tmW3aeLG7bsG4O03h4eHgLvHzTb8tRJw0BeTrjcp54eHh4a7xZ2SmZSrKh50Wy5NiNh4eHt81rD9azI2+dRIgDTJGlxsPDw1vg/c5g+bb++bdF6gQPDw9vjZcHhvYYnXzbBpgilYyHh4e3zMuLYbPiWdIcMGvkwsPDw/sd3qw0VSdSR/hZm9dl0xUeHh7eQ7x2q91biOTztokBDw8Pb4/XTnTjIJ4z2mXCw8PD2+PlCdx8cm0ad5aGuAk/eHh4eC/gbaRl8wBQj4uHh4f3Al59qC0Pyu2TN8uBh4eHt8ZrG6faA+5JSJgFGDw8PLw93sk//Dm4DST5fB6o8uHh4eGlvB9WnXOopE/lfwAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

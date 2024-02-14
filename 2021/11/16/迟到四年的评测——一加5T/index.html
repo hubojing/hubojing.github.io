@@ -47,7 +47,7 @@
 <meta property="og:image" content="https://hubojing.github.io/images/oneplus-6.jpg">
 <meta property="og:image" content="https://hubojing.github.io/images/oneplus-7.jpg">
 <meta property="og:image" content="https://hubojing.github.io/images/oneplus-8.jpg">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.187Z">
+<meta property="og:updated_time" content="2021-11-16T15:44:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="迟到四年的评测——一加5T">
 <meta name="twitter:description" content="啊，纪念我逝去的青春">
@@ -62,8 +62,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -206,7 +292,7 @@
         <h1 class="title">迟到四年的评测——一加5T</h1>
         <h5 class="subtitle">
             
-                <time datetime="2021-11-16T21:06:00.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2021-11-16T13:06:00.000Z" itemprop="datePublished" class="page-time">
   2021-11-16
 </time>
 
@@ -228,7 +314,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#废话文学"><span class="post-toc-number">1.</span> <span class="post-toc-text">废话文学</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#外观"><span class="post-toc-number">2.</span> <span class="post-toc-text">外观</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#基本参数"><span class="post-toc-number">3.</span> <span class="post-toc-text">基本参数</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#屏幕"><span class="post-toc-number">4.</span> <span class="post-toc-text">屏幕</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#摄像头"><span class="post-toc-number">5.</span> <span class="post-toc-text">摄像头</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#后置摄像头"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">后置摄像头</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前置摄像头"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">前置摄像头</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#网络与连接性"><span class="post-toc-number">6.</span> <span class="post-toc-text">网络与连接性</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#多媒体"><span class="post-toc-number">7.</span> <span class="post-toc-text">多媒体</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#手机存图"><span class="post-toc-number">8.</span> <span class="post-toc-text">手机存图</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#鲁大师测评"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">鲁大师测评</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安兔兔测评"><span class="post-toc-number">8.2.</span> <span class="post-toc-text">安兔兔测评</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#四年后"><span class="post-toc-number">9.</span> <span class="post-toc-text">四年后</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#相关资料"><span class="post-toc-number">10.</span> <span class="post-toc-text">相关资料</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#废话文学"><span class="post-toc-text">废话文学</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#外观"><span class="post-toc-text">外观</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#基本参数"><span class="post-toc-text">基本参数</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#屏幕"><span class="post-toc-text">屏幕</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#摄像头"><span class="post-toc-text">摄像头</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#后置摄像头"><span class="post-toc-text">后置摄像头</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#前置摄像头"><span class="post-toc-text">前置摄像头</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#网络与连接性"><span class="post-toc-text">网络与连接性</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#多媒体"><span class="post-toc-text">多媒体</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#手机存图"><span class="post-toc-text">手机存图</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#鲁大师测评"><span class="post-toc-text">鲁大师测评</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#安兔兔测评"><span class="post-toc-text">安兔兔测评</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#四年后"><span class="post-toc-text">四年后</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#相关资料"><span class="post-toc-text">相关资料</span></a></li></ol>
         </nav>
     </aside>
 
@@ -239,7 +325,7 @@
     <div class="post-card">
         <h1 class="post-card-title">迟到四年的评测——一加5T</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-11-16 21:06:00" datetime="2021-11-16T21:06:00.000Z"  itemprop="datePublished">2021-11-16</time>
+            <time class="post-time" title="2021-11-16 13:06:00" datetime="2021-11-16T13:06:00.000Z"  itemprop="datePublished">2021-11-16</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/数码/">数码</a></li></ul>
@@ -268,13 +354,13 @@
 <h1 id="外观"><a href="#外观" class="headerlink" title="外观"></a>外观</h1><p>　　美就一个字！<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\oneplus-00.jpg" alt="正面" title>
+                    <img src="\images\oneplus-00.jpg" alt="正面" title="">
                 </div>
                 <div class="image-caption">正面</div>
             </figure><br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\oneplus-0.jpg" alt="背面" title>
+                    <img src="\images\oneplus-0.jpg" alt="背面" title="">
                 </div>
                 <div class="image-caption">背面</div>
             </figure></p>
@@ -298,49 +384,49 @@
 <h2 id="鲁大师测评"><a href="#鲁大师测评" class="headerlink" title="鲁大师测评"></a>鲁大师测评</h2><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\oneplus-1.jpg" alt="整体评测" title>
+                    <img src="\images\oneplus-1.jpg" alt="整体评测" title="">
                 </div>
                 <div class="image-caption">整体评测</div>
             </figure>
 <p>　　排名第八有木有，当年真的性能神机有木有！<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\oneplus-2.jpg" alt="AI性能排名" title>
+                    <img src="\images\oneplus-2.jpg" alt="AI性能排名" title="">
                 </div>
                 <div class="image-caption">AI性能排名</div>
             </figure><br>　　华为Mate10、苹果8，嗯，有点年代感了。<br>　　还有三星可还行，三星这些年在手机领域占的份额越来越少了。</p>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\oneplus-3.jpg" alt="VR评分1" title>
+                    <img src="\images\oneplus-3.jpg" alt="VR评分1" title="">
                 </div>
                 <div class="image-caption">VR评分1</div>
             </figure>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\oneplus-4.jpg" alt="VR评分2" title>
+                    <img src="\images\oneplus-4.jpg" alt="VR评分2" title="">
                 </div>
                 <div class="image-caption">VR评分2</div>
             </figure>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\oneplus-5.jpg" alt="整体" title>
+                    <img src="\images\oneplus-5.jpg" alt="整体" title="">
                 </div>
                 <div class="image-caption">整体</div>
             </figure>
 <h2 id="安兔兔测评"><a href="#安兔兔测评" class="headerlink" title="安兔兔测评"></a>安兔兔测评</h2><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\oneplus-6.jpg" alt="整体评测" title>
+                    <img src="\images\oneplus-6.jpg" alt="整体评测" title="">
                 </div>
                 <div class="image-caption">整体评测</div>
             </figure>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\oneplus-7.jpg" alt="手机排名" title>
+                    <img src="\images\oneplus-7.jpg" alt="手机排名" title="">
                 </div>
                 <div class="image-caption">手机排名</div>
             </figure>
@@ -351,7 +437,7 @@
 <p>　　是我没保护好你嗷。<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\oneplus-8.jpg" alt="如今的一加5T" title>
+                    <img src="\images\oneplus-8.jpg" alt="如今的一加5T" title="">
                 </div>
                 <div class="image-caption">如今的一加5T</div>
             </figure></p>
@@ -365,7 +451,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.187Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2021-11-16T15:44:02.000Z" itemprop="dateUpdated">2021-11-16 15:44:02</time>
 </span><br>
 
 
@@ -551,6 +637,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -615,6 +705,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACuklEQVR42u3awW7bMBAE0Pz/T7eX3lwrM7tk6gJPJ8OQRT4FIDez/PqKr18v17t73n1Ortf7331z+MLDw8NbT/15gNdh8u/f3fM8t/aV4eHh4f0Mr3308wqcvL5krM09eHh4eJ/DSxb9DSN5Gh4eHt7/xSvK2VGhnL8+PDw8vH/LS8KI/dTbICMJdo9lLXh4eHjb1Xu4lP/M5yv9PTw8PLx1Vz3ZJNrmVrv9zI4g/PkVHh4e3gVevuDmhwlyUv46NvPEw8PDO8trg4C2KdVGDM8vpW6P4eHh4V3gJXFqHlK0cUa70LdBMB4eHt49XlvmtgcOEsysCRfNFg8PD+8oLwlJ21g23zZafL3N4OHh4V3gtUHtrBmW/2oTQxQny/Dw8PAO8WaHrjYHs9raP4l9V8ez8PDw8ILR88V3dlzgeVp5GZ3HuH8JI/Dw8PCO8pKSOofNDle1pXxboOPh4eHd5s067224kBzkio5S5Qca8PDw8A7xkgHaEvnAIh4EEKsyGg8PD2/Ba6OEUw2wzTGC4ZkyPDw8vKO8HLkpvpMt5MbajoeHh3eW1zbA2mX9VFE+3KLw8PDwrvFmB63alzJrdK1eMR4eHt4FXrsctwek8mK63QaKUh4PDw/vKC8PTJPFvQ0L2qsNJvDw8PBu8PLANC+R899u2mPJJoGHh4d3j5csx7PtoT2SlYfC+bh4eHh493j5JG5vHknbrGit4eHh4V3jzYKJNi9tg9p9XIKHh4d3ljcLUpOu2mzSmz5eHUPg4eHhjXj71lcbN+TfbD7XSDw8PLyS1wYQ+aOH8UH5tG+Kbzw8PLxrvDxuaCd9eI+K54+Hh4f3+bx90JA8v74fDw8P7yN5bUH8PHo77jcbDB4eHt413ix+TaY447VNtbd/Kjw8PLwLvM0//HkB3cay7Ua1iTPw8PDwYt5vBgdK30NaVNsAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 

@@ -40,7 +40,7 @@
 <meta property="og:image" content="https://hubojing.github.io/images/TEMN架构图.png">
 <meta property="og:image" content="https://hubojing.github.io/images/TEMN数据集.png">
 <meta property="og:image" content="https://hubojing.github.io/images/TEMN性能.png">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.175Z">
+<meta property="og:updated_time" content="2022-07-04T09:37:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TEMN">
 <meta name="twitter:description" content="陆续上架前几个月写的库存　　主题增强记忆网络个性化兴趣点推荐">
@@ -55,8 +55,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -199,7 +285,7 @@
         <h1 class="title">TEMN</h1>
         <h5 class="subtitle">
             
-                <time datetime="2022-07-03T13:03:28.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2022-07-03T05:03:28.000Z" itemprop="datePublished" class="page-time">
   2022-07-03
 </time>
 
@@ -221,7 +307,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#问题提出"><span class="post-toc-number">2.</span> <span class="post-toc-text">问题提出</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#架构"><span class="post-toc-number">3.</span> <span class="post-toc-text">架构</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验"><span class="post-toc-number">4.</span> <span class="post-toc-text">实验</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据集"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">数据集</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基线"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">基线</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#性能"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">性能</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#贡献点"><span class="post-toc-number">5.</span> <span class="post-toc-text">贡献点</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#问题提出"><span class="post-toc-text">问题提出</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#架构"><span class="post-toc-text">架构</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验"><span class="post-toc-text">实验</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据集"><span class="post-toc-text">数据集</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基线"><span class="post-toc-text">基线</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#性能"><span class="post-toc-text">性能</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#贡献点"><span class="post-toc-text">贡献点</span></a></li></ol>
         </nav>
     </aside>
 
@@ -232,7 +318,7 @@
     <div class="post-card">
         <h1 class="post-card-title">TEMN</h1>
         <div class="post-meta">
-            <time class="post-time" title="2022-07-03 13:03:28" datetime="2022-07-03T13:03:28.000Z"  itemprop="datePublished">2022-07-03</time>
+            <time class="post-time" title="2022-07-03 05:03:28" datetime="2022-07-03T05:03:28.000Z"  itemprop="datePublished">2022-07-03</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
@@ -256,7 +342,7 @@
 <h1 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h1><p>　　Topic-Enhanced Memory Network (TEMN)<br>　　TEMN是一个统一的混合模型，利用TLDA和外部记忆网络以及神经注意机制来捕捉用户的全局和细粒度偏好。<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/TEMN架构图.png" alt="TEMN" title>
+                    <img src="/images/TEMN架构图.png" alt="TEMN" title="">
                 </div>
                 <div class="image-caption">TEMN</div>
             </figure><br>　　三部分组成：记忆网络，TLDA和地理建模部分。<br>　　前两部分相互联系，用于建模从基于领域的记忆网络中学到的非线性交互（通过历史记录）以及从主题模型中学到的全局偏好。</p>
@@ -264,7 +350,7 @@
 <h1 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h1><h2 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h2><p>　　微信朋友圈签到数据集（未开源）<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/TEMN数据集.png" alt="数据集" title>
+                    <img src="/images/TEMN数据集.png" alt="数据集" title="">
                 </div>
                 <div class="image-caption">数据集</div>
             </figure></p>
@@ -283,7 +369,7 @@
 <li>TEMN(CPR) 完整TEMN模型使用微信（GPR）数据<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/TEMN性能.png" alt="性能" title>
+                    <img src="/images/TEMN性能.png" alt="性能" title="">
                 </div>
                 <div class="image-caption">性能</div>
             </figure>
@@ -304,7 +390,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.175Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2022-07-04T09:37:12.000Z" itemprop="dateUpdated">2022-07-04 09:37:12</time>
 </span><br>
 
 
@@ -490,6 +576,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -554,6 +644,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLklEQVR42u3a0WrDMAxG4b7/S2ewq8FIcn7JLY18fFVG5uRLQZUsvV54Hb/r7+f/f7m+8nqd7bx4yZAh47GMd9zgbJ/rV5O+CBkyZOzG6AdZgjy78vr1XT+bDBkyZNQCYrobuZcMGTJk8BunIZUH648GXBkyZDyQwbfjJS4vjDvXyJAhYwdGrTHwmc9v72/IkCHj6xlHuGo7dFJJtL8MGTJGM2qH8iQo85ZAZ6YCdU1lyJAxiMGD6dl/pdekx3A3GBkyZIxm1I7v01C7lipDhozdGGlo67QN0v0XFLEyZMh4OIMcpfGwmLJ5wndTWsuQIWMDxjsOyHh7gBe0p88mQ4aM0Yx+QORpX5pixsWzDBkyhjJ4UtgZyOgc9KMXJ0OGjNEMEhb5PEOtVXCdCAYBWoYMGaMZxTGssCXAmwqtYQsZMmSMZpAguHbMgj96PDMiQ4aMQQxSjnZCZKcojb8BGTJkDGWkpSlJHNcmgkGrQIYMGRsweBuS4DspIPkBQKeGMmTIGMHoJ2ppCE4nQYJhCxkyZGzAQLG5XazydiZvRciQIWM2Y9WZVa3BWeupoitlyJAxiHGEi6d3PJjW0tOb3w0ZMmQMYvCVHq6lbYNOYipDhowdGOnIRdoeIG+u1jZoTY7IkCHjgYzawRZ/xM4OKB2UIUOGjFLxyQfLFhzeyZAhQ0Y4yJW+iJQtQ4aMPRm8iO2nd+mDolJWhgwZoxlp6VgrXGs3XrWPDBkyHsv4AZz4o4k0VUfuAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
+
 
 
 

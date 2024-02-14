@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://hubojing.github.io/images/柯南闪电.jpg">
 <meta property="og:image" content="https://hubojing.github.io/images/脑洞3-综合环境结构.png">
 <meta property="og:image" content="https://hubojing.github.io/images/脑洞3-生态版图.png">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.179Z">
+<meta property="og:updated_time" content="2021-10-28T07:53:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="靖靖的脑洞大开（3）——元宇宙">
 <meta name="twitter:description" content="有点科幻哦">
@@ -54,8 +54,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -198,7 +284,7 @@
         <h1 class="title">靖靖的脑洞大开（3）——元宇宙</h1>
         <h5 class="subtitle">
             
-                <time datetime="2021-10-28T15:01:45.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2021-10-28T07:01:45.000Z" itemprop="datePublished" class="page-time">
   2021-10-28
 </time>
 
@@ -220,7 +306,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#概念"><span class="post-toc-number">1.</span> <span class="post-toc-text">概念</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#相关技术"><span class="post-toc-number">2.</span> <span class="post-toc-text">相关技术</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#感想"><span class="post-toc-number">3.</span> <span class="post-toc-text">感想</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#脑洞"><span class="post-toc-number">4.</span> <span class="post-toc-text">脑洞</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考资料"><span class="post-toc-number">5.</span> <span class="post-toc-text">参考资料</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#脑洞系列"><span class="post-toc-number">6.</span> <span class="post-toc-text">脑洞系列</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#概念"><span class="post-toc-text">概念</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#相关技术"><span class="post-toc-text">相关技术</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#感想"><span class="post-toc-text">感想</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#脑洞"><span class="post-toc-text">脑洞</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考资料"><span class="post-toc-text">参考资料</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#脑洞系列"><span class="post-toc-text">脑洞系列</span></a></li></ol>
         </nav>
     </aside>
 
@@ -231,7 +317,7 @@
     <div class="post-card">
         <h1 class="post-card-title">靖靖的脑洞大开（3）——元宇宙</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-10-28 15:01:45" datetime="2021-10-28T15:01:45.000Z"  itemprop="datePublished">2021-10-28</time>
+            <time class="post-time" title="2021-10-28 07:01:45" datetime="2021-10-28T07:01:45.000Z"  itemprop="datePublished">2021-10-28</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/杂谈/">杂谈</a></li></ul>
@@ -254,7 +340,7 @@
 <h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><p>　　元宇宙（Metaverse），Meta(超越) + Universe(宇宙)。<br>　　元宇宙是融合现实与虚拟，超越现实宇宙的存在。是一种新的互联网应用和社会形态，基于VR等设备提供沉浸式体验，基于数字孪生技术生成现实世界的镜像，基于区块链技术搭建经济体系，将细腻和现实世界的经济系统、社交系统和身份系统相关联，并允许用户进行内容生产和世界编辑。<br>　　元宇宙构建三个阶段：数字孪生 —&gt; 虚拟原生 —&gt; 虚实融生<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/脑洞3-综合环境结构.png" alt="综合环境的结构" title>
+                    <img src="/images/脑洞3-综合环境结构.png" alt="综合环境的结构" title="">
                 </div>
                 <div class="image-caption">综合环境的结构</div>
             </figure></p>
@@ -262,7 +348,7 @@
 <p>　　从底层往上层依次是：<br>　　网络环境：5G<br>　　虚实界面：拓展现实，机器人，脑机接口<br>　　数字处理：人工智能，云计算<br>　　认证机制：区块链<br>　　内容生产：人工智能、数字孪生<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/脑洞3-生态版图.png" alt="元宇宙生态版图" title>
+                    <img src="/images/脑洞3-生态版图.png" alt="元宇宙生态版图" title="">
                 </div>
                 <div class="image-caption">元宇宙生态版图</div>
             </figure></p>
@@ -282,7 +368,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.179Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2021-10-28T07:53:02.000Z" itemprop="dateUpdated">2021-10-28 07:53:02</time>
 </span><br>
 
 
@@ -468,6 +554,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -532,6 +622,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMklEQVR42u3aQY6EMAwF0b7/pZntSD1AfRtGSlxZtVoQ8rKw7DifDx7H1/j+/+z53/+czXw922NDhgwZyzKOy3H9DJn5eiPOnuRrkyFDxhwGWURnQeRdMsPp/zJkyJABlns9D0kfZciQIeMNBk8oSYpZK31lyJAxh0E+wIMvTwdrbBkyZExj8FP3///9Sn9DhgwZSzGOcKSH/mm4PEpDhgwZezN4gEuvWfAl1gKuDBky5jDIItLDsrRV2dkatGgZMmRszei3JEmymL4bB1wZMmQszuDL4mVqv8FJLnD8sdEyZMjYlMGbgv0GJL9OwVciQ4aMOQx+KE9g6MOghUnAQZ0tQ4aMZRnkEI2UqfwSWG0LUGiWIUPGpgxeavImZdqS5N+6OTWUIUPGAEb/0kPt3bQviVoCMmTI2JTBGwP9KvKVyxYyZMgYwKiVoGniyI/tgiaEDBkyhjHS0vQpTJo4xpPKkCFjcUYtLKaXvXhRmha3MmTI2Jtxk3K1S02+HfyZ05AtQ4aMAYzaRYpOUlgraE9nkCFDxgAGWWjtyKyWJgbHbTJkyBjMSA+/eEqXNjuDKxcyZMjYjnGE4yY5w21OfmBXzG1lyJCxEYOPZ1M6sgW8gSpDhowJjDTIktDZ2TmeMsqQIWMao3YhLC1QX0TKkCFDBi5E0xZmp+WJ7ovJkCFjPIOHYFISp6nnYwFXhgwZizB4SpceuqXtAd4YkCFDxhwGD3n8+kVtEZ1WgQwZMjZl/ACI3jf12hJXvwAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

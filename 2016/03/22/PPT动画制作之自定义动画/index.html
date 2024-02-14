@@ -54,8 +54,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -220,7 +306,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#闪烁背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">闪烁背景</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#改个色"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">改个色</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#添个形"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">添个形</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#改设置"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">改设置</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#复个制"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">复个制</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#改大小"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">改大小</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#改透度"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">改透度</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#添动画"><span class="post-toc-number">1.7.</span> <span class="post-toc-text">添动画</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#调时间"><span class="post-toc-number">1.8.</span> <span class="post-toc-text">调时间</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文字涌入特效"><span class="post-toc-number">2.</span> <span class="post-toc-text">文字涌入特效</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#抠个字"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">抠个字</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#插个图"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">插个图</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#复个制-1"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">复个制</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#围一圈"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">围一圈</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#调大小"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">调大小</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#添动画-1"><span class="post-toc-number">2.6.</span> <span class="post-toc-text">添动画</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#调时间-1"><span class="post-toc-number">2.7.</span> <span class="post-toc-text">调时间</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#闪烁背景"><span class="post-toc-text">闪烁背景</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#改个色"><span class="post-toc-text">改个色</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#添个形"><span class="post-toc-text">添个形</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#改设置"><span class="post-toc-text">改设置</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#复个制"><span class="post-toc-text">复个制</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#改大小"><span class="post-toc-text">改大小</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#改透度"><span class="post-toc-text">改透度</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#添动画"><span class="post-toc-text">添动画</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#调时间"><span class="post-toc-text">调时间</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文字涌入特效"><span class="post-toc-text">文字涌入特效</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#抠个字"><span class="post-toc-text">抠个字</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#插个图"><span class="post-toc-text">插个图</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#复个制-1"><span class="post-toc-text">复个制</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#围一圈"><span class="post-toc-text">围一圈</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#调大小"><span class="post-toc-text">调大小</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#添动画-1"><span class="post-toc-text">添动画</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#调时间-1"><span class="post-toc-text">调时间</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -479,6 +565,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -543,6 +633,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtElEQVR42u3aQW4bMRAEQP3/0w7gq6NN9wxpKEDtSbAFisUDye2Z1yt+vr6fd3/5Wj8/R06+eezBw8PDG039ebh3mBvg/YLi4eHh/Q7v+TDYbM3J1p/MJP8mHh4e3ufwNlNMxswXFw8PD+9/4T0fD+0VvD1y8PDw8D6Nl0QDz4Bku38ebRaIHMta8PDw8C5UkT7n88X6Hh4eHt6iqj47JJLxN1fqYrZ4eHh4F3hJkT4pZbXhxSa2aJcYDw8P7ywv2abPlqluLMHb38XDw8O7xtu0qK5OpNGRk1/i8fDw8O7x2jLVflvPR8iLXm+zFjw8PLwLvFPbfb59t41c+dW86OfCw8PDG/Hajbj95qaglVy78//i4eHhneK119lZI1S+9eeNBUVlDw8PD+8Cr21sepVPMsU25I0WCA8PD+8ab8bIA9Y8wG2bvYq3BDw8PLxDvOfJtRfofLFaUh3a4uHh4V3jzUr+szgjGbNtropiXDw8PLwLvH3ZfhZJJFFIHvX+5S94eHh4F3ibKKEt52+Omfyo+MfxgIeHh3eIl7/8bzKPWQCRhMXJ4YGHh4d3ltdu2fn2fSMUjpoGZuuKh4eHF/M2gempYn9y5CSYonUVDw8Pb8SbhQXRasVhx+zqHC0NHh4e3jXevs10VsTKJ7p6V8DDw8O7wMvL/JuAoAgOyij57Wc8PDy8C7y89NUGB20rQNuMVbwM4OHh4R3lnd2+kzFni9jOAQ8PD+93eG3MuhmnjWXbi3UU4+Lh4eGNePmTBxOzIyE/YGavAXh4eHhneWe37zbIyK/Rw9IaHh4e3jXerIW0boSKGZtIAg8PD+9zeMkPzJqx2oaqInrGw8PD+wBee9Vug4y84SBaFDw8PLxrvDaQnUUSm2WatWTh4eHh3eCtXvVHx8O+wauNgPHw8PAOzeEPo6zkKeoNl9MAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 

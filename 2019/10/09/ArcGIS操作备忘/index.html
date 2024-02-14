@@ -37,7 +37,7 @@
 <meta property="og:description" content="好记性不如烂笔头。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1571320824862&di=08704337942c2cb7ba038a2597321fa8&imgtype=0&src=http%3A%2F%2Fpic4.zhimg.com%2F50%2F977b7b34370b0e721b367571791a6a85_qhd.jpg">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.171Z">
+<meta property="og:updated_time" content="2019-11-17T08:38:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ArcGIS操作备忘">
 <meta name="twitter:description" content="好记性不如烂笔头。">
@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -196,7 +282,7 @@
         <h1 class="title">ArcGIS操作备忘</h1>
         <h5 class="subtitle">
             
-                <time datetime="2019-10-09T16:27:29.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2019-10-09T08:27:29.000Z" itemprop="datePublished" class="page-time">
   2019-10-09
 </time>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#xls转shp文件"><span class="post-toc-number">1.</span> <span class="post-toc-text">xls转shp文件</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#转换坐标系"><span class="post-toc-number">2.</span> <span class="post-toc-text">转换坐标系</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#属性表相关"><span class="post-toc-number">3.</span> <span class="post-toc-text">属性表相关</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#添加字段"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">添加字段</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#修改属性"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">修改属性</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#裁剪"><span class="post-toc-number">4.</span> <span class="post-toc-text">裁剪</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#建立服务区"><span class="post-toc-number">5.</span> <span class="post-toc-text">建立服务区</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#xls转shp文件"><span class="post-toc-text">xls转shp文件</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#转换坐标系"><span class="post-toc-text">转换坐标系</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#属性表相关"><span class="post-toc-text">属性表相关</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#添加字段"><span class="post-toc-text">添加字段</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#修改属性"><span class="post-toc-text">修改属性</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#裁剪"><span class="post-toc-text">裁剪</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#建立服务区"><span class="post-toc-text">建立服务区</span></a></li></ol>
         </nav>
     </aside>
 
@@ -229,7 +315,7 @@
     <div class="post-card">
         <h1 class="post-card-title">ArcGIS操作备忘</h1>
         <div class="post-meta">
-            <time class="post-time" title="2019-10-09 16:27:29" datetime="2019-10-09T16:27:29.000Z"  itemprop="datePublished">2019-10-09</time>
+            <time class="post-time" title="2019-10-09 08:27:29" datetime="2019-10-09T08:27:29.000Z"  itemprop="datePublished">2019-10-09</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/数据挖掘/">数据挖掘</a></li></ul>
@@ -266,7 +352,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.171Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2019-11-17T08:38:58.000Z" itemprop="dateUpdated">2019-11-17 08:38:58</time>
 </span><br>
 
 
@@ -452,6 +538,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -516,6 +606,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKUlEQVR42u3aQXLDIBAEQP//08o1B6PMgJwqQ3NKyZKgddiw7L5e8bh+jeTXazBGzyazPDAwMDC+lnHdjvuFjt6Q3HN/Z742DAyMcxhJKLx/6v5KvqD7eYfXMTAwMILtWhtGczwGBgZGyxhN3KapyXswMDAw2iQ2Yay8LT+2w8DAOI2Rn7r//98fqW9gYGB8FeMqRxIW2+3gA6vCwMDYmjF3lNYmoislzKL5AwMD4wBGEkaTjWMbZJMZo80iBgbGAYzkgH4lLK6MCIyBgXEAoy00tqE2+RBtuMfAwDiB0b40WeinW8eGp4YYGBibMtqC5Vwz2UoLxVKDBQYGxhaMuS3gysHcykHb8FcMDIwDGEWZsLwzT1zz8P3mKQwMjAMY+RatrRjObTrrsigGBsbWjHYDl0+Qkx5rtsDAwDiA0R5+tUXHdgs4WeDEwMDYjpFMmd/THvG3JYfifwIGBsamjLlDsbnlti1if1zHwMDYmtGG3bmJV2ap97YYGBhbM+YaHfKUNW/XSO58syoMDIwDGEmAWznuz4PyZBkVAwPjAMZK+1ceUuc+TbQGDAyMTRlXOfIQufJpkrQZAwPjHEZbJcynzJPhuYpkG6YxMDC+nZEE2TalTJaet2VExQYMDIwDGG2gbAsDSSr7QC6OgYGBMbWBWwmmxbYSAwMDY6HBtG5FLY/kMDAwzmEkSexK81aSsraFAQwMjHMYechr09enFvFYIRMDA+P7GD8VZ0upD7WRTgAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

@@ -53,8 +53,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -219,7 +305,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#老式51单片机内部没有AD和DA转换模块"><span class="post-toc-number">1.</span> <span class="post-toc-text">老式51单片机内部没有AD和DA转换模块</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#nop"><span class="post-toc-number">2.</span> <span class="post-toc-text">_nop_()</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#几个引脚功能备注"><span class="post-toc-number">3.</span> <span class="post-toc-text">几个引脚功能备注</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#液晶显示程序的几点注释"><span class="post-toc-number">4.</span> <span class="post-toc-text">液晶显示程序的几点注释</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#老式51单片机内部没有AD和DA转换模块"><span class="post-toc-text">老式51单片机内部没有AD和DA转换模块</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#nop"><span class="post-toc-text">_nop_()</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#几个引脚功能备注"><span class="post-toc-text">几个引脚功能备注</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#液晶显示程序的几点注释"><span class="post-toc-text">液晶显示程序的几点注释</span></a></li></ol>
         </nav>
     </aside>
 
@@ -460,6 +546,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -526,6 +616,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACvUlEQVR42u3aQY7jMAwEwPn/p2evC8w66Sal2RzKpyBwZJUDiATJr6/4+v7r+vn9z88/f/V0vX5Wcv+BCw8PD2+x9afl8m9ev5TZC3r6HL0CPDw8vGu8pxM1P/Q3m8gDRr5nPDw8vM/hzdizdfIAg4eHh/f5vDwwJPWBloSHh4f3Cbx806/rpfnhPkvfL9Za8PDw8C50kT7n85X+Hh4eHt66qz4rrb7eRF6qaIvC/1gZDw8P7wKvTZc3pdU2WZ+ly3h4eHi3eW07PznK24O+bXoVo114eHh4F3izllWx9CL5zoPKm9Xw8PDwLvASQFIayO/J8e0I15v/EA8PD2/NmyW4bfCYlXRnL72eR8DDw8MreZsH50XeJHjMmmTDETE8PDy8BW/24Hw8qy12fC2ux5QaDw8P7ygvbzu1CfSs8Z8XQVYNMDw8PLwFrw0MbTjZv4J2mGAV9/Dw8PAWvFWciRntsFdbdMbDw8O7wduUDNpDf9a4Sp6yytDx8PDwDvHyRtSsTXVq+KBo1+Hh4eEd4r0+vvNyQx422vLu6vXh4eHhXeDlgaFNo2fpeFKAyP8SPDw8vBu82THdbigPNrP0/U3pFg8PD+8oL09eTw1XteMIm7QbDw8P7wYvX2I2dLXJ9POU+nE1PDw8vAu82VBUS82HpWZPqdtgeHh4eId4eeE1DwntankAKIau8PDw8C7zNk2vWUGhHVNok2w8PDy83+dtjvh9otyuVgcGPDw8vJL3XV6zZlXeVMsLH69/+1ilxsPDw1vz9od4smieLs8KHwdCCx4eHl7Jy4PBLFNtA8+++IuHh4f3O7z9gX623DC7czU6gIeHh3eNN9vKJuQkTzwWGPDw8PD+U86ZjyDkBdk2HcfDw8O7zWubXu3RP2un5Wn0gTIuHh4e3oUGWJTClg2tY6nz5sLDw8NLeX8A5hXkKWhG9WYAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 

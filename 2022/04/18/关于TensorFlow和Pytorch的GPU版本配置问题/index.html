@@ -37,7 +37,7 @@
 <meta property="og:description" content="相关安装问题汇总">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://hubojing.github.io/images/假装有图片.jpg">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.179Z">
+<meta property="og:updated_time" content="2022-04-19T08:46:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于TensorFlow和Pytorch的GPU版本配置问题">
 <meta name="twitter:description" content="相关安装问题汇总">
@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -196,7 +282,7 @@
         <h1 class="title">关于TensorFlow和Pytorch的GPU版本配置问题</h1>
         <h5 class="subtitle">
             
-                <time datetime="2022-04-18T22:13:41.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2022-04-18T14:13:41.000Z" itemprop="datePublished" class="page-time">
   2022-04-18
 </time>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#关于版本是否适配"><span class="post-toc-number">1.</span> <span class="post-toc-text">关于版本是否适配</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#下载链接"><span class="post-toc-number">2.</span> <span class="post-toc-text">下载链接</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#环境"><span class="post-toc-number">3.</span> <span class="post-toc-text">环境</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#conda一键配环境"><span class="post-toc-number">4.</span> <span class="post-toc-text">conda一键配环境</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#CUDA"><span class="post-toc-number">5.</span> <span class="post-toc-text">CUDA</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Tensorflow-gpu"><span class="post-toc-number">6.</span> <span class="post-toc-text">Tensorflow-gpu</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Pytorch-gpu"><span class="post-toc-number">7.</span> <span class="post-toc-text">Pytorch-gpu</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#关于版本是否适配"><span class="post-toc-text">关于版本是否适配</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#下载链接"><span class="post-toc-text">下载链接</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#环境"><span class="post-toc-text">环境</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#conda一键配环境"><span class="post-toc-text">conda一键配环境</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#CUDA"><span class="post-toc-text">CUDA</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Tensorflow-gpu"><span class="post-toc-text">Tensorflow-gpu</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Pytorch-gpu"><span class="post-toc-text">Pytorch-gpu</span></a></li></ol>
         </nav>
     </aside>
 
@@ -229,7 +315,7 @@
     <div class="post-card">
         <h1 class="post-card-title">关于TensorFlow和Pytorch的GPU版本配置问题</h1>
         <div class="post-meta">
-            <time class="post-time" title="2022-04-18 22:13:41" datetime="2022-04-18T22:13:41.000Z"  itemprop="datePublished">2022-04-18</time>
+            <time class="post-time" title="2022-04-18 14:13:41" datetime="2022-04-18T14:13:41.000Z"  itemprop="datePublished">2022-04-18</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/数据挖掘/">数据挖掘</a></li></ul>
@@ -273,7 +359,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.179Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2022-04-19T08:46:50.000Z" itemprop="dateUpdated">2022-04-19 08:46:50</time>
 </span><br>
 
 
@@ -459,6 +545,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -523,6 +613,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADHElEQVR42u3aQW4bMRAEQP3/08rVQKxV95ACtHTtKbBWDIs+jGeaj0f8PH88P3+SvJms8//7r1Z4tebjEw82Njb2TdjPy+f6nV3H1L7T7vOXlbGxsbGPY+/aUFsIX3331U+ui1+yT2xsbGzs60+vy0m78ux/xMbGxsZeX3rXUc5GVNjY2Nh/k50Ma5JvJW3DypttydwwS8PGxsb+enYbpn7zvz+Sb2NjY2N/MftZPrOC147+i3ZipsDGxsY+iL03oF1vXWblc7h/bGxs7IPYuwLavCC1pai97lO0KNjY2Ng3Z+cFqS1C+dA/iWzXowJsbGzss9n58GjWVKyUnDayjcZV2NjY2Mexo+FLee2mvSg566KG7Qo2Njb2oewZtR3K74qW81YqigSwsbGxb8uelYpd4W6RXSwcaB0VYGNjYx/Hbgf9eXjcNhL5CsU+sbGxsW/OXr+Ok4PzI2vj57aUYmNjY5/E/tyf+3vHVW24OwRjY2Nj35Cd/OnfBsAr5WTWrrSBATY2NvZ57HwM1I6ZZoDZZaCiiGJjY2MfzW6v47TRQh4k7woD3sQD2NjY2DdnX3/5E8UpHy21rcswBsDGxsY+iN0GvcmmW/zs0k8bbGBjY2OfzR4Wg4V1Zoc4GzxhY2Njn8deH9yvDKHaA83D4De7wsbGxj6UPSsnbZOQNwzDatxWbGxsbOwj2DPkJ2LadsA0LJPY2NjYx7FXkPlBXL+ZR84rnQU2Njb2eexoBBMUqtlwv21vHvGT/KqwsbGxT2Lnw/e8wWhH9rOwYengsLGxsY9jz67m7I2N88NdGW9hY2Njn80uepdyfDM7piTE3VDAsLGxsY9grwSr67FuHvruGjNhY2Njn8Fev2qTNxvtQc+i3PrKDjY2NvbN2W0B2BUMtOVqVmjzcAIbGxv77uyVRiI5oJUSlRSk4Z6xsbGxj2PvrYft2GjW6rRFFxsbGxu7LWYr6+fXevKj/KUVwcbGxv6T7GHBGM23Vj59sytsbGzs49iz0f9sW7NIIB9mbY4HsLGxsb+enQe9yaefYKz8ApKyio2NjX1b9j8iS5unI8zpXgAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

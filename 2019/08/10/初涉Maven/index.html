@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#安装"><span class="post-toc-number">1.</span> <span class="post-toc-text">安装</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#结构"><span class="post-toc-number">2.</span> <span class="post-toc-text">结构</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#基础"><span class="post-toc-number">3.</span> <span class="post-toc-text">基础</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#自动创建目录骨架"><span class="post-toc-number">4.</span> <span class="post-toc-text">自动创建目录骨架</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#坐标和仓库"><span class="post-toc-number">5.</span> <span class="post-toc-text">坐标和仓库</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#在Eclipse中的使用"><span class="post-toc-number">6.</span> <span class="post-toc-text">在Eclipse中的使用</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Maven生命周期和插件"><span class="post-toc-number">7.</span> <span class="post-toc-text">Maven生命周期和插件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#clean清理项目"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">clean清理项目</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#default-构建项目（最核心）"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">default 构建项目（最核心）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#site-生成项目站点"><span class="post-toc-number">7.3.</span> <span class="post-toc-text">site 生成项目站点</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#pom-xml常用元素"><span class="post-toc-number">8.</span> <span class="post-toc-text">pom.xml常用元素</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#scope"><span class="post-toc-number">8.0.1.</span> <span class="post-toc-text">scope</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#依赖"><span class="post-toc-number">8.0.2.</span> <span class="post-toc-text">依赖</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#聚合和继承"><span class="post-toc-number">9.</span> <span class="post-toc-text">聚合和继承</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#构建web项目"><span class="post-toc-number">10.</span> <span class="post-toc-text">构建web项目</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#安装"><span class="post-toc-text">安装</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#结构"><span class="post-toc-text">结构</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#基础"><span class="post-toc-text">基础</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#自动创建目录骨架"><span class="post-toc-text">自动创建目录骨架</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#坐标和仓库"><span class="post-toc-text">坐标和仓库</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#在Eclipse中的使用"><span class="post-toc-text">在Eclipse中的使用</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Maven生命周期和插件"><span class="post-toc-text">Maven生命周期和插件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#clean清理项目"><span class="post-toc-text">clean清理项目</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#default-构建项目（最核心）"><span class="post-toc-text">default 构建项目（最核心）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#site-生成项目站点"><span class="post-toc-text">site 生成项目站点</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#pom-xml常用元素"><span class="post-toc-text">pom.xml常用元素</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#scope"><span class="post-toc-text">scope</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#依赖"><span class="post-toc-text">依赖</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#聚合和继承"><span class="post-toc-text">聚合和继承</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#构建web项目"><span class="post-toc-text">构建web项目</span></a></li></ol>
         </nav>
     </aside>
 
@@ -521,6 +607,10 @@ install 安装jar包到本地仓库中
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -585,6 +675,7 @@ install 安装jar包到本地仓库中
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACL0lEQVR42u3aMW7DMAwF0Nz/0unSIUOsfpJJAUvPU+HYkp4LEBSpxyO+ni/X653J81fPrEceXRgYGLdlPJdX/szVyFcjrJ8sz4uBgXEAI1lEHmrzIFsd4fI+BgYGRpCurcdZB1kMDAyMbwTcakKZv4uBgYEx2cSut6PrwJr/+vW9OAYGxg0ZedX9///+Sn8DAwPjVoxn8eqV+5Nw2Usff9/CwMDYmlEtpVXL+nkKmIzwRwkPAwPjAEa+TZ0frUjeqsIwMDD2ZvRe6BXgqp8sSUkxMDD2Zkyal1XYp4IvBgbGaYzqz9UmZR5e86AffRQMDIyNGJONazWJTFK93mEODAyMvRmTxkC5xZgndkGS+uYOBgbG1oxJu7E3fW+hheCLgYFxGKO6ff1eMC1/VgwMjI0YPfd66RPM6MwIBgbGdoxkKfPCXH54Ii/wvWkMYGBgbMpIglqvuJYX2tbh/lG9MDAwtmPMg2yvNNY7hHH5gTAwMLZmJGGuuoh8e1xNBAtHLjAwMLZjzAetppj5XIXZMTAwjmEkBbVJiS3fjZbnxcDAOIBRbUBOjlNMjp1dvoWBgbEpo1f0z8N0/jmqLdLL/wMGBsZ2jGqDs1c+q05fbVRgYGCcwOgdnqi2Mz+Qw67TUwwMjAMYeeDrJYh52tcL/RgYGBi9oxVJCJ63PDEwMDAmbc7JQdU8rGNgYJzDyKfvFeCSwFo9EIaBgXEOoxryksmSBmR10R9oZGJgYNyP8QPoAbwqwdO0DgAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

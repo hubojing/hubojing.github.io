@@ -53,8 +53,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -219,7 +305,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#老方法-较笨拙（写于2017年）"><span class="post-toc-number">1.</span> <span class="post-toc-text">老方法-较笨拙（写于2017年）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#hexo大致原理"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">hexo大致原理</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#新电脑hexo搭建工作"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">新电脑hexo搭建工作</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ssh秘钥生成和添加"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">ssh秘钥生成和添加</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#拷贝数据文件"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">拷贝数据文件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#重装npm及插件"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">重装npm及插件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#部署"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">部署</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#同步刷新"><span class="post-toc-number">1.7.</span> <span class="post-toc-text">同步刷新</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多机同步"><span class="post-toc-number">1.8.</span> <span class="post-toc-text">多机同步</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#失误操作"><span class="post-toc-number">1.9.</span> <span class="post-toc-text">失误操作</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#新方法-较快捷（写于2019年）"><span class="post-toc-number">2.</span> <span class="post-toc-text">新方法-较快捷（写于2019年）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#旧电脑需要做什么"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">旧电脑需要做什么</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#新电脑需要做什么"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">新电脑需要做什么</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#每次发布博客后需同步"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">每次发布博客后需同步</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#目前存在的问题"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">目前存在的问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#参考资料"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">参考资料</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#老方法-较笨拙（写于2017年）"><span class="post-toc-text">老方法-较笨拙（写于2017年）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#hexo大致原理"><span class="post-toc-text">hexo大致原理</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#新电脑hexo搭建工作"><span class="post-toc-text">新电脑hexo搭建工作</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#ssh秘钥生成和添加"><span class="post-toc-text">ssh秘钥生成和添加</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#拷贝数据文件"><span class="post-toc-text">拷贝数据文件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#重装npm及插件"><span class="post-toc-text">重装npm及插件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#部署"><span class="post-toc-text">部署</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#同步刷新"><span class="post-toc-text">同步刷新</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多机同步"><span class="post-toc-text">多机同步</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#失误操作"><span class="post-toc-text">失误操作</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#新方法-较快捷（写于2019年）"><span class="post-toc-text">新方法-较快捷（写于2019年）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#旧电脑需要做什么"><span class="post-toc-text">旧电脑需要做什么</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#新电脑需要做什么"><span class="post-toc-text">新电脑需要做什么</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#每次发布博客后需同步"><span class="post-toc-text">每次发布博客后需同步</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#目前存在的问题"><span class="post-toc-text">目前存在的问题</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#参考资料"><span class="post-toc-text">参考资料</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -498,6 +584,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -562,6 +652,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACM0lEQVR42u3azW7DIBBF4bz/S6fbSBHk3AFXYjheVa6L+byYzg+vF77eXxe//3lntObozuZLhgwZxzLe02vXtsj1vTJ5XoYMGfcwRhFsvml+h29o/t7hfRkyZMiYpmskdM5DMw/rMmTIkEEYQboGkkiSGsqQIUNGrbDkK9RWe7AWlyFDxoEM3nX//58fmW/IkCHjKEatcV9L79IyONiVDBkyWjN4gEtb+U8Urj8adjJkyGjKSMtRsiHCrn0ClLfKkCGjKWPlZesJHx+CDsEyZMhozdgVavkz862kAwAZMmTcwJg/ygtLPlach1R+BGT4f0OGDBntGCvHtlZab+lxNPSZZMiQ0ZpBwhnZEH8Nb6vFGa4MGTIuYPBwTFI9kgim4bv24WTIkHEuoxZea8cj0hUCsAwZMloz1ktW0uJPW2/xYQsZMmS0ZvA2PW+H1QrdtKD9Md+QIUNGI0b6B2mROafWxgYbqm0ZMmQcxUjFtVJz5Rm0ZxkyZLRmrDTrV9LKXccvZMiQcRtjvTVP2nbkjemIVIYMGbcx0iEB3zQPuBvGAzJkyGjK4DNB/lv+CTYc0ZAhQ0ZTxju8eBGbHraorR/8x5AhQ8axjDTMrRzhqq2w8plkyJDRiZEWpU8PCYqJowwZMi5gBFUvPkz2RKoX1OIyZMi4mFEbCfADYaSptyHgypAh40pGraytZX3DIlaGDBmtGU8MAzhyw6ENGTJktGbs6mWtJJTpUY/iIFOGDBnnMf4Ax0CodjQP6GcAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 

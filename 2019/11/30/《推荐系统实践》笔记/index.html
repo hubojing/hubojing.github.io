@@ -38,7 +38,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://hubojing.github.io/images/《推荐系统实践》笔记——推荐系统实践.jpg">
 <meta property="og:image" content="https://hubojing.github.io/images/《推荐系统实践》笔记——二分图.png">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.179Z">
+<meta property="og:updated_time" content="2024-02-14T11:03:25.038Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="《推荐系统实践》笔记">
 <meta name="twitter:description" content="to be continued">
@@ -53,8 +53,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -219,7 +305,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#第1章-好的推荐系统"><span class="post-toc-number">1.</span> <span class="post-toc-text">第1章 好的推荐系统</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#什么是推荐系统"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">什么是推荐系统</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#推荐系统评测"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">推荐系统评测</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#实验方法"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">实验方法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#评测指标"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">评测指标</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#评测维度"><span class="post-toc-number">1.2.3.</span> <span class="post-toc-text">评测维度</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#第2章-利用用户行为数据"><span class="post-toc-number">2.</span> <span class="post-toc-text">第2章 利用用户行为数据</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#用户活跃度和物品流行度的分布"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">用户活跃度和物品流行度的分布</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#用户活跃度和物品流行度的关系"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">用户活跃度和物品流行度的关系</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基于邻域的算法"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">基于邻域的算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基于用户的协同过滤算法"><span class="post-toc-number">2.3.1.</span> <span class="post-toc-text">基于用户的协同过滤算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#基础算法"><span class="post-toc-number">2.3.1.1.</span> <span class="post-toc-text">基础算法</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#改进算法"><span class="post-toc-number">2.3.1.2.</span> <span class="post-toc-text">改进算法</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基于物品的协同过滤算法"><span class="post-toc-number">2.3.2.</span> <span class="post-toc-text">基于物品的协同过滤算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#用户活跃度对物品相似度的影响"><span class="post-toc-number">2.3.2.1.</span> <span class="post-toc-text">用户活跃度对物品相似度的影响</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#UserCF和ItemCF对比"><span class="post-toc-number">2.3.3.</span> <span class="post-toc-text">UserCF和ItemCF对比</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#隐语义模型"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">隐语义模型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基础算法-1"><span class="post-toc-number">2.4.1.</span> <span class="post-toc-text">基础算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#LFM"><span class="post-toc-number">2.4.1.1.</span> <span class="post-toc-text">LFM</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#LFM和基于领域的方法比较"><span class="post-toc-number">2.4.2.</span> <span class="post-toc-text">LFM和基于领域的方法比较</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基于图的模型（graph-based-model）"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">基于图的模型（graph-based model）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#用户行为数据的二分图表示"><span class="post-toc-number">2.5.1.</span> <span class="post-toc-text">用户行为数据的二分图表示</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基于图的推荐算法（graph-based-model）"><span class="post-toc-number">2.5.2.</span> <span class="post-toc-text">基于图的推荐算法（graph-based model）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#基于随机游走的PersonalRank算法"><span class="post-toc-number">2.5.2.1.</span> <span class="post-toc-text">基于随机游走的PersonalRank算法</span></a></li></ol></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#第三章-冷启动问题"><span class="post-toc-number">3.</span> <span class="post-toc-text">第三章 冷启动问题</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#第1章-好的推荐系统"><span class="post-toc-text">第1章 好的推荐系统</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#什么是推荐系统"><span class="post-toc-text">什么是推荐系统</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#推荐系统评测"><span class="post-toc-text">推荐系统评测</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#实验方法"><span class="post-toc-text">实验方法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#评测指标"><span class="post-toc-text">评测指标</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#评测维度"><span class="post-toc-text">评测维度</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#第2章-利用用户行为数据"><span class="post-toc-text">第2章 利用用户行为数据</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#用户活跃度和物品流行度的分布"><span class="post-toc-text">用户活跃度和物品流行度的分布</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#用户活跃度和物品流行度的关系"><span class="post-toc-text">用户活跃度和物品流行度的关系</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基于邻域的算法"><span class="post-toc-text">基于邻域的算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基于用户的协同过滤算法"><span class="post-toc-text">基于用户的协同过滤算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#基础算法"><span class="post-toc-text">基础算法</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#改进算法"><span class="post-toc-text">改进算法</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基于物品的协同过滤算法"><span class="post-toc-text">基于物品的协同过滤算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#用户活跃度对物品相似度的影响"><span class="post-toc-text">用户活跃度对物品相似度的影响</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#UserCF和ItemCF对比"><span class="post-toc-text">UserCF和ItemCF对比</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#隐语义模型"><span class="post-toc-text">隐语义模型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基础算法-1"><span class="post-toc-text">基础算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#LFM"><span class="post-toc-text">LFM</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#LFM和基于领域的方法比较"><span class="post-toc-text">LFM和基于领域的方法比较</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基于图的模型（graph-based-model）"><span class="post-toc-text">基于图的模型（graph-based model）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#用户行为数据的二分图表示"><span class="post-toc-text">用户行为数据的二分图表示</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基于图的推荐算法（graph-based-model）"><span class="post-toc-text">基于图的推荐算法（graph-based model）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#基于随机游走的PersonalRank算法"><span class="post-toc-text">基于随机游走的PersonalRank算法</span></a></li></ol></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#第三章-冷启动问题"><span class="post-toc-text">第三章 冷启动问题</span></a></li></ol>
         </nav>
     </aside>
 
@@ -368,7 +454,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.179Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2024-02-14T11:03:25.038Z" itemprop="dateUpdated">2024-02-14 11:03:25</time>
 </span><br>
 
 
@@ -554,6 +640,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -618,6 +708,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACuUlEQVR42u3aQW7cMAwF0Nz/0uk2QGv5kxSDKfC8GjgeWU8BRA3Jr6/4+v5x/X3n5/2n754/n59P3jK68PDw8AZTfxru/JrzRM/PT5bmPGc8PDy8bV5vQ0+mnm/rT8vaCyp4eHh4n8M7b83Vs24eEvDw8PD+X15+RK4eqZNjPR4eHt7n8KpDV1MYSYCpPnM514KHh4cX86rH30/4vFLfw8PDwxtX1fOiVzVs3EoKv4yPh4eHt8DLN9zv8ZWnKnpNBo9j4uHh4V3lbUyot0DJ8+VFwcPDw1vg5aX6CaNa/u81KLyMhoeHh3eJl7w+SUn0Cma9mZxJj78V8PDw8BZ4eQFsson3DsdlGB4eHt4yr7rdVxukklCRvL1aEsPDw8Pb4J2nlbcL9I7F+WhJIHlJc+Dh4eFd4lUTENVJ9BLB1f/MS7sVHh4e3gJvHlWSRcnbEa41cuHh4eEt86qJ1CTJewtWTTHj4eHh7fGqidd8454v2bxIhoeHh7fByw/QvYaqnJ2nPwr38fDw8BZ4ebFqHk6q7VmTRoRCrhoPDw9vwEu+Vt2U88RuL8xEQQgPDw/vKm/S2FTd+nsJjkmwwcPDw9vj9V5ZDQC9hoAkLD2Og4eHh7fMq7YIVDfrvNB1nk/hDh4eHt4C7zy5/MXNjftWojbPteDh4eEt8Hpl/moCt5fMzYNWoQ8CDw8P7yovT0NUD9+TBG6VjYeHh7fHmyRq89ESarTd5xceHh7eVd6kNFUND5P7+cL9Iw2Bh4eHd5U3Dx7VtOzkfv65jMTDw8Mr8iYlrkmKtpfUaBbA8PDw8BZ4eSo2SUNUWwfmyZTyn/Hw8PB+nVdN2uaYauHt5Xk8PDy8j+HdbSbIExCjzgg8PDy8q7zk4Jtsx8nn5hbfW1w8PDy8Bd78B3/eYlU9OifzudZ3hoeHh/fO+wNDHLtgKGNuPQAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

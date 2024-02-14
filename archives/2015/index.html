@@ -28,16 +28,16 @@
     
     
     <meta name="keywords" content="undefined">
-    <meta name="description" content="成长中的工程师|计算机|算法|研发|数据挖掘|软件开发|互联网">
+    <meta name="description" content="算法工程师|自然语言处理|AI|人工智能|推荐算法|计算机|算法|研发|数据挖掘|软件开发|互联网">
 <meta property="og:type" content="website">
 <meta property="og:title" content="靖待的技术博客">
 <meta property="og:url" content="https://hubojing.github.io/archives/2015/index.html">
 <meta property="og:site_name" content="靖待的技术博客">
-<meta property="og:description" content="成长中的工程师|计算机|算法|研发|数据挖掘|软件开发|互联网">
+<meta property="og:description" content="算法工程师|自然语言处理|AI|人工智能|推荐算法|计算机|算法|研发|数据挖掘|软件开发|互联网">
 <meta property="og:locale" content="zh-CN">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="靖待的技术博客">
-<meta name="twitter:description" content="成长中的工程师|计算机|算法|研发|数据挖掘|软件开发|互联网">
+<meta name="twitter:description" content="算法工程师|自然语言处理|AI|人工智能|推荐算法|计算机|算法|研发|数据挖掘|软件开发|互联网">
     
         <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
     
@@ -48,8 +48,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -434,6 +520,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -470,7 +560,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/archives/2015/&title=靖待的技术博客&source=成长中的工程师|计算机|算法|研发|数据挖掘|软件开发|互联网" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/archives/2015/&title=靖待的技术博客&source=算法工程师|自然语言处理|AI|人工智能|推荐算法|计算机|算法|研发|数据挖掘|软件开发|互联网" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -498,6 +588,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABw0lEQVR42u3aS26EMBAFQO5/6YmUVTaY127bQ6TyCiEEZRYt9+e64vX5XXfXf9f4/t07Fy9cXNw29zNcd68eg8b0ZHu3W8XFxT3ITYLX+E4e5sbB8cGGi4v7Mu44qHWIuLi4/5fbuZM8iYuL+zZunpzkGxs/vz1Xw8XFbXD7BdP+9dH6Li4ubqMrkaQxc0nR5NdxcXGPcJPP5MTqJufSIVxc3N3cufZnguucth5CGC4u7mZudVgqDz3VI1F+VMLFxT3D7RxE5sa2krcVBrNwcXE3cKtBKk+c5soiyZZwcXH3cTtBKg89nUGNwh/FxcVdxK2C8pJH/ky5pIKLi7uZm6QleQJTbbGU2yq4uLhHuDvGs/LDU55W4eLinuRWd9YJQJ2AhYuLe5JbjXCdWDiHu50ZwcXF3cbNU5dVrZFqwRQXF/db3DyE5W3Ra9HCxcX9Frda0MwbrtVUqmDHxcXdxu2USqsDl9XGbau+i4uL2+bmjc8keK0KZA9DGLi4uEe41TrrXFtlwVAXLi7uy7j9E1O+jdvt4eLivpK7djijPJCBi4t7kJt/rNpG7Sc/k2URXFzcBrdTMJ0bp1g1woWLi7uB+wNfPN1E7vpqHwAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

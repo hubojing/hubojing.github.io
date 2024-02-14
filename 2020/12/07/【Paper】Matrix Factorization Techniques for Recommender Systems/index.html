@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://hubojing.github.io/images/Paper-MF-LFM.png">
 <meta property="og:image" content="https://hubojing.github.io/images/Paper-MF-LFM.png">
 <meta property="og:image" content="https://hubojing.github.io/images/Paper-MF-accuracy.png">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.179Z">
+<meta property="og:updated_time" content="2020-12-09T03:23:02.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Paper】Matrix Factorization Techniques for Recommender Systems">
 <meta name="twitter:description" content="矩阵分解算法原文。">
@@ -54,8 +54,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -198,7 +284,7 @@
         <h1 class="title">【Paper】Matrix Factorization Techniques for Recommender Systems</h1>
         <h5 class="subtitle">
             
-                <time datetime="2020-12-07T15:12:57.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2020-12-07T07:12:57.000Z" itemprop="datePublished" class="page-time">
   2020-12-07
 </time>
 
@@ -220,7 +306,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Recommender-System-Stratrgies-推荐系统策略"><span class="post-toc-number">2.</span> <span class="post-toc-text">Recommender System Stratrgies 推荐系统策略</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Matrix-Factorization-Methods-矩阵分解策略"><span class="post-toc-number">3.</span> <span class="post-toc-text">Matrix Factorization Methods 矩阵分解策略</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#A-Basic-Matrix-Factorization-Model-基本矩阵分解模型"><span class="post-toc-number">4.</span> <span class="post-toc-text">A Basic Matrix Factorization Model 基本矩阵分解模型</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Learning-Algorithms-学习算法"><span class="post-toc-number">5.</span> <span class="post-toc-text">Learning Algorithms 学习算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Stochastic-gradient-descent-随机梯度下降"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">Stochastic gradient descent 随机梯度下降</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Alternating-least-squares-交替最小二乘法"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">Alternating least squares 交替最小二乘法</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Adding-Biases"><span class="post-toc-number">6.</span> <span class="post-toc-text">Adding Biases</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Additional-Input-Sources-额外输入资源"><span class="post-toc-number">7.</span> <span class="post-toc-text">Additional Input Sources 额外输入资源</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Temporal-dynamics-时空动态"><span class="post-toc-number">8.</span> <span class="post-toc-text">Temporal dynamics 时空动态</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Inputs-with-varying-confidence-levels-各种信任级别的输入"><span class="post-toc-number">9.</span> <span class="post-toc-text">Inputs with varying confidence levels 各种信任级别的输入</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Netflix-prize-competition-Netflix大奖竞赛"><span class="post-toc-number">10.</span> <span class="post-toc-text">Netflix prize competition  Netflix大奖竞赛</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#阅后总结"><span class="post-toc-number">11.</span> <span class="post-toc-text">阅后总结</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Recommender-System-Stratrgies-推荐系统策略"><span class="post-toc-text">Recommender System Stratrgies 推荐系统策略</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Matrix-Factorization-Methods-矩阵分解策略"><span class="post-toc-text">Matrix Factorization Methods 矩阵分解策略</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#A-Basic-Matrix-Factorization-Model-基本矩阵分解模型"><span class="post-toc-text">A Basic Matrix Factorization Model 基本矩阵分解模型</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Learning-Algorithms-学习算法"><span class="post-toc-text">Learning Algorithms 学习算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Stochastic-gradient-descent-随机梯度下降"><span class="post-toc-text">Stochastic gradient descent 随机梯度下降</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Alternating-least-squares-交替最小二乘法"><span class="post-toc-text">Alternating least squares 交替最小二乘法</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Adding-Biases"><span class="post-toc-text">Adding Biases</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Additional-Input-Sources-额外输入资源"><span class="post-toc-text">Additional Input Sources 额外输入资源</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Temporal-dynamics-时空动态"><span class="post-toc-text">Temporal dynamics 时空动态</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Inputs-with-varying-confidence-levels-各种信任级别的输入"><span class="post-toc-text">Inputs with varying confidence levels 各种信任级别的输入</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Netflix-prize-competition-Netflix大奖竞赛"><span class="post-toc-text">Netflix prize competition  Netflix大奖竞赛</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#阅后总结"><span class="post-toc-text">阅后总结</span></a></li></ol>
         </nav>
     </aside>
 
@@ -231,7 +317,7 @@
     <div class="post-card">
         <h1 class="post-card-title">【Paper】Matrix Factorization Techniques for Recommender Systems</h1>
         <div class="post-meta">
-            <time class="post-time" title="2020-12-07 15:12:57" datetime="2020-12-07T15:12:57.000Z"  itemprop="datePublished">2020-12-07</time>
+            <time class="post-time" title="2020-12-07 07:12:57" datetime="2020-12-07T07:12:57.000Z"  itemprop="datePublished">2020-12-07</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
@@ -267,7 +353,7 @@
 <h1 id="Netflix-prize-competition-Netflix大奖竞赛"><a href="#Netflix-prize-competition-Netflix大奖竞赛" class="headerlink" title="Netflix prize competition  Netflix大奖竞赛"></a>Netflix prize competition  Netflix大奖竞赛</h1><p>　　使用矩阵分解的方法取得了第一名的成绩。<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/Paper-MF-accuracy.png" alt="精确度" title>
+                    <img src="/images/Paper-MF-accuracy.png" alt="精确度" title="">
                 </div>
                 <div class="image-caption">精确度</div>
             </figure><br>　　加的因素越多，精确度越高。</p>
@@ -280,7 +366,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.179Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2020-12-09T03:23:02.000Z" itemprop="dateUpdated">2020-12-09 03:23:02</time>
 </span><br>
 
 
@@ -466,6 +552,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -530,6 +620,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADLUlEQVR42u3aUW4iQQwE0Nz/0uwBsgxV9kTKdN58IQhDv0ZKYbu/vuLr9e36/mry3uvnX2+uZG1fP3FhY2NjP4T9urwSdr6Ua3xy/3adb++JjY2NfRz7eonXfzO7NpjrCIy+BmxsbOw/z042Ii9p8iLnmoqNjY2N3bITZF6uzDDY2NjY2HlTaRZm+ZAgL2CuH9/cS8PGxsb+9ex8Kvr7H//IfBsbGxv7F7M3Df28xTMbM2waVR8U2NjY2Aex8wCY8fbbkRce7fqxsbGxz2C3TZ+8YZQEUh5FLfLDVmJjY2Mfx54dapyxN8OAdkRRVGDY2NjYD2e3x2IS/M9tSlFjvStjsLGxsQ9i33vMpV3WbMvaw0ZvV4iNjY19HDv6px8PAzYRmBQYbY/oP5+OjY2NfQQ7aeVsAixvFW0OBtWjZWxsbOxD2Zult63/fPvy5lS+HmxsbOyT2G0AzM69zAqetuwZRi82Njb2w9mvxZUf32zj6jpykmdWI15sbGzsR7GTKMqP3WyGCveWQ1ErChsbG/sI9mxAmwdb3lqaDQly9tvvGRsbG/sgdltU7NtJeRuojatVYmNjY2M/nN1GUXJwZ/9qEntFywkbGxv7IPYmYGYb0W5WG1FFJGNjY2Mfyt4PAPITMu3gIX9v1K7CxsbGPohd/4iPf89vNrGNsTxQsbGxsc9j3xsYSTNoU2xs7o+NjY39F9jtUZ62/EiO1GwO7gzHvdjY2NgPZ7dN/01TfjNyKOqqMuSwsbGxn8vOWzA5Pt/QdiNm9/zPmrGxsbEPYret+XZBs+JhH1fRHbCxsbGPY7cfMDumM2vx3/W5H3pp2NjY2A9nt9HSFgY5O29m3Zzb2NjY2A9nz1oz+QbddRjotrjFxsbGPoL9Kq9Z8NxWPMRb/2E92NjY2AexZwdfWlhekOQFUlKi5KGIjY2N/XR2Eh73Dg/aIMyjtBg/YGNjYx/HTn7ut5HTBs91FLUFxofQxcbGxv7D7DxsNkOC/D75GBgbGxsbOy8VNhvRNqraphg2Njb2qex9tCQFw2xT2vFDVFBhY2NjH8TeN/rzEMpJ7Rcw2xRsbGzsh7P/AWWdXyoP0UR5AAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
+
 
 
 

@@ -58,8 +58,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -224,7 +310,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#同步托管至coding"><span class="post-toc-number">1.</span> <span class="post-toc-text">同步托管至coding</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#修改背景透明度"><span class="post-toc-number">2.</span> <span class="post-toc-text">修改背景透明度</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#左侧背景更换"><span class="post-toc-number">3.</span> <span class="post-toc-text">左侧背景更换</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#提交sitemap给google和百度"><span class="post-toc-number">4.</span> <span class="post-toc-text">提交sitemap给google和百度</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#install"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">install</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Update"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">Update</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Options"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">Options</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Errors"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">Errors</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#公共-独立空间评论切换"><span class="post-toc-number">5.</span> <span class="post-toc-text">公共/独立空间评论切换</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#将“more”改为“阅读全文”"><span class="post-toc-number">6.</span> <span class="post-toc-text">将“more”改为“阅读全文”</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#主题更换"><span class="post-toc-number">7.</span> <span class="post-toc-text">主题更换</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#图片插入"><span class="post-toc-number">8.</span> <span class="post-toc-text">图片插入</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#本地图片插入问题解决"><span class="post-toc-number">9.</span> <span class="post-toc-text">本地图片插入问题解决</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#About-Page-关于我页面"><span class="post-toc-number">10.</span> <span class="post-toc-text">About Page 关于我页面</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Tags-Cloud-Page-标签云页面"><span class="post-toc-number">11.</span> <span class="post-toc-text">Tags Cloud Page 标签云页面</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Comment-评论"><span class="post-toc-number">12.</span> <span class="post-toc-text">Comment 评论</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#主页链接"><span class="post-toc-number">13.</span> <span class="post-toc-text">主页链接</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#细节"><span class="post-toc-number">14.</span> <span class="post-toc-text">细节</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#关于主题"><span class="post-toc-number">15.</span> <span class="post-toc-text">关于主题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#关于统计"><span class="post-toc-number">16.</span> <span class="post-toc-text">关于统计</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#网站小图标"><span class="post-toc-number">17.</span> <span class="post-toc-text">网站小图标</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#categories、tags"><span class="post-toc-number">18.</span> <span class="post-toc-text">categories、tags</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#更改相关字体、颜色等细节"><span class="post-toc-number">19.</span> <span class="post-toc-text">更改相关字体、颜色等细节</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#搭建问题的解决方案"><span class="post-toc-number">20.</span> <span class="post-toc-text">搭建问题的解决方案</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考资料"><span class="post-toc-number">21.</span> <span class="post-toc-text">参考资料</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#同步托管至coding"><span class="post-toc-text">同步托管至coding</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#修改背景透明度"><span class="post-toc-text">修改背景透明度</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#左侧背景更换"><span class="post-toc-text">左侧背景更换</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#提交sitemap给google和百度"><span class="post-toc-text">提交sitemap给google和百度</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#install"><span class="post-toc-text">install</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Update"><span class="post-toc-text">Update</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Options"><span class="post-toc-text">Options</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Errors"><span class="post-toc-text">Errors</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#公共-独立空间评论切换"><span class="post-toc-text">公共/独立空间评论切换</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#将“more”改为“阅读全文”"><span class="post-toc-text">将“more”改为“阅读全文”</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#主题更换"><span class="post-toc-text">主题更换</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#图片插入"><span class="post-toc-text">图片插入</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#本地图片插入问题解决"><span class="post-toc-text">本地图片插入问题解决</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#About-Page-关于我页面"><span class="post-toc-text">About Page 关于我页面</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Tags-Cloud-Page-标签云页面"><span class="post-toc-text">Tags Cloud Page 标签云页面</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Comment-评论"><span class="post-toc-text">Comment 评论</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#主页链接"><span class="post-toc-text">主页链接</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#细节"><span class="post-toc-text">细节</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#关于主题"><span class="post-toc-text">关于主题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#关于统计"><span class="post-toc-text">关于统计</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#网站小图标"><span class="post-toc-text">网站小图标</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#categories、tags"><span class="post-toc-text">categories、tags</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#更改相关字体、颜色等细节"><span class="post-toc-text">更改相关字体、颜色等细节</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#搭建问题的解决方案"><span class="post-toc-text">搭建问题的解决方案</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考资料"><span class="post-toc-text">参考资料</span></a></li></ol>
         </nav>
     </aside>
 
@@ -549,6 +635,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -613,6 +703,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKUlEQVR42u3awYrDMAxF0f7/T2egqykh4T7JLUS+XpV0EvukoJElv154HO9xvvJ/nK/f//3VXed7lw0ZMmQ8lnHcjjPj6jNB8hfB1yZDhox9GPdB9iqAppHwPiinr0mGDBky+MS1oExmkSFDhoxawCVpXG2P+dP/GzJkyHggo1MO41tWEli/vheXIUPGAxlpY+CXn7/Y35AhQ8ZDGEdppElbLaAH65EhQ8ZoBi+ldeJeLcnjL06GDBk7M74yWTgjbyrIkCFjB0a6cU3LanxZafFOhgwZezLWJnDkW55WBgFXhgwZgxgkHeSPqJX++y1SGTJkTGWQxa1KCtFGNDyc8dHfkCFDxlAGCX/pQ3npjSR8JATLkCFjB8ZvlpKW8Pi3MmTImM3oPBSVvRopY7DNliFDxmhGp9RVO2bRKfMFx8JkyJAxiLF2m8phafhGv4MMGTJGMzpL4YvgB7zi2WXIkDGa0W8i9gtnq54gQ4aM2QxSFEtTQ5JcdsDoN5EhQ8YgBinWp+nj/XL7ryCuGsqQIWMEgy+odpiMvD6Cv0xqZciQMZqRthh56rasy0q2rzJkyBjKOMKRNiB5ypiyP67IkCFjNCMNuOnNaSpJWg4yZMjYk5EG2f5xLlLai/NZGTJkbMCoBdl+MS4N36gxIEOGDBlhUzM9FlZMRmXIkCEDB8damK5RZciQsRujU6xPj6uu2jbLkCFjH0anllU7rkEKaouLcTJkyHgq4w/9m5NhzI+RfwAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

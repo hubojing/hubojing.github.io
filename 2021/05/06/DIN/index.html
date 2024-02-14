@@ -49,7 +49,7 @@
 <meta property="og:image" content="https://hubojing.github.io/images/DIN-T5.png">
 <meta property="og:image" content="https://hubojing.github.io/images/DIN-F5.png">
 <meta property="og:image" content="https://hubojing.github.io/images/DIN-F6.png">
-<meta property="og:updated_time" content="2021-10-21T17:03:21.000Z">
+<meta property="og:updated_time" content="2021-10-21T09:03:21.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【Paper】DIN模型">
 <meta name="twitter:description" content="阿里DIN模型　　10.21总算写完了……">
@@ -64,8 +64,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -208,7 +294,7 @@
         <h1 class="title">【Paper】DIN模型</h1>
         <h5 class="subtitle">
             
-                <time datetime="2021-05-06T10:55:35.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2021-05-06T02:55:35.000Z" itemprop="datePublished" class="page-time">
   2021-05-06
 </time>
 
@@ -230,7 +316,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#现有问题"><span class="post-toc-number">2.</span> <span class="post-toc-text">现有问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#关键词"><span class="post-toc-number">3.</span> <span class="post-toc-text">关键词</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#引言-INTRODUCTION"><span class="post-toc-number">4.</span> <span class="post-toc-text">引言 INTRODUCTION</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#背景-BACKGROUND"><span class="post-toc-number">5.</span> <span class="post-toc-text">背景 BACKGROUND</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#深度兴趣网络-DEEP-INTEREST-NETWORK"><span class="post-toc-number">6.</span> <span class="post-toc-text">深度兴趣网络 DEEP INTEREST NETWORK</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#特征表示-Feature-Representation"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">特征表示 Feature Representation</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基线模型-Base-Model-Embedding-amp-MLP"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">基线模型 Base Model(Embedding&amp;MLP)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#DIN架构-The-structure-of-Deep-Interest-Network"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">DIN架构 The structure of Deep Interest Network</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#训练方法-TRAINING-TECHNIQUES"><span class="post-toc-number">7.</span> <span class="post-toc-text">训练方法 TRAINING TECHNIQUES</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#小批量感知正则化-Mini-batch-Aware-Regularization"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">小批量感知正则化 Mini-batch Aware Regularization</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据自适应激活函数-Data-Adaptive-Activation-Function"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">数据自适应激活函数 Data Adaptive Activation Function</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验-EXPERIMENTS"><span class="post-toc-number">8.</span> <span class="post-toc-text">实验 EXPERIMENTS</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据集和实验步骤-Datasets-and-Experimental-Setup"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">数据集和实验步骤 Datasets and Experimental Setup</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基线实验"><span class="post-toc-number">8.2.</span> <span class="post-toc-text">基线实验</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#策略"><span class="post-toc-number">8.3.</span> <span class="post-toc-text">策略</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#亚马逊数据集和MovieLens数据集模型对比结果-Result-from-model-comparison-on-Amazon-Dataset-and-MovieLens-Dataset"><span class="post-toc-number">8.4.</span> <span class="post-toc-text">亚马逊数据集和MovieLens数据集模型对比结果 Result from model comparison on Amazon Dataset and MovieLens Dataset</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#正则化性能-Performance-of-regularization"><span class="post-toc-number">8.5.</span> <span class="post-toc-text">正则化性能 Performance of regularization</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#阿里巴巴数据集模型对比结果-Result-from-model-comparison-on-Alibaba-Dataset"><span class="post-toc-number">8.6.</span> <span class="post-toc-text">阿里巴巴数据集模型对比结果 Result from model comparison on Alibaba Dataset</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#DIN可视化-Visualization-of-DIN"><span class="post-toc-number">8.7.</span> <span class="post-toc-text">DIN可视化 Visualization of DIN</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结-CONCLUSIONS"><span class="post-toc-number">9.</span> <span class="post-toc-text">总结 CONCLUSIONS</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#现有问题"><span class="post-toc-text">现有问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#关键词"><span class="post-toc-text">关键词</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#引言-INTRODUCTION"><span class="post-toc-text">引言 INTRODUCTION</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#背景-BACKGROUND"><span class="post-toc-text">背景 BACKGROUND</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#深度兴趣网络-DEEP-INTEREST-NETWORK"><span class="post-toc-text">深度兴趣网络 DEEP INTEREST NETWORK</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#特征表示-Feature-Representation"><span class="post-toc-text">特征表示 Feature Representation</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基线模型-Base-Model-Embedding-amp-MLP"><span class="post-toc-text">基线模型 Base Model(Embedding&amp;MLP)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#DIN架构-The-structure-of-Deep-Interest-Network"><span class="post-toc-text">DIN架构 The structure of Deep Interest Network</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#训练方法-TRAINING-TECHNIQUES"><span class="post-toc-text">训练方法 TRAINING TECHNIQUES</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#小批量感知正则化-Mini-batch-Aware-Regularization"><span class="post-toc-text">小批量感知正则化 Mini-batch Aware Regularization</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据自适应激活函数-Data-Adaptive-Activation-Function"><span class="post-toc-text">数据自适应激活函数 Data Adaptive Activation Function</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验-EXPERIMENTS"><span class="post-toc-text">实验 EXPERIMENTS</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据集和实验步骤-Datasets-and-Experimental-Setup"><span class="post-toc-text">数据集和实验步骤 Datasets and Experimental Setup</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基线实验"><span class="post-toc-text">基线实验</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#策略"><span class="post-toc-text">策略</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#亚马逊数据集和MovieLens数据集模型对比结果-Result-from-model-comparison-on-Amazon-Dataset-and-MovieLens-Dataset"><span class="post-toc-text">亚马逊数据集和MovieLens数据集模型对比结果 Result from model comparison on Amazon Dataset and MovieLens Dataset</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#正则化性能-Performance-of-regularization"><span class="post-toc-text">正则化性能 Performance of regularization</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#阿里巴巴数据集模型对比结果-Result-from-model-comparison-on-Alibaba-Dataset"><span class="post-toc-text">阿里巴巴数据集模型对比结果 Result from model comparison on Alibaba Dataset</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#DIN可视化-Visualization-of-DIN"><span class="post-toc-text">DIN可视化 Visualization of DIN</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结-CONCLUSIONS"><span class="post-toc-text">总结 CONCLUSIONS</span></a></li></ol>
         </nav>
     </aside>
 
@@ -241,7 +327,7 @@
     <div class="post-card">
         <h1 class="post-card-title">【Paper】DIN模型</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-05-06 10:55:35" datetime="2021-05-06T10:55:35.000Z"  itemprop="datePublished">2021-05-06</time>
+            <time class="post-time" title="2021-05-06 02:55:35" datetime="2021-05-06T02:55:35.000Z"  itemprop="datePublished">2021-05-06</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
@@ -274,7 +360,7 @@
 <h1 id="背景-BACKGROUND"><a href="#背景-BACKGROUND" class="headerlink" title="背景 BACKGROUND"></a>背景 BACKGROUND</h1><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\DIN-1.png" alt="图1 - 阿里广告系统" title>
+                    <img src="\images\DIN-1.png" alt="图1 - 阿里广告系统" title="">
                 </div>
                 <div class="image-caption">图1 - 阿里广告系统</div>
             </figure>
@@ -282,14 +368,14 @@
 <h1 id="深度兴趣网络-DEEP-INTEREST-NETWORK"><a href="#深度兴趣网络-DEEP-INTEREST-NETWORK" class="headerlink" title="深度兴趣网络 DEEP INTEREST NETWORK"></a>深度兴趣网络 DEEP INTEREST NETWORK</h1><h2 id="特征表示-Feature-Representation"><a href="#特征表示-Feature-Representation" class="headerlink" title="特征表示 Feature Representation"></a>特征表示 Feature Representation</h2><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\DIN-2.png" alt="表1 - 特征处理" title>
+                    <img src="\images\DIN-2.png" alt="表1 - 特征处理" title="">
                 </div>
                 <div class="image-caption">表1 - 特征处理</div>
             </figure>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\DIN-特征表示.png" alt="特征表示" title>
+                    <img src="\images\DIN-特征表示.png" alt="特征表示" title="">
                 </div>
                 <div class="image-caption">特征表示</div>
             </figure>
@@ -297,7 +383,7 @@
 <h2 id="基线模型-Base-Model-Embedding-amp-MLP"><a href="#基线模型-Base-Model-Embedding-amp-MLP" class="headerlink" title="基线模型 Base Model(Embedding&amp;MLP)"></a>基线模型 Base Model(Embedding&amp;MLP)</h2><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\DIN架构.png" alt="基础架构 vs DIN架构" title>
+                    <img src="\images\DIN架构.png" alt="基础架构 vs DIN架构" title="">
                 </div>
                 <div class="image-caption">基础架构 vs DIN架构</div>
             </figure>
@@ -326,14 +412,14 @@
 <h2 id="数据自适应激活函数-Data-Adaptive-Activation-Function"><a href="#数据自适应激活函数-Data-Adaptive-Activation-Function" class="headerlink" title="数据自适应激活函数 Data Adaptive Activation Function"></a>数据自适应激活函数 Data Adaptive Activation Function</h2><p>　　PReLU是常用的激活函数。<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="\images\DIN-dice.png" alt="PReLU和Dice" title>
+                    <img src="\images\DIN-dice.png" alt="PReLU和Dice" title="">
                 </div>
                 <div class="image-caption">PReLU和Dice</div>
             </figure><br>　　如图所示，PReLU在0附近有一个固定的转折点，这对于每层不同分布的输入是不合适的。于是，本文设计了一个自适应激活函数Dice。<br>$$f(s) = p(s)·s + (1-p(s))·αs, p(s) = \frac{1}{1 + e^{-\frac{s-E[s]}{\sqrt{Var[s] + \epsilon}}}}$$<br>　　E[s]和Var[s]代表每次小批量输入的均值和方差。$\epsilon$是一个常量，此处设为$10^{-8}$。<br>　　Dice的主要思想是根据输入数据分布自适应调整转折点，值设置为输入的平均值。另外，Dice在两个函数间切换很顺滑。当E(s) = 0且Var[s] = 0时，Dice退化到PReLU。</p>
 <h1 id="实验-EXPERIMENTS"><a href="#实验-EXPERIMENTS" class="headerlink" title="实验 EXPERIMENTS"></a>实验 EXPERIMENTS</h1><h2 id="数据集和实验步骤-Datasets-and-Experimental-Setup"><a href="#数据集和实验步骤-Datasets-and-Experimental-Setup" class="headerlink" title="数据集和实验步骤 Datasets and Experimental Setup"></a>数据集和实验步骤 Datasets and Experimental Setup</h2><p>　　数据集三个：Amazon Dataset， MovieLens Dataset和Alibaba Dataset。<br>　　Amazon Dataset：<a href="http://jmcauley.ucsd.edu/data/amazon/" target="_blank" rel="noopener">http://jmcauley.ucsd.edu/data/amazon/</a><br>　　MovieLens Dataset：<a href="https://grouplens.org/datasets/movielens/20m/" target="_blank" rel="noopener">https://grouplens.org/datasets/movielens/20m/</a><br>　　数据集情况如图。<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/DIN-data.png" alt="数据" title>
+                    <img src="/images/DIN-data.png" alt="数据" title="">
                 </div>
                 <div class="image-caption">数据</div>
             </figure></p>
@@ -348,13 +434,13 @@
 <h2 id="亚马逊数据集和MovieLens数据集模型对比结果-Result-from-model-comparison-on-Amazon-Dataset-and-MovieLens-Dataset"><a href="#亚马逊数据集和MovieLens数据集模型对比结果-Result-from-model-comparison-on-Amazon-Dataset-and-MovieLens-Dataset" class="headerlink" title="亚马逊数据集和MovieLens数据集模型对比结果 Result from model comparison on Amazon Dataset and MovieLens Dataset"></a>亚马逊数据集和MovieLens数据集模型对比结果 Result from model comparison on Amazon Dataset and MovieLens Dataset</h2><p>　　如图所示。<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/DIN-F4.png" alt="图4" title>
+                    <img src="/images/DIN-F4.png" alt="图4" title="">
                 </div>
                 <div class="image-caption">图4</div>
             </figure><br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/DIN-T3.png" alt="表3" title>
+                    <img src="/images/DIN-T3.png" alt="表3" title="">
                 </div>
                 <div class="image-caption">表3</div>
             </figure></p>
@@ -366,28 +452,28 @@
 <li>MBA<figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/DIN-T4.png" alt="表4" title>
+                    <img src="/images/DIN-T4.png" alt="表4" title="">
                 </div>
                 <div class="image-caption">表4</div>
             </figure>
 <h2 id="阿里巴巴数据集模型对比结果-Result-from-model-comparison-on-Alibaba-Dataset"><a href="#阿里巴巴数据集模型对比结果-Result-from-model-comparison-on-Alibaba-Dataset" class="headerlink" title="阿里巴巴数据集模型对比结果 Result from model comparison on Alibaba Dataset"></a>阿里巴巴数据集模型对比结果 Result from model comparison on Alibaba Dataset</h2><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/DIN-T5.png" alt="表5" title>
+                    <img src="/images/DIN-T5.png" alt="表5" title="">
                 </div>
                 <div class="image-caption">表5</div>
             </figure>
 <h2 id="DIN可视化-Visualization-of-DIN"><a href="#DIN可视化-Visualization-of-DIN" class="headerlink" title="DIN可视化 Visualization of DIN"></a>DIN可视化 Visualization of DIN</h2><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/DIN-F5.png" alt="图5" title>
+                    <img src="/images/DIN-F5.png" alt="图5" title="">
                 </div>
                 <div class="image-caption">图5</div>
             </figure>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/DIN-F6.png" alt="图6" title>
+                    <img src="/images/DIN-F6.png" alt="图6" title="">
                 </div>
                 <div class="image-caption">图6</div>
             </figure>
@@ -401,7 +487,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2021-10-21T17:03:21.000Z" itemprop="dateUpdated">2021-10-21 17:03:21</time>
+    最后更新时间：<time datetime="2021-10-21T09:03:21.000Z" itemprop="dateUpdated">2021-10-21 09:03:21</time>
 </span><br>
 
 
@@ -587,6 +673,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -651,6 +741,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABsklEQVR42u3aMXLDMAwEQP//006bRsyBIDF2ZlWp0IjLhkMc8HrFz3v5/P7m6funf75uPLi4uG1uTlnjElC+vcet4uLiDnLXi60Pnf4mC4cdLi7uB3OrC+Pi4v5v7voKkpQ9uLi438LtRB5JwJEXV8dqNVxc3AY3TynvvV/Jd3Fxcbe47+JTDUSqwegfq+Pi4o5w8wMlv5rkUWl1XVxc3EludeHqraM/X9Hq3uDi4ha5ew2S6qDVqc3j4uJOcvvjU2tKv7mCi4s7ye0cNFGJsvwmuRL9cdHBxcW9xj02GFE8tlq1Gi4u7kjOkMedeWFz+IjExcUd5O4VLcmW9tqoj3/GxcUd4ebL5yMU/QmrcpMVFxf3Grf6u9vFTz4agouLe4NbbXWUd3+0oMLFxZ3ndg6mvdGu8sZwcXEHuXkU0unb5H8o3IBwcXGPck8FmtV/tnq/uLi4l7n9kYjOMtWQBRcXd5JbjUdPNUI2iyVcXNxBbqcDU41OjtVquLi4H8bNS5rWABYuLu4XcpP3fuTx2ErBxcW9zK2Gm53Dq9p0wcXFnefuhZv98ayE3sp3cXFxd7g/2+8LCd/snxwAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 

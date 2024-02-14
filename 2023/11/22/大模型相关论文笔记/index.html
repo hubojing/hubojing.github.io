@@ -41,7 +41,7 @@
 <meta property="og:image" content="https://hubojing.github.io/images/FlashAttention-StandardAttention伪代码.png">
 <meta property="og:image" content="https://hubojing.github.io/images/FlashAttention伪代码.png">
 <meta property="og:image" content="https://hubojing.github.io/images/LoRA.png">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.183Z">
+<meta property="og:updated_time" content="2024-02-14T11:03:25.042Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="大模型相关论文笔记">
 <meta name="twitter:description" content="大模型相关论文阅读笔记。 　　倒序排列论文，最新阅读的在最上面。　　2024年1月26日更新">
@@ -56,8 +56,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -222,7 +308,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Retrieval-Augmented-Generation-for-Knowledge-Intensive-NLP-Tasks"><span class="post-toc-number">1.</span> <span class="post-toc-text">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#引言"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">引言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方法"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#模型"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">模型</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#检索器：DPR"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">检索器：DPR</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#生成器：BART"><span class="post-toc-number">1.2.3.</span> <span class="post-toc-text">生成器：BART</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#训练"><span class="post-toc-number">1.2.4.</span> <span class="post-toc-text">训练</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#解码"><span class="post-toc-number">1.2.5.</span> <span class="post-toc-text">解码</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#FLASHATTENTION-Fast-and-Memory-Efficient-Exact-Attention-with-IO-Awareness"><span class="post-toc-number">2.</span> <span class="post-toc-text">FLASHATTENTION: Fast and Memory-Efficient Exact Attention with IO-Awareness</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#摘要"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">摘要</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#引言-1"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">引言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#背景"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">背景</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#硬件性能"><span class="post-toc-number">2.3.1.</span> <span class="post-toc-text">硬件性能</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#标准注意力"><span class="post-toc-number">2.3.1.1.</span> <span class="post-toc-text">标准注意力</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#FLASHATTENTION"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">FLASHATTENTION</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#LORA-LOW-RANK-ADAPTATION-OF-LARGE-LANGUAGE-MODELS"><span class="post-toc-number">3.</span> <span class="post-toc-text">LORA: LOW-RANK ADAPTATION OF LARGE LANGUAGE MODELS</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#引言-2"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">引言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#问题陈述"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">问题陈述</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#之前方法的缺点"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">之前方法的缺点</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#本文方法"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">本文方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#低秩参数更新矩阵"><span class="post-toc-number">3.4.1.</span> <span class="post-toc-text">低秩参数更新矩阵</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#将LoRA应用到Transformer"><span class="post-toc-number">3.4.2.</span> <span class="post-toc-text">将LoRA应用到Transformer</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Llama-2-Open-Foundation-and-Fine-Tuned-Chat-Models"><span class="post-toc-number">4.</span> <span class="post-toc-text">Llama 2: Open Foundation and Fine-Tuned Chat Models</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#引言-3"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">引言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#预训练"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">预训练</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#微调"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">微调</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#SFT监督微调"><span class="post-toc-number">4.3.1.</span> <span class="post-toc-text">SFT监督微调</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#RLHF-人类反馈的增强学习"><span class="post-toc-number">4.3.2.</span> <span class="post-toc-text">RLHF 人类反馈的增强学习</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#多轮对话一致性的系统信息"><span class="post-toc-number">4.3.3.</span> <span class="post-toc-text">多轮对话一致性的系统信息</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#LLaMA-Open-and-Efficient-Foundation-Language-Models"><span class="post-toc-number">5.</span> <span class="post-toc-text">LLaMA: Open and Efficient Foundation Language Models</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#概述"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">概述</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方法-1"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#预训练数据"><span class="post-toc-number">5.2.1.</span> <span class="post-toc-text">预训练数据</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#架构"><span class="post-toc-number">5.2.2.</span> <span class="post-toc-text">架构</span></a></li></ol></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Retrieval-Augmented-Generation-for-Knowledge-Intensive-NLP-Tasks"><span class="post-toc-text">Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#引言"><span class="post-toc-text">引言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方法"><span class="post-toc-text">方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#模型"><span class="post-toc-text">模型</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#检索器：DPR"><span class="post-toc-text">检索器：DPR</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#生成器：BART"><span class="post-toc-text">生成器：BART</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#训练"><span class="post-toc-text">训练</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#解码"><span class="post-toc-text">解码</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#FLASHATTENTION-Fast-and-Memory-Efficient-Exact-Attention-with-IO-Awareness"><span class="post-toc-text">FLASHATTENTION: Fast and Memory-Efficient Exact Attention with IO-Awareness</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#摘要"><span class="post-toc-text">摘要</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#引言-1"><span class="post-toc-text">引言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#背景"><span class="post-toc-text">背景</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#硬件性能"><span class="post-toc-text">硬件性能</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#标准注意力"><span class="post-toc-text">标准注意力</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#FLASHATTENTION"><span class="post-toc-text">FLASHATTENTION</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#LORA-LOW-RANK-ADAPTATION-OF-LARGE-LANGUAGE-MODELS"><span class="post-toc-text">LORA: LOW-RANK ADAPTATION OF LARGE LANGUAGE MODELS</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#引言-2"><span class="post-toc-text">引言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#问题陈述"><span class="post-toc-text">问题陈述</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#之前方法的缺点"><span class="post-toc-text">之前方法的缺点</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#本文方法"><span class="post-toc-text">本文方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#低秩参数更新矩阵"><span class="post-toc-text">低秩参数更新矩阵</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#将LoRA应用到Transformer"><span class="post-toc-text">将LoRA应用到Transformer</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Llama-2-Open-Foundation-and-Fine-Tuned-Chat-Models"><span class="post-toc-text">Llama 2: Open Foundation and Fine-Tuned Chat Models</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#引言-3"><span class="post-toc-text">引言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#预训练"><span class="post-toc-text">预训练</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#微调"><span class="post-toc-text">微调</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#SFT监督微调"><span class="post-toc-text">SFT监督微调</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#RLHF-人类反馈的增强学习"><span class="post-toc-text">RLHF 人类反馈的增强学习</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#多轮对话一致性的系统信息"><span class="post-toc-text">多轮对话一致性的系统信息</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#LLaMA-Open-and-Efficient-Foundation-Language-Models"><span class="post-toc-text">LLaMA: Open and Efficient Foundation Language Models</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#概述"><span class="post-toc-text">概述</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#方法-1"><span class="post-toc-text">方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#预训练数据"><span class="post-toc-text">预训练数据</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#架构"><span class="post-toc-text">架构</span></a></li></ol></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -370,7 +456,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.183Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2024-02-14T11:03:25.042Z" itemprop="dateUpdated">2024-02-14 11:03:25</time>
 </span><br>
 
 
@@ -556,6 +642,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -620,6 +710,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACwElEQVR42u3aQW7DMAwEwP7/0ynQUw9VtCSlJAXGp8BJbY0KmDTJr6/4ePwcvfOPX8fql6vfPP/22IGHh4fXWvrqeH6b1efnsJyUnNlsAR4eHt41XvXhnm9Kb+n5tm4seHh4eG/lJZerBpXq1uDh4eH9X16eQFeDTf63eHh4eO/lzR/T+aO8Wvh4Ua0FDw8PL+ZVG2Cf8Plifw8PDw9v0FWvNsPyADAZLCisFg8PD+8Cb95k6jXPeufzKBBNdeHh4eG1eJPhgGSUqto2y0cHouQbDw8P7wKvED0G4SHZiOQuyfU318TDw8Mb8ybNp2ow6C0xufsm7uHh4eFd4OUL7ZV6E8w8NV9WWfDw8PAu8PK0NQfkCfSpavSmv4eHh4d3jZcXXqtNr/xMvsWbdeLh4eFd4OXtqLwpVc1me9lv4Tp4eHh4R3nVNLdXdEi2plqeSP4xeHh4ePd4vSmD/DbVAay8GLG5Jh4eHt4FXq+4kJduq4Xg6nWqiT4eHh7enNd7+Z8PEyQjXJMtxsPDw3slb97ITxpa1QJH3hjbBAY8PDy8MS9PVZPl9hppeSjKS8Z4eHh4t3mT1LYaHqrDW/OyLx4eHt5ZXlIymNSGJ8Gmmlgv+3t4eHh4R3m9ZLeXOjdT4eLowOaNAQ8PD+8QbzJQNRk1qIaEPJXHw8PDu8dLblN9uOcpdZ7KJwn0sr+Hh4eH93LeZIiqV5zNt3UTZvDw8PAu8HqjVHmZIEmm80S89wKAh4eHd5b3KB75CFRvm6ppdyGlxsPDwzvE641kTcaw8jQ9H95qkvDw8PAGvOqNew/6U0FlVHrAw8PDO8qbDBCcSsdHDDw8PLyP5FXHqvKW/3zlmy4fHh4e3gfwqm2tPMnuDXsttxsPDw/vGq9XjKgOEPSS6WrgwcPDw7vNm7/RV8sZydKryMP9PTw8PLy/v/0Gdr4iFktIJH0AAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 

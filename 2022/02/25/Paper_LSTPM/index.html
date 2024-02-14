@@ -44,7 +44,7 @@
 <meta property="og:image" content="https://hubojing.github.io/images/LSTPM自身对比.png">
 <meta property="og:image" content="https://hubojing.github.io/images/LSTPM参数分析.png">
 <meta property="og:image" content="https://hubojing.github.io/images/LSTPM_LSTM对比.png">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.175Z">
+<meta property="og:updated_time" content="2022-02-25T13:55:10.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LSTPM">
 <meta name="twitter:description" content="Where to Go Next: Modeling Long- and Short-Term User Preferences for Point-of-Interest Recommendation　　下一步去哪儿：用户长短期偏好建模用于兴趣点推荐">
@@ -59,8 +59,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -203,7 +289,7 @@
         <h1 class="title">LSTPM</h1>
         <h5 class="subtitle">
             
-                <time datetime="2022-02-25T15:59:46.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2022-02-25T07:59:46.000Z" itemprop="datePublished" class="page-time">
   2022-02-25
 </time>
 
@@ -225,7 +311,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#问题提出"><span class="post-toc-number">2.</span> <span class="post-toc-text">问题提出</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#架构"><span class="post-toc-number">3.</span> <span class="post-toc-text">架构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#长期偏好建模"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">长期偏好建模</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#短期偏好建模"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">短期偏好建模</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#预测"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">预测</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验"><span class="post-toc-number">4.</span> <span class="post-toc-text">实验</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据集"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">数据集</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基线"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">基线</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#评价指标"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">评价指标</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#性能"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">性能</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基线对比"><span class="post-toc-number">4.4.1.</span> <span class="post-toc-text">基线对比</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#消融实验"><span class="post-toc-number">4.4.2.</span> <span class="post-toc-text">消融实验</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#参数分析"><span class="post-toc-number">4.4.3.</span> <span class="post-toc-text">参数分析</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#跳数自动化"><span class="post-toc-number">4.4.4.</span> <span class="post-toc-text">跳数自动化</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#贡献点"><span class="post-toc-number">5.</span> <span class="post-toc-text">贡献点</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考资料"><span class="post-toc-number">6.</span> <span class="post-toc-text">参考资料</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#问题提出"><span class="post-toc-text">问题提出</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#架构"><span class="post-toc-text">架构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#长期偏好建模"><span class="post-toc-text">长期偏好建模</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#短期偏好建模"><span class="post-toc-text">短期偏好建模</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#预测"><span class="post-toc-text">预测</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验"><span class="post-toc-text">实验</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据集"><span class="post-toc-text">数据集</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基线"><span class="post-toc-text">基线</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#评价指标"><span class="post-toc-text">评价指标</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#性能"><span class="post-toc-text">性能</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#基线对比"><span class="post-toc-text">基线对比</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#消融实验"><span class="post-toc-text">消融实验</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#参数分析"><span class="post-toc-text">参数分析</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#跳数自动化"><span class="post-toc-text">跳数自动化</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#贡献点"><span class="post-toc-text">贡献点</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考资料"><span class="post-toc-text">参考资料</span></a></li></ol>
         </nav>
     </aside>
 
@@ -236,7 +322,7 @@
     <div class="post-card">
         <h1 class="post-card-title">LSTPM</h1>
         <div class="post-meta">
-            <time class="post-time" title="2022-02-25 15:59:46" datetime="2022-02-25T15:59:46.000Z"  itemprop="datePublished">2022-02-25</time>
+            <time class="post-time" title="2022-02-25 07:59:46" datetime="2022-02-25T07:59:46.000Z"  itemprop="datePublished">2022-02-25</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
@@ -259,7 +345,7 @@
 <h1 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h1><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/LSTPM架构.png" alt="架构" title>
+                    <img src="/images/LSTPM架构.png" alt="架构" title="">
                 </div>
                 <div class="image-caption">架构</div>
             </figure>
@@ -269,7 +355,7 @@
 <h2 id="短期偏好建模"><a href="#短期偏好建模" class="headerlink" title="短期偏好建模"></a>短期偏好建模</h2><p>　　核心：使用联合方式的地理扩张LSTM建模短期偏好。<br>　　RNN本身只能用于序列建模，所以有人提出了跳步RNN。但是跳步RNN总是事先定义好和固定好的。所以提出geo-dilated LSTM根据地理和时间因素，来自动决定使用哪些相关输入。<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/LSTPM架构2.png" alt="geo-dilated LSTM" title>
+                    <img src="/images/LSTPM架构2.png" alt="geo-dilated LSTM" title="">
                 </div>
                 <div class="image-caption">geo-dilated LSTM</div>
             </figure><br>　　直观地，我们的地理扩张LSTM首先从当前轨迹中挑选poi作为输入，其具有由地理相关性确定的不同跳跃长度，然后通过扩展LSTM方案学习短期用户偏好。具体的算法论文给出了伪代码。</p>
@@ -280,7 +366,7 @@
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/LSTPM_datasets.png" alt="数据集" title>
+                    <img src="/images/LSTPM_datasets.png" alt="数据集" title="">
                 </div>
                 <div class="image-caption">数据集</div>
             </figure>
@@ -299,28 +385,28 @@
 <h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><h3 id="基线对比"><a href="#基线对比" class="headerlink" title="基线对比"></a>基线对比</h3><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/LSTPM性能.png" alt="性能" title>
+                    <img src="/images/LSTPM性能.png" alt="性能" title="">
                 </div>
                 <div class="image-caption">性能</div>
             </figure>
 <h3 id="消融实验"><a href="#消融实验" class="headerlink" title="消融实验"></a>消融实验</h3><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/LSTPM自身对比.png" alt="消融实验" title>
+                    <img src="/images/LSTPM自身对比.png" alt="消融实验" title="">
                 </div>
                 <div class="image-caption">消融实验</div>
             </figure>
 <h3 id="参数分析"><a href="#参数分析" class="headerlink" title="参数分析"></a>参数分析</h3><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/LSTPM参数分析.png" alt="参数分析" title>
+                    <img src="/images/LSTPM参数分析.png" alt="参数分析" title="">
                 </div>
                 <div class="image-caption">参数分析</div>
             </figure>
 <h3 id="跳数自动化"><a href="#跳数自动化" class="headerlink" title="跳数自动化"></a>跳数自动化</h3><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/LSTPM_LSTM对比.png" alt="LSTM对比" title>
+                    <img src="/images/LSTPM_LSTM对比.png" alt="LSTM对比" title="">
                 </div>
                 <div class="image-caption">LSTM对比</div>
             </figure>
@@ -338,7 +424,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.175Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2022-02-25T13:55:10.000Z" itemprop="dateUpdated">2022-02-25 13:55:10</time>
 </span><br>
 
 
@@ -525,6 +611,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -590,6 +680,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACI0lEQVR42u3aS5KDMAwFwNz/0sw2VVPAk0QW2O1VihBDbxz9Pp94HV+rd///357dkz+lvDAwMF7LOC7X2T35zskOZ+Dk3TAwMPZhJC9x/Tn/drLD6XUMDAyMIIC73mdyTGNgYGDMD9wkoLwOEK+vY2BgYORJbDUdze/PeQ/k4hgYGC9kTMK1X3/+SX8DAwPjVYyjuPJ9esfl0VoYGBhrM/IDbpReBiFgssNNCQ8DA2NRRu+Rk/JZPpBRgGFgYGzJyBPaHDMP/k53xsDA2ICRlOznLcleMhwNcGBgYCzNSA7Q6vWcnYeJUdCJgYGxKKOXglaT1Z8nwxgYGBswJkMVhf7DuM1w+isMDIylGfNifX5o9qr6UbkNAwNjacbIWmTnr1htP2BgYOzASLarFtEmmOawBQYGxqKMarJaHY+oprU5pvzvgYGB8XJGNSlNCmTPFtrKM2sYGBhLM6qdweTYnQSgZR4GBsaijHlpPj+U8wCxGRRiYGAszZgcr72QsToWdpNmY2BgbMBIjrZeglodI8vDzeZ4CQYGxmsZSYBYfcAkrMzfBAMDY23GUVwPjHANGhJRbIuBgbEco9fg7I1ZTNoPhaIbBgbGooxewNe7P2+dllsIGBgYGzCeOiirgxfVUO8mF8fAwMCImwf5wESv5VkYC8PAwNiYUW0kTEpmUdqMgYGxAWMe0uVJ71PNUQwMjH0Y+ZHXS2h7BbjqAAcGBsaijD+AzmC+U0GAZAAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

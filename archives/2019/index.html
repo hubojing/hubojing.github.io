@@ -28,16 +28,16 @@
     
     
     <meta name="keywords" content="undefined">
-    <meta name="description" content="成长中的工程师|计算机|算法|研发|数据挖掘|软件开发|互联网">
+    <meta name="description" content="算法工程师|自然语言处理|AI|人工智能|推荐算法|计算机|算法|研发|数据挖掘|软件开发|互联网">
 <meta property="og:type" content="website">
 <meta property="og:title" content="靖待的技术博客">
 <meta property="og:url" content="https://hubojing.github.io/archives/2019/index.html">
 <meta property="og:site_name" content="靖待的技术博客">
-<meta property="og:description" content="成长中的工程师|计算机|算法|研发|数据挖掘|软件开发|互联网">
+<meta property="og:description" content="算法工程师|自然语言处理|AI|人工智能|推荐算法|计算机|算法|研发|数据挖掘|软件开发|互联网">
 <meta property="og:locale" content="zh-CN">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="靖待的技术博客">
-<meta name="twitter:description" content="成长中的工程师|计算机|算法|研发|数据挖掘|软件开发|互联网">
+<meta name="twitter:description" content="算法工程师|自然语言处理|AI|人工智能|推荐算法|计算机|算法|研发|数据挖掘|软件开发|互联网">
     
         <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
     
@@ -48,8 +48,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -280,7 +366,7 @@
         <div class="waterfall-item">
   <article class="article-card archive-article">
     <div class="post-meta">
-      <time class="post-time" title="2019-11-25 15:31:46" datetime="2019-11-25T15:31:46.000Z"  itemprop="datePublished">2019-11-25</time>
+      <time class="post-time" title="2019-11-25 07:31:46" datetime="2019-11-25T07:31:46.000Z"  itemprop="datePublished">2019-11-25</time>
 
       
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/人工智能/">人工智能</a></li></ul>
@@ -352,7 +438,7 @@
         <div class="waterfall-item">
   <article class="article-card archive-article">
     <div class="post-meta">
-      <time class="post-time" title="2019-10-17 10:28:49" datetime="2019-10-17T10:28:49.000Z"  itemprop="datePublished">2019-10-17</time>
+      <time class="post-time" title="2019-10-17 02:28:49" datetime="2019-10-17T02:28:49.000Z"  itemprop="datePublished">2019-10-17</time>
 
       
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/数据挖掘/">数据挖掘</a></li></ul>
@@ -386,7 +472,7 @@
         <div class="waterfall-item">
   <article class="article-card archive-article">
     <div class="post-meta">
-      <time class="post-time" title="2019-10-09 16:27:29" datetime="2019-10-09T16:27:29.000Z"  itemprop="datePublished">2019-10-09</time>
+      <time class="post-time" title="2019-10-09 08:27:29" datetime="2019-10-09T08:27:29.000Z"  itemprop="datePublished">2019-10-09</time>
 
       
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/数据挖掘/">数据挖掘</a></li></ul>
@@ -424,7 +510,7 @@
         <div class="waterfall-item">
   <article class="article-card archive-article">
     <div class="post-meta">
-      <time class="post-time" title="2019-09-27 21:21:27" datetime="2019-09-27T21:21:27.000Z"  itemprop="datePublished">2019-09-27</time>
+      <time class="post-time" title="2019-09-27 13:21:27" datetime="2019-09-27T13:21:27.000Z"  itemprop="datePublished">2019-09-27</time>
 
       
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/数据挖掘/">数据挖掘</a></li></ul>
@@ -458,7 +544,7 @@
         <div class="waterfall-item">
   <article class="article-card archive-article">
     <div class="post-meta">
-      <time class="post-time" title="2019-09-24 18:45:27" datetime="2019-09-24T18:45:27.000Z"  itemprop="datePublished">2019-09-24</time>
+      <time class="post-time" title="2019-09-24 10:45:27" datetime="2019-09-24T10:45:27.000Z"  itemprop="datePublished">2019-09-24</time>
 
       
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/数据挖掘/">数据挖掘</a></li></ul>
@@ -580,6 +666,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -616,7 +706,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/archives/2019/&title=靖待的技术博客&source=成长中的工程师|计算机|算法|研发|数据挖掘|软件开发|互联网" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/archives/2019/&title=靖待的技术博客&source=算法工程师|自然语言处理|AI|人工智能|推荐算法|计算机|算法|研发|数据挖掘|软件开发|互联网" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -644,6 +734,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAK4AAACuCAAAAACKZ2kyAAABzElEQVR42u3aQW7DMAwEwPz/0ynQU4HU6pKUlRQYnwzHsccXQVzy8YiP5/fxev7zyus9r9evnrn5wMXFHXOfy+OKm1Py56/vwcXFPc/tvbL6r3xxvLyOi4v7Ydz1hmZCxMXF/b/cHJr8CxcX9/O51eIkTy3W99xYq+Hi4g64k8B01/mhfBcXF3fclaguSUmpky9evzwZFxf3CHfdNO0FJckHTMohXFzcu7m9EqUaoc7nK3BxcU9ye5uVpO26vr9aFEVZDi4u7ibufPCiupVJdiyFsgcXF/c27obWxWBoIy+WcHFxz3DnIxR5yNJ7yyNfZXFxcbdyJ1FFtPSMn4mLi/subrWN2otTq0Ngf6Q4uLi4N3CrpUg12sgbNlERhYuL+yZuvvRUNyuTCRFcXNyT3F6Q0aulerio/4OLi7uVO2mg9pa8XiyLi4t7nptMb61/Ta7Pg1pcXNyT3Gqg2WupJotguZ+Di4t7A7c3btVDTBbK8sfg4uKOuXnjcz5OkS9kl2/ExcU9yM2Dy3Kc0RrYao5k4eLiHudOBjWqn3H5ZFxc3A/m9jY6GwYycHFxD3Lzhmu1yTovfpqxCC4u7oDbC0yroxi9eAUXF/c49wt3vmzDfUOOZwAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

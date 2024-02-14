@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://hubojing.github.io/images/BERT架构图.png">
 <meta property="og:image" content="https://hubojing.github.io/images/BERT架构图.png">
 <meta property="og:image" content="https://hubojing.github.io/images/BERT输入表示.png">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.171Z">
+<meta property="og:updated_time" content="2022-08-09T15:22:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="BERT">
 <meta name="twitter:description" content="笔记">
@@ -54,8 +54,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -198,7 +284,7 @@
         <h1 class="title">BERT</h1>
         <h5 class="subtitle">
             
-                <time datetime="2022-08-09T20:59:07.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2022-08-09T12:59:07.000Z" itemprop="datePublished" class="page-time">
   2022-08-09
 </time>
 
@@ -220,7 +306,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-number">1.</span> <span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#摘要重点"><span class="post-toc-number">2.</span> <span class="post-toc-text">摘要重点</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#问题提出"><span class="post-toc-number">3.</span> <span class="post-toc-text">问题提出</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#贡献点"><span class="post-toc-number">4.</span> <span class="post-toc-text">贡献点</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#相关工作"><span class="post-toc-number">5.</span> <span class="post-toc-text">相关工作</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#模型架构"><span class="post-toc-number">6.</span> <span class="post-toc-text">模型架构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#预训练BERT"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">预训练BERT</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#任务1：Masked-LM"><span class="post-toc-number">6.1.1.</span> <span class="post-toc-text">任务1：Masked LM</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#任务2：下一个句子预测（NSP）"><span class="post-toc-number">6.1.2.</span> <span class="post-toc-text">任务2：下一个句子预测（NSP）</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#微调BERT"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">微调BERT</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#摘要重点"><span class="post-toc-text">摘要重点</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#问题提出"><span class="post-toc-text">问题提出</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#贡献点"><span class="post-toc-text">贡献点</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#相关工作"><span class="post-toc-text">相关工作</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#模型架构"><span class="post-toc-text">模型架构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#预训练BERT"><span class="post-toc-text">预训练BERT</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#任务1：Masked-LM"><span class="post-toc-text">任务1：Masked LM</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#任务2：下一个句子预测（NSP）"><span class="post-toc-text">任务2：下一个句子预测（NSP）</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#微调BERT"><span class="post-toc-text">微调BERT</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -231,7 +317,7 @@
     <div class="post-card">
         <h1 class="post-card-title">BERT</h1>
         <div class="post-meta">
-            <time class="post-time" title="2022-08-09 20:59:07" datetime="2022-08-09T20:59:07.000Z"  itemprop="datePublished">2022-08-09</time>
+            <time class="post-time" title="2022-08-09 12:59:07" datetime="2022-08-09T12:59:07.000Z"  itemprop="datePublished">2022-08-09</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
@@ -261,13 +347,13 @@
 <h1 id="模型架构"><a href="#模型架构" class="headerlink" title="模型架构"></a>模型架构</h1><p>　　两阶段：预训练+微调。<br>　　预训练阶段，模型在不同的预训练任务中使用未标注数据训练。<br>　　微调阶段，首先使用预训练参数初始化，所有的参数使用下游任务中的标注数据进行微调。即使每一个下游任务使用相同的预训练参数初始化，它们还是有单独的微调模型。如图为一个问答示例。<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/BERT架构图.png" alt="BERT" title>
+                    <img src="/images/BERT架构图.png" alt="BERT" title="">
                 </div>
                 <div class="image-caption">BERT</div>
             </figure><br>　　记层数（Transformer块）为L，隐藏层为H，自注意力头数量为A。实验有两种模型规模：一种是$BERT_{BASE}$（L=12，H=768，A=12，总参数为110M）；另一种是$BERT_{LARGE}$（L=24，H=1024，A=16，总参数为340M）。<br>　　为压缩目的，$BERT_{BASE}$选择了和Open AI一样的模型规模。但是BERT Transformer使用了双向自注意力，GPT Transformer使用的是受限的自注意力，它的每个token只能获取它左边的上下文。<br>　　每一个token都以[CLS]开头。句子对会一起打包到一个序列中，分割句子使用两种方式。一是使用token[SEP]，二是在每个token中加入一个学习过的embedding表示它属于句子A还是句子B。如图1所示，输入embedding记为E，最后隐藏向量的[CLS]记为C，第i个输入token的最后的隐藏向量记为$T_i$。<br>对于给定的标记，其输入表示是通过对相应的标记、段和位置嵌入求和来构建的。这种结构的可视化可以在图2中看到。<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="/images/BERT输入表示.png" alt="BERT输入表示" title>
+                    <img src="/images/BERT输入表示.png" alt="BERT输入表示" title="">
                 </div>
                 <div class="image-caption">BERT输入表示</div>
             </figure></p>
@@ -282,7 +368,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.171Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2022-08-09T15:22:40.000Z" itemprop="dateUpdated">2022-08-09 15:22:40</time>
 </span><br>
 
 
@@ -468,6 +554,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -532,6 +622,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACN0lEQVR42u3aQW7DMAwF0dz/0u42QBJlPukGEDVaFa5j62lBSyQfDzyup/F6Jf3v65M/veXmIUOGjG0Z13Lwaa1/lV7hc5MhQ8Y5DBIKP91PYCT4knd9vC5DhgwZyyDIgylfFBkyZMjoMMiWbh1206WRIUOGDH6I5SHyl0+TIUPGCQyedf/93/9S35AhQ8ZWjCsc/BBbK0xepSFDhozZDB7g+pPmsNp8ZMiQcQKDJ7zIYZKXKtMliKO1DBkyNmekqav0eMkby2pJujc7XBkyZAxl8AJkWtpMN4i1sqgMGTLOYXSOkXybWAvuXw7PMmTIOIZRa94KNnDhE+JuERkyZAxl9Bu5gtfg55D731yRIUPGYYzOli5N/fOJfmHLkCFjNKOWYuMFSB5A1wfpeFllyJAxiJG2RHRKlfy3xZ4RGTJkjGOkabJaeYCXPEnADSqxMmTIGMFIt2j8ZZ0QHHwr0u+GDBkyNmTUSo9poi0OnSDEy5Ah4xxG50jJr3cWolUSkCFDxiBGvyGs017WyZgFlVgZMmSMYKRJLl7I5EdWvqFsnbZlyJCxLaN21OT39xNwwdZQhgwZgxhXOHgyjrM7m0sZMmScwEjLnJ0NXNrAcUPuUIYMGYMYPMjyCaUHV17+/FKPlSFDxmhGLfClRcdWC8X6aTJkyJARFgzWv+KwYCllyJAhA7eL9QM3J93w3ZAhQ8ZWjLTZq5b6rwXlm9NtMmTI2JDBQ14aNGsNFmQbWixkypAhYz/GH+m1iYe2cDFFAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
+
 
 
 

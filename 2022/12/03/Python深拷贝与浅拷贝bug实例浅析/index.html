@@ -37,7 +37,7 @@
 <meta property="og:description" content="一个bug引起的……thinking">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://hubojing.github.io/images/假装有图片.jpg">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.175Z">
+<meta property="og:updated_time" content="2022-12-03T15:38:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python深拷贝与浅拷贝bug实例浅析">
 <meta name="twitter:description" content="一个bug引起的……thinking">
@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -196,7 +282,7 @@
         <h1 class="title">Python深拷贝与浅拷贝bug实例浅析</h1>
         <h5 class="subtitle">
             
-                <time datetime="2022-12-03T23:26:08.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2022-12-03T15:26:08.000Z" itemprop="datePublished" class="page-time">
   2022-12-03
 </time>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#需求简述"><span class="post-toc-number">1.</span> <span class="post-toc-text">需求简述</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#原代码"><span class="post-toc-number">2.</span> <span class="post-toc-text">原代码</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Bug定位"><span class="post-toc-number">3.</span> <span class="post-toc-text">Bug定位</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#解决方法"><span class="post-toc-number">4.</span> <span class="post-toc-text">解决方法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#分析"><span class="post-toc-number">5.</span> <span class="post-toc-text">分析</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#需求简述"><span class="post-toc-text">需求简述</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#原代码"><span class="post-toc-text">原代码</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Bug定位"><span class="post-toc-text">Bug定位</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#解决方法"><span class="post-toc-text">解决方法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#分析"><span class="post-toc-text">分析</span></a></li></ol>
         </nav>
     </aside>
 
@@ -229,7 +315,7 @@
     <div class="post-card">
         <h1 class="post-card-title">Python深拷贝与浅拷贝bug实例浅析</h1>
         <div class="post-meta">
-            <time class="post-time" title="2022-12-03 23:26:08" datetime="2022-12-03T23:26:08.000Z"  itemprop="datePublished">2022-12-03</time>
+            <time class="post-time" title="2022-12-03 15:26:08" datetime="2022-12-03T15:26:08.000Z"  itemprop="datePublished">2022-12-03</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程语言/">编程语言</a></li></ul>
@@ -289,7 +375,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.175Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2022-12-03T15:38:24.000Z" itemprop="dateUpdated">2022-12-03 15:38:24</time>
 </span><br>
 
 
@@ -475,6 +561,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -539,6 +629,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACv0lEQVR42u3aQW4jMQwEwPz/09nrLja2u0nJ8aHmZCDOSKUAIkPy6yt+vv968u8/+vz/8+ins9XrBw8PD2+x9XyBZPlkQ49WnB3TDyvi4eHhXePNLvf8+8lazwNA/h48PDy8T+NtgkHOzsMSHh4e3ufz8q2cSpR/Ie7h4eHhBbxTr95vNwlCV2oteHh4eDFv39B6/+cr/T08PDy8dVc9L63mDbM81W6bXj+8GQ8PD+8Cb9bgbwsKeSk2L1sUw2F4eHh4R3n7kusmQc8HufKQ88978PDw8C7w2uGntoWfj23lKfuqaIuHh4d3iNdezZv3nA0b9WQEHh4e3iFevqEcv3/D2SIFHh4e3lnepu00O6x8xOrA3vDw8PAu89oLeh9sTs2LPVTg4eHhHeXlY1WbIDE7rPZoopkyPDw8vEO8WeE1KbbmSfNsLPXFinh4eHgXePlim8JBO4gwa7y9+I8BDw8P7xBvFgwSapI65y23YYkEDw8P7xqvvdbb5tYsyZ6VlV9EPDw8PLwLvJY0K+a2Iwj50NWLKjUeHh7eIV5SYN1c7rOA0ZYqXjTA8PDw8K7x2vJBOwqQbC65+qM94+Hh4V3gtSFh1cJfhJ827X74l8TDw8N7C+/UEMDmm+0h4uHh4b2Hlyy/GRFoSxuzN7wIJHh4eHiHeG3jKrmOn59iu9H8bc1MFh4eHt6WN0uU2986deknhV08PDy827zZsFResLiRaq+6fHh4eHgj3nf5tOWDZDwrT47rYgQeHh7eBV574RaJ7KjdlR9TuxM8PDy8s7x83GqTZLfJ9PPScBFU8PDw8K7x2rQ4aXolTbJN6SFqvOHh4eF9AK8tLmxKFbNjXQUGPDw8vMu8vHjaHlayVhRI8PDw8K7x2rGAvHixGdJKjj6ajMDDw8M7ymv/4U9KD3nTqx35OlvIwMPDwyt5fwCNhlS5IM3uOwAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

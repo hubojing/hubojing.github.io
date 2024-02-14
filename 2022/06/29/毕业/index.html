@@ -37,7 +37,7 @@
 <meta property="og:description" content="一篇六月底就写好、八月中才发布的毕业总结。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://hubojing.github.io/images/假装有图片.jpg">
-<meta property="og:updated_time" content="2022-08-15T00:23:53.000Z">
+<meta property="og:updated_time" content="2022-08-14T16:23:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="毕业">
 <meta name="twitter:description" content="一篇六月底就写好、八月中才发布的毕业总结。">
@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -196,7 +282,7 @@
         <h1 class="title">毕业</h1>
         <h5 class="subtitle">
             
-                <time datetime="2022-06-29T10:29:24.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2022-06-29T02:29:24.000Z" itemprop="datePublished" class="page-time">
   2022-06-29
 </time>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#最大收获"><span class="post-toc-number">1.</span> <span class="post-toc-text">最大收获</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#技术"><span class="post-toc-number">2.</span> <span class="post-toc-text">技术</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#自律"><span class="post-toc-number">3.</span> <span class="post-toc-text">自律</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#最大收获"><span class="post-toc-text">最大收获</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#技术"><span class="post-toc-text">技术</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#自律"><span class="post-toc-text">自律</span></a></li></ol>
         </nav>
     </aside>
 
@@ -229,7 +315,7 @@
     <div class="post-card">
         <h1 class="post-card-title">毕业</h1>
         <div class="post-meta">
-            <time class="post-time" title="2022-06-29 10:29:24" datetime="2022-06-29T10:29:24.000Z"  itemprop="datePublished">2022-06-29</time>
+            <time class="post-time" title="2022-06-29 02:29:24" datetime="2022-06-29T02:29:24.000Z"  itemprop="datePublished">2022-06-29</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/杂谈/">杂谈</a></li></ul>
@@ -264,7 +350,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2022-08-15T00:23:53.000Z" itemprop="dateUpdated">2022-08-15 00:23:53</time>
+    最后更新时间：<time datetime="2022-08-14T16:23:53.000Z" itemprop="dateUpdated">2022-08-14 16:23:53</time>
 </span><br>
 
 
@@ -450,6 +536,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -514,6 +604,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKUlEQVR42u3aQY7jQAgF0Nz/0mlp1uPqDzgtBb9aRZZj1/MCUcDrFa/3v3V15fz7ap3vf31iYWBgfC0jf9l5E+dn5p+p+iEwMDCew0genYfdJCqeN5rvDQMDA2OyxfxpGBgYGPcykrCbXKkejzEwMDAmRbFz4jg5GH/kLI6BgfGFjGpj4C9/f7C/gYGB8SWMd3H1nnDvHv7zfAwMjNWMXqmrV5K7ax6kkOFiYGCsY/Sal3lZrVp6Owfuy4CLgYGxjpEkfL0hjOT+atJ5eR0DA2M1YzL6kLym+rRqYwADA+M5jGiUYXDIrLY883sK3QwMDIwvZ/RCZzOBi9PQ8r8wMDCWMvJQWC2HJUfWJNWL9oOBgfEYRvV4OUkZk89UCPEYGBirGflrcli1VZAPcETjIBgYGOsYk8GIeemt13j4ZdgCAwNjKaOatOVtxclYRuHwjIGBsZqRlObn4xGjQ2neZsDAwHgAozeE0Wt5VtsGEQkDA+NhjOpW5uAb3o6BgbGUkY9kVYNmXsirHoOjmREMDIzVjN6o1qSpcMPhGQMDYzWj9+cquFrUG42XYWBgrGO8i6s3yJU3Bs7fO0oNMTAw1jGqA15J/J40BnqBHgMD4wmMvOyVDENMEseEF+W2GBgYSxl5wldN1KpDGNXQj4GBgZEEu2qAnnyOyysYGBgYrdJ/tazWaw9gYGA8h9E7xFY30bszCv0YGBirGZPGQL7dHnKSdGJgYKxg/ABB/4SagOHsJAAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

@@ -37,7 +37,7 @@
 <meta property="og:description" content="白天写的年终总结！">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://hubojing.github.io/images/2022.png">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.171Z">
+<meta property="og:updated_time" content="2021-12-31T07:45:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2021年终总结">
 <meta name="twitter:description" content="白天写的年终总结！">
@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -196,7 +282,7 @@
         <h1 class="title">2021年终总结</h1>
         <h5 class="subtitle">
             
-                <time datetime="2021-12-31T13:00:59.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2021-12-31T05:00:59.000Z" itemprop="datePublished" class="page-time">
   2021-12-31
 </time>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#打分"><span class="post-toc-number">1.</span> <span class="post-toc-text">打分</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结"><span class="post-toc-number">2.</span> <span class="post-toc-text">总结</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#关于技术"><span class="post-toc-number">3.</span> <span class="post-toc-text">关于技术</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#新的一年"><span class="post-toc-number">4.</span> <span class="post-toc-text">新的一年</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#打分"><span class="post-toc-text">打分</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结"><span class="post-toc-text">总结</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#关于技术"><span class="post-toc-text">关于技术</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#新的一年"><span class="post-toc-text">新的一年</span></a></li></ol>
         </nav>
     </aside>
 
@@ -229,7 +315,7 @@
     <div class="post-card">
         <h1 class="post-card-title">2021年终总结</h1>
         <div class="post-meta">
-            <time class="post-time" title="2021-12-31 13:00:59" datetime="2021-12-31T13:00:59.000Z"  itemprop="datePublished">2021-12-31</time>
+            <time class="post-time" title="2021-12-31 05:00:59" datetime="2021-12-31T05:00:59.000Z"  itemprop="datePublished">2021-12-31</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/杂谈/">杂谈</a></li></ul>
@@ -275,7 +361,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.171Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2021-12-31T07:45:58.000Z" itemprop="dateUpdated">2021-12-31 07:45:58</time>
 </span><br>
 
 
@@ -461,6 +547,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -525,6 +615,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACKElEQVR42u3aQWoDMQwF0Nz/0il01TJN8r+VFMbzvArB2H6zEJLl2y0e9+9x/OfnOM48/n40jnNunxgYGBinZbQbPDroozWTTzPBY2BgXIeRbJNslq8z/0wYGBgYz5drE7t5comBgYHRMpJa8vlxn/MwMDAw1orY/OjJyknI/kgtjoGBcUJG2xj4z98f7G9gYGCchHEvR3txnxyoXe2P9TEwMLZmvKs92TYs56E/ynAxMDA2YuS5Vl6ytkVp3uwsMBgYGBsxkmRuEkzb9HHtgRoGBsaujKR92AbE/HNMiuRfMzEwMLZm5ID2GUT7OCMvdKOsFgMDYzvGWnLWrtBezNWFNAYGxgUYeYrWPsXIi9U2fGNgYFyBkV/uty2BeQqYtxYwMDD2ZuTp4LzBuVYe59d/GBgYV2C0BWQeoNuA/oY3IxgYGNsx1oJsclk/QdY8DAyMTRl5QMyPkpe7ySgKVwwMjE0Z7ZhjkkOvNUcxMDD2ZrTiSZWchPK2hMbAwNibkV/ur20/f3aWrIOBgXEdRv4wIpmfF6Jtsfqi+4qBgbEdI5/UHnR+MZc/FMPAwNibMbmmb0vWtvGQp5gYGBh7M+Ytgbxh2Qb0j/Q3MDAwTstonzusbZaXymtnwMDAuAKjDbJ5CZrPaUP/Yv2NgYGxNSMvI/MMtF3zxaUbBgYGxqDZ2T7/wsDAwJgUsXljYHKd154EAwNjb8a8MZBv3yaIb/5wGBgY52N8Ad9TFBlEwoH3AAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
+
 
 
 

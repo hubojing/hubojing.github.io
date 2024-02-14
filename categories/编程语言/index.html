@@ -28,16 +28,16 @@
     
     
     <meta name="keywords" content="undefined">
-    <meta name="description" content="成长中的工程师|计算机|算法|研发|数据挖掘|软件开发|互联网">
+    <meta name="description" content="算法工程师|自然语言处理|AI|人工智能|推荐算法|计算机|算法|研发|数据挖掘|软件开发|互联网">
 <meta property="og:type" content="website">
 <meta property="og:title" content="靖待的技术博客">
 <meta property="og:url" content="https://hubojing.github.io/categories/编程语言/index.html">
 <meta property="og:site_name" content="靖待的技术博客">
-<meta property="og:description" content="成长中的工程师|计算机|算法|研发|数据挖掘|软件开发|互联网">
+<meta property="og:description" content="算法工程师|自然语言处理|AI|人工智能|推荐算法|计算机|算法|研发|数据挖掘|软件开发|互联网">
 <meta property="og:locale" content="zh-CN">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="靖待的技术博客">
-<meta name="twitter:description" content="成长中的工程师|计算机|算法|研发|数据挖掘|软件开发|互联网">
+<meta name="twitter:description" content="算法工程师|自然语言处理|AI|人工智能|推荐算法|计算机|算法|研发|数据挖掘|软件开发|互联网">
     
         <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
     
@@ -48,8 +48,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -202,19 +288,11 @@
             ">全部</a>
         
 
-            <a href="/categories/通信工程/" style="-webkit-order:11;order:11" class="tags-list-item waves-effect waves-button waves-light">通信工程</a>
+            <a href="/categories/杂谈/" style="-webkit-order:13;order:13" class="tags-list-item waves-effect waves-button waves-light">杂谈</a>
 
         
 
-            <a href="/categories/杂谈/" style="-webkit-order:12;order:12" class="tags-list-item waves-effect waves-button waves-light">杂谈</a>
-
-        
-
-            <a href="/categories/软件开发/" style="-webkit-order:13;order:13" class="tags-list-item waves-effect waves-button waves-light">软件开发</a>
-
-        
-
-            <a href="/categories/数据挖掘/" style="-webkit-order:0;order:0" class="tags-list-item waves-effect waves-button waves-light">数据挖掘</a>
+            <a href="/categories/通信工程/" style="-webkit-order:0;order:0" class="tags-list-item waves-effect waves-button waves-light">通信工程</a>
 
         
 
@@ -222,39 +300,47 @@
 
         
 
-            <a href="/categories/论文/" style="-webkit-order:2;order:2" class="tags-list-item waves-effect waves-button waves-light">论文</a>
+            <a href="/categories/数据挖掘/" style="-webkit-order:2;order:2" class="tags-list-item waves-effect waves-button waves-light">数据挖掘</a>
 
         
 
-            <a href="/categories/人工智能/" style="-webkit-order:3;order:3" class="tags-list-item waves-effect waves-button waves-light">人工智能</a>
+            <a href="/categories/论文/" style="-webkit-order:3;order:3" class="tags-list-item waves-effect waves-button waves-light">论文</a>
 
         
 
-            <a href="/categories/互联网/" style="-webkit-order:4;order:4" class="tags-list-item waves-effect waves-button waves-light">互联网</a>
+            <a href="/categories/软件开发/" style="-webkit-order:4;order:4" class="tags-list-item waves-effect waves-button waves-light">软件开发</a>
 
         
 
-            <a href="/categories/多媒体/" style="-webkit-order:5;order:5" class="tags-list-item waves-effect waves-button waves-light">多媒体</a>
+            <a href="/categories/人工智能/" style="-webkit-order:5;order:5" class="tags-list-item waves-effect waves-button waves-light">人工智能</a>
 
         
 
-            <a href="/categories/博客/" style="-webkit-order:6;order:6" class="tags-list-item waves-effect waves-button waves-light">博客</a>
+            <a href="/categories/互联网/" style="-webkit-order:6;order:6" class="tags-list-item waves-effect waves-button waves-light">互联网</a>
 
         
 
-            <a href="/categories/推荐系统/" style="-webkit-order:7;order:7" class="tags-list-item waves-effect waves-button waves-light">推荐系统</a>
+            <a href="/categories/多媒体/" style="-webkit-order:7;order:7" class="tags-list-item waves-effect waves-button waves-light">多媒体</a>
 
         
 
-            <a href="/categories/操作系统/" style="-webkit-order:8;order:8" class="tags-list-item waves-effect waves-button waves-light">操作系统</a>
+            <a href="/categories/博客/" style="-webkit-order:8;order:8" class="tags-list-item waves-effect waves-button waves-light">博客</a>
 
         
 
-            <a href="/categories/数码/" style="-webkit-order:9;order:9" class="tags-list-item waves-effect waves-button waves-light">数码</a>
+            <a href="/categories/推荐系统/" style="-webkit-order:9;order:9" class="tags-list-item waves-effect waves-button waves-light">推荐系统</a>
 
         
 
-            <a href="/categories/前端/" style="-webkit-order:10;order:10" class="tags-list-item waves-effect waves-button waves-light">前端</a>
+            <a href="/categories/操作系统/" style="-webkit-order:10;order:10" class="tags-list-item waves-effect waves-button waves-light">操作系统</a>
+
+        
+
+            <a href="/categories/数码/" style="-webkit-order:11;order:11" class="tags-list-item waves-effect waves-button waves-light">数码</a>
+
+        
+
+            <a href="/categories/前端/" style="-webkit-order:12;order:12" class="tags-list-item waves-effect waves-button waves-light">前端</a>
 
         
     </nav>
@@ -276,7 +362,7 @@
             <div class="waterfall-item">
   <article class="article-card archive-article">
     <div class="post-meta">
-      <time class="post-time" title="2022-12-03 23:26:08" datetime="2022-12-03T23:26:08.000Z"  itemprop="datePublished">2022-12-03</time>
+      <time class="post-time" title="2022-12-03 15:26:08" datetime="2022-12-03T15:26:08.000Z"  itemprop="datePublished">2022-12-03</time>
 
       
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程语言/">编程语言</a></li></ul>
@@ -310,7 +396,7 @@
             <div class="waterfall-item">
   <article class="article-card archive-article">
     <div class="post-meta">
-      <time class="post-time" title="2021-09-16 17:08:06" datetime="2021-09-16T17:08:06.000Z"  itemprop="datePublished">2021-09-16</time>
+      <time class="post-time" title="2021-09-16 09:08:06" datetime="2021-09-16T09:08:06.000Z"  itemprop="datePublished">2021-09-16</time>
 
       
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程语言/">编程语言</a></li></ul>
@@ -344,7 +430,7 @@
             <div class="waterfall-item">
   <article class="article-card archive-article">
     <div class="post-meta">
-      <time class="post-time" title="2021-07-11 16:02:53" datetime="2021-07-11T16:02:53.000Z"  itemprop="datePublished">2021-07-11</time>
+      <time class="post-time" title="2021-07-11 08:02:53" datetime="2021-07-11T08:02:53.000Z"  itemprop="datePublished">2021-07-11</time>
 
       
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程语言/">编程语言</a></li></ul>
@@ -637,6 +723,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -673,7 +763,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/categories/编程语言/&title=靖待的技术博客&source=成长中的工程师|计算机|算法|研发|数据挖掘|软件开发|互联网" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/categories/编程语言/&title=靖待的技术博客&source=算法工程师|自然语言处理|AI|人工智能|推荐算法|计算机|算法|研发|数据挖掘|软件开发|互联网" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -701,6 +791,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACL0lEQVR42u3aS27DMAxF0ex/0y7QUYA00n2UHDTU1SgI/NHxgCApPh54Xb/r+ffzenflu+tfn/Z65eOOJUOGjK9lXMNFXjDGjO/isPHnkyFDxgkMHmTJVnhU5KTJnmXIkCFj+GiCGX8UGTJkyNjL4KFz/A/nyZAhQwYvYtN2W1oYk0C8oRaXIUPGFzJqBwOf+X37+YYMGTL+PeMK1x1h8VpeMmTI6M1YaXWlzbJd8yBBhitDhowWDFKO8kGKNLzy1ttkbzJkyDiAQQ4J+FbS0EzunbBlyJBxACNt1o/ZaeKYYia5rQwZMtox7huPWPkQJDGdlLIyZMhox0iHw9Irx+kmZ6OdyJAhoymDF6U8XKZjYWnL74+3y5AhoyljfcQhDazpR7llZkSGDBntGMHUxsLkAz8inRwMyJAhoymj1ibjaeV6Iw+lhjJkyGjKIGnZyj+1JloagmXIkNGbwUeveLOMp4bbSmUZMmQcwFgfiVhJHPl42eTwUoYMGU0Z6YP4MSd/Gi960UeRIUNGOwY/gKyNVvBtpdfLkCFDxt4hDF4MF5NCGTJktGbsHaGIzyL45mTIkHEwoxZM+QFkrZTllffb1FCGDBmNGHytvGbDOEU4nCFDhox+jNq4Qxo004SSv0WGDBnnMFbSvjTs1opYVMrKkCHjeMbKYEQ6lhFjZMiQISMciUiTP8KeXC9DhowDGLUyNe3k1Q4sEVuGDBmtGbWDAf56Dqg13WTIkNGa8QMAHJmvLhcucQAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

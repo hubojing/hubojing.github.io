@@ -43,7 +43,7 @@
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20191125191721732.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1Ym9qaW5n,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20191125194553838.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1Ym9qaW5n,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20191125194606462.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1Ym9qaW5n,size_16,color_FFFFFF,t_70">
-<meta property="og:updated_time" content="2024-02-12T14:15:08.179Z">
+<meta property="og:updated_time" content="2019-12-27T13:55:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一元线性回归">
 <meta name="twitter:description" content="深度学习实践系列笔记">
@@ -58,8 +58,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -202,7 +288,7 @@
         <h1 class="title">一元线性回归</h1>
         <h5 class="subtitle">
             
-                <time datetime="2019-11-25T15:31:46.000Z" itemprop="datePublished" class="page-time">
+                <time datetime="2019-11-25T07:31:46.000Z" itemprop="datePublished" class="page-time">
   2019-11-25
 </time>
 
@@ -224,7 +310,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#损失函数"><span class="post-toc-number">1.</span> <span class="post-toc-text">损失函数</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#梯度下降法"><span class="post-toc-number">2.</span> <span class="post-toc-text">梯度下降法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#超参数"><span class="post-toc-number">3.</span> <span class="post-toc-text">超参数</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#步骤"><span class="post-toc-number">4.</span> <span class="post-toc-text">步骤</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#生成人工数据集"><span class="post-toc-number">5.</span> <span class="post-toc-text">生成人工数据集</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#画图"><span class="post-toc-number">6.</span> <span class="post-toc-text">画图</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#构建模型"><span class="post-toc-number">7.</span> <span class="post-toc-text">构建模型</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#训练模型"><span class="post-toc-number">8.</span> <span class="post-toc-text">训练模型</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#预测"><span class="post-toc-number">9.</span> <span class="post-toc-text">预测</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#显示损失值"><span class="post-toc-number">10.</span> <span class="post-toc-text">显示损失值</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#显示损失值-1"><span class="post-toc-number">11.</span> <span class="post-toc-text">显示损失值</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#随机梯度下降"><span class="post-toc-number">12.</span> <span class="post-toc-text">随机梯度下降</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#完整代码"><span class="post-toc-number">13.</span> <span class="post-toc-text">完整代码</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#损失函数"><span class="post-toc-text">损失函数</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#梯度下降法"><span class="post-toc-text">梯度下降法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#超参数"><span class="post-toc-text">超参数</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#步骤"><span class="post-toc-text">步骤</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#生成人工数据集"><span class="post-toc-text">生成人工数据集</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#画图"><span class="post-toc-text">画图</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#构建模型"><span class="post-toc-text">构建模型</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#训练模型"><span class="post-toc-text">训练模型</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#预测"><span class="post-toc-text">预测</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#显示损失值"><span class="post-toc-text">显示损失值</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#显示损失值-1"><span class="post-toc-text">显示损失值</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#随机梯度下降"><span class="post-toc-text">随机梯度下降</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#完整代码"><span class="post-toc-text">完整代码</span></a></li></ol>
         </nav>
     </aside>
 
@@ -235,7 +321,7 @@
     <div class="post-card">
         <h1 class="post-card-title">一元线性回归</h1>
         <div class="post-meta">
-            <time class="post-time" title="2019-11-25 15:31:46" datetime="2019-11-25T15:31:46.000Z"  itemprop="datePublished">2019-11-25</time>
+            <time class="post-time" title="2019-11-25 07:31:46" datetime="2019-11-25T07:31:46.000Z"  itemprop="datePublished">2019-11-25</time>
 
             
 	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/人工智能/">人工智能</a></li></ul>
@@ -256,7 +342,7 @@
 <h1 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h1><p>L1损失：基于模型预测的值与标签的实际值之差的绝对值<br>平方误差（L2误差）：均方误差（MSE）指每个样本的平均平方损失<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20191125164618335.png" alt="MSE" title>
+                    <img src="https://img-blog.csdnimg.cn/20191125164618335.png" alt="MSE" title="">
                 </div>
                 <div class="image-caption">MSE</div>
             </figure></p>
@@ -274,7 +360,7 @@
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20191125173109443.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1Ym9qaW5n,size_16,color_FFFFFF,t_70" alt="散点图" title>
+                    <img src="https://img-blog.csdnimg.cn/20191125173109443.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1Ym9qaW5n,size_16,color_FFFFFF,t_70" alt="散点图" title="">
                 </div>
                 <div class="image-caption">散点图</div>
             </figure>
@@ -283,13 +369,13 @@
 <p>常见损失函数：均方差（Mean Square Error, MSE）和交叉熵（cross-entropy）<br>定义优化器Optimizer，初始化一个GradientDescentOptimizer<br>设置学习率和优化目标：最小化损失<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20191125190224581.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1Ym9qaW5n,size_16,color_FFFFFF,t_70" alt="训练结果" title>
+                    <img src="https://img-blog.csdnimg.cn/20191125190224581.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1Ym9qaW5n,size_16,color_FFFFFF,t_70" alt="训练结果" title="">
                 </div>
                 <div class="image-caption">训练结果</div>
             </figure><br>w: 1.9822965<br>b: 1.0420128<br><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20191125191721732.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1Ym9qaW5n,size_16,color_FFFFFF,t_70" alt="对比" title>
+                    <img src="https://img-blog.csdnimg.cn/20191125191721732.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1Ym9qaW5n,size_16,color_FFFFFF,t_70" alt="对比" title="">
                 </div>
                 <div class="image-caption">对比</div>
             </figure></p>
@@ -301,14 +387,14 @@
 <h1 id="显示损失值-1"><a href="#显示损失值-1" class="headerlink" title="显示损失值"></a>显示损失值</h1><figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20191125194553838.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1Ym9qaW5n,size_16,color_FFFFFF,t_70" alt="loss1" title>
+                    <img src="https://img-blog.csdnimg.cn/20191125194553838.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1Ym9qaW5n,size_16,color_FFFFFF,t_70" alt="loss1" title="">
                 </div>
                 <div class="image-caption">loss1</div>
             </figure>
 <figure class="image-bubble">
                 <div class="img-lightbox">
                     <div class="overlay"></div>
-                    <img src="https://img-blog.csdnimg.cn/20191125194606462.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1Ym9qaW5n,size_16,color_FFFFFF,t_70" alt="loss2" title>
+                    <img src="https://img-blog.csdnimg.cn/20191125194606462.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2h1Ym9qaW5n,size_16,color_FFFFFF,t_70" alt="loss2" title="">
                 </div>
                 <div class="image-caption">loss2</div>
             </figure>
@@ -324,7 +410,7 @@
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2024-02-12T14:15:08.179Z" itemprop="dateUpdated">2024-02-12 14:15:08</time>
+    最后更新时间：<time datetime="2019-12-27T13:55:22.000Z" itemprop="dateUpdated">2019-12-27 13:55:22</time>
 </span><br>
 
 
@@ -510,6 +596,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -574,6 +664,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACK0lEQVR42u3aQW7DMAwEwPz/0ynQU4HU9pJ0ikYan4LEtTU6sKTIxyO+nt/Xz8+v1+uvyf1H9zzecWFgYHws43l6nTNef83vOd+mfG0YGBj7MKqPnofv8+Cbrw0DAwMjT92SEDwJvhgYGBi9gBslba0UEAMDA6NXxFYXcf7inHFzLY6BgfGBjF5j4G8+v72/gYGB8e8Zz9ZVXUQv7SusBwMDY2nGUdqXB9/k9fniJk1QDAyMVRnVIa1q8M2/GR3eYWBgLM2YNyCrd/bGy/Kgj4GBsR7j/KFJUZo3AJK/ytsSv/zfwMDAWJRRjc29o7degVptkWJgYKzNSMJfHhbvGhfLYRgYGGszqgVndRiiuqPVpBADA2M3Rm/coZc4Vo/eLlJJDAyMDRh5uVg91r+tHD3fLAwMjA0YvXq3GognJ2OF7isGBsZyjPPHTUa78oZB9TkYGBh7MqptgDzUVsNutb16WMpiYGBsxpincfnWTBqcGBgYOzDyM/Z3H/Qn42KHARcDA2MDRnVsInlNdaiimYBiYGBsw+i1M3vHZNUG6sXmYmBgLM3opW75QdiktZk8GQMDY23GPCHrFauTwviXjcDAwFiaMWklVgcmeoMdGBgYGNUgeO+RXHW+qzwWhoGBsRyjetKej0TcFfsvElYMDAyMmwYpet9EVAwMDIx4tKK6uLyRcEHCwMDYgDEf5OqVsnnJehF2MTAwlmZUz7KSduYk1E7egoGBsRzjC37WslCZNG7CAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
+
 
 
 

@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#常用指令"><span class="post-toc-number">1.</span> <span class="post-toc-text">常用指令</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#第一个Linux-C程序"><span class="post-toc-number">2.</span> <span class="post-toc-text">第一个Linux C程序</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#多文件操作"><span class="post-toc-number">3.</span> <span class="post-toc-text">多文件操作</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#makeFile的编写与使用"><span class="post-toc-number">4.</span> <span class="post-toc-text">makeFile的编写与使用</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#main函数详解"><span class="post-toc-number">5.</span> <span class="post-toc-text">main函数详解</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#标准输入流输出流以及错误流"><span class="post-toc-number">6.</span> <span class="post-toc-text">标准输入流输出流以及错误流</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#管道原理及应用"><span class="post-toc-number">7.</span> <span class="post-toc-text">管道原理及应用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#管道使用demo"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">管道使用demo</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#常用指令"><span class="post-toc-text">常用指令</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#第一个Linux-C程序"><span class="post-toc-text">第一个Linux C程序</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#多文件操作"><span class="post-toc-text">多文件操作</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#makeFile的编写与使用"><span class="post-toc-text">makeFile的编写与使用</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#main函数详解"><span class="post-toc-text">main函数详解</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#标准输入流输出流以及错误流"><span class="post-toc-text">标准输入流输出流以及错误流</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#管道原理及应用"><span class="post-toc-text">管道原理及应用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#管道使用demo"><span class="post-toc-text">管道使用demo</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -485,6 +571,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -549,6 +639,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtklEQVR42u3aQW7DQAgF0Nz/0q3UVTYefWBIW+l5ZSVOPG8WBgOvV3x8/Rzv5+9H/g9P/3O+49Mn1w48PDy81tKfjvPNzrc8Y86fnHnJmvHw8PC2ecniepty3qzzXc4bkYQTPDw8vN/lVZfbCxjJFuPh4eH9F15y3qPmaTQeHh7e3+H1kuNesSAvASdbea3WgoeHh9f/z9etILF3vt7fw8PDw2t11fOHb1Jc6IWTyWrx8PDwNnj5EMAtTP5tgowCBh4eHt4Cb/6qXx3b6hWOk7GtqFaNh4eHN+BNHuu9xDcPML3AECXTeHh4eGNe70GfJOXnYDBpj0WJNR4eHt5HeNUb5FuTJMf5NVFZBA8PD+8jvHyh1WGsUaUkDkJ4eHh427zqYFOeIlc/TwoT+Rbg4eHhbfMmaXH1f6qL6xU48PDw8PZ41R/nLahJCJmHDTw8PLw93kYRtro1veJFMiKGh4eHt8GrDkX1UurJo78aAB5nyvDw8PAu8SYpcv6AzseqkrvkK8fDw8Pb4OXN+0mJoTdq0Cv4PqbUeHh4eJd4SRli0qSvbkc+ZFBO9/Hw8PAu8aql2N4YQb5ZyaLP15R3Fw8PD6/IS27QAyQP91vJ9ChS4eHh4Y1J1cJustAJYNJCw8PDw9vm9RLoarKbnycbEZWS8fDw8BZ4SUu+uohJC+1umo6Hh4e3wUtGmnpdtXzoqvdt840BDw8P7xKvWq6dtKyuNbSSkIaHh4d3lfdVPJIX/jxgJJvbK3zg4eHh7fEm/ffqt73W1yQI4eHh4e3xqq/3k9GBCb4XqPDw8PD2eHcHpApl1rj91rweDw8P78/wJuWAfMyrOojwmFLj4eHh/RIvH4TKH9xJk2xyPR4eHt4eb970ygNJshHVpPxCrQUPDw8v5k0aYL2SQbVMXG2D4eHh4a3xvgF5WJxxoThaNQAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

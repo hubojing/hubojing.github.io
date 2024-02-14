@@ -53,8 +53,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -219,7 +305,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#概述"><span class="post-toc-number">1.</span> <span class="post-toc-text">概述</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#环境搭建"><span class="post-toc-number">2.</span> <span class="post-toc-text">环境搭建</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#JDK下载"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">JDK下载</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#配置环境变量"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">配置环境变量</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#配置Eclipse"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">配置Eclipse</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Java从编写到运行"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">Java从编写到运行</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#编程标准"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">编程标准</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#基础知识"><span class="post-toc-number">3.</span> <span class="post-toc-text">基础知识</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#class类"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">class类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#main函数"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">main函数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#八种基本类型"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">八种基本类型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#运算符"><span class="post-toc-number">3.3.1.</span> <span class="post-toc-text">运算符</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#自定义函数"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">自定义函数</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#面向对象"><span class="post-toc-number">4.</span> <span class="post-toc-text">面向对象</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#构造函数"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">构造函数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#信息隐藏原则"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">信息隐藏原则</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#this"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">this</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#继承、接口和抽象类"><span class="post-toc-number">5.</span> <span class="post-toc-text">继承、接口和抽象类</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#继承"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">继承</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#抽象类"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">抽象类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#接口"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">接口</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">总结</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#类转型"><span class="post-toc-number">5.5.</span> <span class="post-toc-text">类转型</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多态"><span class="post-toc-number">5.6.</span> <span class="post-toc-text">多态</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#static、final和常量设计"><span class="post-toc-number">6.</span> <span class="post-toc-text">static、final和常量设计</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#static"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">static</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#单例模式"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">单例模式</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#final"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">final</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#常量设计"><span class="post-toc-number">6.4.</span> <span class="post-toc-text">常量设计</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#不可变对象和字符串"><span class="post-toc-number">6.5.</span> <span class="post-toc-text">不可变对象和字符串</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#不可变对象"><span class="post-toc-number">6.5.1.</span> <span class="post-toc-text">不可变对象</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#字符串"><span class="post-toc-number">6.5.2.</span> <span class="post-toc-text">字符串</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#package-import和classpath"><span class="post-toc-number">7.</span> <span class="post-toc-text">package, import和classpath</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#package和import"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">package和import</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#jar"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">jar</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#classpath"><span class="post-toc-number">7.2.1.</span> <span class="post-toc-text">classpath</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Java访问权限"><span class="post-toc-number">7.2.2.</span> <span class="post-toc-text">Java访问权限</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Java常用类"><span class="post-toc-number">8.</span> <span class="post-toc-text">Java常用类</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数字类"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">数字类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#字符串相关类"><span class="post-toc-number">8.2.</span> <span class="post-toc-text">字符串相关类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#时间类"><span class="post-toc-number">8.3.</span> <span class="post-toc-text">时间类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#格式化（Format）相关类"><span class="post-toc-number">8.4.</span> <span class="post-toc-text">格式化（Format）相关类</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#异常和异常处理"><span class="post-toc-number">9.</span> <span class="post-toc-text">异常和异常处理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#异常"><span class="post-toc-number">9.1.</span> <span class="post-toc-text">异常</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#异常处理"><span class="post-toc-number">9.2.</span> <span class="post-toc-text">异常处理</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#自定义异常"><span class="post-toc-number">9.3.</span> <span class="post-toc-text">自定义异常</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#数据结构"><span class="post-toc-number">10.</span> <span class="post-toc-text">数据结构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数组"><span class="post-toc-number">10.1.</span> <span class="post-toc-text">数组</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#JCF"><span class="post-toc-number">10.2.</span> <span class="post-toc-text">JCF</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#List"><span class="post-toc-number">10.2.1.</span> <span class="post-toc-text">List</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Set"><span class="post-toc-number">10.2.2.</span> <span class="post-toc-text">Set</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Map"><span class="post-toc-number">10.2.3.</span> <span class="post-toc-text">Map</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#工具类"><span class="post-toc-number">10.2.4.</span> <span class="post-toc-text">工具类</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#文件读写"><span class="post-toc-number">11.</span> <span class="post-toc-text">文件读写</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文件系统及Java文件基本操作"><span class="post-toc-number">11.1.</span> <span class="post-toc-text">文件系统及Java文件基本操作</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#概述"><span class="post-toc-text">概述</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#环境搭建"><span class="post-toc-text">环境搭建</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#JDK下载"><span class="post-toc-text">JDK下载</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#配置环境变量"><span class="post-toc-text">配置环境变量</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#配置Eclipse"><span class="post-toc-text">配置Eclipse</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Java从编写到运行"><span class="post-toc-text">Java从编写到运行</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#编程标准"><span class="post-toc-text">编程标准</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#基础知识"><span class="post-toc-text">基础知识</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#class类"><span class="post-toc-text">class类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#main函数"><span class="post-toc-text">main函数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#八种基本类型"><span class="post-toc-text">八种基本类型</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#运算符"><span class="post-toc-text">运算符</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#自定义函数"><span class="post-toc-text">自定义函数</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#面向对象"><span class="post-toc-text">面向对象</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#构造函数"><span class="post-toc-text">构造函数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#信息隐藏原则"><span class="post-toc-text">信息隐藏原则</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#this"><span class="post-toc-text">this</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#继承、接口和抽象类"><span class="post-toc-text">继承、接口和抽象类</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#继承"><span class="post-toc-text">继承</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#抽象类"><span class="post-toc-text">抽象类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#接口"><span class="post-toc-text">接口</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#总结"><span class="post-toc-text">总结</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#类转型"><span class="post-toc-text">类转型</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多态"><span class="post-toc-text">多态</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#static、final和常量设计"><span class="post-toc-text">static、final和常量设计</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#static"><span class="post-toc-text">static</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#单例模式"><span class="post-toc-text">单例模式</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#final"><span class="post-toc-text">final</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#常量设计"><span class="post-toc-text">常量设计</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#不可变对象和字符串"><span class="post-toc-text">不可变对象和字符串</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#不可变对象"><span class="post-toc-text">不可变对象</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#字符串"><span class="post-toc-text">字符串</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#package-import和classpath"><span class="post-toc-text">package, import和classpath</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#package和import"><span class="post-toc-text">package和import</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#jar"><span class="post-toc-text">jar</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#classpath"><span class="post-toc-text">classpath</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Java访问权限"><span class="post-toc-text">Java访问权限</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#Java常用类"><span class="post-toc-text">Java常用类</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数字类"><span class="post-toc-text">数字类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#字符串相关类"><span class="post-toc-text">字符串相关类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#时间类"><span class="post-toc-text">时间类</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#格式化（Format）相关类"><span class="post-toc-text">格式化（Format）相关类</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#异常和异常处理"><span class="post-toc-text">异常和异常处理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#异常"><span class="post-toc-text">异常</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#异常处理"><span class="post-toc-text">异常处理</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#自定义异常"><span class="post-toc-text">自定义异常</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#数据结构"><span class="post-toc-text">数据结构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数组"><span class="post-toc-text">数组</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#JCF"><span class="post-toc-text">JCF</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#List"><span class="post-toc-text">List</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Set"><span class="post-toc-text">Set</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Map"><span class="post-toc-text">Map</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#工具类"><span class="post-toc-text">工具类</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#文件读写"><span class="post-toc-text">文件读写</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文件系统及Java文件基本操作"><span class="post-toc-text">文件系统及Java文件基本操作</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -967,6 +1053,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -1031,6 +1121,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACH0lEQVR42u3a0YrjMAwF0P7/T3deF5Zm7rWagdjHT6VJHZ8UhGT59YrH+5+RXH1/GPmvXncMDAyMxzLel2Ptnpb3/z35/RgYGOcwPkWw66mv52kXff3cX9aMgYGBETwsT/WSRBMDAwNjHnCvAddhdxKOMTAwTmasJXDtSBLN22txDAyMBzLyXfe//3xLfwMDA+NRjEm4TAJl25hcDOIYGBhbM/IAN99Ka9PB+vAHBgbGMYx52F0Lsm1ztJgIAwPj4Yy89bj2gLbNubYNh4GBsTcjaQ3mTYI8EE+CbzQbBgbGRoy1YxNJVpZnbsU7/jQbBgbGAYy1RawlcHewMTAw9mbkhyq+kHXG80/ux8DA2Juxlg62hehag6EocTEwMLZjtGVku33fBtzFghkDA+MARlKgtptxyf23H7bAwMDYgpHw2qt5kJ0XtMW/hIGB8XBGUljmm/X5bPVeYBteMTAwtmNMUro7Gp/1czEwMA5grB35WoO1jYeis4GBgbE1oy0+k6vtUtrEse5yYGBgPJyxdgBirUxNUsmkIYGBgYHRpoOToNy2GerGAAYGxmMZ73JMGJO2RJEUYmBgbMeYtDnbTbc20fzWa8LAwNiD0R6qaIPvJCoW7UwMDIwDGO2y2vJ1LfUsQj8GBgbGVxuQeXlcBHEMDAyM8YIm6WMUpjEwMA5gJEXs2mZZHlgnCSgGBsbejDzkTb5pX0r7GQMDY1PGD45mIuC+a9paAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
+
 
 
 

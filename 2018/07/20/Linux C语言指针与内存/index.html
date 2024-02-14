@@ -54,8 +54,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -220,7 +306,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#gdb调试工具的使用"><span class="post-toc-number">1.</span> <span class="post-toc-text">gdb调试工具的使用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#demo"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">demo</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#指针与内存"><span class="post-toc-number">2.</span> <span class="post-toc-text">指针与内存</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#内存分配"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">内存分配</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#函数指针"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">函数指针</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#字符串与数组"><span class="post-toc-number">3.</span> <span class="post-toc-text">字符串与数组</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#gdb调试工具的使用"><span class="post-toc-text">gdb调试工具的使用</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#demo"><span class="post-toc-text">demo</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#指针与内存"><span class="post-toc-text">指针与内存</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#内存分配"><span class="post-toc-text">内存分配</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#函数指针"><span class="post-toc-text">函数指针</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#字符串与数组"><span class="post-toc-text">字符串与数组</span></a></li></ol>
         </nav>
     </aside>
 
@@ -485,6 +571,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -549,6 +639,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACvklEQVR42u3aQW7cQAwEQP//0wmQUwJbcjepWW+A0mnhlaUpGRjRTX58xMevP8f+nL/PvD//8zn59esDDw8Pb7T0q+Pq0vc/ufr28zn53fPfxcPDw3sN736jT85pH1l7l+F68PDw8H6UlxTBTz24+zPx8PDw/hfe1aa/Wfrsanh4eHjvwMvjgDZoaIvjJBA5krXg4eHhxby2AfYOnw/29/Dw8PAWXfVNFJsHGe2ZxQrx8PDwDvDyiHa2A7dBbTKYVQ9j4eHh4T3Km23xedndttDyx5c8Ajw8PLzX82a3bMvfPenyD4CHh4d3gLcZFJh9zqONPJgo/m/Aw8PDe4iXb9mzYYI2UMhDjahkx8PDw3uU1y4u2Yjbrbwt6/NHhoeHh3eCN9vu2xJ5FgHnnax6XgwPDw9vwctbVslwQL6INszNA4jLlBoPDw/vId6sbJ2VtnnAsWmA1ZMIeHh4eKPe0KawLtLislzeBMpfDF3h4eHhHeDNQoH2JdGW7O37rZgpw8PDwxvxik12VFInAUf+IIajV3h4eHgHeLMMo13KrFyeBSjfTJbh4eHhrXnJzWbnbGKF9mVzeQU8PDy8w7zNImYDXpvHVBfTeHh4eGteG57mIe++rfXAgYeHh3eY194sD2T3kcdsMAsPDw/vBC9/SeQt/1nEkDfk7v8AUUqNh4eHd4C3DyPyxv9siCEv0/Hw8PBO8DbDT/ntk2hj80K6XCceHh7eMd6sCH5qic+22aI8Aw8PD+9AA2zWyN8MUe1D23++xcPDwzvAmw1LtRfdNL1m5fjwFYKHh4cX82YbdHKF/JHlsW87rICHh4d3jtc2sZ4qlPNX0ax1h4eHh/duvHabzmOOdrjqm5IaDw8P74d4s/B0Bm6bcHh4eHiv52227M3m/lRR/kDWgoeHhxfzTjfA2qh3P1iAh4eHd4z3G/EQu2AQsYeKAAAAAElFTkSuQmCC" alt="微信分享二维码">
 </div>
+
 
 
 

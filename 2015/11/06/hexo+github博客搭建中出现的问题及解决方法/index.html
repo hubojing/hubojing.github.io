@@ -55,8 +55,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -221,7 +307,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#插件-plug-in-unit"><span class="post-toc-number">1.</span> <span class="post-toc-text">插件 plug-in unit</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#几条重要指令-Several-important-instructions"><span class="post-toc-number">2.</span> <span class="post-toc-text">几条重要指令 Several important instructions</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#安装-Install"><span class="post-toc-number">3.</span> <span class="post-toc-text">安装 Install</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#开始建站-Set"><span class="post-toc-number">4.</span> <span class="post-toc-text">开始建站 Set</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#本地预览-Local-preview"><span class="post-toc-number">5.</span> <span class="post-toc-text">本地预览 Local preview</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#注意细节-Pay-attention-to-details"><span class="post-toc-number">6.</span> <span class="post-toc-text">注意细节 Pay attention to details</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#写新文章-Create-a-new-article"><span class="post-toc-number">7.</span> <span class="post-toc-text">写新文章 Create a new article</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#勿用github自动页面生成器-Do-not-use-the-github-automatic-page-generator"><span class="post-toc-number">8.</span> <span class="post-toc-text">勿用github自动页面生成器 Do not use the github automatic page generator</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#复制公钥-Copy-public-key"><span class="post-toc-number">9.</span> <span class="post-toc-text">复制公钥 Copy public key</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#基本指令-Basic-instructions"><span class="post-toc-number">10.</span> <span class="post-toc-text">基本指令 Basic instructions</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考资料-Reference-material"><span class="post-toc-number">11.</span> <span class="post-toc-text">参考资料 Reference material</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#插件-plug-in-unit"><span class="post-toc-text">插件 plug-in unit</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#几条重要指令-Several-important-instructions"><span class="post-toc-text">几条重要指令 Several important instructions</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#安装-Install"><span class="post-toc-text">安装 Install</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#开始建站-Set"><span class="post-toc-text">开始建站 Set</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#本地预览-Local-preview"><span class="post-toc-text">本地预览 Local preview</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#注意细节-Pay-attention-to-details"><span class="post-toc-text">注意细节 Pay attention to details</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#写新文章-Create-a-new-article"><span class="post-toc-text">写新文章 Create a new article</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#勿用github自动页面生成器-Do-not-use-the-github-automatic-page-generator"><span class="post-toc-text">勿用github自动页面生成器 Do not use the github automatic page generator</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#复制公钥-Copy-public-key"><span class="post-toc-text">复制公钥 Copy public key</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#基本指令-Basic-instructions"><span class="post-toc-text">基本指令 Basic instructions</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考资料-Reference-material"><span class="post-toc-text">参考资料 Reference material</span></a></li></ol>
         </nav>
     </aside>
 
@@ -549,6 +635,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -613,6 +703,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADIklEQVR42u3aS27jQAwFwNz/0s52gImUR7INWExpZRhSq6u1IPj5+oqv18V1f8/9av8/db9O8s/hCxsbG/sh7NftlbOTtyT/J9T8yC53i42Njb2OnYSZZHP3hzIPb/d7yw8XGxsbGzvZ1n04TH73nsLGxsbGzpc7W3jqhS5sbGxs7LyoNHl9EgKrh5InRdjY2Ni72dXi/if/fkt/GxsbG/uD2a/ilZT488AzuWekwMbGxl7EnhSMkjSgWnLqhc/q/rGxsbE3sfNyfFLoyUdz8jB27Nv+uz42Njb2InYSMJIH8tRlMuJTbT+UGwPY2NjYj2UnG03CzKQ1m5eHemWsX/rb2NjY2A9nVwNVtYg/adbmgfNwEoKNjY39EHYSGKr3TNrGeRMi/zBRxMbGxsZ+LHsSMKrbzZvK1ZB54F3Y2NjYi9inik1JyT4/pkk7uYzHxsbGfiz71JDN/OCS7VbTlUK7FxsbG/tR7LyI0xviSVboDfHkn+SHZ7GxsbGXsnst2zmpl8yMwhg2Njb2IvakWZuX4HN8df38/l+63NjY2NiPZee8JHWZVLZ6+GT0BxsbG3s3Ox/NqW5xsvVqeMsTJGxsbOy/wM6DUPUQ81Ge5DPMDwgbGxt7B7vXjk0SgF6i0ntLPuIz6kJjY2NjfyS713btJR69ok812Sisj42Njb2OPUkSeulKEtiqeys0KrCxsbFXsPNG6WRbk3LSJKRdroyNjY29lD0px/eaxNWjnLzxsj2AjY2NvYKdF+6TcPK+ADlvLWNjY2PvY/cSjPyVCSxvJ+TH2pxOwsbGxl7Bro7v5OFqcme1PYyNjY39N9l52vCOhKF69Pmal8eKjY2NvY5dHYXJA2Hyu/rsfDwIGxsbewf7VbzyQn+1fN/7v9daxsbGxt7E7gWAfGTnFClfoToMio2Njb2DnQetA+3VVhpTrepHR4aNjY29jl0NDHnbNU9sqsWpZhUNGxsbG/tQ6/cdAzqFsIqNjY2NXRzNzKmTBkOhEIaNjY29jl1NGKppw6kV8pTjWHsAGxsb++PZ1YCRj+9MykPVgaHkXdjY2Njr2N/sG4aSKfHrvwAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

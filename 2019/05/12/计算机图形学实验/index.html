@@ -54,8 +54,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -220,7 +306,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验：搭建OpenGL环境"><span class="post-toc-number">1.</span> <span class="post-toc-text">实验：搭建OpenGL环境</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#GLFW"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">GLFW</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#编译glfw3-lib"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">编译glfw3.lib</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#配置"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">配置</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#GLAD"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">GLAD</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验：绘制一个窗口"><span class="post-toc-number">2.</span> <span class="post-toc-text">实验：绘制一个窗口</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#包含头文件"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">包含头文件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#初始化GLFW"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">初始化GLFW</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#查看GLFW版本"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">查看GLFW版本</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#创建窗口"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">创建窗口</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#初始化GLAD"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">初始化GLAD</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#指定视口"><span class="post-toc-number">2.6.</span> <span class="post-toc-text">指定视口</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#渲染"><span class="post-toc-number">2.7.</span> <span class="post-toc-text">渲染</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#修改窗口颜色"><span class="post-toc-number">2.8.</span> <span class="post-toc-text">修改窗口颜色</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#运行效果"><span class="post-toc-number">2.9.</span> <span class="post-toc-text">运行效果</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#完整代码"><span class="post-toc-number">2.10.</span> <span class="post-toc-text">完整代码</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验：绘制三角形"><span class="post-toc-number">3.</span> <span class="post-toc-text">实验：绘制三角形</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#初始化"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">初始化</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#顶点输入"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">顶点输入</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据处理"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">数据处理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#VBO"><span class="post-toc-number">3.3.1.</span> <span class="post-toc-text">VBO</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#VAO"><span class="post-toc-number">3.3.2.</span> <span class="post-toc-text">VAO</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#顶点属性"><span class="post-toc-number">3.3.3.</span> <span class="post-toc-text">顶点属性</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#顶点着色器和片段着色器"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">顶点着色器和片段着色器</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#顶点着色器"><span class="post-toc-number">3.4.1.</span> <span class="post-toc-text">顶点着色器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#片段着色器"><span class="post-toc-number">3.4.2.</span> <span class="post-toc-text">片段着色器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#生成和编译"><span class="post-toc-number">3.4.3.</span> <span class="post-toc-text">生成和编译</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#渲染-1"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">渲染</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#善后工作"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">善后工作</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#实验效果"><span class="post-toc-number">3.7.</span> <span class="post-toc-text">实验效果</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#完整代码-1"><span class="post-toc-number">3.8.</span> <span class="post-toc-text">完整代码</span></a></li></ol></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验：搭建OpenGL环境"><span class="post-toc-text">实验：搭建OpenGL环境</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#GLFW"><span class="post-toc-text">GLFW</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#编译glfw3-lib"><span class="post-toc-text">编译glfw3.lib</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#配置"><span class="post-toc-text">配置</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#GLAD"><span class="post-toc-text">GLAD</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验：绘制一个窗口"><span class="post-toc-text">实验：绘制一个窗口</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#包含头文件"><span class="post-toc-text">包含头文件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#初始化GLFW"><span class="post-toc-text">初始化GLFW</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#查看GLFW版本"><span class="post-toc-text">查看GLFW版本</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#创建窗口"><span class="post-toc-text">创建窗口</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#初始化GLAD"><span class="post-toc-text">初始化GLAD</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#指定视口"><span class="post-toc-text">指定视口</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#渲染"><span class="post-toc-text">渲染</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#修改窗口颜色"><span class="post-toc-text">修改窗口颜色</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#运行效果"><span class="post-toc-text">运行效果</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#完整代码"><span class="post-toc-text">完整代码</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验：绘制三角形"><span class="post-toc-text">实验：绘制三角形</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#初始化"><span class="post-toc-text">初始化</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#顶点输入"><span class="post-toc-text">顶点输入</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据处理"><span class="post-toc-text">数据处理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#VBO"><span class="post-toc-text">VBO</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#VAO"><span class="post-toc-text">VAO</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#顶点属性"><span class="post-toc-text">顶点属性</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#顶点着色器和片段着色器"><span class="post-toc-text">顶点着色器和片段着色器</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#顶点着色器"><span class="post-toc-text">顶点着色器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#片段着色器"><span class="post-toc-text">片段着色器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#生成和编译"><span class="post-toc-text">生成和编译</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#渲染-1"><span class="post-toc-text">渲染</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#善后工作"><span class="post-toc-text">善后工作</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#实验效果"><span class="post-toc-text">实验效果</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#完整代码-1"><span class="post-toc-text">完整代码</span></a></li></ol></li></ol>
         </nav>
     </aside>
 
@@ -522,6 +608,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -586,6 +676,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACrUlEQVR42u3a3W7CMAwGUN7/pbdbpK3w2Y47Jp1eodKfnCDFxs7jER9fT8fzmcldyeer5xw+8PDw8AZD/3m8HujVmeRpV3e9Hls+Zjw8PLxt3tWKmi/cyZr8evWeBI/L83h4eHgfyUvuql6ZhxY8PDy8/8LLCwTVRLlayMDDw8P7K161fJCnzsnUJCFkvdaCh4eHF/PyLtLnfF7p7+Hh4eGNu+rz1tSpxlhztHh4eHgLvPn2qepmqeri3it84OHh4W3zckBenJ3kt5PAExVz8fDw8Aa8PJ2tLvTNOQ6KIIUn4OHh4S3wJsWFnJ23qfJGWn4GDw8P7yyv2sjPX1DdRtDbtlUoQODh4eEd4vVKBr0SRnVDQG8L1xsqHh4e3lFekhYnKXI+EafKx9GU4eHh4R3iVRfx/GW9jQKTt+Dh4eHdyav2j6oTUS3yVpP7N/8P8PDw8BZ4vSS4Nym9lL06nl/iHh4eHt5RXjUMVMPDvPjb3BOBh4eHt8CbpL/Vpn5etmhuSE2ux8PDwxvzejdXm2H5BoX8N4l+ADw8PLwbedXXJyGhtzFrNJV4eHh4C7zJH/ukfNDbyJV8W+h24eHh4R3l5YOoNvJ7T8jviiYUDw8Pb42XLPd5qn1POt7cOoCHh4c35iUZd4LJNwrkz89DSPTz4OHh4R3l9Yaeh4e8UJuAH9UDDw8Pb43XI+WMebm2mWTj4eHh3c5LirNRn61InQQDPDw8vD3epDU1Lxnk56tJPB4eHt4eb1KwqBYjqldOPuPh4eFt86rBIF+I5+XdXisODw8P7x5e3jnKl/veJqpqGeLNlXh4eHgfw0uS5rwsmweAcjkYDw8P7wN4vapGtRDcKxn/Mh48PDy8NV7ymnmrbB4Syok4Hh4e3gKv94e/Ooh5aMlTajw8PLw13jfNPAMnxmXnXwAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
+
 
 
 

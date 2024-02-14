@@ -52,8 +52,94 @@
     <!-- custom head -->
     
 
-</head>
 
+
+<!-- 同时兼容http与https -->
+<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
+<script>
+    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
+    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
+    // 自己创建的Class的名字
+    var name='Counter';
+    function createRecord(Counter){
+      // 设置 ACL
+      var acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(true);
+      // 获得span的所有元素
+      var elements=document.getElementsByClassName('leancloud_visitors');
+      // 一次创建多条记录
+      var allcounter=[];
+      for (var i = 0; i < elements.length ; i++) {
+        // 若某span的内容不包括 '-' ，则不必创建记录
+        if(elements[i].textContent.indexOf('-') == -1){
+          continue;
+        }
+        var title = elements[i].getAttribute('data-flag-title');
+        var url = elements[i].id;
+        var newcounter = new Counter();
+        newcounter.setACL(acl);
+        newcounter.set("title", title);
+        newcounter.set("url", url);
+        newcounter.set("time", 0);
+        allcounter.push(newcounter);
+        // 顺便更新显示span为默认值0
+        elements[i].textContent=0;
+      }
+      AV.Object.saveAll(allcounter).then(function (todo) {
+        // 成功保存记录之后
+        console.log('创建记录成功！');
+      }, function (error) {
+        // 异常错误 
+        console.error('创建记录失败: ' + error.message);
+      });
+    }
+    function showCount(Counter){
+      // 是否需要创建新纪录的标志（添加一篇新文章）
+      var flag=false;
+      var query = new AV.Query(name);
+      query.greaterThanOrEqualTo('time', 0);
+      query.find().then(function (results) {
+        // 当获取到的记录为0时置默认值
+        if(results.length==0){
+          $('.leancloud_visitors').text('-');
+          flag=true;
+          console.log('返回查询记录为空');
+          // 如果获取到空记录就创建新记录
+          createRecord(Counter);
+          return;
+        }
+        // 将获取到的数据设置为text
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');
+          var element = document.getElementById(url);
+          element.textContent = time;
+        }
+        // 当某个span含有默认值时说明需要创建记录
+        if($('.leancloud_visitors').text().indexOf("-") != -1){
+          flag=true;
+        }
+        // 当获取的记录数与span个数不吻合时
+        if(results.length != $('.leancloud_visitors').length){
+          flag=true;
+        }
+        if(flag){
+          createRecord(Counter);
+        }
+      }, function (error) {
+        console.log('query error:'+error.message);
+      });
+    }
+    $(function() {
+      var Counter = AV.Object.extend(name);
+      showCount(Counter);
+    });
+</script>
+
+
+</head>
 <body>
     <div id="loading" class="active"></div>
 
@@ -218,7 +304,7 @@
     <aside class="post-widget">
         <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
             <h4>TOC</h4>
-            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#使用CImage加载PNG的一般方法"><span class="post-toc-number">1.</span> <span class="post-toc-text">使用CImage加载PNG的一般方法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#MFC-tab控件"><span class="post-toc-number">2.</span> <span class="post-toc-text">MFC tab控件</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#安全函数"><span class="post-toc-number">3.</span> <span class="post-toc-text">安全函数</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#在MFC对话框中显示html网页"><span class="post-toc-number">4.</span> <span class="post-toc-text">在MFC对话框中显示html网页</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#CXImage的使用"><span class="post-toc-number">5.</span> <span class="post-toc-text">CXImage的使用</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#限制只启动一个exe"><span class="post-toc-number">6.</span> <span class="post-toc-text">限制只启动一个exe</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#PCE-js"><span class="post-toc-number">7.</span> <span class="post-toc-text">PCE.js</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#MFC复选框"><span class="post-toc-number">8.</span> <span class="post-toc-text">MFC复选框</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#关于“不允许指针指向不完整的类类型”问题分析"><span class="post-toc-number">9.</span> <span class="post-toc-text">关于“不允许指针指向不完整的类类型”问题分析</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#树节点遍历"><span class="post-toc-number">10.</span> <span class="post-toc-text">树节点遍历</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#遍历Vector的几种方法"><span class="post-toc-number">11.</span> <span class="post-toc-text">遍历Vector的几种方法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#表达式的副作用"><span class="post-toc-number">12.</span> <span class="post-toc-text">表达式的副作用</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#理解递归"><span class="post-toc-number">13.</span> <span class="post-toc-text">理解递归</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#屏蔽回车和ESE"><span class="post-toc-number">14.</span> <span class="post-toc-text">屏蔽回车和ESE</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#MFC查找特定后缀文件"><span class="post-toc-number">15.</span> <span class="post-toc-text">MFC查找特定后缀文件</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#为CDHtmlDialog添加滚动条"><span class="post-toc-number">16.</span> <span class="post-toc-text">为CDHtmlDialog添加滚动条</span></a></li></ol>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#使用CImage加载PNG的一般方法"><span class="post-toc-text">使用CImage加载PNG的一般方法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#MFC-tab控件"><span class="post-toc-text">MFC tab控件</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#安全函数"><span class="post-toc-text">安全函数</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#在MFC对话框中显示html网页"><span class="post-toc-text">在MFC对话框中显示html网页</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#CXImage的使用"><span class="post-toc-text">CXImage的使用</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#限制只启动一个exe"><span class="post-toc-text">限制只启动一个exe</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#PCE-js"><span class="post-toc-text">PCE.js</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#MFC复选框"><span class="post-toc-text">MFC复选框</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#关于“不允许指针指向不完整的类类型”问题分析"><span class="post-toc-text">关于“不允许指针指向不完整的类类型”问题分析</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#树节点遍历"><span class="post-toc-text">树节点遍历</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#遍历Vector的几种方法"><span class="post-toc-text">遍历Vector的几种方法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#表达式的副作用"><span class="post-toc-text">表达式的副作用</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#理解递归"><span class="post-toc-text">理解递归</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#屏蔽回车和ESE"><span class="post-toc-text">屏蔽回车和ESE</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#MFC查找特定后缀文件"><span class="post-toc-text">MFC查找特定后缀文件</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#为CDHtmlDialog添加滚动条"><span class="post-toc-text">为CDHtmlDialog添加滚动条</span></a></li></ol>
         </nav>
     </aside>
 
@@ -485,6 +571,10 @@
 </p>
 
 
+
+   lc站点总访问量：<span id="" class="leancloud_visitors" data-flag-title=""></span>
+
+
         <p>
             
                 <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
@@ -549,6 +639,7 @@
     <p>扫一扫，分享到微信</p>
     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJ0lEQVR42u3a26qDUAyEYd//pe1twbo6k1HB5PdKpN1dnxtCTtsmX/vh+n5+dn/2reNfPn5ru+OCAQPGaxn78jr7gfxJ8jp+UGHAgDGAoYRC/fPKIc4OVPstGDBgwEjCqHtQGDBgwMgZ+hM9HVy/IBgwYMDQi1i3x+WWrA/V4jBgwHghQ++6P39/y3wDBgwYr2Lk4VJJ6fQQuZcuGDBg9GboAc5tpekJXy3gwoABYw4jGSLqxe1Vr8b518CAAaMPY924139SHy3oYdpON2HAgNGUoRwuWcVI1iyMcA8DBowBDH0YoMOUJlpy9B8BFwYMGK0ZtcaZPkKoLU/oCx8wYMCYyXCbaPp6xO0ZLgwYMFozav12t0mXwIx2GwwYMJoy9AO5xa07/lyTpMkGDBgwGjGUCWcyXKwF3GjZAgYMGE0ZtRCZjy3dYK2AYcCA0Y+RNLz0IKsPEi4IoDBgwGjH0MeKyVqGO550i1sYMGBMZuhFrD4kyAeZf9ptMGDAaM1w7/MRgpt0/nkFMGDAGMBwF1iVQ9da/8VyFwYMGGMYtcGkXqbm7TZjcwQGDBgtGLt51Q5di5DFpBAGDBjtGLUw5w473ZWvvJCGAQNGP4YbZN1AmRTPxvuGAQPGAMZVQ0c31XOPK803YMCAMZ7hpoNG589MRqOACwMGjNaMWvmqJIVJ8goDBowJDKWIdYOgG1jdhTAYMGDMYSSl4/qg+XKYG/phwIDRjvEB5FKyULEpoWcAAAAASUVORK5CYII=" alt="微信分享二维码">
 </div>
+
 
 
 
