@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="https://hubojing.github.io//2018/01/06/微信自动跳一跳/">
+    
+    
+    <title>微信自动跳一跳 | 靖待的技术博客 | 小清新IT旅程 | 为中华之崛起而读书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="CPP,OpenCV">
+    <meta name="description" content="技术探讨微信跳一跳自动实现（C++版）。">
+<meta name="keywords" content="CPP,OpenCV">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信自动跳一跳">
+<meta property="og:url" content="https://hubojing.github.io/2018/01/06/微信自动跳一跳/index.html">
+<meta property="og:site_name" content="靖待的技术博客">
+<meta property="og:description" content="技术探讨微信跳一跳自动实现（C++版）。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1548148807039&di=5be4543607497eec3f8625451f1a7c3f&imgtype=0&src=http%3A%2F%2Fpic2.52pk.com%2Ffiles%2F180105%2F5613886_160000_1_lit.jpg">
+<meta property="og:image" content="http://img.blog.csdn.net/20180114233902221?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:image" content="http://img.blog.csdn.net/20180114233931154?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2018-01-14T23:43:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信自动跳一跳">
+<meta name="twitter:description" content="技术探讨微信跳一跳自动实现（C++版）。">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1548148807039&di=5be4543607497eec3f8625451f1a7c3f&imgtype=0&src=http%3A%2F%2Fpic2.52pk.com%2Ffiles%2F180105%2F5613886_160000_1_lit.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+	
+	
+	
+	
+	
+	
+	
+    
+
+</head>
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">靖待</h5>
+          <a href="mailto:hubojing@outlook.com" title="hubojing@outlook.com" class="mail">hubojing@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archive"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hubojing/"  >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/friends"  >
+                <i class="icon icon-lg icon-users"></i>
+                友情链接
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/Chinese"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/comment"  >
+                <i class="icon icon-lg icon-book"></i>
+                留言板
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/littletalk"  >
+                <i class="icon icon-lg icon-edit"></i>
+                自言自语
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://blog.csdn.net/hubojing/"  >
+                <i class="icon icon-lg icon-pencil"></i>
+                CSDN博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/advertising"  >
+                <i class="icon icon-lg icon-link"></i>
+                推广
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes"  >
+                <i class="icon icon-lg icon-qq"></i>
+                和我在线交流
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">微信自动跳一跳</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">微信自动跳一跳</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-01-06T17:03:53.000Z" itemprop="datePublished" class="page-time">
+  2018-01-06
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/软件开发/">软件开发</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#原理"><span class="post-toc-text">原理</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#借助adb"><span class="post-toc-text">借助adb</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#计算距离"><span class="post-toc-text">计算距离</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#最傻瓜"><span class="post-toc-text">最傻瓜</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#稍改进"><span class="post-toc-text">稍改进</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#比较好"><span class="post-toc-text">比较好</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#AI"><span class="post-toc-text">AI</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#设置参数"><span class="post-toc-text">设置参数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#代码流程"><span class="post-toc-text">代码流程</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#示例"><span class="post-toc-text">示例</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#下载"><span class="post-toc-text">下载</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考"><span class="post-toc-text">参考</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-微信自动跳一跳"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">微信自动跳一跳</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-01-06 17:03:53" datetime="2018-01-06T17:03:53.000Z"  itemprop="datePublished">2018-01-06</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/软件开发/">软件开发</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div align="left"><br><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1548148807039&di=5be4543607497eec3f8625451f1a7c3f&imgtype=0&src=http%3A%2F%2Fpic2.52pk.com%2Ffiles%2F180105%2F5613886_160000_1_lit.jpg" width="300" height="180" style="float:right;"><br><br><br>　　<strong>技术探讨微信跳一跳自动实现（C++版）。</strong><br><br><br> </div>
+
+<a id="more"></a>
+<p>免责声明：请勿用于刷分，由此导致的分数被屏蔽、微信被封号后果自负。</p>
+<p>近来微信跳一跳很火，手动玩的最高纪录才150分，而最常见的情况是10分以内就挂，由此萌生了是否能技术实现的想法。当然，对刷分并不感兴趣，只是想学习下各位大佬们的代码。知乎上这个话题已经炸开了锅，python版满天飞，这里是一个C++实现。（物理外挂简直丧心病狂(〝▼皿▼)）</p>
+<p>适用范围：Android</p>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><h2 id="借助adb"><a href="#借助adb" class="headerlink" title="借助adb"></a>借助adb</h2><p>电脑通过 adb 与Android手机互联。<br>为了捕捉屏幕信息，需要截图：<code>adb shell screencap -p 图片路径</code><br>借助<code>adb pull 图片路径</code>提交到本地。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> ADBHelper::CapScreen()</span><br><span class="line">&#123;</span><br><span class="line">	system(<span class="string">"adb shell screencap -p /sdcard/JumpByJump.png"</span>);</span><br><span class="line">	system(<span class="string">"adb pull /sdcard/JumpByJump.png"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>模拟滑动事件<code>adb shell input swipe x1 y1 x2 y2 time</code>，即从点[x1,y1]滑动到点[x2,y2]，以及滑动时间（或者说是这儿的触摸时间）。这里我们不需要滑动到别处，因此可设置定点。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> ADBHelper::jump(<span class="keyword">int</span> pressTime)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">char</span> cmd[<span class="number">256</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	sprintf_s(cmd, <span class="string">"adb shell input swipe 320 410 320 410 %d"</span>, pressTime);</span><br><span class="line">	system(cmd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="计算距离"><a href="#计算距离" class="headerlink" title="计算距离"></a>计算距离</h2><p>根据勾股定理，计算棋子目前所处位置到下一点（方块中心）的距离。所以就需要考虑如何获取当前位置和目标点坐标。这也是该技术探讨的<strong>核心所在</strong>。这里用到了OpenCV库来识别位置。（当初OpenCV、OpenGL傻傻分不清）</p>
+<h3 id="最傻瓜"><a href="#最傻瓜" class="headerlink" title="最傻瓜"></a>最傻瓜</h3><p>手动点击棋子位置和目标位置，获取坐标。</p>
+<p>优点：思路简单，准确度还可以。<br>缺点：操作麻烦，需手动跟进目标，自动化程度低。</p>
+<h3 id="稍改进"><a href="#稍改进" class="headerlink" title="稍改进"></a>稍改进</h3><p>自动获取棋子位置，利用棋子颜色和方块较大的色差来做文章是很多帖子的思路。<br>然后手动点击目标位置。</p>
+<p>较上述方案点击次数减少一半，但依然麻烦。</p>
+<h3 id="比较好"><a href="#比较好" class="headerlink" title="比较好"></a>比较好</h3><p>利用图像处理知识，自动获取两点坐标。<br>如果想自动获取坐标，可以看到，立方体的性状是正方体和圆柱居多，立方体只需记录最上方和最右方的点的位置，取最上方的横坐标和最右方的纵坐标即得中心点坐标。<br>其它很多算法下方链接已附。</p>
+<h3 id="AI"><a href="#AI" class="headerlink" title="AI"></a>AI</h3><p>神经网络截取样本进行训练，然后让其自动跳跳跳。</p>
+<p>暂时只实现了前2种……</p>
+<h2 id="设置参数"><a href="#设置参数" class="headerlink" title="设置参数"></a>设置参数</h2><p>可以发现触摸时间越长，跳动距离越远。最简单的假设就是线性关系。distance=time<em>k=distance</em>(1/k)，令1/k=parameter，即所需参数。我们经测试显示，parameter值在本程序和手机环境（分辨率1920×1080）中1.15比较合适。通过设置参数，计算出触摸时间。</p>
+<h2 id="代码流程"><a href="#代码流程" class="headerlink" title="代码流程"></a>代码流程</h2><p>代码主体建立在参考里的jump1jump项目（借用了adb、cv库和相关的dll），进行了一些修改。</p>
+<p>入口<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	JumpByJump jumper;</span><br><span class="line">	jumper.CarryOut();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>JumpByJump是主要的处理类，定义如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">JumpByJump</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	JumpByJump();</span><br><span class="line">	~JumpByJump();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">double</span> m_parameter;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">CarryOut</span><span class="params">()</span></span>;<span class="comment">//执行操作</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">ReadImage</span><span class="params">()</span></span>;<span class="comment">//读取截图</span></span><br><span class="line">	<span class="function">CvPoint	<span class="title">LocateChess</span><span class="params">()</span></span>;<span class="comment">//棋子定位</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">ShowScreen</span><span class="params">()</span></span>;<span class="comment">//刷新屏幕</span></span><br><span class="line">	<span class="keyword">double</span> m_targetPosX;</span><br><span class="line">	<span class="keyword">double</span> m_targetPosY;</span><br><span class="line">	<span class="keyword">double</span> m_sourcePosX;</span><br><span class="line">	<span class="keyword">double</span> m_sourcePosY;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	IplImage*	m_image;</span><br><span class="line">	IplImage*	m_imgChessModel;</span><br><span class="line">	IplImage*	m_matchResult;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>第一次鼠标点击回调函数，获取棋子坐标-&gt;第一次鼠标点击回调函数，获取目标点坐标-&gt;计算两点距离-&gt;调用adb模拟触摸跳跃-&gt;等待截图-&gt;捕捉屏幕-&gt;读取截图-&gt;显示在电脑屏幕上<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">onClick</span><span class="params">(<span class="keyword">int</span> event, <span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> flags, <span class="keyword">void</span>* param)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (event != CV_EVENT_LBUTTONUP)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	JumpByJump* jumper = (JumpByJump*)param;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (m_iCount % <span class="number">2</span> == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line"></span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"棋子坐标："</span> &lt;&lt; <span class="string">"("</span> &lt;&lt; x &lt;&lt; <span class="string">","</span> &lt;&lt; y &lt;&lt; <span class="string">")"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		jumper-&gt;m_sourcePosX = x;</span><br><span class="line">		jumper-&gt;m_sourcePosY = y;</span><br><span class="line">		m_iCount++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"目标点坐标："</span> &lt;&lt; <span class="string">"("</span> &lt;&lt; x &lt;&lt; <span class="string">","</span> &lt;&lt; y &lt;&lt; <span class="string">")"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		jumper-&gt;m_targetPosX = x;</span><br><span class="line">		jumper-&gt;m_targetPosY = y;</span><br><span class="line">		<span class="comment">// 	CvPoint chessLoc = jumper-&gt;LocateChess();</span></span><br><span class="line">		<span class="keyword">double</span> distance = <span class="built_in">sqrt</span>(powf(jumper-&gt;m_targetPosX - jumper-&gt;m_sourcePosX, <span class="number">2</span>) + powf(jumper-&gt;m_targetPosY - jumper-&gt;m_sourcePosY, <span class="number">2</span>));</span><br><span class="line">		ADBHelper::jump(distance * m_parameter);</span><br><span class="line">		Sleep(<span class="number">1000</span>);<span class="comment">//等待截图</span></span><br><span class="line">		ADBHelper::CapScreen();</span><br><span class="line">		jumper-&gt;ReadImage();</span><br><span class="line">		jumper-&gt;ShowScreen();</span><br><span class="line">		m_iCount++;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>执行函数:捕捉屏幕-&gt;读取截图-&gt;获取棋子坐标-&gt;电脑显示模拟画面-&gt;刷新画面<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> JumpByJump::CarryOut()</span><br><span class="line">&#123;</span><br><span class="line">	ADBHelper::CapScreen();</span><br><span class="line">	ReadImage();</span><br><span class="line">	UpdateScreen();</span><br><span class="line">	cvWaitKey(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>cvWaitKey()函数的功能是不断刷新图像，频率时间为delay，单位为ms。</p>
+<p>定位两点位置是核心关键。（手动设置两点则无需该函数）<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">CvPoint JumpByJump::LocateChess()</span><br><span class="line">&#123;</span><br><span class="line">	cvMatchTemplate(m_image, m_imgChessModel, m_matchResult, CV_TM_SQDIFF);</span><br><span class="line">	<span class="keyword">double</span> min_val = <span class="number">0</span>, max_val = <span class="number">0</span>;</span><br><span class="line">	CvPoint min_loc, max_loc, chessPt;</span><br><span class="line">	cvMinMaxLoc(m_matchResult, &amp;min_val, &amp;max_val, &amp;min_loc, &amp;max_loc);</span><br><span class="line">	cvRectangle(m_image, min_loc, cvPoint(min_loc.x + m_imgChessModel-&gt;width, min_loc.y + m_imgChessModel-&gt;height), cvScalar(<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>), <span class="number">2</span>);</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"棋子当前坐标："</span> &lt;&lt; <span class="string">"("</span> &lt;&lt; min_loc.x &lt;&lt; <span class="string">","</span> &lt;&lt; min_loc.y&lt;&lt;<span class="string">")"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	chessPt = cvPoint(min_loc.x + m_imgChessModel-&gt;width / <span class="number">2</span>, min_loc.y + m_imgChessModel-&gt;height);</span><br><span class="line">	<span class="keyword">return</span> chessPt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><a href="http://blog.csdn.net/pinbodexiaozhu/article/details/45314725" target="_blank" rel="noopener">opencv 模板匹配(cvMatchTemplate)</a><br>模板匹配是通过在输入图像上滑动模板图像块对实际的图像块和输入图像进行匹配，并且可以利用函数cvMinMaxLoc()找到最佳匹配的位置。</p>
+<h1 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h1><p>手动2点版<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://img.blog.csdn.net/20180114233902221?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="控制台" title>
+                </div>
+                <div class="image-caption">控制台</div>
+            </figure><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://img.blog.csdn.net/20180114233931154?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="成绩" title>
+                </div>
+                <div class="image-caption">成绩</div>
+            </figure></p>
+<p>（最后点的时候手滑了…正常几百上千应该可以的）</p>
+<h1 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h1><p>所有工程文件和代码可在此处下载：<a href="https://github.com/hubojing/JumpByJump" target="_blank" rel="noopener">JumpByJump</a></p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://github.com/mishang-aiofm/jump1jump" target="_blank" rel="noopener">jump1jump</a><br><a href="https://zhuanlan.zhihu.com/p/32643870" target="_blank" rel="noopener">人人都能看懂的“跳一跳”平民算法</a></p>
+<p>附知乎热帖：<a href="https://www.zhihu.com/question/264829281" target="_blank" rel="noopener">怎样实现微信小游戏跳一跳的外挂？</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2018-01-14T23:43:45.000Z" itemprop="dateUpdated">2018-01-14 23:43:45</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2018/01/06/微信自动跳一跳/" target="_blank" rel="external">https://hubojing.github.io/2018/01/06/微信自动跳一跳/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hubojing.github.io">
+            <img src="/img/avatar.jpg" alt="靖待">
+            靖待
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CPP/">CPP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenCV/">OpenCV</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2018/01/06/微信自动跳一跳/&title=《微信自动跳一跳》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2018/01/06/微信自动跳一跳/&title=《微信自动跳一跳》 — 靖待的技术博客&source=　　技术探讨微信跳一跳自动实现（C++版）。 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2018/01/06/微信自动跳一跳/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《微信自动跳一跳》 — 靖待的技术博客&url=https://hubojing.github.io/2018/01/06/微信自动跳一跳/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2018/01/06/微信自动跳一跳/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/01/28/OpenCV3-4-0编译/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">OpenCV3.4.0编译</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/12/31/神转折2017/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">神转折2017</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+	<script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css"/>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+	Waline.init({
+      el: '#comments',
+      serverURL: 'https://waline-1-r2604942.deta.app/',
+    });
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        码代码和码字，都是人生乐趣
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>靖待 &copy; 2015 - 2024</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2018/01/06/微信自动跳一跳/&title=《微信自动跳一跳》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2018/01/06/微信自动跳一跳/&title=《微信自动跳一跳》 — 靖待的技术博客&source=　　技术探讨微信跳一跳自动实现（C++版）。 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2018/01/06/微信自动跳一跳/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《微信自动跳一跳》 — 靖待的技术博客&url=https://hubojing.github.io/2018/01/06/微信自动跳一跳/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2018/01/06/微信自动跳一跳/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLklEQVR42u3aQW7jMBAEQP//015gTwsYlruHcrKiiicjTiSVAhDD6Xk84vX8u14/v/7Ov+v429drvvvb0xYGBsZlGc/D9Y6Rr/y+7b0wMDDuxmg32eMtNbna7L5vf46BgYEx2hYxMDAwfmvDzS/dlobHLwsDAwMjb4ed9UBJu+0rZ3EMDIwLMlaCgW9//qF8AwMD4z9mPBdW25j7YvCAgYGxNSMp+/LD6vqDHscMH54QAwNja0a+zc2CyTzsnI1rYGBg7M1o22rHW2EbW+bgD/8HDAyMrRl5lZVXYrPxsryUrMtZDAyMGzCSx23r0LMCzmGmgYGBcSnGShiQHDvbUGFYaGJgYNySMYsHVuLM2fEYAwPjPozZY62EB3k5GJWSGBgYWzNm7bO2lX/aIEX+hBgYGJsyZsfU9WZcGw8sVawYGBhbMOr0YDQSkbfwvjJagYGBcSlG2/BKmmXnvoLoWwwMjNsw8oGJdlBs9lKi8LI9eWNgYFyQkTfFkoPlrGXWNtTqdhsGBsYWjLzUy0e18oGJfEsdZhoYGBjbMWZtr/ZF5IVjsWVjYGBszUi2vLrSHCHbmBMDA+MOjGe51pv7ecBQlKoYGBhbM84dp8iPr+3BGAMDA2M2SNE21PJAtA01MTAw7sOYDVjkTf+WWp/FMTAwMOItsi3+2gLxhOoVAwNja0ZyKF2/Zn4XDAyMuzHWxyDagKGNIj7AMDAwtmasb8r5Q7RNvXx0AwMDY1PGH7hL2xmh6ukAAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来嘛！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)抱抱~你回来了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

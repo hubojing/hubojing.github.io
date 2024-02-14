@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="https://hubojing.github.io//2018/03/05/计算机图形学学习笔记/">
+    
+    
+    <title>计算机图形学学习笔记 | 靖待的技术博客 | 小清新IT旅程 | 为中华之崛起而读书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="CPP,计算机图形学">
+    <meta name="description" content="每周一点图形学重启，不弃坑。。。。。。　　几年之后的最新：多边形图像转换补完">
+<meta name="keywords" content="CPP,计算机图形学">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机图形学学习笔记">
+<meta property="og:url" content="https://hubojing.github.io/2018/03/05/计算机图形学学习笔记/index.html">
+<meta property="og:site_name" content="靖待的技术博客">
+<meta property="og:description" content="每周一点图形学重启，不弃坑。。。。。。　　几年之后的最新：多边形图像转换补完">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522260185415&di=c78f4ea45fb5db5337c73e8189e82ff8&imgtype=0&src=http%3A%2F%2Fp.ananas.chaoxing.com%2Fstar%2F1024_0%2F1385010809221kidou.jpg">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%8F%89%E7%A7%AF%E5%85%AC%E5%BC%8F.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%BA%8C%E7%BB%B4%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%BA%8C%E7%BB%B4%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5%E8%AF%B4%E6%98%8E.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E7%AA%97%E5%8F%A3%E8%A7%86%E5%8C%BA%E5%8F%98%E6%8D%A2.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E7%AA%97%E5%8F%A3%E8%A7%86%E5%8C%BA%E5%8F%98%E6%8D%A2%E6%98%A0%E5%B0%84%E5%85%B3%E7%B3%BB.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E7%AA%97%E5%8F%A3%E8%A7%86%E5%8C%BA%E5%8F%98%E6%8D%A2%E5%85%AC%E5%BC%8F1.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E7%AA%97%E5%8F%A3%E8%A7%86%E5%8C%BA%E5%8F%98%E6%8D%A2%E5%85%AC%E5%BC%8F2.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%B8%89%E7%BB%B4%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94T3D.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%B8%89%E7%BB%B4%E5%B9%B3%E7%A7%BB.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%B1%80%E9%83%A8%E6%AF%94%E4%BE%8B%E5%8F%98%E6%8D%A2.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%95%B4%E4%BD%93%E6%AF%94%E4%BE%8B%E5%8F%98%E6%8D%A2.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94-%E4%B8%89%E7%BB%B4%E7%BB%95z%E6%97%8B%E8%BD%AC.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94-%E4%B8%89%E7%BB%B4%E7%BB%95x%E6%97%8B%E8%BD%AC.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94-%E4%B8%89%E7%BB%B4%E7%BB%95y%E6%97%8B%E8%BD%AC.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94-%E5%B9%B3%E9%9D%A2%E5%87%A0%E4%BD%95%E6%8A%95%E5%BD%B1.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94T3D.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94Bresenham%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94Cohen-Sutherland%E7%AE%97%E6%B3%95.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94Cohen-Sutherland%E7%AE%97%E6%B3%95%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/0af2eaee70de59ca7907796db13b07ead7ae75d7/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%B8%AD%E7%82%B9%E5%88%86%E5%89%B2%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%951.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%B8%AD%E7%82%B9%E5%88%86%E5%89%B2%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%952.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E7%94%A8%E5%8F%82%E6%95%B0%E6%96%B9%E7%A8%8B%E8%A1%A8%E7%A4%BA%E4%B8%80%E6%9D%A1%E7%9B%B4%E7%BA%BF.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%A2%81%E7%AE%97%E6%B3%95%E7%9A%84%E4%B8%BB%E8%A6%81%E6%80%9D%E6%83%B3.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%A2%81%E7%AE%97%E6%B3%95.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%A2%81%E7%AE%97%E6%B3%95%E4%B9%8B%E7%AA%97%E5%8F%A3.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%A2%81%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC1.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%A2%81%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC2.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94P1=P2=0.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94P3=P4=0.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94pk=0,qk%E5%B0%8F%E4%BA%8E0.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/计算机图形学学习笔记——梁算法步骤.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/计算机图形学学习笔记——多边形裁剪.png?raw=true">
+<meta property="og:image" content="https://github.com/hubojing/BlogImages/blob/master/计算机图形学学习笔记——顶点处理.png?raw=true">
+<meta property="og:updated_time" content="2024-02-14T14:53:29.435Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="计算机图形学学习笔记">
+<meta name="twitter:description" content="每周一点图形学重启，不弃坑。。。。。。　　几年之后的最新：多边形图像转换补完">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522260185415&di=c78f4ea45fb5db5337c73e8189e82ff8&imgtype=0&src=http%3A%2F%2Fp.ananas.chaoxing.com%2Fstar%2F1024_0%2F1385010809221kidou.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+	
+	
+	
+	
+	
+	
+	
+    
+
+</head>
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">靖待</h5>
+          <a href="mailto:hubojing@outlook.com" title="hubojing@outlook.com" class="mail">hubojing@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archive"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hubojing/"  >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/friends"  >
+                <i class="icon icon-lg icon-users"></i>
+                友情链接
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/Chinese"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/comment"  >
+                <i class="icon icon-lg icon-book"></i>
+                留言板
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/littletalk"  >
+                <i class="icon icon-lg icon-edit"></i>
+                自言自语
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://blog.csdn.net/hubojing/"  >
+                <i class="icon icon-lg icon-pencil"></i>
+                CSDN博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/advertising"  >
+                <i class="icon icon-lg icon-link"></i>
+                推广
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes"  >
+                <i class="icon icon-lg icon-qq"></i>
+                和我在线交流
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">计算机图形学学习笔记</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">计算机图形学学习笔记</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-03-05T21:55:05.000Z" itemprop="datePublished" class="page-time">
+  2018-03-05
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/互联网/">互联网</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#帧缓冲器及分辨率"><span class="post-toc-text">帧缓冲器及分辨率</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#二维图形变换"><span class="post-toc-text">二维图形变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#向量分析"><span class="post-toc-text">向量分析</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#图形变换"><span class="post-toc-text">图形变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#分类"><span class="post-toc-text">分类</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#二维变换"><span class="post-toc-text">二维变换</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#窗口视区变换"><span class="post-toc-text">窗口视区变换</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#三维图形几何变换"><span class="post-toc-text">三维图形几何变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基本变换"><span class="post-toc-text">基本变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#平移变换"><span class="post-toc-text">平移变换</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#比例变换"><span class="post-toc-text">比例变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#局部比例变换"><span class="post-toc-text">局部比例变换</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#整体比例变换"><span class="post-toc-text">整体比例变换</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#旋转变换"><span class="post-toc-text">旋转变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#绕z轴旋转θ"><span class="post-toc-text">绕z轴旋转θ</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#绕x轴旋转"><span class="post-toc-text">绕x轴旋转</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#绕y轴旋转"><span class="post-toc-text">绕y轴旋转</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#对称变换"><span class="post-toc-text">对称变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#关于坐标平面的对称"><span class="post-toc-text">关于坐标平面的对称</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#关于坐标轴对称"><span class="post-toc-text">关于坐标轴对称</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#投影变换"><span class="post-toc-text">投影变换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#三视图的计算"><span class="post-toc-text">三视图的计算</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#主视图"><span class="post-toc-text">主视图</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#俯视图"><span class="post-toc-text">俯视图</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#侧视图"><span class="post-toc-text">侧视图</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#正轴测图"><span class="post-toc-text">正轴测图</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#透视投影"><span class="post-toc-text">透视投影</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#一点透视"><span class="post-toc-text">一点透视</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#多点透视"><span class="post-toc-text">多点透视</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#光栅图形学算法"><span class="post-toc-text">光栅图形学算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#研究内容"><span class="post-toc-text">研究内容</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#直线段的扫描转换算法"><span class="post-toc-text">直线段的扫描转换算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#直线绘制的三个著名的常用算法"><span class="post-toc-text">直线绘制的三个著名的常用算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#数值微分DDA（Digital-Differential-Analyzer）"><span class="post-toc-text">数值微分DDA（Digital Differential Analyzer）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#DDA算法代码"><span class="post-toc-text">DDA算法代码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#中点画线法"><span class="post-toc-text">中点画线法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#中点画线法代码"><span class="post-toc-text">中点画线法代码</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Bresenham算法"><span class="post-toc-text">Bresenham算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Bresenham算法代码"><span class="post-toc-text">Bresenham算法代码</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多边形扫描转换"><span class="post-toc-text">多边形扫描转换</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#X-扫描线算法"><span class="post-toc-text">X-扫描线算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#改进的x扫描线算法"><span class="post-toc-text">改进的x扫描线算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#边缘填充算法"><span class="post-toc-text">边缘填充算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#栅栏填充算法"><span class="post-toc-text">栅栏填充算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#边界标志算法"><span class="post-toc-text">边界标志算法</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#区域填充算法"><span class="post-toc-text">区域填充算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#简单四连通种子填充算法（区域填充递归算法）"><span class="post-toc-text">简单四连通种子填充算法（区域填充递归算法）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#多边形的扫描转换与区域填充算法小结"><span class="post-toc-text">多边形的扫描转换与区域填充算法小结</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#反走样"><span class="post-toc-text">反走样</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#裁剪算法"><span class="post-toc-text">裁剪算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#点的裁剪"><span class="post-toc-text">点的裁剪</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#直线段的裁剪"><span class="post-toc-text">直线段的裁剪</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Cohen-Sutherland算法"><span class="post-toc-text">Cohen-Sutherland算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#中点分割算法"><span class="post-toc-text">中点分割算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Liang-Barsky算法"><span class="post-toc-text">Liang-Barsky算法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#步骤"><span class="post-toc-text">步骤</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多边形裁剪"><span class="post-toc-text">多边形裁剪</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Sutherland-Hodgeman多边形裁剪"><span class="post-toc-text">Sutherland-Hodgeman多边形裁剪</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#文字裁剪"><span class="post-toc-text">文字裁剪</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#消隐算法"><span class="post-toc-text">消隐算法</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-计算机图形学学习笔记"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">计算机图形学学习笔记</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-03-05 21:55:05" datetime="2018-03-05T21:55:05.000Z"  itemprop="datePublished">2018-03-05</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/互联网/">互联网</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p><div align="left"><br><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522260185415&di=c78f4ea45fb5db5337c73e8189e82ff8&imgtype=0&src=http%3A%2F%2Fp.ananas.chaoxing.com%2Fstar%2F1024_0%2F1385010809221kidou.jpg" width="300" height="180" style="float:right;"><br>　　<br>　　<strong>每周一点图形学重启，不弃坑。。。。。。</strong><br>　　几年之后的最新：多边形图像转换补完<br>   　　<br></div><br><a id="more"></a></p>
+<h1 id="帧缓冲器及分辨率"><a href="#帧缓冲器及分辨率" class="headerlink" title="帧缓冲器及分辨率"></a>帧缓冲器及分辨率</h1><p>帧缓冲器每一个存储单元的位长决定了一幅画面上能同时显示的不同灰度的数目或颜色的种类。<br>如果是单色，则每个像素只需要1Bit表示；<br>如果是16色，则每个像素需要4Bit(2^4=16)表示；<br>如果是256色，则每个需要1个字节（8位，2^8=256）表示；<br>如果是65536（64K）色，则每个像素需要2个字节（16位，2^16=64K）表示；<br>如果是16777216（16.7M）色，则每个需要3个字节（24位，2^24=16.7M）表示（24位真彩色）。</p>
+<p>举例：显卡有2MB显存，当分辨率是1024x768时，可支持的色彩数又是多少？<br>2MB=2x1024x1024=2097152(字节)<br>1024x768=786432(个像素)<br>每个像素如果需要3个字节表示，将超过2MB显存，最多只需要2个字节表示，故只能支持64K色彩数。</p>
+<blockquote>
+<p>题目：显示颜色64K，分辨率为1024*1024的显示器，至少需要的帧缓存容量为(C)<br>A.1MB B.3MB C.2MB D.512KB</p>
+<ul>
+<li>解：显示颜色64K，故每个像素需要2个字节表示。1024x1024=1048576(个像素)，1048576x2=2097152(字节)<br>2097152/1024/1024=2MB</li>
+</ul>
+</blockquote>
+<h1 id="二维图形变换"><a href="#二维图形变换" class="headerlink" title="二维图形变换"></a>二维图形变换</h1><p>两大基本工具：向量分析    图形变换</p>
+<h2 id="向量分析"><a href="#向量分析" class="headerlink" title="向量分析"></a>向量分析</h2><p>向量线性组合<br>w=a1v1+a2v2+…+anvn</p>
+<ol>
+<li>仿射组合<br>a1+a2+…+am=1</li>
+<li>凸组合<br>a1+a2+…+am=1<br>i=1,2,…,m        ai≥0</li>
+</ol>
+<ul>
+<li><p>点积<br>a=(a1,a2) b=(b1,b2)<br>a·b=a1b1+a2b2<br>点积最重要的应用是计算两个向量的夹角或者两条直线的夹角。<br>b·c=|b||c|cosθ<br>cosθ=(b·c)/(|b||c|)=b的单位向量·c的单位向量<br>b·c &gt; 0   θ &lt; 90°<br>b·c = 0   θ = 90°<br>b·c &lt; 0   θ &gt; 90°</p>
+<blockquote>
+<p>如何设计一个算法描述任意两篇新闻的相似性？<br>用一个向量来描述一篇新闻。当夹角的余弦接近1时，相似，归为一类。夹角余弦越小，两条新闻越不相关。</p>
+</blockquote>
+</li>
+<li><p>叉积</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%8F%89%E7%A7%AF%E5%85%AC%E5%BC%8F.png?raw=true" alt="叉积公式" title>
+                </div>
+                <div class="image-caption">叉积公式</div>
+            </figure></li>
+</ul>
+<ol>
+<li>axb和a、b两个向量都正交</li>
+<li>axb的长度等于由a和b决定的平行四边形面积<br>axb=|a||b|sinθ<br>利用叉积求平面的法向量</li>
+</ol>
+<h2 id="图形变换"><a href="#图形变换" class="headerlink" title="图形变换"></a>图形变换</h2><p>将程序中用于描述对象几何信息的数值和那些用于表示对象中大小和位置的数值区分开来。前者通常被看作一个建模（modeling）的任务，后者是一个观察（viewing）的任务。<br>图形显示的过程是几何（对象）模型在不同坐标系之间的映射变换。</p>
+<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><p><strong>世界坐标系</strong><br>用最适合手中问题的坐标系来描述对象，并且可以自动的缩放和平移图形，使得其能正确地在屏幕窗口中显示。<br><strong>建模坐标系（局部坐标系）</strong><br>建模坐标系独立于世界坐标系来定义物体的几何特性<br><strong>观察坐标系</strong><br>观察坐标系主要用于从观察者的角度对整个世界坐标系内的对象进行重新定位和描述。依据观察窗口的方向和形状在世界坐标系中定义的坐标系成为观察坐标系。观察坐标系用于指定图形的输出范围。<br>二维观察变换的一般方法是在世界坐标系中指定一个观察坐标系统，以该系统为参考通过选定方向和位置来指定矩形剪裁窗口。<br><strong>设备坐标系</strong><br>适合特定输出设备输出对象的坐标系。比如屏幕坐标系。<br>在多数情况下，对于每一个具体的显示设备，都有一个单独的坐标系统。设备坐标是整数。<br><strong>规范化坐标系</strong><br>规范化坐标系独立于设备，能容易地转变为设备坐标系，是一个中间坐标系。<br>为使图形软件能在不同的设备之间移植，采用规范化坐标，坐标轴取值范围是0-1。</p>
+<h3 id="二维变换"><a href="#二维变换" class="headerlink" title="二维变换"></a>二维变换</h3><p>变换图形就是要变换图形的几何关系，即改变顶点的坐标；同时，保持图形的原拓扑关系不变。<br><strong>仿射变换</strong>（Affine Transformation或Affine Map）是一种二维坐标到二维坐标之间的线性变换。<br>（1）“平直性”。即：直线经过变换之后依然是直线<br>（2）“平行性”。即：平行线依然是平行线，且直线上<br>点的位置顺序不变）</p>
+<p><strong>齐次坐标</strong><br>如n维向量（p1,p2,…,pn）表示为（hp1,hp2,…,hpn,h），其中h称为哑坐标。<br>普通坐标与齐次坐标的关系为“一对多”：<br>普通坐标×h→齐次坐标<br>齐次坐标÷h→普通坐标<br>当h = 1时产生的齐次坐标称为“规格化坐标”，因为前n个<br>坐标就是普通坐标系下的n维坐标</p>
+<ul>
+<li>基本几何变换</li>
+</ul>
+<ol>
+<li><p>平移变换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x*=x+Tx</span><br><span class="line">y*=y+Ty</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>比例变换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x*=x·Sx</span><br><span class="line">y*=y·Sy</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对称变换（反射变换/镜像变换）</p>
+</li>
+<li><p>旋转变换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x*=rcos(α+θ)=rcosαcosθ-rsinαsinθ</span><br><span class="line">y*=rsin(α+θ)=rcosasinθ+rsinαcosθ</span><br><span class="line">x*=xcosθ-ysinθ</span><br><span class="line">y*=xsinθ+ycosθ</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>错切变换</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x*=x+cy</span><br><span class="line">y*=bx+y</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><strong>坐标系变换</strong><br>1.平移变换<br>2.旋转变换<br><strong>相对任意参考点的二维几何变换</strong><br>比例、旋转变换等均与参考点相关。如要对某个参考点（xf，yf）作二维几何变换，其变换过程如下：<br>a、将固定点移至坐标原点，此时进行平移变换<br>b、针对原点进行二维几何变换<br>c、进行反平移，将固定点又移回到原来的位置<br><strong>二维变换矩阵</strong><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%BA%8C%E7%BB%B4%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5.png?raw=true" alt="二维变换矩阵" title>
+                </div>
+                <div class="image-caption">二维变换矩阵</div>
+            </figure><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%BA%8C%E7%BB%B4%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5%E8%AF%B4%E6%98%8E.png?raw=true" alt="二维变换矩阵说明" title>
+                </div>
+                <div class="image-caption">二维变换矩阵说明</div>
+            </figure></p>
+<h3 id="窗口视区变换"><a href="#窗口视区变换" class="headerlink" title="窗口视区变换"></a>窗口视区变换</h3><p>窗口：世界坐标系中药显示的区域成为窗口。<br>视区：窗口映射到显示器（设备）上的区域称为视区。<br>观察变换（Viewing Transformation），将窗口到视区的变换处理。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E7%AA%97%E5%8F%A3%E8%A7%86%E5%8C%BA%E5%8F%98%E6%8D%A2.png?raw=true" alt="窗口视区变换" title>
+                </div>
+                <div class="image-caption">窗口视区变换</div>
+            </figure><br>窗口到视区的映射是基于一个等式，即对每一个在世界坐标下的点（x,y），产生屏幕坐标系中的一个点（sx,sy）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sx=A*x+C</span><br><span class="line">sy=B*y+D</span><br></pre></td></tr></table></figure></p>
+<p>A、B、C、D为常数<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E7%AA%97%E5%8F%A3%E8%A7%86%E5%8C%BA%E5%8F%98%E6%8D%A2%E6%98%A0%E5%B0%84%E5%85%B3%E7%B3%BB.png?raw=true" alt="映射关系" title>
+                </div>
+                <div class="image-caption">映射关系</div>
+            </figure><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E7%AA%97%E5%8F%A3%E8%A7%86%E5%8C%BA%E5%8F%98%E6%8D%A2%E5%85%AC%E5%BC%8F1.png?raw=true" alt="公式" title>
+                </div>
+                <div class="image-caption">公式</div>
+            </figure><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E7%AA%97%E5%8F%A3%E8%A7%86%E5%8C%BA%E5%8F%98%E6%8D%A2%E5%85%AC%E5%BC%8F2.png?raw=true" alt="公式" title>
+                </div>
+                <div class="image-caption">公式</div>
+            </figure></p>
+<h1 id="三维图形几何变换"><a href="#三维图形几何变换" class="headerlink" title="三维图形几何变换"></a>三维图形几何变换</h1><p>三维空间中某点的变换可以表示成点的齐次坐标与四阶的三维变换矩阵相乘：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%B8%89%E7%BB%B4%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5.png?raw=true" alt="三维变换矩阵" title>
+                </div>
+                <div class="image-caption">三维变换矩阵</div>
+            </figure><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94T3D.png?raw=true" alt="T3D" title>
+                </div>
+                <div class="image-caption">T3D</div>
+            </figure></p>
+<h2 id="基本变换"><a href="#基本变换" class="headerlink" title="基本变换"></a>基本变换</h2><h3 id="平移变换"><a href="#平移变换" class="headerlink" title="平移变换"></a>平移变换</h3><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%B8%89%E7%BB%B4%E5%B9%B3%E7%A7%BB.png?raw=true" alt="三维平移" title>
+                </div>
+                <div class="image-caption">三维平移</div>
+            </figure>
+<h3 id="比例变换"><a href="#比例变换" class="headerlink" title="比例变换"></a>比例变换</h3><h4 id="局部比例变换"><a href="#局部比例变换" class="headerlink" title="局部比例变换"></a>局部比例变换</h4><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%B1%80%E9%83%A8%E6%AF%94%E4%BE%8B%E5%8F%98%E6%8D%A2.png?raw=true" alt="局部比例变换" title>
+                </div>
+                <div class="image-caption">局部比例变换</div>
+            </figure>
+<h4 id="整体比例变换"><a href="#整体比例变换" class="headerlink" title="整体比例变换"></a>整体比例变换</h4><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%95%B4%E4%BD%93%E6%AF%94%E4%BE%8B%E5%8F%98%E6%8D%A2.png?raw=true" alt="整体比例变换" title>
+                </div>
+                <div class="image-caption">整体比例变换</div>
+            </figure>
+<h3 id="旋转变换"><a href="#旋转变换" class="headerlink" title="旋转变换"></a>旋转变换</h3><h4 id="绕z轴旋转θ"><a href="#绕z轴旋转θ" class="headerlink" title="绕z轴旋转θ"></a>绕z轴旋转θ</h4><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94-%E4%B8%89%E7%BB%B4%E7%BB%95z%E6%97%8B%E8%BD%AC.png?raw=true" alt="三维绕z旋转" title>
+                </div>
+                <div class="image-caption">三维绕z旋转</div>
+            </figure>
+<h4 id="绕x轴旋转"><a href="#绕x轴旋转" class="headerlink" title="绕x轴旋转"></a>绕x轴旋转</h4><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94-%E4%B8%89%E7%BB%B4%E7%BB%95x%E6%97%8B%E8%BD%AC.png?raw=true" alt="三维绕x旋转" title>
+                </div>
+                <div class="image-caption">三维绕x旋转</div>
+            </figure>
+<h4 id="绕y轴旋转"><a href="#绕y轴旋转" class="headerlink" title="绕y轴旋转"></a>绕y轴旋转</h4><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94-%E4%B8%89%E7%BB%B4%E7%BB%95y%E6%97%8B%E8%BD%AC.png?raw=true" alt="三维绕y旋转" title>
+                </div>
+                <div class="image-caption">三维绕y旋转</div>
+            </figure>
+<h3 id="对称变换"><a href="#对称变换" class="headerlink" title="对称变换"></a>对称变换</h3><h4 id="关于坐标平面的对称"><a href="#关于坐标平面的对称" class="headerlink" title="关于坐标平面的对称"></a>关于坐标平面的对称</h4><p>xoy:<br>[x’ y’ z’ 1] =  [x y -z 1]<br>yoz:<br>[x’ y’ z’ 1] =  [-x y z 1]<br>zox:<br>[x’ y’ z’ 1] =  [x -y z 1]</p>
+<h4 id="关于坐标轴对称"><a href="#关于坐标轴对称" class="headerlink" title="关于坐标轴对称"></a>关于坐标轴对称</h4><p>x:<br>[x’ y’ z’ 1] = [x -y -z 1]<br>y:<br>[x’ y’ z’ 1] = [-x y -z 1]<br>z:<br>[x’ y’ z’ 1] = [-x -y z 1]</p>
+<h2 id="投影变换"><a href="#投影变换" class="headerlink" title="投影变换"></a>投影变换</h2><p>在二维平面上显示三维物体的解决方法：投影变换。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94-%E5%B9%B3%E9%9D%A2%E5%87%A0%E4%BD%95%E6%8A%95%E5%BD%B1.png?raw=true" alt="平面几何投影分类" title>
+                </div>
+                <div class="image-caption">平面几何投影分类</div>
+            </figure><br>正投影根据投影面与坐标轴的夹角又可分为两类：三视图和<br>正轴侧图。<br>当投影面与某一坐标轴垂直时，得到的投影为三视图，这时<br>投影方向与这个坐标轴的方向一致；否则，得到的投影为正<br>轴侧图。</p>
+<h3 id="三视图的计算"><a href="#三视图的计算" class="headerlink" title="三视图的计算"></a>三视图的计算</h3><p>具体计算步骤如下：<br>a、确定三维物体上各点的位置坐标；<br>b、引入齐次坐标，求出所作变换相应的变换矩阵；<br>c、将所作变换用矩阵表示，通过运算求得三维物<br>体上各点经变换后的点坐标值；<br>d、由变换后得到的二维点绘出三维物体投影后的三视图</p>
+<h4 id="主视图"><a href="#主视图" class="headerlink" title="主视图"></a>主视图</h4><p>投影变换矩阵：[x’ y’ z’ 1] = [x 0 z 1]</p>
+<h4 id="俯视图"><a href="#俯视图" class="headerlink" title="俯视图"></a>俯视图</h4><p>投影变换矩阵：[x’ y’ z’ 1] = [x y 0 1]<br>为了使俯视图与主视图都画在一个平面内，就要使H面绕x轴<br>顺时针转90°，即应有一个旋转变换。为了使主视图和俯视图有一定的间距，还要使H面沿z方向平移一段距离-z<sub>0</sub>，有一个平移矩阵。<br>所以，最终俯视图投影变换矩阵：<br>[x’ y’ z’ 1] = [x y -(y+z<sub>0</sub>） 1]</p>
+<h3 id="侧视图"><a href="#侧视图" class="headerlink" title="侧视图"></a>侧视图</h3><p>为了使侧视图与主视图也在一个平面内，就要使W面绕z轴正<br>转90°，有一个旋转矩阵。为使主视图和侧视图有一定的间距，还要使W面沿负x方向平移一段距离-x<sub>0</sub>，有一个平移矩阵。<br>所以，最终侧视图投影变换矩阵：<br>[x’ y’ z’ 1] = [-(y+z<sub>0</sub>) 0 z 1]</p>
+<p>三个视图中的y’均为0，表明三个视图均落在xoz面上。</p>
+<h2 id="正轴测图"><a href="#正轴测图" class="headerlink" title="正轴测图"></a>正轴测图</h2><p>正轴测有等轴测、正二测和正三测三种：<br>当投影面与三个坐标轴之间的夹角都相等时为等轴测<br>当投影面与两个坐标轴之间的夹角相等时为正二测<br>当投影面与三个坐标轴之间的夹角都不相等时为正三测<br>变换矩阵为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x*=xcosγ-ysinγ</span><br><span class="line">y*=0</span><br><span class="line">z*=-xsinγsinα-ycosγsina+zcosα</span><br></pre></td></tr></table></figure></p>
+<h2 id="透视投影"><a href="#透视投影" class="headerlink" title="透视投影"></a>透视投影</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94T3D.png?raw=true" alt="T3D" title>
+                </div>
+                <div class="image-caption">T3D</div>
+            </figure>
+<p>其中的[p,q,r]能产生透视变换的效果</p>
+<h3 id="一点透视"><a href="#一点透视" class="headerlink" title="一点透视"></a>一点透视</h3><p>灭点：聚焦的那个点</p>
+<h3 id="多点透视"><a href="#多点透视" class="headerlink" title="多点透视"></a>多点透视</h3><p>多个灭点</p>
+<p>构造二点透视的一般步骤如下：<br>（1）将物体平移到适当位置l、m、n<br>（2）将物体绕y轴旋转θ角<br>（3）进行透视变换<br>（4）最后向xoy面做正投影，即得二点透视图</p>
+<p>构造三点透视的一般步骤如下：<br>（1）将物体平移到适当位置<br>（2）将物体绕y轴旋转θ角<br>（3）再绕x轴旋转α角<br>（4）进行透视变换<br>（5）最后向xoy面做正投影，即得三点透视图</p>
+<h1 id="光栅图形学算法"><a href="#光栅图形学算法" class="headerlink" title="光栅图形学算法"></a>光栅图形学算法</h1><h2 id="研究内容"><a href="#研究内容" class="headerlink" title="研究内容"></a>研究内容</h2><ul>
+<li>直线段的扫描转换算法</li>
+<li>多边形的扫描转换与区域填充算法</li>
+<li>裁剪算法</li>
+<li>反走样算法</li>
+<li>消隐算法</li>
+</ul>
+<h2 id="直线段的扫描转换算法"><a href="#直线段的扫描转换算法" class="headerlink" title="直线段的扫描转换算法"></a>直线段的扫描转换算法</h2><p>P<sub>0</sub>（x<sub>0</sub>,y<sub>0</sub>）    P<sub>1</sub>(x<sub>1</sub>,y<sub>1</sub>)<br>y=kx+b<br>k=(y<sub>1</sub>-y<sub>o</sub>)/(x<sub>1</sub>-x<sub>0</sub>)  (x<sub>1</sub>≠x<sub>0</sub>)<br>假设x已知，即从x的起点xo开始，沿x方向前进一个像素（步长=1），可以计算出相应的y值。因为像素的坐标是整数，所以y值要进行取整处理。<br>如何把数学上的一个点扫描转换一个屏幕像素点？<br>如：P（1.7, 0.8）—(取整)—&gt;P(1, 0)<br>P(1.7, 0.8) -(+0.5)-&gt; p(2.2, 1.3)<br>P(2.2, 1.3) -(取整)-&gt; p(2, 1)<br>为提高效率，减小计算量，要把乘法消掉。</p>
+<h2 id="直线绘制的三个著名的常用算法"><a href="#直线绘制的三个著名的常用算法" class="headerlink" title="直线绘制的三个著名的常用算法"></a>直线绘制的三个著名的常用算法</h2><ol>
+<li>数值微分法（DDA）</li>
+<li>中点画线法</li>
+<li>Bresenham算法</li>
+</ol>
+<h3 id="数值微分DDA（Digital-Differential-Analyzer）"><a href="#数值微分DDA（Digital-Differential-Analyzer）" class="headerlink" title="数值微分DDA（Digital Differential Analyzer）"></a>数值微分DDA（Digital Differential Analyzer）</h3><p>引进图形学中一个重要思想——增量思想<br>直线斜率小于1：<br>x=x+1<br>y=y+k<br>(注意y+0.5化为整数)<br>直线斜率大于1：<br>x=x+1/k<br>y=y+1<br>（注意x+0.5化为整数）</p>
+<h3 id="DDA算法代码"><a href="#DDA算法代码" class="headerlink" title="DDA算法代码"></a>DDA算法代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> CDrawLinesDlg::DDALine(<span class="keyword">int</span> iBeginX, <span class="keyword">int</span> iBeginY, <span class="keyword">int</span> iEndX, <span class="keyword">int</span> iEndY, COLORREF col)</span><br><span class="line">&#123;</span><br><span class="line">	CDC *pDC = GetDC();</span><br><span class="line">	pDC-&gt;TextOut(<span class="number">450</span>, <span class="number">18</span>, _T(<span class="string">"DDA画线成功！"</span>));</span><br><span class="line"></span><br><span class="line">	<span class="keyword">float</span> x, y, dx, dy, k, r;</span><br><span class="line">	<span class="keyword">float</span> xm, ym;</span><br><span class="line">	dx = iEndX - iBeginX;</span><br><span class="line">	dy = iEndY - iBeginY;</span><br><span class="line">	k = dy / dx;</span><br><span class="line">	r = dx / dy;<span class="comment">//r为斜率倒数</span></span><br><span class="line">	x = iEndX;</span><br><span class="line">	y = iEndY;</span><br><span class="line">	xm = iBeginX;</span><br><span class="line">	ym = iBeginY;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">abs</span>(dx) &gt; <span class="built_in">abs</span>(dy))<span class="comment">//斜率小于1</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (iBeginX &lt;= iEndX)</span><br><span class="line">		&#123;</span><br><span class="line">			x = iBeginX;</span><br><span class="line">			xm = iEndX;</span><br><span class="line">			y = iBeginY;</span><br><span class="line">			ym = iEndY;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">while</span>(x &lt;= xm)</span><br><span class="line">		&#123;</span><br><span class="line">			y = y + k;</span><br><span class="line">			pDC-&gt;SetPixel(x, (<span class="keyword">int</span>)(y + <span class="number">0.5</span>), col);</span><br><span class="line">			++x;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span><span class="comment">//斜率大于1</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (iBeginY &lt;= iEndY)</span><br><span class="line">		&#123;</span><br><span class="line">			x = iBeginX;</span><br><span class="line">			xm = iEndX;</span><br><span class="line">			y = iBeginY;</span><br><span class="line">			ym = iEndY;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">while</span> (y &lt;= ym)</span><br><span class="line">		&#123;</span><br><span class="line">			x = x + r;</span><br><span class="line">			pDC-&gt;SetPixel((<span class="keyword">int</span>)(x + <span class="number">0.5</span>), y, col);</span><br><span class="line">			++y;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="中点画线法"><a href="#中点画线法" class="headerlink" title="中点画线法"></a>中点画线法</h3><p>核心思想：考虑斜率小于1，若x每次+1，y值要么+1，要么不+1。<br>直线一般式方程；Ax+By+C=0<br>设y+1和y之间的中点M，把M带入方程。d=Ax+By+C<br>d &lt; 0    M在直线下方 选上面那个点(y+1)<br>d &gt; 0    M在直线上方 选下面那个点(y)</p>
+<h3 id="中点画线法代码"><a href="#中点画线法代码" class="headerlink" title="中点画线法代码"></a>中点画线法代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> CDrawLinesDlg::MidLine(<span class="keyword">int</span> iBeginX, <span class="keyword">int</span> iBeginY, <span class="keyword">int</span> iEndX, <span class="keyword">int</span> iEndY, COLORREF col)</span><br><span class="line">&#123;</span><br><span class="line">	CDC  *pDc = GetDC();</span><br><span class="line">	pDc-&gt;TextOut(<span class="number">450</span>, <span class="number">18</span>, _T(<span class="string">"中点画线法成功！"</span>));</span><br><span class="line">	<span class="keyword">int</span>  d1, d2, d;</span><br><span class="line">	<span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> p, p1, q, q1;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> x = iBeginX;</span><br><span class="line">	<span class="keyword">int</span> y = iBeginY;</span><br><span class="line">	<span class="keyword">int</span> a = iBeginY - iEndY;</span><br><span class="line">	<span class="keyword">int</span> b = iEndX - iEndY;</span><br><span class="line">	<span class="keyword">int</span> dx = <span class="built_in">abs</span>(iBeginX - iEndX);</span><br><span class="line">	<span class="keyword">int</span> dy = <span class="built_in">abs</span>(iBeginY - iEndY);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//第二、四象限</span></span><br><span class="line">	<span class="keyword">if</span> (((iEndX - iBeginX &gt;= <span class="number">0</span>) &amp;&amp; (iEndY - iBeginY&lt;<span class="number">0</span>)) || ((iEndX - iBeginX &lt;= <span class="number">0</span>) &amp;&amp; (iEndY - iBeginY&gt;<span class="number">0</span>)))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//从第四象限到第二象限</span></span><br><span class="line">		<span class="keyword">if</span> ((iEndX - iBeginX &lt;= <span class="number">0</span>) &amp;&amp; (iEndY - iBeginY &gt; <span class="number">0</span>))</span><br><span class="line">		&#123;</span><br><span class="line">			a = -a;</span><br><span class="line">			b = -b;</span><br><span class="line">			x = iEndX;</span><br><span class="line">			y = iEndY;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//斜率小于1</span></span><br><span class="line">		<span class="keyword">if</span> (dx &gt;= dy)</span><br><span class="line">		&#123;</span><br><span class="line">			num = dx;<span class="comment">//以x轴为基准</span></span><br><span class="line">			p = <span class="number">1</span>;</span><br><span class="line">			p1 = <span class="number">0</span>;</span><br><span class="line">			q = <span class="number">1</span>;</span><br><span class="line">			q1 = <span class="number">-1</span>;</span><br><span class="line">			d = <span class="number">2</span> * a - b;<span class="comment">//初始值</span></span><br><span class="line">			d2 = <span class="number">2</span> * a;<span class="comment">//当大于0时的增量</span></span><br><span class="line">			d1 = <span class="number">2</span> * (a - b);<span class="comment">//当小于0时的增量</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			num = dy;<span class="comment">//以y轴为基准</span></span><br><span class="line">			p = <span class="number">1</span>;</span><br><span class="line">			p1 = <span class="number">-1</span>;</span><br><span class="line">			q = <span class="number">0</span>;</span><br><span class="line">			q1 = <span class="number">-1</span>;</span><br><span class="line">			d = a - <span class="number">2</span> * b;</span><br><span class="line">			d1 = -(<span class="number">2</span> * b);</span><br><span class="line">			d2 = <span class="number">2</span> * (a - b);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span><span class="comment">//第一、三象限</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> ((iEndX - iBeginX &lt;= <span class="number">0</span>) &amp;&amp; (iEndY - iBeginY &lt; <span class="number">0</span>))</span><br><span class="line">		&#123;</span><br><span class="line">			a = -a;</span><br><span class="line">			b = -b;</span><br><span class="line">			x = iEndX;</span><br><span class="line">			y = iEndY;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (dx &gt;= dy)</span><br><span class="line">		&#123;</span><br><span class="line">			num = dx;</span><br><span class="line">			p = <span class="number">1</span>;</span><br><span class="line">			p1 = <span class="number">1</span>;</span><br><span class="line">			q = <span class="number">1</span>;</span><br><span class="line">			q1 = <span class="number">0</span>;</span><br><span class="line">			d = <span class="number">2</span> * a + b;</span><br><span class="line">			d1 = <span class="number">2</span> * a;</span><br><span class="line">			d2 = <span class="number">2</span> * (a + b);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			num = dy;</span><br><span class="line">			p = <span class="number">0</span>;</span><br><span class="line">			p1 = <span class="number">1</span>;</span><br><span class="line">			q = <span class="number">1</span>;</span><br><span class="line">			q1 = <span class="number">1</span>;</span><br><span class="line">			d = a + <span class="number">2</span> * b;</span><br><span class="line">			d2 = <span class="number">2</span> * b;</span><br><span class="line">			d1 = <span class="number">2</span> * (a + b);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	pDc-&gt;SetPixel(x, y, col);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= num; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (d &lt; <span class="number">0</span>)<span class="comment">//d(new)=d(old)+A+B	选Pu(上面一点)</span></span><br><span class="line">		&#123;</span><br><span class="line">			x += p;</span><br><span class="line">			y += p1;</span><br><span class="line">			d += d2;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span><span class="comment">//d(new)=d(old)+A 选Pd(下面一点)</span></span><br><span class="line">		&#123;</span><br><span class="line">			x += q;</span><br><span class="line">			y += q1;</span><br><span class="line">			d += d1;</span><br><span class="line">		&#125;</span><br><span class="line">		pDc-&gt;SetPixel(x, y, col);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Bresenham算法"><a href="#Bresenham算法" class="headerlink" title="Bresenham算法"></a>Bresenham算法</h3><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94Bresenham%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4.png?raw=true" alt="算法步骤" title>
+                </div>
+                <div class="image-caption">算法步骤</div>
+            </figure>
+<h3 id="Bresenham算法代码"><a href="#Bresenham算法代码" class="headerlink" title="Bresenham算法代码"></a>Bresenham算法代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">void CDrawLinesDlg::BresenhamLine(int iBeginX, int iBeginY, int iEndX, int iEndY, COLORREF col)</span><br><span class="line">&#123;</span><br><span class="line">	CDC *pDC = GetDC();</span><br><span class="line">	pDC-&gt;TextOut(450, 18, _T(&quot;Bresenham画线成功！&quot;));</span><br><span class="line"></span><br><span class="line">	int dx = abs(iEndX - iBeginX);</span><br><span class="line">	int dy = abs(iEndY - iBeginY);</span><br><span class="line">	int x = iBeginX;</span><br><span class="line">	int y = iBeginY;</span><br><span class="line">	int stepX = 1;</span><br><span class="line">	int stepY = 1;</span><br><span class="line">	if (iBeginX &gt; iEndX)  //从右向左画  </span><br><span class="line">	&#123;</span><br><span class="line">		stepX = -1;</span><br><span class="line">	&#125;</span><br><span class="line">	if (iBeginY &gt; iEndY)//从下往上画</span><br><span class="line">	&#123;</span><br><span class="line">		stepY = -1;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	if (dx &gt; dy)  //斜率大于1</span><br><span class="line">	&#123;</span><br><span class="line">		int e = dy * 2 - dx;</span><br><span class="line">		for (int i = 0; i &lt;= dx; i++)</span><br><span class="line">		&#123;</span><br><span class="line">			pDC-&gt;SetPixel(x, y, col);</span><br><span class="line">			x += stepX;</span><br><span class="line">			e += dy;</span><br><span class="line">			if (e &gt;= 0)</span><br><span class="line">			&#123;</span><br><span class="line">				y += stepY;</span><br><span class="line">				e -= dx;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	else//斜率小于1</span><br><span class="line">	&#123;</span><br><span class="line">		int e = 2 * dx - dy;</span><br><span class="line">		for (int i = 0; i &lt;= dy; i++)</span><br><span class="line">		&#123;</span><br><span class="line">			pDC-&gt;SetPixel(x, y, col);</span><br><span class="line">			y += stepY;</span><br><span class="line">			e += dx;</span><br><span class="line">			if (e &gt;= 0)</span><br><span class="line">			&#123;</span><br><span class="line">				x += stepX;</span><br><span class="line">				e -= dy;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>三者区别</strong>：DDA是浮点数加法，中点画线是整数加法，Bresenham不判断大小，是判断符号。</p>
+<h2 id="多边形扫描转换"><a href="#多边形扫描转换" class="headerlink" title="多边形扫描转换"></a>多边形扫描转换</h2><p>多边形的扫描转换和区域填充这个问题是怎么样在离散的像素集上表示一个连续的二维图形<br>多边形有两种重要的表示方法：顶点表示和点阵表示<br><img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95.png?raw=true" alt="表示方法"><br>顶点表示是用多边形的顶点序列来表示多边形。这种表示直观、几何意义强、占内存少，易于进行几何变换<br>但由于它没有明确指出哪些像素在多边形内，故不能直接用于面着色  </p>
+<p>点阵表示是用位于多边形内的像素集合来刻画多边形。这种表示丢失了许多几何信息（如边界、顶点等），但它却是光栅显示系统显示时所需的表示形式。  </p>
+<p>涉及两个问题：<br>1、 如果知道边界，能否求出哪些像素在多边形内？<br>2、 如果知道多边形内部的像素，反过来如何求多边形的边界？——得不到，不是计算机图形学问题，属于图像识别领域  </p>
+<p>光栅图形的一个基本问题是把多边形的顶点表示转换为点阵表示。这种转换称为多边形的扫描转换。<br>多边形分为凸多边形、凹多边形、含内环的多边形等<br>凸多边形：任意两顶点间的连线均在多边形内<br>凹多边形：任意两顶点间的连线有不在多边形内<br>含内环的多边形：多边形内包含多边形  </p>
+<p>现在的问题：知道多边形的边界，如何找到多边形内部的点，即把多边形内部填上颜色  </p>
+<h3 id="X-扫描线算法"><a href="#X-扫描线算法" class="headerlink" title="X-扫描线算法"></a>X-扫描线算法</h3><p>基本思想：按照扫描线顺序，计算扫描线与多边形的相交区间，再用要求的颜色显示这些区间的像素，即完成填充工作<br>区间的端点可以通过计算扫描线与多边形边界线的交点获得<br>步骤：<br>1、 确定多边形所占有的最大扫描线数，得到多边形顶点的最小和最大y值（ymin和ymax）<br>2、 从y = ymin到y = ymax，每次用一条扫描线进行填充<br>3、 对一条扫描线填充的过程分为四步：<br>a. 求交：计算扫描线与多边形各边的交点<br>b. 排序：把所有交点按递增顺序进行排序<br>c. 交点配对：第一个与第二个，第三个与第四个<br>d. 区间填色：把这些相交区间内的像素置成不同于背景色的填充色  </p>
+<p>当扫描线与多边形顶点相交时，交点的取舍问题（交点的个数应保证为偶数个）<br>解决方案：<br>1、 若共享顶点的两条边分别落在扫描线的两边，交点只算一个<br>2、 若共享顶点的两条边在扫描线的同一边，这时交点作为零个或两个<br>检查共享顶点的两条边的另外两个端点的y值，按这两个y值中大于交点y值的个数来决定交点数<br>为了计算每条扫描线与多边形各边的交点，最简单的方法是把多边形的所有边放在一个表中。在处理每条扫描线时，按顺序从表中取出所有的边，分别与扫描线求交。<br>该算法效率低。求交计算量很大。但排序、配对、填色总是要的。  </p>
+<h3 id="改进的x扫描线算法"><a href="#改进的x扫描线算法" class="headerlink" title="改进的x扫描线算法"></a>改进的x扫描线算法</h3><p>扫描转换算法重要意义是提出了图形学里两个重要的思想：<br>1、 扫描线<br>2、 增量思想  </p>
+<p>三方面改进：<br>1、 在处理一条扫描线时，仅对与它相交的多边形的边（有效边）进行求交运算<br>2、 考虑扫描线的连贯性，即当前扫描线与各边的交点顺序与下一条扫描线与各边的交点顺序很可能相同或非常相似<br>3、 最后考虑多边形的连贯性，即当某条边与当前扫描线相交时，它很可能也与下一条扫描线相交  </p>
+<p>为了避免求交运算，需引入一套特殊的数据结构：<br>1、 活性边表（AET）：把与当前扫描线相交的边称为活性边，并把他们按与扫描线交点x坐标递增的顺序存放在一个链表中。<br>2、结点内容：<br>x：当前扫描线与边的交点坐标<br>△x：从当前扫描线到下一条扫描线间x的增量<br>ymax：该边所交的最高扫描线的坐标值ymax<br>next：指向下一条边的指针  </p>
+<p>随着扫描线的移动，扫描线与多边形的交点和上一次交点相关：<br>设边的直线斜率为k<br>k = △y/△x = (yi+1 - yi) / (xi+1 - xi)<br>xi+1 - xi = 1/k<br>xi+1 = xi + 1/k<br>(1/k即为增量)<br>即△x = 1/k  </p>
+<p>另外需要知道一条边何时不再与下一条扫描线相交，以便及时把它从有效边表中删除出去，避免下一步无谓计算。  </p>
+<p>为了方便活性边表的建立与更新，需构造一个新边表（NET），用来存放多边形的边的信息，步骤：<br>1、构造一个纵向链表，链表长度为多边形所占有的最大扫描线数，链表的每个节点，称为一个吊桶，对应多边形覆盖的每一条扫描线<br>2、NET挂在与该边低端y值相同的扫描线桶中。即存放在该扫描线第一次出现的边<br>ymax：该边的ymax<br>xmin：该边较低点的x坐标值xmin<br>1/k：该边的斜率1/k<br>next：指向下一条具有相同较低端y坐标的边的指针<br>每做一次新的扫描线时，要对已有的边进行三个处理：<br>1、是否被去除掉<br>2、如果不被去除，第二就要对它的数据进行更新。即更新它的x值，x+ 1/k<br>3、看有没有新的边进来，新的边在NET里，可插入排序插进来<br>该算法避免了求交运算。<br>缺点：无法实现对未知边界的区域填充。  </p>
+<h3 id="边缘填充算法"><a href="#边缘填充算法" class="headerlink" title="边缘填充算法"></a>边缘填充算法</h3><p>基本思想：按任意顺序处理多边形的每条边。在处理每条边时，首先求出该边与扫描线的交点，然后将每一条扫描线上交点右方的所有像素取补。多边形的所有边处理完毕后，填充即完成。<br>算法简单，但对复杂模型，每一像素可能被访问多次。输入和输出量比有效边算法大得多。  </p>
+<p>为了减少边缘填充法访问像素的次数，可采用栅栏填充算法。  </p>
+<h3 id="栅栏填充算法"><a href="#栅栏填充算法" class="headerlink" title="栅栏填充算法"></a>栅栏填充算法</h3><p>栅栏指的是一条过多边形顶点且与扫描线垂直的直线。它把多边形分为两半。在处理每条边与扫描线的交点时，将交点与栅栏之间的像素取补。  </p>
+<h3 id="边界标志算法"><a href="#边界标志算法" class="headerlink" title="边界标志算法"></a>边界标志算法</h3><p>帧缓冲器中对多边形的每条边进行直线扫描转换，即对多边形边界所经过的像素打上标志。<br>然后再采用和扫描线算法类似的方法将位于多边形内的各个区段着上所需颜色。<br>由于边界标志算法不必建立维护边表以及对它进行排序，所以边界标志算法更适合硬件实现，这时它的执行速度比有序边表算法快一至两个数量级。  </p>
+<h2 id="区域填充算法"><a href="#区域填充算法" class="headerlink" title="区域填充算法"></a>区域填充算法</h2><p>区域——指已经表示成点阵形式的填充图形，是像素的集合。<br>区域填充是指将区域内的一点（常称种子点）赋予给定颜色，然后将这种颜色扩展到整个区域内的过程。<br>区域可采用内点表示和边界表示两种表示形式。<br>区域填充算法要求区域是连通的。<br>区域可分为4向连通区域（上下左右）和8向连通区域（上下左右、左上、左下、右上、右下）。  </p>
+<h3 id="简单四连通种子填充算法（区域填充递归算法）"><a href="#简单四连通种子填充算法（区域填充递归算法）" class="headerlink" title="简单四连通种子填充算法（区域填充递归算法）"></a>简单四连通种子填充算法（区域填充递归算法）</h3><p>原理：假设在多边形区域内部有一像素已知，由此出发找到区域内的所有像素，用一定的颜色或灰度来填充。<br>假设区域采用边界定义，即区域边界上所有像素均具有某个特定值，区域内部所有像素均不取这一特定值，而边界外的像素则可具有与边界相同的值。<br>使用栈结构来实现简单的种子填充算法：<br>种子像素入栈，当栈非空时重复以下操作：<br>1、 栈顶像素出栈<br>2、 将出栈像素置成要填充色<br>3、 按左、上、右、下顺序检查与栈像素相邻 的四个像素，若其中某个像素不在边界且未置成填充色，则把该像素入栈  </p>
+<p>不足：<br>1、 有些像素入栈多次，降低算法效率；栈结构占空间<br>2、 递归执行，算法简单，但效率不高。区域内每一像素都引进一次递归，进/出栈，费时费内存<br>3、 改进算法，减少递归次数，提高效率<br>可采用区域填充的扫描线算法  </p>
+<h3 id="多边形的扫描转换与区域填充算法小结"><a href="#多边形的扫描转换与区域填充算法小结" class="headerlink" title="多边形的扫描转换与区域填充算法小结"></a>多边形的扫描转换与区域填充算法小结</h3><ul>
+<li><p>基本思想不同<br>多边形扫描转换是指将多边形的顶点表示转化为点阵表示<br>区域填充只改变区域的填充颜色，不改变区域表示方法  </p>
+</li>
+<li><p>基本条件不同<br>在区域填充算法中，要求给定区域内一点作为种子点，然后从这一点根据连通性将新的颜色扩散到整个区域<br>扫描转换多边形是从多边形的边界（顶点）信息出发，利用多种形式的连贯性进行填充的<br>烧苗转换区域填充的核心是知道多边形的边界，要得到多边形内部的像素集，有多种方法。其中扫描线算法是利用一套特殊的数据结构，避免求交，然后一条条扫描线确定。<br>区域填充条件更强一些，不但知道边界，而且还知道区域内的一点，可以利用四连通或八连通区域不断往外扩展。  </p>
+</li>
+</ul>
+<p>填充一个定义的区域的选择包括：<br>选择实区域颜色或图案填充方式<br>选择某种颜色和图案  </p>
+<p>这些填充选择可应用于多边形区域或用曲线边界定义的区域；此外，区域可用多种画笔、颜色和透明度参数来绘制。  </p>
+<h2 id="反走样"><a href="#反走样" class="headerlink" title="反走样"></a>反走样</h2><p>以上待填坑</p>
+<hr>
+<h1 id="裁剪算法"><a href="#裁剪算法" class="headerlink" title="裁剪算法"></a>裁剪算法</h1><p>使用计算机处理图形信息时，计算机内部存储的图像往往比较大，而屏幕显示的只是图形的一部分。<br>因此需要确定图形哪些部分落在显示区之内，哪些落在显示区之外。这个选择的过程称为<strong>裁剪</strong>。<br>最简单的裁剪方法是把各种图形扫描转换为点之后，再判断点是否在窗口内。</p>
+<h2 id="点的裁剪"><a href="#点的裁剪" class="headerlink" title="点的裁剪"></a>点的裁剪</h2><p>对于任意一点P(x, y)<br>若满足下列两个不等式：<br>x<sub>left</sub> ≤ x ≤ x<sub>right</sub><br>y<sub>bottom</sub> ≤ y ≤ y<sub>top</sub><br>则点P在矩形窗口内；否则在矩形窗口外<br>但判断图形中每个点是否在窗口内，太费时，一般不可取</p>
+<h2 id="直线段的裁剪"><a href="#直线段的裁剪" class="headerlink" title="直线段的裁剪"></a>直线段的裁剪</h2><p>直线段裁剪算法是复杂图形裁剪的基础<br>直线段和剪裁窗口的可能关系：</p>
+<ul>
+<li>完全落在窗口内</li>
+<li>完全落在窗口外</li>
+<li>与窗口边界相交<br>要裁剪一条直线段，首先要判断：<br>（1）它是否完全落在裁剪窗口内？<br>（2）它是否完全在窗口外？<br>（3）如果不满足以上两个条件，则计算它与一个或多个裁剪边界的交点<br>常用的裁剪算法有三种：Cohen-Sutherland、中点分割法、Liang-Barsky裁剪算法</li>
+</ul>
+<h3 id="Cohen-Sutherland算法"><a href="#Cohen-Sutherland算法" class="headerlink" title="Cohen-Sutherland算法"></a>Cohen-Sutherland算法</h3><p>本算法又称为编码裁剪算法，基本思想：</p>
+<ul>
+<li>若点p1和p2完全在裁剪窗口内<br>“简取”之</li>
+<li>若点p1(x1, y1)和p2(x2, y2)均在窗口外，且满足下列四个条件之一：<br>x<sub>1</sub> &lt; x<sub>left</sub> 且 x<sub>2</sub> &lt; x<sub>left</sub><br>x<sub>1</sub> &gt; x<sub>right</sub> 且 x<sub>2</sub> &gt; x<sub>right</sub><br>y<sub>1</sub> &lt; y<sub>bottom</sub> 且 y<sub>2</sub> &lt; y<sub>bottom</sub><br>y<sub>1</sub> &lt; y<sub>top</sub> 且 y<sub>2</sub> &lt; y<sub>top</sub></li>
+</ul>
+<p>这四种类型的直线，“简弃”之</p>
+<ul>
+<li>既不满足“简取”也不满足“简弃”<br>需要对直线段按交点进行分段，分段后判断直线是“简取”还是“简弃”<br>每条线段的端点都赋以四位二进制码D3D2D1D0，编码规则如下：<br>若x &lt; x<sub>left</sub> ，则D<sub>0</sub>=1，否则为0<br>若x &gt; x<sub>right</sub> ，则D<sub>1</sub>=1，否则为0<br>若y &lt; y<sub>bottom</sub> ，则D<sub>2</sub>=1，否则为0<br>若y &lt; y<sub>top</sub> ，则D<sub>3</sub>=1，否则为0</li>
+</ul>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94Cohen-Sutherland%E7%AE%97%E6%B3%95.png?raw=true" alt="Cohen-Sutherland算法" title>
+                </div>
+                <div class="image-caption">Cohen-Sutherland算法</div>
+            </figure>
+<p>窗口及其延长线构成了9个区域。根据编码规则：<br>D<sub>0</sub>对应窗口左边界<br>D<sub>1</sub>对应窗口右边界<br>D<sub>2</sub>对应窗口下边界<br>D<sub>3</sub>对应窗口上边界</p>
+<p>裁剪一条线段时，先求出端点p1和p2的编码code1和code2，然后进行二进制“或”运算和“与”运算。<br>（1）若code1|code2=0，对直线段简取之<br>（2）若code1&amp;code2≠0，对直线段简弃之<br>（3）若上述两条件均不成立<br>需求出直线段与窗口边界的交点在交点处把线段一分为二</p>
+<p>比较适合两种情况：一是大部分线段完全可见；二是大部分线段完全不可见</p>
+<p>存在的问题：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94Cohen-Sutherland%E7%AE%97%E6%B3%95%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98.png?raw=true" alt="最坏情况" title>
+                </div>
+                <div class="image-caption">最坏情况</div>
+            </figure><br>或：0001 | 0100 = 0101<br>与：0001 &amp; 0100 = 0000<br>最坏情况下，被裁剪线段与窗口4条边计算交点，然后所得的裁剪结果却可能是全部舍弃。</p>
+<h3 id="中点分割算法"><a href="#中点分割算法" class="headerlink" title="中点分割算法"></a>中点分割算法</h3><p>和Cohen-Sutherland算法一样，首先对直线段的端点进行编码。<br>把线段和窗口的关系分成三种情况：</p>
+<ol>
+<li>完全在窗口内</li>
+<li>完全在窗口外</li>
+<li>和窗口有交点</li>
+</ol>
+<p>核心思想：通过<strong>二分逼近</strong>来确定直线段与窗口的交点。<br>注意：1. 若中点不在窗口内，则把中点和离窗口边界最远点构成的线段丢掉，以线段上的另一点和该中点再构成线段求其中点。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/0af2eaee70de59ca7907796db13b07ead7ae75d7/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%B8%AD%E7%82%B9%E5%88%86%E5%89%B2%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%951.png?raw=true" alt="图1" title>
+                </div>
+                <div class="image-caption">图1</div>
+            </figure></p>
+<ol start="2">
+<li>如中点再窗口内，则又以中点和最远点构成线段，并求其中点，直到中点与窗口边界的坐标值在规定的误差范围内相等。<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%B8%AD%E7%82%B9%E5%88%86%E5%89%B2%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%952.png?raw=true" alt="图2" title>
+                </div>
+                <div class="image-caption">图2</div>
+            </figure>
+中点分割算法会不会无限循环二分下去？<br>不会。因为屏幕像素有限。</li>
+</ol>
+<p>假如屏幕分辨率是1024*1024，请问被裁减线段最多被分割几次？<br>10次。</p>
+<h3 id="Liang-Barsky算法"><a href="#Liang-Barsky算法" class="headerlink" title="Liang-Barsky算法"></a>Liang-Barsky算法</h3><p>主要思想：<br>（1）用参数方程表示一条直线<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E7%94%A8%E5%8F%82%E6%95%B0%E6%96%B9%E7%A8%8B%E8%A1%A8%E7%A4%BA%E4%B8%80%E6%9D%A1%E7%9B%B4%E7%BA%BF.png?raw=true" alt="用参数方程表示一条直线" title>
+                </div>
+                <div class="image-caption">用参数方程表示一条直线</div>
+            </figure></p>
+<p>x = x1 + u · (x2 - x1) = x1 + △x · u<br>y = y1 + u · (y2 - y1) = y1 + △y · u<br>(0 ≤ u ≤ 1)</p>
+<p>（2）把被裁剪的红色直线段看成是一条有方向的线段，把窗口的四条边分成两类：<br>入边和出边<br>裁剪结果的线段起点是直线和两条入边的交点以及始端点三个点里最前面的一个点，即参数u最大的那个点；<br>裁剪线段的终点是和两条出边的交点以及端点最后面的一个点，取参数u最小的那个点。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%A2%81%E7%AE%97%E6%B3%95%E7%9A%84%E4%B8%BB%E8%A6%81%E6%80%9D%E6%83%B3.png?raw=true" alt="梁算法的主要思想" title>
+                </div>
+                <div class="image-caption">梁算法的主要思想</div>
+            </figure>
+<p>即取图中的绿点。</p>
+<p>注意，当u从负无穷到正无穷遍历直线时，首先对裁剪窗口的两条边界直线（下边和左边）从外面向里面移动，再对裁剪窗口两条边界直线（上边和右边）从里面向外面移动。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%A2%81%E7%AE%97%E6%B3%95.png?raw=true" alt="梁算法" title>
+                </div>
+                <div class="image-caption">梁算法</div>
+            </figure>
+<p>如果用u1, u2分别表示线段（u1 ≤ u2）可见部分的开始和结束<br>u1 = max(0, u1, ub)<br>u2 = min(1, ut, ur)</p>
+<p>若窗口如下<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%A2%81%E7%AE%97%E6%B3%95%E4%B9%8B%E7%AA%97%E5%8F%A3.png?raw=true" alt="梁算法之窗口" title>
+                </div>
+                <div class="image-caption">梁算法之窗口</div>
+            </figure><br>x<sub>left</sub> ≤ x1 + u · △x ≤ x<sub>right</sub><br>y<sub>bottom</sub> ≤ y1 + u · △y ≤ y<sub>top</sub></p>
+<p>简单的推导变形后：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%A2%81%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC1.png?raw=true" alt="梁算法推导1" title>
+                </div>
+                <div class="image-caption">梁算法推导1</div>
+            </figure><br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%A2%81%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC2.png?raw=true" alt="梁算法推导2" title>
+                </div>
+                <div class="image-caption">梁算法推导2</div>
+            </figure></p>
+<p>（1）分析Pk = 0的情况<br>若P1 = P2 = 0<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94P1=P2=0.png?raw=true" alt="P1=P2=0" title>
+                </div>
+                <div class="image-caption">P1=P2=0</div>
+            </figure><br>平行于y轴</p>
+<p>若P3 = P4 = 0<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94P3=P4=0.png?raw=true" alt="P3=P4=0" title>
+                </div>
+                <div class="image-caption">P3=P4=0</div>
+            </figure><br>平行于x轴</p>
+<p>任何平行于窗口某边界的直线，其Pk=0</p>
+<p>如果还满足qk &lt; 0<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94pk=0,qk%E5%B0%8F%E4%BA%8E0.png?raw=true" alt="pk=0, qk < 0" title>
+                </div>
+                <div class="image-caption">pk=0, qk < 0</div>
+            </figure><br>则线段完全在边界外，应舍弃</p>
+<p>如果qk ≥ 0 ，则进一步判断</p>
+<p>(2)当pk ≠ 0 时：<br>当pk &lt; 0时<br>线段从裁剪边界延长线的外部延伸到内部，是入边交点<br>当pk &gt; 0时<br>线段从裁剪边界延长线的内部延伸到外部，是出边交点</p>
+<p>线段和窗口边界一共有四个交点，根据pk的符号，就知道哪两个是入交点，哪两个是出交点</p>
+<p>当pk &lt; 0时：对应入边交点<br>当pk &gt; 0时：对应出边交点</p>
+<p>一共四个u值，再叫上u=0、u=1两个端点值，总共六个值</p>
+<p>把pk &lt; 0的两个u值和0比较去找最大的，把pk &gt; 0的两个u值和1比较去找最小的，这样得到两个端点的参数值。</p>
+<p>uk = qk / pk (pk≠0， k = 1,2,3,4)<br>uk是窗口边界及其延长线的交点的对应参数值</p>
+<p>umax =max(0, uk|pk &lt; 0, uk|pk &lt; 0)<br>umin =min(0, uk|pk &gt; 0, uk|pk &gt; 0, 1)</p>
+<p>注意：pk &lt; 0，代表入边；pk &gt; 0代表出边</p>
+<p>umax &gt; umin，则直线段在窗口外，删除该直线<br>若umax≤umin，将umax和umin代回直线参数方程，即求出直线与窗口的两实交点坐标。<br>x = x1 + u·(x2 - x1)<br>y = y1 + u·(y2 - y1)</p>
+<p>注意：因为对于实交点0≤u≤1，因此umax不能小于0，umin不能大于1</p>
+<h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/计算机图形学学习笔记——梁算法步骤.png?raw=true" alt="梁算法步骤" title>
+                </div>
+                <div class="image-caption">梁算法步骤</div>
+            </figure>
+<h2 id="多边形裁剪"><a href="#多边形裁剪" class="headerlink" title="多边形裁剪"></a>多边形裁剪</h2><h3 id="Sutherland-Hodgeman多边形裁剪"><a href="#Sutherland-Hodgeman多边形裁剪" class="headerlink" title="Sutherland-Hodgeman多边形裁剪"></a>Sutherland-Hodgeman多边形裁剪</h3><p>思想：将边界看作整体，每次用窗口的一条边对要裁剪的多边形和中间结果多边形进行裁剪。分而治之的思想。<br>缺点：只适合凸多边形</p>
+<p>过程：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/计算机图形学学习笔记——多边形裁剪.png?raw=true" alt="多边形裁剪" title>
+                </div>
+                <div class="image-caption">多边形裁剪</div>
+            </figure></p>
+<p>顶点处理四种情况：<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://github.com/hubojing/BlogImages/blob/master/计算机图形学学习笔记——顶点处理.png?raw=true" alt="顶点处理" title>
+                </div>
+                <div class="image-caption">顶点处理</div>
+            </figure></p>
+<h2 id="文字裁剪"><a href="#文字裁剪" class="headerlink" title="文字裁剪"></a>文字裁剪</h2><ol>
+<li>串精度裁剪<br>当字符串中的所有字符都在裁剪窗口内时，就全部保留它，否则舍弃整个字符串。</li>
+<li>字符精度裁剪<br>裁剪时，任何与窗口有重叠或落在窗口边界以外的字符都被裁减掉。</li>
+<li>笔画/像素精度裁剪<br>将笔划分解成直线段对窗口作裁剪。判断字符串中各字符的哪些像素、笔划的哪一部分在窗口内，保留窗口内部分，裁减掉窗口外的部分。</li>
+</ol>
+<h1 id="消隐算法"><a href="#消隐算法" class="headerlink" title="消隐算法"></a>消隐算法</h1><p>…未完待续</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2024-02-14T14:53:29.435Z" itemprop="dateUpdated">2024-02-14 14:53:29</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2018/03/05/计算机图形学学习笔记/" target="_blank" rel="external">https://hubojing.github.io/2018/03/05/计算机图形学学习笔记/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hubojing.github.io">
+            <img src="/img/avatar.jpg" alt="靖待">
+            靖待
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CPP/">CPP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/计算机图形学/">计算机图形学</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2018/03/05/计算机图形学学习笔记/&title=《计算机图形学学习笔记》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2018/03/05/计算机图形学学习笔记/&title=《计算机图形学学习笔记》 — 靖待的技术博客&source=　　　　每周一点图形学重启，不弃坑。。。。。。　　几年之后的最新：多边形图像转换补完   　　" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2018/03/05/计算机图形学学习笔记/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《计算机图形学学习笔记》 — 靖待的技术博客&url=https://hubojing.github.io/2018/03/05/计算机图形学学习笔记/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2018/03/05/计算机图形学学习笔记/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/03/11/Python开发简单爬虫/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Python开发简单爬虫</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/03/03/BCG网格控件增删移动/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">BCG网格控件增删移动</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+	<script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css"/>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+	Waline.init({
+      el: '#comments',
+      serverURL: 'https://waline-1-r2604942.deta.app/',
+    });
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        码代码和码字，都是人生乐趣
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>靖待 &copy; 2015 - 2024</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2018/03/05/计算机图形学学习笔记/&title=《计算机图形学学习笔记》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2018/03/05/计算机图形学学习笔记/&title=《计算机图形学学习笔记》 — 靖待的技术博客&source=　　　　每周一点图形学重启，不弃坑。。。。。。　　几年之后的最新：多边形图像转换补完   　　" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2018/03/05/计算机图形学学习笔记/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《计算机图形学学习笔记》 — 靖待的技术博客&url=https://hubojing.github.io/2018/03/05/计算机图形学学习笔记/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2018/03/05/计算机图形学学习笔记/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACrUlEQVR42u3ay24bMRAEQP3/TzvXAInW3TOkH0DtSZBXFIsGllTPvF7x9fHX9fz+u3ueX78b89/rdePCw8PDW0z93XAJL59EgkyWJvp2PDw8vGu8duhkcs9L096Zbyp4eHh4v4WXHK+T7022HDw8PLzfy3s3lefx24Pyt20MeHh4eI+82dDtV+YxRxIWH85a8PDw8C5UkX7O6yv1PTw8PLx1VX12tM0f4rNoo5gtHh4e3gXerIiVxA1JsNsepoclNDw8PLwv580m1J5vc1j+Dh4eHt4N3r5kNTtYtxvScAQ8PDy8C7xZaDtrNcgP5bNFL8B4eHh4C167ASQT2jOSY3o0Dh4eHt4FXh4i7D/1vByzyLjuLMPDw8M7xMvbBdrCf1sMO7WgeHh4eLd5M+R+U5kFIm2DAh4eHt5Z3iaivd16NWufHXY94OHh4Y0aCM7GrDPYZiGiMhgeHh7eyZr7J9PKpz5ryWpnMuyJwMPDwzvE+zh07beWfUNqnbLg4eHhLXhtEetUPJFvQsOEAQ8PD+8C7/mmPN7NAW1DVT5mEebi4eHhLXj5Azov7c+at9rliBR4eHh4R3nJBjALGpKp598+vAcPDw/vGm/z8M2P1G2hKz86v30HDw8P7wLvRjDRPtzbT83mgIeHh3eWl4Shs4D1FGzWRoCHh4d3m5dPtw0pcuTsmB7tcnh4eHjXeHmIMIshkoUoYoV2Y8DDw8Nb8zZH4TZ+bZdmtnBRfQ8PDw9vwTv7iz6/f1/6mjU04OHh4Z3i7TeD9oicl//bBf3PaHh4eHjXeHlhrI0q8oXbZA71n/Hw8PC+iXcjlm3jjE/ux8PDw/sxvLxhaxMltK1dxzYGPDw8vICXt0bNWgEOPOLLfwkeHh7ePV77g7897CZBbTutAzU9PDw8vMl8/gAcZ8U6hVuniAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来嘛！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)抱抱~你回来了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

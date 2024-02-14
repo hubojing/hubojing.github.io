@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="https://hubojing.github.io//2022/01/22/Paper_CHAML/">
+    
+    
+    <title>CHAML | 靖待的技术博客 | 小清新IT旅程 | 为中华之崛起而读书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="推荐算法,兴趣点推荐,CHAML,元学习,课程学习">
+    <meta name="description" content="Curriculum Meta-Learning for Next POI Recommendation　　基于课程元学习的下一个兴趣点推荐">
+<meta name="keywords" content="推荐算法,兴趣点推荐,CHAML,元学习,课程学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CHAML">
+<meta property="og:url" content="https://hubojing.github.io/2022/01/22/Paper_CHAML/index.html">
+<meta property="og:site_name" content="靖待的技术博客">
+<meta property="og:description" content="Curriculum Meta-Learning for Next POI Recommendation　　基于课程元学习的下一个兴趣点推荐">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://hubojing.github.io/images/CHAML-2.png">
+<meta property="og:image" content="https://hubojing.github.io/images/CHAML-1.png">
+<meta property="og:image" content="https://hubojing.github.io/images/CHAML-2.png">
+<meta property="og:updated_time" content="2022-01-23T15:37:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CHAML">
+<meta name="twitter:description" content="Curriculum Meta-Learning for Next POI Recommendation　　基于课程元学习的下一个兴趣点推荐">
+<meta name="twitter:image" content="https://hubojing.github.io/images/CHAML-2.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+	
+	
+	
+	
+	
+	
+	
+    
+
+</head>
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">靖待</h5>
+          <a href="mailto:hubojing@outlook.com" title="hubojing@outlook.com" class="mail">hubojing@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archive"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hubojing/"  >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/friends"  >
+                <i class="icon icon-lg icon-users"></i>
+                友情链接
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/Chinese"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/comment"  >
+                <i class="icon icon-lg icon-book"></i>
+                留言板
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/littletalk"  >
+                <i class="icon icon-lg icon-edit"></i>
+                自言自语
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://blog.csdn.net/hubojing/"  >
+                <i class="icon icon-lg icon-pencil"></i>
+                CSDN博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/advertising"  >
+                <i class="icon icon-lg icon-link"></i>
+                推广
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes"  >
+                <i class="icon icon-lg icon-qq"></i>
+                和我在线交流
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">CHAML</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">CHAML</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2022-01-22T10:02:37.000Z" itemprop="datePublished" class="page-time">
+  2022-01-22
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#现有问题"><span class="post-toc-text">现有问题</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#架构"><span class="post-toc-text">架构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基础推荐器"><span class="post-toc-text">基础推荐器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#元学习"><span class="post-toc-text">元学习</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#硬意识元学习-Hardness-Aware-Meta-Learning"><span class="post-toc-text">硬意识元学习 Hardness Aware Meta-Learning</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#城市级别采样课程-City-level-Sampling-Curriculum"><span class="post-toc-text">城市级别采样课程 City-level Sampling Curriculum</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验"><span class="post-toc-text">实验</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#基线"><span class="post-toc-text">基线</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#贡献点"><span class="post-toc-text">贡献点</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#代码"><span class="post-toc-text">代码</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Paper_CHAML"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">CHAML</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2022-01-22 10:02:37" datetime="2022-01-22T10:02:37.000Z"  itemprop="datePublished">2022-01-22</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div align="left"><br><img src="\images\CHAML-2.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>Curriculum Meta-Learning for Next POI Recommendation</strong><br>　　基于课程元学习的下一个兴趣点推荐<br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="论文背景"><a href="#论文背景" class="headerlink" title="论文背景"></a>论文背景</h1><p>　　Curriculum Meta-Learning for Next POI Recommendation<br>　　基于课程元学习的下一个兴趣点推荐<br>　　KDD 21<br>　　<a href="https://dl.acm.org/doi/abs/10.1145/3447548.3467132" target="_blank" rel="noopener">PDF</a></p>
+<h1 id="现有问题"><a href="#现有问题" class="headerlink" title="现有问题"></a>现有问题</h1><p>　　在下一个兴趣点推荐的研究中，在有限的用户-兴趣点交互数据下，在冷启动城市中提供满意的推荐是重要问题，这需要许多其它城市丰富数据下隐含的知识进行迁移。现有文献没有考虑到城市转移的问题或者不能同时处理数据稀疏和用户在多个城市的模式多样性的问题。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\CHAML-1.png" alt="问题描述" title="">
+                </div>
+                <div class="image-caption">问题描述</div>
+            </figure>
+<p>　　问题描述如图所示。<br>　　该问题关键是提出一个合适的迁移算法，但难点有二：<br>　　1. 不同城市的数据太少<br>　　2. 用户在不同城市下有不同的多样性表达<br>　　现有算法不能同时解决这两个问题。传统的预训练和微调技术不能解决问题2，跨域推荐不能解决问题1。</p>
+<h1 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h1><p>　　提出 Curriculum Hardness Aware Meta-Learning (CHAML) 框架。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\CHAML-2.png" alt="架构" title="">
+                </div>
+                <div class="image-caption">架构</div>
+            </figure><br>　　架构分为两部分，一部分是基础推荐器，另一部分是MAML扩展。后者用于将元学习引入到POI推荐中。<br>　　两种采用策略组件，一种是硬意识元学习(hardness aware meta-learning)，另一种是城市级别采样课程(city-level sampling curriculum)。这用于细致思考采样多样性问题。<br>　　一些概念：<br>　　Curriculum Learning，主张让模型先从容易的样本开始学习，并逐渐进阶到复杂的样本和知识。<br>　　meta-learning，又叫learning to learn，即学习如何学习，元学习围绕任务（task）展开。元学习是要去学习任务中的特征表示，从而在新的任务上泛化。</p>
+<h2 id="基础推荐器"><a href="#基础推荐器" class="headerlink" title="基础推荐器"></a>基础推荐器</h2><p>　　使用DIN作为基础推荐器，由三部分组成，嵌入模块（Embedding module）、注意力模块（Attention module）和输出模块（Output module）。</p>
+<h2 id="元学习"><a href="#元学习" class="headerlink" title="元学习"></a>元学习</h2><p>　　使用MAML策略。<br>　　MAML论文：Model-agnostic meta-learning for fast adaptation of deep networks</p>
+<p>　　每轮MAML包括两步骤：局部更新和全局更新。见图中左上部分。<br>　　每一次元学习任务都有支持训练集$D^{spt}$用于训练，query训练集$D^{qry}$用于测试。<br>　　元学习目标就是学习一个选学习器F，F可以预测推荐器f中的参数$\theta$，使损失函数最小化。</p>
+<h2 id="硬意识元学习-Hardness-Aware-Meta-Learning"><a href="#硬意识元学习-Hardness-Aware-Meta-Learning" class="headerlink" title="硬意识元学习 Hardness Aware Meta-Learning"></a>硬意识元学习 Hardness Aware Meta-Learning</h2><p>　　这里的”hardness”是模型在query样本上的现有性能自判的。<br>　　分为两个阶段，hard_city阶段和hard_user阶段。两个任务交替循环。对应图右上。</p>
+<h2 id="城市级别采样课程-City-level-Sampling-Curriculum"><a href="#城市级别采样课程-City-level-Sampling-Curriculum" class="headerlink" title="城市级别采样课程 City-level Sampling Curriculum"></a>城市级别采样课程 City-level Sampling Curriculum</h2><p>　　见图下方。<br>　　分为两阶段，一是困难度测量，使用诸如AUC指标来衡量。二是调度器用于城市pool，定义了一个函数g。课程学习使模型有更大的概率在优化过程中选择容易的梯度步骤。</p>
+<h1 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h1><p>　　数据集：百度地图MapSmall、MapLarge（未开源）<br>　　输入：POI ID, POI category, time, user-POI dist<br>　　输出：POI预测分数$y^{hat}_i$</p>
+<h2 id="基线"><a href="#基线" class="headerlink" title="基线"></a>基线</h2><p>　　针对POI推荐：</p>
+<ul>
+<li>NeuMF</li>
+<li>HGN</li>
+<li>ATST-LSTM</li>
+<li>PLSPL</li>
+<li>iMTL</li>
+<li>DIN</li>
+</ul>
+<p>　　针对迁移策略：</p>
+<ul>
+<li>No transfer</li>
+<li>Pretrain and Fine-Tune(FT)</li>
+<li>MAML</li>
+<li>$s^2$Meta</li>
+<li>HAML</li>
+</ul>
+<h1 id="贡献点"><a href="#贡献点" class="headerlink" title="贡献点"></a>贡献点</h1><ol>
+<li>第一个探索城市迁移的下一个兴趣点推荐，并将元学习用于该问题。</li>
+<li>提出CHAML框架，通过使用用户和城市级别的硬采样挖掘以及城市级别的课程学习（curriculum learning）增强元学习器，达到同时解决数据稀疏和冷启动城市的样本多样性的问题。</li>
+<li>在两个真实世界地图查找数据集中性能超越SOTA方法。<br>该框架已在百度地图上进行过A/B测试。</li>
+</ol>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p><a href="https://github.com/PaddlePaddle/Research/tree/master/ST_DM/KDD2021-CHAML" target="_blank" rel="noopener">https://github.com/PaddlePaddle/Research/tree/master/ST_DM/KDD2021-CHAML</a><br><a href="https://github.com/victorsoda/chaml" target="_blank" rel="noopener">https://github.com/victorsoda/chaml</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2022-01-23T15:37:58.000Z" itemprop="dateUpdated">2022-01-23 15:37:58</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2022/01/22/Paper_CHAML/" target="_blank" rel="external">https://hubojing.github.io/2022/01/22/Paper_CHAML/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hubojing.github.io">
+            <img src="/img/avatar.jpg" alt="靖待">
+            靖待
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CHAML/">CHAML</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/元学习/">元学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/兴趣点推荐/">兴趣点推荐</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/推荐算法/">推荐算法</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/课程学习/">课程学习</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2022/01/22/Paper_CHAML/&title=《CHAML》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2022/01/22/Paper_CHAML/&title=《CHAML》 — 靖待的技术博客&source=　　Curriculum Meta-Learning for Next POI Recommendation　　基于课程元学习的下一个兴趣点推荐 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2022/01/22/Paper_CHAML/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《CHAML》 — 靖待的技术博客&url=https://hubojing.github.io/2022/01/22/Paper_CHAML/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2022/01/22/Paper_CHAML/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2022/01/24/Paper_STAN/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">STAN</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2022/01/14/博客更换为Waline评论系统/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">博客更换为Waline评论系统</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+	<script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css"/>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+	Waline.init({
+      el: '#comments',
+      serverURL: 'https://waline-1-r2604942.deta.app/',
+    });
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        码代码和码字，都是人生乐趣
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>靖待 &copy; 2015 - 2024</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2022/01/22/Paper_CHAML/&title=《CHAML》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2022/01/22/Paper_CHAML/&title=《CHAML》 — 靖待的技术博客&source=　　Curriculum Meta-Learning for Next POI Recommendation　　基于课程元学习的下一个兴趣点推荐 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2022/01/22/Paper_CHAML/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《CHAML》 — 靖待的技术博客&url=https://hubojing.github.io/2022/01/22/Paper_CHAML/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2022/01/22/Paper_CHAML/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMElEQVR42u3awY6DMAxFUf7/pxlpViwKus9OR4Nzs6qogJwuXMf2ceB1/q7r5+tKr1+/fb538ZIhQ8ZrGefjumPw5/C7yE92S5UhQ8YGDBJkeWBNwzf/9va6DBkyZIAAeoJFEkEZMmTIWBVw09DJfxoZMmTI6Bxi09DcCdlfPIvLkCHjhYxaY+BvPn+9vyFDhox/zzgb6zkQ87Zlfz8yZMiYzUgL+p2SHC+3pQdaGTJk7MDo51e1wJqOaywousmQIWMEgyR8zy9OAcsaAzJkyBjNSEcf0rYBTxzTpsLtIVaGDBmjGfxs2D8AcwB6lwwZMoYyyOY64xG1UBsPkMmQIWMbRu2h6cAEb4vyFqkMGTJmM0gZq/PQ4iYaZTgZMmTMY/CyOxmMeN7E2vGOD/8bMmTIGMrgjcliJQ/Hw066KUOGjNmMdLu1kYg4P+UTIjJkyNiAkSZ2axM+HohR21WGDBlDGaRM36lo8TZAKxmVIUPGaEbaYuTDYbVgmjYh4mOtDBkyXsvgx0seoGt38W+PWkYpQ4aMlzNqA15xRAfvJc/5cF2GDBmjGf3YRV65qj0Q3CVDhowRjNqRNd1o5wo69MqQIWM0ozbu0CnDrZqRkCFDxm6MThOxkxR2OhjFfqwMGTJezuANg06ojSM958mQIUNGuCEevtMEEWWvMmTI2JjBk7m0hcmPvmhmRIYMGUMZPNVLgyMfqkgLczJkyNiH0WkMkOGM2tbTEp4MGTKGMn4A1l7wLrkfvdsAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来嘛！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)抱抱~你回来了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

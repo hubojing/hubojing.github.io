@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="https://hubojing.github.io//2018/05/21/bmp保存和imagelist读取/">
+    
+    
+    <title>bmp保存和imagelist读取 | 靖待的技术博客 | 小清新IT旅程 | 为中华之崛起而读书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="CPP">
+    <meta name="description" content="代码整理。">
+<meta name="keywords" content="CPP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bmp保存和imagelist读取">
+<meta property="og:url" content="https://hubojing.github.io/2018/05/21/bmp保存和imagelist读取/index.html">
+<meta property="og:site_name" content="靖待的技术博客">
+<meta property="og:description" content="代码整理。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526924327173&di=b20d0c60e8cde64ff85f51171d6ce16e&imgtype=0&src=http%3A%2F%2Fs6.51cto.com%2Fwyfs02%2FM01%2F73%2FCF%2FwKiom1YInRjCxIlAAAA5HZX_kU4372.jpg">
+<meta property="og:updated_time" content="2018-05-21T22:53:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="bmp保存和imagelist读取">
+<meta name="twitter:description" content="代码整理。">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526924327173&di=b20d0c60e8cde64ff85f51171d6ce16e&imgtype=0&src=http%3A%2F%2Fs6.51cto.com%2Fwyfs02%2FM01%2F73%2FCF%2FwKiom1YInRjCxIlAAAA5HZX_kU4372.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+	
+	
+	
+	
+	
+	
+	
+    
+
+</head>
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">靖待</h5>
+          <a href="mailto:hubojing@outlook.com" title="hubojing@outlook.com" class="mail">hubojing@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archive"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hubojing/"  >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/friends"  >
+                <i class="icon icon-lg icon-users"></i>
+                友情链接
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/Chinese"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/comment"  >
+                <i class="icon icon-lg icon-book"></i>
+                留言板
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/littletalk"  >
+                <i class="icon icon-lg icon-edit"></i>
+                自言自语
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://blog.csdn.net/hubojing/"  >
+                <i class="icon icon-lg icon-pencil"></i>
+                CSDN博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/advertising"  >
+                <i class="icon icon-lg icon-link"></i>
+                推广
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes"  >
+                <i class="icon icon-lg icon-qq"></i>
+                和我在线交流
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">bmp保存和imagelist读取</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">bmp保存和imagelist读取</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-05-21T22:46:06.000Z" itemprop="datePublished" class="page-time">
+  2018-05-21
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程语言/">编程语言</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#bmp保存"><span class="post-toc-text">bmp保存</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#imagelist读取bmp"><span class="post-toc-text">imagelist读取bmp</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-bmp保存和imagelist读取"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">bmp保存和imagelist读取</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-05-21 22:46:06" datetime="2018-05-21T22:46:06.000Z"  itemprop="datePublished">2018-05-21</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/编程语言/">编程语言</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div align="left"><br><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1526924327173&di=b20d0c60e8cde64ff85f51171d6ce16e&imgtype=0&src=http%3A%2F%2Fs6.51cto.com%2Fwyfs02%2FM01%2F73%2FCF%2FwKiom1YInRjCxIlAAAA5HZX_kU4372.jpg" width="300" height="180" style="float:right;"><br><br><br>　　<strong>代码整理。</strong><br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="bmp保存"><a href="#bmp保存" class="headerlink" title="bmp保存"></a>bmp保存</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">SaveBitmapToFile</span><span class="params">(CBitmap* bitmap, LPSTR lpFileName)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;              </span><br><span class="line">    HBITMAP hBitmap;    <span class="comment">// 为刚才的屏幕位图句柄  </span></span><br><span class="line">    HDC hDC; <span class="comment">//设备描述表    </span></span><br><span class="line">    <span class="keyword">int</span> iBits; <span class="comment">//当前显示分辨率下每个像素所占字节数    </span></span><br><span class="line">    WORD wBitCount; <span class="comment">//位图中每个像素所占字节数    </span></span><br><span class="line">    DWORD dwPaletteSize = <span class="number">0</span>, <span class="comment">//定义调色板大小  </span></span><br><span class="line">        dwBmBitsSize,  <span class="comment">//位图中像素字节大小     </span></span><br><span class="line">        dwDIBSize,   <span class="comment">//位图文件大小  </span></span><br><span class="line">        dwWritten;  <span class="comment">//写入文件字节数  </span></span><br><span class="line">    BITMAP Bitmap; <span class="comment">//位图属性结构    </span></span><br><span class="line">    BITMAPFILEHEADER bmfHdr; <span class="comment">//位图文件头结构    </span></span><br><span class="line">    BITMAPINFOHEADER bi; <span class="comment">//位图信息头结构      </span></span><br><span class="line">    LPBITMAPINFOHEADER lpbi; <span class="comment">//指向位图信息头结构    </span></span><br><span class="line">    HANDLE fh,   <span class="comment">//定义文件  </span></span><br><span class="line">        hDib,    <span class="comment">//分配内存句柄  </span></span><br><span class="line">        hPal,   <span class="comment">//调色板句柄  </span></span><br><span class="line">        hOldPal = <span class="literal">NULL</span>;  </span><br><span class="line">      </span><br><span class="line">    <span class="comment">//计算位图文件每个像素所占字节数    </span></span><br><span class="line">    hBitmap = (HBITMAP)*bitmap;    </span><br><span class="line">    hDC = CreateDC(<span class="string">"DISPLAY"</span>,<span class="literal">NULL</span>,<span class="literal">NULL</span>,<span class="literal">NULL</span>);    </span><br><span class="line">    iBits = GetDeviceCaps(hDC, BITSPIXEL) * GetDeviceCaps(hDC, PLANES);    </span><br><span class="line">    DeleteDC(hDC);  </span><br><span class="line">      </span><br><span class="line">    <span class="keyword">if</span> (iBits &lt;= <span class="number">1</span>)    </span><br><span class="line">        wBitCount = <span class="number">1</span>;    </span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (iBits &lt;= <span class="number">4</span>)    </span><br><span class="line">        wBitCount = <span class="number">4</span>;    </span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (iBits &lt;= <span class="number">8</span>)    </span><br><span class="line">        wBitCount = <span class="number">8</span>;    </span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (iBits &lt;= <span class="number">24</span>)    </span><br><span class="line">        wBitCount = <span class="number">24</span>;    </span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (iBits &lt;= <span class="number">32</span>)  </span><br><span class="line">        wBitCount = <span class="number">32</span>;  </span><br><span class="line">      </span><br><span class="line">    <span class="comment">//计算调色板大小    </span></span><br><span class="line">    <span class="keyword">if</span> (wBitCount &lt;= <span class="number">8</span>)    </span><br><span class="line">        dwPaletteSize = (<span class="number">1</span> &lt;&lt; wBitCount) * <span class="keyword">sizeof</span> (RGBQUAD);  </span><br><span class="line">      </span><br><span class="line">    <span class="comment">//设置位图信息头结构    </span></span><br><span class="line">    GetObject(hBitmap, <span class="keyword">sizeof</span> (BITMAP), (LPSTR)&amp;Bitmap);  </span><br><span class="line">    bi.biSize = <span class="keyword">sizeof</span> (BITMAPINFOHEADER);    </span><br><span class="line">    bi.biWidth = Bitmap.bmWidth;    </span><br><span class="line">    bi.biHeight = Bitmap.bmHeight;    </span><br><span class="line">    bi.biPlanes = <span class="number">1</span>;      </span><br><span class="line">    bi.biBitCount = wBitCount;    </span><br><span class="line">    bi.biCompression = BI_RGB;    </span><br><span class="line">    bi.biSizeImage = <span class="number">0</span>;    </span><br><span class="line">    bi.biXPelsPerMeter = <span class="number">0</span>;    </span><br><span class="line">    bi.biYPelsPerMeter = <span class="number">0</span>;    </span><br><span class="line">    bi.biClrUsed = <span class="number">0</span>;    </span><br><span class="line">    bi.biClrImportant = <span class="number">0</span>;    </span><br><span class="line">      </span><br><span class="line">    dwBmBitsSize = ((Bitmap.bmWidth * wBitCount+<span class="number">31</span>) / <span class="number">32</span>) * <span class="number">4</span> * Bitmap.bmHeight;    </span><br><span class="line">      </span><br><span class="line">    <span class="comment">//为位图内容分配内存    </span></span><br><span class="line">    hDib = GlobalAlloc(GHND, dwBmBitsSize + dwPaletteSize + <span class="keyword">sizeof</span> (BITMAPINFOHEADER));    </span><br><span class="line">    lpbi = (LPBITMAPINFOHEADER)GlobalLock(hDib);    </span><br><span class="line">    *lpbi = bi;  </span><br><span class="line">      </span><br><span class="line">    <span class="comment">// 处理调色板         </span></span><br><span class="line">    hPal = GetStockObject(DEFAULT_PALETTE);    </span><br><span class="line">    <span class="keyword">if</span> (hPal)    </span><br><span class="line">    &#123;    </span><br><span class="line">        hDC = ::GetDC(<span class="literal">NULL</span>);      </span><br><span class="line">        hOldPal = ::SelectPalette(hDC, (HPALETTE)hPal, FALSE);    </span><br><span class="line">        RealizePalette(hDC);  </span><br><span class="line">    &#125;    </span><br><span class="line">      </span><br><span class="line">    <span class="comment">//   获取该调色板下新的像素值    </span></span><br><span class="line">    GetDIBits(hDC, hBitmap, <span class="number">0</span>, (UINT) Bitmap.bmHeight,    </span><br><span class="line">        (LPSTR)lpbi + <span class="keyword">sizeof</span> (BITMAPINFOHEADER) + dwPaletteSize,  </span><br><span class="line">        (LPBITMAPINFO)lpbi, DIB_RGB_COLORS);    </span><br><span class="line">      </span><br><span class="line">    <span class="comment">//恢复调色板       </span></span><br><span class="line">    <span class="keyword">if</span> (hOldPal)      </span><br><span class="line">    &#123;    </span><br><span class="line">        SelectPalette(hDC, (HPALETTE)hOldPal, TRUE);    </span><br><span class="line">        RealizePalette(hDC);    </span><br><span class="line">        ::ReleaseDC(<span class="literal">NULL</span>, hDC);  </span><br><span class="line">    &#125;    </span><br><span class="line">      </span><br><span class="line">    <span class="comment">//创建位图文件              </span></span><br><span class="line">    fh = CreateFile(lpFileName, GENERIC_WRITE,  </span><br><span class="line">        <span class="number">0</span>, <span class="literal">NULL</span>, CREATE_ALWAYS,  </span><br><span class="line">        FILE_ATTRIBUTE_NORMAL | FILE_FLAG_SEQUENTIAL_SCAN, <span class="literal">NULL</span>);    </span><br><span class="line">      </span><br><span class="line">    <span class="keyword">if</span> (fh == INVALID_HANDLE_VALUE)  </span><br><span class="line">        <span class="keyword">return</span> FALSE;    </span><br><span class="line">      </span><br><span class="line">    <span class="comment">//   设置位图文件头    </span></span><br><span class="line">    bmfHdr.bfType = <span class="number">0x4D42</span>;     <span class="comment">//   "BM"    </span></span><br><span class="line">    dwDIBSize = <span class="keyword">sizeof</span> (BITMAPFILEHEADER)       </span><br><span class="line">        + <span class="keyword">sizeof</span> (BITMAPINFOHEADER)    </span><br><span class="line">        + dwPaletteSize + dwBmBitsSize;      </span><br><span class="line">    bmfHdr.bfSize = dwDIBSize;    </span><br><span class="line">    bmfHdr.bfReserved1 = <span class="number">0</span>;    </span><br><span class="line">    bmfHdr.bfReserved2 = <span class="number">0</span>;    </span><br><span class="line">    bmfHdr.bfOffBits = (DWORD)<span class="keyword">sizeof</span> (BITMAPFILEHEADER)     </span><br><span class="line">        + (DWORD)<span class="keyword">sizeof</span> (BITMAPINFOHEADER)    </span><br><span class="line">        + dwPaletteSize;      </span><br><span class="line">      </span><br><span class="line">    <span class="comment">//   写入位图文件头    </span></span><br><span class="line">    WriteFile(fh, (LPSTR)&amp;bmfHdr, <span class="keyword">sizeof</span>(BITMAPFILEHEADER), &amp;dwWritten, <span class="literal">NULL</span>);    </span><br><span class="line">      </span><br><span class="line">    <span class="comment">//   写入位图文件其余内容    </span></span><br><span class="line">    WriteFile(fh, (LPSTR)lpbi, dwDIBSize,  </span><br><span class="line">        &amp;dwWritten, <span class="literal">NULL</span>);  </span><br><span class="line">      </span><br><span class="line">    <span class="comment">//清除            </span></span><br><span class="line">    GlobalUnlock(hDib);    </span><br><span class="line">    GlobalFree(hDib);    </span><br><span class="line">    CloseHandle(fh);    </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> TRUE;      </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用方法：SaveBitmapToFile(cbm, “1.bmp”);  </p>
+<h1 id="imagelist读取bmp"><a href="#imagelist读取bmp" class="headerlink" title="imagelist读取bmp"></a>imagelist读取bmp</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GetImage</span><span class="params">(CImageList&amp; imglist, CBitmap&amp; dist ,<span class="keyword">int</span> num)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="function">CClientDC <span class="title">dc</span><span class="params">(<span class="literal">NULL</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">IMAGEINFO ii;</span><br><span class="line">imglist.GetImageInfo(num, &amp;ii);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> nWidth = ii.rcImage.right - ii.rcImage.left;</span><br><span class="line"><span class="keyword">int</span> nHeight = ii.rcImage.bottom - ii.rcImage.top;</span><br><span class="line"></span><br><span class="line">dist.CreateCompatibleBitmap(&amp;dc, nWidth, nHeight);</span><br><span class="line">CDC memDC;</span><br><span class="line">memDC.CreateCompatibleDC(&amp;dc);</span><br><span class="line">CBitmap* pOldBitmap = memDC.SelectObject(&amp;dist);</span><br><span class="line"></span><br><span class="line">memDC.FillSolidRect(<span class="number">0</span>, <span class="number">0</span>, nWidth, nHeight, </span><br><span class="line">RGB(<span class="number">255</span>,<span class="number">255</span>,<span class="number">255</span>) );</span><br><span class="line"></span><br><span class="line">imglist.Draw(&amp;memDC, num, CPoint(<span class="number">0</span>, <span class="number">0</span>), ILD_NORMAL);</span><br><span class="line"></span><br><span class="line">memDC.SelectObject(pOldBitmap);</span><br><span class="line"></span><br><span class="line">memDC.DeleteDC();</span><br><span class="line"></span><br><span class="line">::DeleteObject(ii.hbmImage);</span><br><span class="line">::DeleteObject(ii.hbmMask);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码整理自互联网。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2018-05-21T22:53:51.000Z" itemprop="dateUpdated">2018-05-21 22:53:51</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2018/05/21/bmp保存和imagelist读取/" target="_blank" rel="external">https://hubojing.github.io/2018/05/21/bmp保存和imagelist读取/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hubojing.github.io">
+            <img src="/img/avatar.jpg" alt="靖待">
+            靖待
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CPP/">CPP</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2018/05/21/bmp保存和imagelist读取/&title=《bmp保存和imagelist读取》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2018/05/21/bmp保存和imagelist读取/&title=《bmp保存和imagelist读取》 — 靖待的技术博客&source=　　代码整理。 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2018/05/21/bmp保存和imagelist读取/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《bmp保存和imagelist读取》 — 靖待的技术博客&url=https://hubojing.github.io/2018/05/21/bmp保存和imagelist读取/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2018/05/21/bmp保存和imagelist读取/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/05/26/读取24位bmp像素数据（带透明通道）/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">读取24位bmp像素数据（带透明通道）</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/03/11/Python开发简单爬虫/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Python开发简单爬虫</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+	<script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css"/>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+	Waline.init({
+      el: '#comments',
+      serverURL: 'https://waline-1-r2604942.deta.app/',
+    });
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        码代码和码字，都是人生乐趣
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>靖待 &copy; 2015 - 2024</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2018/05/21/bmp保存和imagelist读取/&title=《bmp保存和imagelist读取》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2018/05/21/bmp保存和imagelist读取/&title=《bmp保存和imagelist读取》 — 靖待的技术博客&source=　　代码整理。 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2018/05/21/bmp保存和imagelist读取/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《bmp保存和imagelist读取》 — 靖待的技术博客&url=https://hubojing.github.io/2018/05/21/bmp保存和imagelist读取/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2018/05/21/bmp保存和imagelist读取/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACvElEQVR42u3aQY7CMAwFUO5/aWaLNNB+20mVxesKMVDyMlKSfvv1iq/3x/X5zv/XyeeTd94/rteOCw8PD28w9F+3m8Ou378eW47/cjc8PDy8bbz81tWtIl/iq1NzPWY8PDy8c3iTH8u/W92Q8PDw8M7kXQ+3ugFUtxA8PDy803jJravRQ28iqkHGsqwFDw8Pr7ZWR1Wkc15vqe/h4eHhjavq1wtuvvRff6YXHEejxcPDw9vAm7QOVOOGaikrCR2iSAIPDw/vcd6TzQH52Th/AMDDw8PbwYv+0PqZvJxWRTbHg4eHhzfm5Yt4XpSqBhOrimQ3Ox4eHh7eUl61lpQMLg8mep+J2sLw8PDwNvDyo2qOqU5NFMXGTQw3BTA8PDy8MS8JCFb1NVWbqxaw8fDw8Dbz8sW3WtDqTdyksWC0t+Dh4eGNi169oKF37M6LbXlIgYeHh7eP1zvC5vFrNZzNN6GbMePh4eEt5SUDylsKeqWyXiEt2iTw8PDwNvB6sULvcLxqavDw8PBO4PUKV9XlPv+tSQhy0xmBh4eHN+ZVQ9JJnDoPF/I4ozw3eHh4eMVzab7oVw/QybYx2R6ibQkPDw9vKW+yMRSK90VkXoS7GTMeHh7e47zkgb/XWJAs7nkC3Qwj8PDw8PrP8s0lPg9ne1tLdVP5OYl4eHh4j/N6TVfJO9VgovlvwMPDw9vGqzYKVFu1es0H+VE+6ozAw8PDW8qrLuW95bvXOpBfX+6Ah4eHt5Q3X4h7zQS97+bFsy8pNR4eHt4iXnXB7ZW1JnFG/hoPDw/vSV5euErmqdpwkE9QL/zFw8PD28dLCmO9otTauCHKV/Dw8PCO5CULdH7wrbYFFCISPDw8vGN4q2KL6hTkQTMeHh7ebl4vjMinaXIlU3+zMeDh4eEt5VUf+CdH7WSbqR7K8fDw8B7k/QEXwW67SdClYwAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来嘛！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)抱抱~你回来了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

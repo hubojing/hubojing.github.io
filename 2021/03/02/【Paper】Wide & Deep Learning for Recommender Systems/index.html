@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="https://hubojing.github.io//2021/03/02/【Paper】Wide & Deep Learning for Recommender Systems/">
+    
+    
+    <title>【Paper】Wide &amp; Deep Learning for Recommender Systems | 靖待的技术博客 | 小清新IT旅程 | 为中华之崛起而读书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="推荐算法,Wide &amp; Deep,深度学习">
+    <meta name="description" content="推荐系统 + 深度学习 2　　谷歌著名的Wide &amp;amp; Deep模型">
+<meta name="keywords" content="推荐算法,Wide &amp; Deep,深度学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Paper】Wide &amp; Deep Learning for Recommender Systems">
+<meta property="og:url" content="https://hubojing.github.io/2021/03/02/【Paper】Wide & Deep Learning for Recommender Systems/index.html">
+<meta property="og:site_name" content="靖待的技术博客">
+<meta property="og:description" content="推荐系统 + 深度学习 2　　谷歌著名的Wide &amp;amp; Deep模型">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://hubojing.github.io/images/Paper-wide&deep-models.png">
+<meta property="og:image" content="https://hubojing.github.io/images/Paper-wide&deep-models.png">
+<meta property="og:image" content="https://hubojing.github.io/images/Paper-wide&deep-models-overview.png">
+<meta property="og:image" content="https://hubojing.github.io/images/Paper-wide&deep-models-系统实现.png">
+<meta property="og:image" content="https://hubojing.github.io/images/Paper-wide&deep-models-模型训练.png">
+<meta property="og:image" content="https://hubojing.github.io/images/Paper-wide&deep-models-t1.png">
+<meta property="og:image" content="https://hubojing.github.io/images/Paper-wide&deep-models-t2.png">
+<meta property="og:updated_time" content="2021-03-02T08:57:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【Paper】Wide &amp; Deep Learning for Recommender Systems">
+<meta name="twitter:description" content="推荐系统 + 深度学习 2　　谷歌著名的Wide &amp;amp; Deep模型">
+<meta name="twitter:image" content="https://hubojing.github.io/images/Paper-wide&deep-models.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+	
+	
+	
+	
+	
+	
+	
+    
+
+</head>
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">靖待</h5>
+          <a href="mailto:hubojing@outlook.com" title="hubojing@outlook.com" class="mail">hubojing@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archive"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hubojing/"  >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/friends"  >
+                <i class="icon icon-lg icon-users"></i>
+                友情链接
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/Chinese"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/comment"  >
+                <i class="icon icon-lg icon-book"></i>
+                留言板
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/littletalk"  >
+                <i class="icon icon-lg icon-edit"></i>
+                自言自语
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://blog.csdn.net/hubojing/"  >
+                <i class="icon icon-lg icon-pencil"></i>
+                CSDN博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/advertising"  >
+                <i class="icon icon-lg icon-link"></i>
+                推广
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes"  >
+                <i class="icon icon-lg icon-qq"></i>
+                和我在线交流
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">【Paper】Wide &amp; Deep Learning for Recommender Systems</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">【Paper】Wide &amp; Deep Learning for Recommender Systems</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2021-03-02T01:20:00.000Z" itemprop="datePublished" class="page-time">
+  2021-03-02
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#引言-INTRODUCTION"><span class="post-toc-text">引言 INTRODUCTION</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#推荐系统概述-RECOMMENDER-SYSTEM-OVERVIEW"><span class="post-toc-text">推荐系统概述 RECOMMENDER SYSTEM OVERVIEW</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#宽-amp-深度学习框架-WIDE-amp-DEEP-LEARNING"><span class="post-toc-text">宽 &amp; 深度学习框架 WIDE &amp; DEEP LEARNING</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#宽度组件-The-Wide-Component"><span class="post-toc-text">宽度组件 The Wide Component</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#深度组件-The-Deep-Component"><span class="post-toc-text">深度组件 The Deep Component</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#模型联合训练-Joint-Training-of-Wide-amp-Deep-Model"><span class="post-toc-text">模型联合训练 Joint Training of Wide &amp; Deep Model</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#系统实现-SYSTEM-IMPLEMENTATION"><span class="post-toc-text">系统实现 SYSTEM IMPLEMENTATION</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#数据产生-Data-Generation"><span class="post-toc-text">数据产生 Data Generation</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#模型训练-Model-Training"><span class="post-toc-text">模型训练 Model Training</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#模型服务-Model-Serving"><span class="post-toc-text">模型服务 Model Serving</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#实验-EXPERIMENT-RESULTS"><span class="post-toc-text">实验 EXPERIMENT RESULTS</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#App-Acquisitions"><span class="post-toc-text">App Acquisitions</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#服务性能-Serving-Performance"><span class="post-toc-text">服务性能 Serving Performance</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#相关工作-RELATED-WORK"><span class="post-toc-text">相关工作 RELATED WORK</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结-CONCLUSION"><span class="post-toc-text">总结 CONCLUSION</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#代码"><span class="post-toc-text">代码</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-【Paper】Wide &amp; Deep Learning for Recommender Systems"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">【Paper】Wide & Deep Learning for Recommender Systems</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2021-03-02 01:20:00" datetime="2021-03-02T01:20:00.000Z"  itemprop="datePublished">2021-03-02</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div align="left"><br><img src="\images\Paper-wide&deep-models.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>推荐系统 + 深度学习 2</strong><br>　　<strong>谷歌著名的Wide &amp; Deep模型</strong><br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="论文背景"><a href="#论文背景" class="headerlink" title="论文背景"></a>论文背景</h1><p>　　题目：Wide &amp; Deep Learning for Recommender Systems<br>　　作者：Heng-Tze Cheng, Levent Koc, Jeremiah Harmsen, Tal Shaked, Tushar Chandra,<br>　　Hrishi Aradhye, Glen Anderson, Greg Corrado, Wei Chai, Mustafa Ispir, Rohan Anil, Zakaria Haque, Lichan Hong, Vihan Jain, Xiaobing Liu, Hemal Shah, Google Inc.<br>　　会议信息：DLRS ’16 September 15-15, 2016, Boston, MA, USA</p>
+<p>　　谷歌引用数量：1324（截至2021年3月2日）</p>
+<h1 id="引言-INTRODUCTION"><a href="#引言-INTRODUCTION" class="headerlink" title="引言 INTRODUCTION"></a>引言 INTRODUCTION</h1><p>　　推荐系统可视为搜索排序系统，输入是用户和上下文信息的查询，输出是物品列表。类似于一般的搜索排序问题，推荐系统中的一大挑战是同时实现记忆（memorization）和泛化（generalization）。<br>　　Memorization可以宽泛地定义为学习物品或特征的共现频率并探索历史数据的相关关系。<br>　　Generalization是基于相关性的传递性并探索过去从未出现过的新的特征组合。<br>　　基于memorization的推荐系统通常更局限于和直接与用户曾有过行为的物品相关。<br>　　基于generalization的推荐系统试图增强推荐物品的多样性。</p>
+<p>　　例子：如果用户安装了netflix，特征”user_installed_app=netflix”的值为1。<br>　　Memorization：通过使用稀疏特征的跨物品转换实现，例如AND(user_installed_app=netflix, impression_app=pandora”)，如果用户安装了netflix，然后显示pandora, AND的值为1。<br>　　Generalization：可以通过使用粒度更小的特性来添加，例如AND(user_installed_category=video，impression_category=music)，但是通常需要手动的特征工程。<br>　　叉积变换（cross-product transformations）的一个限制是它们不能推广到没有出现在训练数据中的查询项特征对。基于嵌入的模型，例如FM或者DNN跨域解决这个问题。但是当底层的查询项矩阵是稀疏且高阶的（例如用户具有特定的偏好或小范围的吸引力）时，很难学习查询和项的有效低维表示。在这种情况下，大多数查询项对之间应该没有交互，但密集嵌入将导致所有查询项对的预测非零，因此导致过拟合而产生不相干的推荐。具有叉积特征转换的线性模型可以用更少的参数记住这些“例外规则”。</p>
+<p>　　在本文中提出了Wide&amp;Deep模型，通过联合训练一个线性模型组件和一个神经网络组件，实现在一个模型中记忆和泛化。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\Paper-wide&deep-models.png" alt="Wide&Deep模型" title="">
+                </div>
+                <div class="image-caption">Wide&Deep模型</div>
+            </figure></p>
+<p><strong>贡献点</strong></p>
+<ul>
+<li>带有嵌入和带有特征转换的线性模型的前馈神经网络联合训练的Wide&amp;Deep学习框架，用于具有稀疏输入的通用推荐系统。</li>
+<li>在谷歌Play上实施和评估，谷歌Play是一个拥有超过10亿活跃用户和超过百万应用的移动应用商店。</li>
+<li>在TensorFlow中有开源代码。</li>
+</ul>
+<h1 id="推荐系统概述-RECOMMENDER-SYSTEM-OVERVIEW"><a href="#推荐系统概述-RECOMMENDER-SYSTEM-OVERVIEW" class="headerlink" title="推荐系统概述 RECOMMENDER SYSTEM OVERVIEW"></a>推荐系统概述 RECOMMENDER SYSTEM OVERVIEW</h1><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="/images/Paper-wide&deep-models-overview.png" alt="概述" title="">
+                </div>
+                <div class="image-caption">概述</div>
+            </figure>
+<p>　　推荐系统一般分为召回（Retrieval）层，排序（Ranking）层。本文在排序层使用Wide &amp; Deep学习框架。</p>
+<h1 id="宽-amp-深度学习框架-WIDE-amp-DEEP-LEARNING"><a href="#宽-amp-深度学习框架-WIDE-amp-DEEP-LEARNING" class="headerlink" title="宽 &amp; 深度学习框架 WIDE &amp; DEEP LEARNING"></a>宽 &amp; 深度学习框架 WIDE &amp; DEEP LEARNING</h1><h2 id="宽度组件-The-Wide-Component"><a href="#宽度组件-The-Wide-Component" class="headerlink" title="宽度组件 The Wide Component"></a>宽度组件 The Wide Component</h2><p>　　宽度组件是广义线性模型$y = w^Tx + b$，y是预测值，$x = [x_1, x_2, …, x_d]$是d维特征，$w = [w_1, w_2, …, w_d]$是模型参数，b是偏置项。特征集包括原始输入特征和转换后的特征。其中最重要的一种变换是叉积变换，定义为:$$\phi_k(x) = \prod_{i=1}^d{x_i}^{c_{ki}}, c_{ki}∈{0,1}$$<br>　　其中，$c_{ki}$是一个布尔变量，如果第i个特征是第k个变换$\phi_k$的一部分，则为1，否则为0。<br>　　对于二进制特征，一个叉积变换“AND(gender=female, language=en)，只有当(“gender=female” and “language=en”)时才为1。<br>　　这捕获了二元特征之间的相互作用，并为广义线性模型增加了非线性。</p>
+<h2 id="深度组件-The-Deep-Component"><a href="#深度组件-The-Deep-Component" class="headerlink" title="深度组件 The Deep Component"></a>深度组件 The Deep Component</h2><p>　　深度组件是一个前馈神经网络。对于分类特征，原始输入是特征字符串(例如 “language=en”)，这些稀疏的、高维的分类特征首先被转换成一个低维的、稠密的实值向量，通常被称为嵌入向量。嵌入的维数通常在O(10)到O(100)之间。在模型训练过程中，先对嵌入向量进行随机初始化，然后对其值进行训练，使最终损失函数最小。这些低维密集嵌入向量然后被馈入前向传递的神经网络的隐藏层。具体来说，每个隐含层计算：<br>$$\alpha^{l+1} = f(W^{(l)}a^{(l)}) + b^{(l)})$$</p>
+<h2 id="模型联合训练-Joint-Training-of-Wide-amp-Deep-Model"><a href="#模型联合训练-Joint-Training-of-Wide-amp-Deep-Model" class="headerlink" title="模型联合训练 Joint Training of Wide &amp; Deep Model"></a>模型联合训练 Joint Training of Wide &amp; Deep Model</h2><p>　　将宽度组件和深度组件以其输出对数概率的加权和进行组合作为预测值，然后将其输入一个通用的logistic损失函数进行联合训练。<br>　　Joint training和ensemble是有区别的。<br>　　ensemble：在一个整体中，个体模型在不相互了解的情况下被单独训练，并且它们的预测只在预测时组合，而不是在训练时。由于训练是不连贯的，每个单独的模型尺寸通常需要更大(例如，有更多的特征和转换)，以达到一个集成工作的合理精度。<br>　　Joint training：联合训练通过在训练时同时考虑深度和宽度部分以及它们和的权重来同时优化所有参数。另外，宽度部分只需要用少量的叉积特征转换来弥补深度部分的弱点，而不需要一个全量的宽度模型。<br>　　采用小批量随机优化方法，将梯度从输出部分同时反向传播到模型的宽、深部分，从而实现宽、深模型的联合训练。<br>在实验中，本文使用L1正则化的Follow-the-regularization-leader(FTRL)算法作为模型宽度部分的优化算法，使用AdaGrad作为模型深度部分的优化算法。<br>　　对于逻辑回归问题，模型的预测为：<br>$$P(Y=1|x) = \sigma(w^T_{wide}[x,\phi(x)]+w^T_{deep}a^{(l_f)}+b)$$<br>　　其中Y是二分类标签，$\sigma(·)$是sigmoid函数，$\phi(x)$是原始特征x的叉积变换，b是偏置项。$w_{wide}$是所有宽度模型权重的向量，$w_{deep}$是应用在最终激活$a^{(l_f)}$的权重。</p>
+<h1 id="系统实现-SYSTEM-IMPLEMENTATION"><a href="#系统实现-SYSTEM-IMPLEMENTATION" class="headerlink" title="系统实现 SYSTEM IMPLEMENTATION"></a>系统实现 SYSTEM IMPLEMENTATION</h1><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\Paper-wide&deep-models-系统实现.png" alt="系统实现" title="">
+                </div>
+                <div class="image-caption">系统实现</div>
+            </figure>
+<h2 id="数据产生-Data-Generation"><a href="#数据产生-Data-Generation" class="headerlink" title="数据产生 Data Generation"></a>数据产生 Data Generation</h2><p>　　通过将一个特征值x映射到其累积分布函数P(X≤x)，将连续实值特征归一化为[0,1]，并分成$n_q$分位数。对于第i个分位数的值，规范化值为$\frac{i-1}{n_q-1}$。分位数边界i−1在数据生成时计算。</p>
+<h2 id="模型训练-Model-Training"><a href="#模型训练-Model-Training" class="headerlink" title="模型训练 Model Training"></a>模型训练 Model Training</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\Paper-wide&deep-models-模型训练.png" alt="模型训练" title="">
+                </div>
+                <div class="image-caption">模型训练</div>
+            </figure>
+<p>　　在训练过程中，输入层接收训练数据和词汇，并生成稀疏和密集特征以及标签。宽度组件包括用户安装应用和印象应用的叉积。对于模型的深层部分，每个分类特征学习一个32维的嵌入向量。将所有的嵌入与密集特征连接在一起，得到一个大约1200维的密集向量。然后将连接的矢量送入3个ReLU层，最后送入logistic输出单元。<br>　　Wide &amp; Deep模型训练了超过5000亿个例子。每当一组新的训练数据到达时，模型就需要重新训练。然而，每次重新训练在计算上都是昂贵的，并且延迟了服务时间。为了解决这一挑战，本文实现了一个暖启动系统，该系统使用先前模型的嵌入和线性模型权值来初始化一个新的模型。<br>在将模型加载到模型服务器之前，需要对模型进行一次演练，以确保在服务实时流量时不会出现问题。本文根据经验来验证模型的质量，作为一个完整的检查。</p>
+<h2 id="模型服务-Model-Serving"><a href="#模型服务-Model-Serving" class="headerlink" title="模型服务 Model Serving"></a>模型服务 Model Serving</h2><p>　　一旦模型经过训练和验证，就把它加载到模型服务器中。对于每个请求，服务器都会从应用程序检索系统和用户特性中接收一组应用程序候选项来为每个应用程序评分。然后，应用程序从最高分到最低分进行排名，并按照这个顺序向用户展示这些应用程序。分数是通过运行一个采用Wide &amp; Deep模型的正向推理来计算的。<br>　　为了为每个请求提供10毫秒量级的服务，使用多线程并行来优化性能，通过并行运行较小的批处理，来代替在单个批处理推理步骤中对所有候选应用程序进行评分。</p>
+<h1 id="实验-EXPERIMENT-RESULTS"><a href="#实验-EXPERIMENT-RESULTS" class="headerlink" title="实验 EXPERIMENT RESULTS"></a>实验 EXPERIMENT RESULTS</h1><h2 id="App-Acquisitions"><a href="#App-Acquisitions" class="headerlink" title="App Acquisitions"></a>App Acquisitions</h2><p>　　本文在A/B测试框架下进行了为期3周的在线实时实验。对于对照组，随机选择1%的用户，并向他们展示由上一个版本的排名模型生成的推荐，该模型是一个高度优化的广泛性logistic回归模型，具有丰富的叉积特征转换。在实验组中，1%的用户使用了由相同的一组特征进行训练的Wide &amp; Deep模型生成的推荐。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\Paper-wide&deep-models-t1.png" alt="性能对比" title="">
+                </div>
+                <div class="image-caption">性能对比</div>
+            </figure><br>　　Wide &amp; Deep模式使app store主登陆页面的应用获取率比对照组提高了+3.9%。结果还与另1%组仅使用具有相同特征和神经网络结构的模型的深度部分进行了比较，Wide &amp; deep模式比deep-only模型有+1%的增益。<br>　　除了在线实验，还展示了AUC。Wide &amp; Deep的线下AUC略高，但对线上流量的影响更显著。一个可能的原因是离线数据集中的印象和标签是固定的，而在线系统可以通过混合归纳和记忆生成新的探索性推荐，并从新的用户反应中学习。</p>
+<h2 id="服务性能-Serving-Performance"><a href="#服务性能-Serving-Performance" class="headerlink" title="服务性能 Serving Performance"></a>服务性能 Serving Performance</h2><p>　　面对我们的商业移动应用商店所面临的高流量，高吞吐量和低延迟的服务具有挑战性。在高峰流量时，我们的推荐服务器每秒可以获得超过1000万个应用。使用单个线程，在一次批处理中为所有候选人打分需要31毫秒。我们实现了多线程，并将每个批处理分成更小的部分，这显著地将客户端延迟减少到14毫秒（包括服务开销），如表所示。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\Paper-wide&deep-models-t2.png" alt="服务性能" title="">
+                </div>
+                <div class="image-caption">服务性能</div>
+            </figure></p>
+<h1 id="相关工作-RELATED-WORK"><a href="#相关工作-RELATED-WORK" class="headerlink" title="相关工作 RELATED WORK"></a>相关工作 RELATED WORK</h1><p>　　结合带叉积转换的广义线性模型与深层神经网络嵌入的灵感来自以前的工作，比如FM，通过在两个低维嵌入向量之间使用点积分解两个变量间的相互作用，将线性模型了进行推广。在本文中，通过神经网络代替点积来学习嵌入之间高度非线性的相互作用，从而扩展了模型容量。<br>　　在语言模型中，通过学习输入和输出之间的直接权值，提出了使用n元特征的递归神经网络(RNNs)和最大熵模型联合训练，以显著降低RNN的复杂性(例如，隐藏层大小)。在计算机视觉中，深度残差学习已被用于降低训练更深层次模型的难度，并通过跳过一个或多个层次的捷径连接提高准确性。<br>　　神经网络与图形模型的联合训练还被应用于基于图像的人体姿态估计。在这项工作中，探讨了前馈神经网络和线性模型的联合训练，在稀疏特征和输出单元之间直接连接，用于输入数据稀疏的通用推荐和排序问题。<br>　　在推荐系统文献中，将内容信息的深度学习与评分矩阵的协同过滤(CF)相结合来探索协同深度学习。以前的工作也曾致力于手机应用推荐系统，如AppJoy在用户的应用使用记录上使用CF。不同于之前工作中基于cf或基于内容的方法，我们在app推荐系统中，基于用户和印象数据使用Wide &amp; Deep模型联合训练。</p>
+<h1 id="总结-CONCLUSION"><a href="#总结-CONCLUSION" class="headerlink" title="总结 CONCLUSION"></a>总结 CONCLUSION</h1><p>　　宽度线性模型可以通过叉积特征变换有效地记忆稀疏特征交互，而深度神经网络可以通过低维嵌入来泛化之前未见过的特征交互。在线实验结果表明，与Wide-only和Deep-only模型相比，Wide &amp; Deep模型有显著提高。</p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p><a href="https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/python/estimator/canned/dnn_linear_combined.py" target="_blank" rel="noopener">https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/python/estimator/canned/dnn_linear_combined.py</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2021-03-02T08:57:55.000Z" itemprop="dateUpdated">2021-03-02 08:57:55</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2021/03/02/【Paper】Wide &amp; Deep Learning for Recommender Systems/" target="_blank" rel="external">https://hubojing.github.io/2021/03/02/【Paper】Wide &amp; Deep Learning for Recommender Systems/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hubojing.github.io">
+            <img src="/img/avatar.jpg" alt="靖待">
+            靖待
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Wide-Deep/">Wide & Deep</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/推荐算法/">推荐算法</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/深度学习/">深度学习</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2021/03/02/【Paper】Wide & Deep Learning for Recommender Systems/&title=《【Paper】Wide & Deep Learning for Recommender Systems》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2021/03/02/【Paper】Wide & Deep Learning for Recommender Systems/&title=《【Paper】Wide & Deep Learning for Recommender Systems》 — 靖待的技术博客&source=　　推荐系统 + 深度学习 2　　谷歌著名的Wide &amp; Deep模型 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2021/03/02/【Paper】Wide & Deep Learning for Recommender Systems/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【Paper】Wide & Deep Learning for Recommender Systems》 — 靖待的技术博客&url=https://hubojing.github.io/2021/03/02/【Paper】Wide & Deep Learning for Recommender Systems/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2021/03/02/【Paper】Wide & Deep Learning for Recommender Systems/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2021/03/05/多机共用一套键鼠方案/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">多机共用一套键鼠方案</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2021/02/04/【Paper】AutoRec/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">【paper】AutoRec - Autoencoders Meet Collaborative Filtering</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+	<script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css"/>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+	Waline.init({
+      el: '#comments',
+      serverURL: 'https://waline-1-r2604942.deta.app/',
+    });
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        码代码和码字，都是人生乐趣
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>靖待 &copy; 2015 - 2024</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2021/03/02/【Paper】Wide & Deep Learning for Recommender Systems/&title=《【Paper】Wide & Deep Learning for Recommender Systems》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2021/03/02/【Paper】Wide & Deep Learning for Recommender Systems/&title=《【Paper】Wide & Deep Learning for Recommender Systems》 — 靖待的技术博客&source=　　推荐系统 + 深度学习 2　　谷歌著名的Wide &amp; Deep模型 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2021/03/02/【Paper】Wide & Deep Learning for Recommender Systems/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【Paper】Wide & Deep Learning for Recommender Systems》 — 靖待的技术博客&url=https://hubojing.github.io/2021/03/02/【Paper】Wide & Deep Learning for Recommender Systems/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2021/03/02/【Paper】Wide & Deep Learning for Recommender Systems/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADLUlEQVR42u3ay27jMBAEwPz/TzvXBRaSuodyYNGlU+CHxKIPk5nmz098vf65ktfzd49e+f+7+X1uu7CxsbEfwn6dXslnjr51hEmQ7ZpzCzY2Nvau7PPCsFKiksXlZfK8sBVFDhsbGxs7Ljx5oWrLITY2Njb23xSw8+XmjcrNgydsbGzs7dj5v/s5b6XNmLUfb5mlYWNjY388Ox/Hf/7fb8m3sbGxsT+YvVI8ZiWtDW5XRlGHCmxsbOyN2CvLyuPbNqxty2e7fmxsbOxd2TNY/m4eSKwUzuQp2NjY2Dux7wKfx675+D4H50d5hh0YNjY29qPY9w7lk+ak3dyVsBYbGxv7G9gzQNtyzAZSs7HRRXHFxsbG3ojdDt/bSCAZ9MxC3DxIuBgtYWNjY2/BzstAO75JNrQlnZeo9hVsbGzsp7Pz4VEbBrTtykqE0BZgbGxs7P3YKyUnLyHt3fL71NEFNjY29kbs2eJmy52RVpAXoyVsbGzs7dhtMWsD2iKCjUOCfJ2HBQwbGxv74ex20J8PgOpcYlTAZp/BxsbG3ond/vsefbmMcmcj/mEwgI2Njf2V7LbZaA9fzgZM9fHKu34rbGxs7Eex23eT19e/246rig3CxsbGfiA7X1B+HCcvh3mzkY+0og3FxsbG3o49KyorbUPbxswOEh3eHxsbG3s7dhv63tW65KRkhcXTsbGxsTdiz5qN/GGzRmKGaY8TYWNjY+/Ebkc5+cOS7XtHu3J+T2xsbOyd2HnZOC9vLemuNiY/PHQxVMLGxsZ+LPsdM5a8RZnFunllLk4nYWNjYz+c3bYcs/HQbJtWDhgVKTc2Njb2Fuz1iDcpdbPjPrOWI0pFsLGxsTdir0S5s+M4+aio7quS1WJjY2NvwX6V18qQqD12s9LwXGwQNjY29kbslbo3O5oza0jysVS+QmxsbOyd2G3Imrcos9ggj4HzTamrNzY2NvYD2W2wmoe49wa062MpbGxsbOx8bDQ7Xtm2NLPmBxsbG/ub2W2Um4yBkoHRLGbGxsbG/h72esjajpxWYoZ8I26IB7CxsbE/np0HvW1hW4kcZj9AUiaxsbGxN2L/AoYBnQgwp+pRAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来嘛！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)抱抱~你回来了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

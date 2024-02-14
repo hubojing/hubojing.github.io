@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="https://hubojing.github.io//2021/12/07/解决Valine评论不显示的问题/">
+    
+    
+    <title>解决Valine评论不显示的问题 | 靖待的技术博客 | 小清新IT旅程 | 为中华之崛起而读书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Hexo,Valine,评论">
+    <meta name="description" content="今天认真排查了一下　　附上解决方案">
+<meta name="keywords" content="Hexo,Valine,评论">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解决Valine评论不显示的问题">
+<meta property="og:url" content="https://hubojing.github.io/2021/12/07/解决Valine评论不显示的问题/index.html">
+<meta property="og:site_name" content="靖待的技术博客">
+<meta property="og:description" content="今天认真排查了一下　　附上解决方案">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://hubojing.github.io/images/valine.png">
+<meta property="og:updated_time" content="2021-12-09T05:29:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="解决Valine评论不显示的问题">
+<meta name="twitter:description" content="今天认真排查了一下　　附上解决方案">
+<meta name="twitter:image" content="https://hubojing.github.io/images/valine.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+	
+	
+	
+	
+	
+	
+	
+    
+
+</head>
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">靖待</h5>
+          <a href="mailto:hubojing@outlook.com" title="hubojing@outlook.com" class="mail">hubojing@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archive"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hubojing/"  >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/friends"  >
+                <i class="icon icon-lg icon-users"></i>
+                友情链接
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/Chinese"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/comment"  >
+                <i class="icon icon-lg icon-book"></i>
+                留言板
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/littletalk"  >
+                <i class="icon icon-lg icon-edit"></i>
+                自言自语
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://blog.csdn.net/hubojing/"  >
+                <i class="icon icon-lg icon-pencil"></i>
+                CSDN博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/advertising"  >
+                <i class="icon icon-lg icon-link"></i>
+                推广
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes"  >
+                <i class="icon icon-lg icon-qq"></i>
+                和我在线交流
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">解决Valine评论不显示的问题</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">解决Valine评论不显示的问题</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2021-12-07T06:49:31.000Z" itemprop="datePublished" class="page-time">
+  2021-12-07
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/博客/">博客</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#背景"><span class="post-toc-text">背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#具体排查"><span class="post-toc-text">具体排查</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#解决方法"><span class="post-toc-text">解决方法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考资料"><span class="post-toc-text">参考资料</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-解决Valine评论不显示的问题"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">解决Valine评论不显示的问题</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2021-12-07 06:49:31" datetime="2021-12-07T06:49:31.000Z"  itemprop="datePublished">2021-12-07</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/博客/">博客</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div align="left"><br><img src="\images\valine.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>今天认真排查了一下</strong><br>　　<strong>附上解决方案</strong><br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>博客大概有十多天无法显示评论也无法提交新评论，而我这段时间并未对博客评论进行过修改。（不是我的锅）</p>
+<p>我寻思着该不会是Valine更新了什么把自己给更没了吧？（强行背锅）</p>
+<p>后来在Valine的官方群中，有部分网友表示最近遇到相同问题，共性是都使用的LeanCloud国际版。</p>
+<p>哦，原来是LeanCloud的锅。</p>
+<h1 id="具体排查"><a href="#具体排查" class="headerlink" title="具体排查"></a>具体排查</h1><p>查看网页控制台，我发现，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Failed to load resource: net::ERR_EMPTY_RESPONSE</span><br><span class="line"></span><br><span class="line">us-api.leancloud.cn/后面还有一长串</span><br></pre></td></tr></table></figure></p>
+<p>或者<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Failed to load resource: net::ERR_NAME_NOT_RESOLVED</span><br><span class="line"></span><br><span class="line">us-api.leancloud.cn/后面还有一长串</span><br></pre></td></tr></table></figure></p>
+<p>调试过程中还报过别的错，我没有记录，但总之，都是围绕这个域名解析的问题。反正就是这个域名无法正确得到结果。</p>
+<p>那怎么办呢？根据群里大佬讨论可得，似乎是现在国际版对这个域名不再支持了，也有人说是不稳定，推荐自定义服务器URL。</p>
+<p>那就换呗。</p>
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>法一：导出数据，更换到国内节点，快准狠。</p>
+<p>法二：懒得换（比如我），那就改代码吧。<br>如果主题中已配置的Valine有<code>severURLs</code>字段，直接设置即可。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">serverURLs: https://xxxxxxxx.api.lncldglobal.com # 把xxxxxxxx替换为自己AppID的前8位字符</span><br></pre></td></tr></table></figure></p>
+<p>如果主题未配置该参数，就需要找到valine的js文件，比如我这里的<code>\hexo\themes\indigo\layout\_partial\plugins\valine.ejs</code><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Valine(&#123;</span><br><span class="line">    el: <span class="string">'#comments'</span>,</span><br><span class="line">    notify: <span class="string">'&lt;%= theme.valine.notify %&gt;'</span> == <span class="string">'true'</span>,</span><br><span class="line">    verify: <span class="string">'&lt;%= theme.valine.verify %&gt;'</span> == <span class="string">'true'</span>,</span><br><span class="line">    appId: <span class="string">"&lt;%= theme.valine.appId %&gt;"</span>,</span><br><span class="line">    appKey: <span class="string">"&lt;%= theme.valine.appKey %&gt;"</span>,</span><br><span class="line">    avatar: <span class="string">"&lt;%= theme.valine.avatar %&gt;"</span>,</span><br><span class="line">    placeholder: <span class="string">"&lt;%= theme.valine.placeholder %&gt;"</span>,</span><br><span class="line">    guest_info: guest_info.length == <span class="number">0</span> ? GUEST_INFO : guest_info,</span><br><span class="line">    pageSize: <span class="string">"&lt;%= theme.valine.pageSize %&gt;"</span>,</span><br><span class="line">    serverURLs: <span class="string">'&lt;%= theme.valine.serverURLs %&gt;'</span>  <span class="comment">// 增加这一行！！！</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>然后再配置上面的serverURLs。</p>
+<p>然而我在配置完这一步后，仍然不能显示正确的评论。群里大佬已经撤了，剩下一个前端菜狗在风中凌乱。</p>
+<p>为什么不行呢？</p>
+<p>我认真地排查后发现评论这块并没有跳转到我设定的serverURLs，还是<code>us-api.leancloud.cn</code>啊。</p>
+<p>为什么呢？</p>
+<p>我开始翻Valine的Github的Issues区，从一个大佬提出的Issue中发现了端倪。详见：<a href="https://github.com/xCss/Valine/issues/376" target="_blank" rel="noopener">https://github.com/xCss/Valine/issues/376</a></p>
+<p>这个大佬提问说这个av.js是不是有bug啊？</p>
+<p>看了大佬的截图，我懂了。</p>
+<p>这个cdn是版本不对了吧？</p>
+<p>于是我找到LeadClond官网手册，查询最新的CDN链接。<a href="https://leancloud.cn/docs/sdk_setup-js.html" target="_blank" rel="noopener">https://leancloud.cn/docs/sdk_setup-js.html</a></p>
+<p>将这一行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;//cdn1.lncld.net/static/js/3.0.4/av-min.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+<p>替换为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=&quot;//code.bdstatic.com/npm/leancloud-storage@4.12.0/dist/av-min.js&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+<p>再重新部署，评论已经能成功显示了。</p>
+<p>回顾三部曲：</p>
+<ol>
+<li>设置serverURLs。 </li>
+<li>若Valine的js文件未定义，需增加定义serverURLs。</li>
+<li>更新av-min.js文件。</li>
+</ol>
+<p>完成。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p><a href="https://github.com/xCss/Valine/issues/340" target="_blank" rel="noopener">https://github.com/xCss/Valine/issues/340</a><br><a href="https://github.com/xCss/Valine/issues/376" target="_blank" rel="noopener">https://github.com/xCss/Valine/issues/376</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2021-12-09T05:29:00.000Z" itemprop="dateUpdated">2021-12-09 05:29:00</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2021/12/07/解决Valine评论不显示的问题/" target="_blank" rel="external">https://hubojing.github.io/2021/12/07/解决Valine评论不显示的问题/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hubojing.github.io">
+            <img src="/img/avatar.jpg" alt="靖待">
+            靖待
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Valine/">Valine</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/评论/">评论</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2021/12/07/解决Valine评论不显示的问题/&title=《解决Valine评论不显示的问题》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2021/12/07/解决Valine评论不显示的问题/&title=《解决Valine评论不显示的问题》 — 靖待的技术博客&source=　　今天认真排查了一下　　附上解决方案 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2021/12/07/解决Valine评论不显示的问题/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《解决Valine评论不显示的问题》 — 靖待的技术博客&url=https://hubojing.github.io/2021/12/07/解决Valine评论不显示的问题/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2021/12/07/解决Valine评论不显示的问题/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2021/12/31/2021年终总结/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">2021年终总结</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2021/11/16/迟到四年的评测——一加5T/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">迟到四年的评测——一加5T</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+	<script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css"/>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+	Waline.init({
+      el: '#comments',
+      serverURL: 'https://waline-1-r2604942.deta.app/',
+    });
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        码代码和码字，都是人生乐趣
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>靖待 &copy; 2015 - 2024</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2021/12/07/解决Valine评论不显示的问题/&title=《解决Valine评论不显示的问题》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2021/12/07/解决Valine评论不显示的问题/&title=《解决Valine评论不显示的问题》 — 靖待的技术博客&source=　　今天认真排查了一下　　附上解决方案 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2021/12/07/解决Valine评论不显示的问题/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《解决Valine评论不显示的问题》 — 靖待的技术博客&url=https://hubojing.github.io/2021/12/07/解决Valine评论不显示的问题/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2021/12/07/解决Valine评论不显示的问题/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACxUlEQVR42u3a0W7jMAwEwP7/T7fAPbVoYu9SUpoDxk9B0toaBRAZkh8f8fX577p+/f2d79ezuz37NFnD5gsPDw9vtPRn1zWjXfrve15vUPLOzYbi4eHhHePlwaA9vmfbNFsPHh4e3rvxkrCRLHd94/Dw8PD+F17ye3+26Ov0Gg8PD+89ecnRv76IvBiRvN5ca8HDw8OLebsaYK98/Qf9PTw8PLzgeN117M5aYslQws068fDw8A7wkse3La7879sRgWHhAw8PD28rb1YaSI7y5J12gCAPVD/iHh4eHt5WXv5Bfri36e/6xhXbhIeHh7fMmw1RJaT2Pm0RJPoBgIeHh3eYt9JXajcrOdwT0k3AwMPDw3s5b30Aa7bo2Wl/M02Gh4eHt5U3K0wk/5t34ZLkuw5meHh4eMd46+lv++AZO//fBzNleHh4eMd4bem2fuQIcL3pN4MCeHh4eFt57cGdJ9ltAr3S7qqDEx4eHt4yr9XPRgdONNKiLwAPDw/vGG82Kjobmdpb2L35YvDw8PC28pKlJ0d5PgQwKw23IwU/yrh4eHh4x3htWtyWZdeflaTaDxpgeHh4eFt5SaKcLGVlobONKEoSeHh4eAd47UGcF393FWfbCw8PD+81vJUHt0tpk+y8VVbMl+Hh4eEt8NoAkLe+VhLl2bf0tA2Gh4eHt5U3O8rbsYAiRo1GuJYuPDw8vE2ViXYYKy9A5GEmf+5NAwwPDw/vAK9NW9sw0A4BDJNjPDw8vMO8z/KalW5njbFZCy3q4+Hh4eEt8GaRZKVN1ZZx28R9CMbDw8MreXkTKy/L5uGkLTG0BWU8PDy8c7wkGKwEiVkavTLChYeHh/fOvPye7XPbsPTgnnh4eHh/ymuT3SRpnpWP8zCDh4eHd47XJsFJs2r9/nXpYaXWgoeHh7fcT0+WniTQRfo7KuxuYOPh4eGlvC/VG/fdUk+kggAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来嘛！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)抱抱~你回来了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

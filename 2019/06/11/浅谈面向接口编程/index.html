@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="https://hubojing.github.io//2019/06/11/浅谈面向接口编程/">
+    
+    
+    <title>浅谈面向接口编程 | 靖待的技术博客 | 小清新IT旅程 | 为中华之崛起而读书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Java,CPP">
+    <meta name="description" content="聊一聊面向接口编程。">
+<meta name="keywords" content="Java,CPP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈面向接口编程">
+<meta property="og:url" content="https://hubojing.github.io/2019/06/11/浅谈面向接口编程/index.html">
+<meta property="og:site_name" content="靖待的技术博客">
+<meta property="og:description" content="聊一聊面向接口编程。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1560271954691&di=bc0217f3ed0bb15433fc257bc850e091&imgtype=0&src=http%3A%2F%2Fpic.baike.soso.com%2Fugc%2Fbaikepic2%2F20126%2F20170917153020-370301936_png_864_479_719568.jpg%2F0">
+<meta property="og:updated_time" content="2019-06-11T22:10:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浅谈面向接口编程">
+<meta name="twitter:description" content="聊一聊面向接口编程。">
+<meta name="twitter:image" content="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1560271954691&di=bc0217f3ed0bb15433fc257bc850e091&imgtype=0&src=http%3A%2F%2Fpic.baike.soso.com%2Fugc%2Fbaikepic2%2F20126%2F20170917153020-370301936_png_864_479_719568.jpg%2F0">
+    
+        <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+	
+	
+	
+	
+	
+	
+	
+    
+
+</head>
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">靖待</h5>
+          <a href="mailto:hubojing@outlook.com" title="hubojing@outlook.com" class="mail">hubojing@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archive"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hubojing/"  >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/friends"  >
+                <i class="icon icon-lg icon-users"></i>
+                友情链接
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/Chinese"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/comment"  >
+                <i class="icon icon-lg icon-book"></i>
+                留言板
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/littletalk"  >
+                <i class="icon icon-lg icon-edit"></i>
+                自言自语
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://blog.csdn.net/hubojing/"  >
+                <i class="icon icon-lg icon-pencil"></i>
+                CSDN博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/advertising"  >
+                <i class="icon icon-lg icon-link"></i>
+                推广
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes"  >
+                <i class="icon icon-lg icon-qq"></i>
+                和我在线交流
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">浅谈面向接口编程</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">浅谈面向接口编程</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-06-11T16:52:13.000Z" itemprop="datePublished" class="page-time">
+  2019-06-11
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/互联网/">互联网</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#从王者荣耀说开去"><span class="post-toc-text">从王者荣耀说开去</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#总结"><span class="post-toc-text">总结</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考文章"><span class="post-toc-text">参考文章</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-浅谈面向接口编程"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">浅谈面向接口编程</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-06-11 16:52:13" datetime="2019-06-11T16:52:13.000Z"  itemprop="datePublished">2019-06-11</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/互联网/">互联网</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div align="left"><br><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1560271954691&di=bc0217f3ed0bb15433fc257bc850e091&imgtype=0&src=http%3A%2F%2Fpic.baike.soso.com%2Fugc%2Fbaikepic2%2F20126%2F20170917153020-370301936_png_864_479_719568.jpg%2F0" width="300" height="180" style="float:right;"><br><br><br>　　<strong>聊一聊面向接口编程。</strong><br><br><br> </div>
+
+<a id="more"></a>
+<p>　　最近看Go语言的资料，看到interface类型，突然想起来以前面试的时候面试官问过我是否了解C++接口编程。当时对于这个问题，我脑袋里只有类？抽象类？这样模糊的答案。Bug产出者的我好像经常把接口当类和函数在写。现在再看这个问题，包括对面向对象，似乎明白了些。</p>
+<h1 id="从王者荣耀说开去"><a href="#从王者荣耀说开去" class="headerlink" title="从王者荣耀说开去"></a>从王者荣耀说开去</h1><p>　　比如玩王者荣耀，里面有各种英雄。比如智商250的鲁班七号，他会跑，攻击。<br>　　<code>面向过程</code>的思维就是先定义一个结构体，里面有英雄的静态信息，比如名字、性别等等。“跑”、“攻击”这些动作让它发生，很简单啊，写一个run()和attack()的函数就好了。这时优秀的思维活跃的大佬们想，这个动作是鲁班本身就能发出的啊，不是我外界赋予的，这不够科学。<br>　　于是<code>面向对象</code>诞生了。<br>　　干脆写一个名为“LubanSeven”的类，把run()和attack()放入类里。<br>　　此时对面迎来的敌人是扁鹊。<br>　　他也会跑，攻击。于是还有一个名为“BianQue”的类，同样地，有run()和attack()两个方法。</p>
+<p>　　但是，这似乎很浪费代码。除了名字不同，他们的方法一样啊。<br>　　优秀的思维活跃的大佬们说，要改。这样吧，鲁班七号是英雄，扁鹊也是英雄。干脆写个英雄的基类吧。鲁班七号类和扁鹊类继承它不就好了嘛!<br>　　于是有了英雄类，类里有两个方法run()和attack()。</p>
+<p>　　英雄总归是要推塔的。于是还有一个防御塔类，防御塔也不是省油的灯，你靠近它它也会攻击的。所以里面也有个attack()方法。</p>
+<p>　　同是攻击，但英雄不会承认自己的攻击和防御塔的攻击是一回事。<br>　　可是无聊的看客说，管它是什么，反正就是攻击就完事了，对方会掉血。<br>　　那……这个攻击能不能放一块说？英雄表示拒绝（我又不是个塔），防御塔也闪光表示不服（<del>我…又不是个人？</del>）。<br>　　这时优秀的思维活跃的大佬们又说话了。<br>　　得了得了，我给你们写个接口吧。这个接口就叫做攻击，你们都可以用。<br>　　甚至，水晶都可以用。</p>
+<p>　　这样一来，好像是更抽象了有没有？<br>　　把不同类别的事物的相同特性摘出来，就是<code>接口</code>。使用者可以忽略细节。就像人会吃，猪也会吃。干脆接口就叫吃，下次有个猫来了，也可以调用。</p>
+<p>　　例子讲完。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　C++貌似是没有接口这个狭义的语法概念的，但是我们依然可以写出类似于java里的interface这样的设计概念（使用纯虚函数）。</p>
+<p>　　<code>面向过程编程(Procedure Oriented Programming, POP)</code>对应的是<code>面向对象编程(Object Oriented Programming, OOP)</code>，<code>面向接口编程(Interface Oriented Programming, IOP)</code>对应的是<code>面向实现编程(Realize Oriented Programming, ROP)</code>。<br>　　<code>面向过程编程</code>把世界分为数据结构和函数，追求过程一步步实现，<code>面向对象编程</code>把世界分为对象和方法。<br>　　<code>面向实现编程</code>和<code>面向接口编程</code>都是基于面向对象编程来谈的。<br>　　<code>面向实现编程</code>就是在自身类中实例化该类，直接调用相应方法。耦合度高。<br>　　<code>面向接口编程</code>主要是为了将定义和实现分开，提高了代码的解耦度，复用性强，便于扩展，能够更好的维护。<br>　　所有的思想本质都是模拟现实。</p>
+<p>　　之前分不清<code>抽象类</code>和<code>接口</code>的区别，但现在觉得抽象类是广义的用法，而其中针对某些特定功能实现的抽象类就可以称之为接口，或者说接口更侧重于定义规则。比如高考学生类、考研学生类它们的抽象类是学生类，而其中一个接口是“考试”。</p>
+<h1 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h1><p><a href="https://www.cnblogs.com/moveofgod/archive/2013/05/08/3066325.html" target="_blank" rel="noopener">https://www.cnblogs.com/moveofgod/archive/2013/05/08/3066325.html</a><br><a href="https://blog.csdn.net/u013400743/article/details/51252003" target="_blank" rel="noopener">https://blog.csdn.net/u013400743/article/details/51252003</a><br><a href="https://blog.csdn.net/qq_35923749/article/details/78422977" target="_blank" rel="noopener">https://blog.csdn.net/qq_35923749/article/details/78422977</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-11T22:10:34.000Z" itemprop="dateUpdated">2019-06-11 22:10:34</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2019/06/11/浅谈面向接口编程/" target="_blank" rel="external">https://hubojing.github.io/2019/06/11/浅谈面向接口编程/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hubojing.github.io">
+            <img src="/img/avatar.jpg" alt="靖待">
+            靖待
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CPP/">CPP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2019/06/11/浅谈面向接口编程/&title=《浅谈面向接口编程》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2019/06/11/浅谈面向接口编程/&title=《浅谈面向接口编程》 — 靖待的技术博客&source=　　聊一聊面向接口编程。 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2019/06/11/浅谈面向接口编程/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《浅谈面向接口编程》 — 靖待的技术博客&url=https://hubojing.github.io/2019/06/11/浅谈面向接口编程/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2019/06/11/浅谈面向接口编程/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/06/12/线性表/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">线性表</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/05/12/计算机图形学实验/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">计算机图形学实验</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+	<script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css"/>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+	Waline.init({
+      el: '#comments',
+      serverURL: 'https://waline-1-r2604942.deta.app/',
+    });
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        码代码和码字，都是人生乐趣
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>靖待 &copy; 2015 - 2024</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2019/06/11/浅谈面向接口编程/&title=《浅谈面向接口编程》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2019/06/11/浅谈面向接口编程/&title=《浅谈面向接口编程》 — 靖待的技术博客&source=　　聊一聊面向接口编程。 " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2019/06/11/浅谈面向接口编程/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《浅谈面向接口编程》 — 靖待的技术博客&url=https://hubojing.github.io/2019/06/11/浅谈面向接口编程/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2019/06/11/浅谈面向接口编程/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtUlEQVR42u3aQY4iMQwF0L7/pWe2PRpQ/W8niMVjhWgqlVctxcb2z0/8+vPmlV/1+5P8/bt1Dr/w8PDwDm39/1vmm2hh7wDJfh4eOh4eHt413rsTdfad5NpT93qw4OHh4X0xb/PXTZjBw8PD+35ennyfSpQ/Ghjw8PDwYt7sIE5WSEoP+foXay14eHh4MS/vIn3P+yv9PTw8PLx1V30/KDALG7Ng8GJNPDw8vAu8tkHVllPb1HlWSn54xHh4eHgXeMlBnBRMk+9vyhZt8QIPDw/vBm9zcM+a/fthrOLfgIeHh3eZ1xYRkgJEPkwwCwYPn+Dh4eFd4EW59rq1n7BnQahdBw8PD2/PS47dWaKcbCi/bxty/ilG4OHh4R3lzYJEst28yFtsKA5deHh4ePd4bTFi8zg2r+E+8fDw8C7wZku0hdR8LLUdTq0LE3h4eHhrXtvgP/X9PClvyxxvU2o8PDy8Q7xNi6tNiPcNszZPxsPDw7vHmy0xS4s/UxTGw8PDu8fLR6D2SXMylNCGlocAhoeHh/cR3iwfzxn5sZ4Xdt+uiYeHh3eN14aHdmB0VrptZ8ReXIuHh4d3gZdvOh8vyBPo/KBfFXPx8PDwLvDyAkFeTm3bZrMgUYQQPDw8vKO8NkVOwkD+4PLPk/1EFRc8PDy8Q7y8qLq5WTsW0F5bzIvh4eHhrXn5KNW+hDFLkYdBCw8PD+8ab1aWTU7gdjggH6WNRhnw8PDwjvL2ran2yG4LGXmj68VjwsPDw7vAa4/a9vZt6SFJ2fOfAXh4eHj3eHkwmBUjNun4pjiCh4eHd5uXd47aFLZ9cG1aHAUGPDw8vC/j3bgqL2c8PDI8PDy8r+G1tY12IKAdHTicUuPh4eEFvLwIuyklzELCLMDg4eHh3eMd+MFftqxWvbhTPT08PDy8yX7+Am02St/HrbGXAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来嘛！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)抱抱~你回来了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

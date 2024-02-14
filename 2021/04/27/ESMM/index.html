@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="https://hubojing.github.io//2021/04/27/ESMM/">
+    
+    
+    <title>【Paper】Entire Space Multi-Task Model-An Effective Approach for Estimating Post-Click Conversion Rate | 靖待的技术博客 | 小清新IT旅程 | 为中华之崛起而读书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="推荐算法,ESMM">
+    <meta name="description" content="多任务学习之ESMM">
+<meta name="keywords" content="推荐算法,ESMM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Paper】Entire Space Multi-Task Model-An Effective Approach for Estimating Post-Click Conversion Rate">
+<meta property="og:url" content="https://hubojing.github.io/2021/04/27/ESMM/index.html">
+<meta property="og:site_name" content="靖待的技术博客">
+<meta property="og:description" content="多任务学习之ESMM">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://hubojing.github.io/images/ESMM-f2.png">
+<meta property="og:image" content="https://hubojing.github.io/images/ESMM-f1.png">
+<meta property="og:image" content="https://hubojing.github.io/images/ESMM-f2.png">
+<meta property="og:updated_time" content="2021-05-06T09:39:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【Paper】Entire Space Multi-Task Model-An Effective Approach for Estimating Post-Click Conversion Rate">
+<meta name="twitter:description" content="多任务学习之ESMM">
+<meta name="twitter:image" content="https://hubojing.github.io/images/ESMM-f2.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+	
+	
+	
+	
+	
+	
+	
+    
+
+</head>
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">靖待</h5>
+          <a href="mailto:hubojing@outlook.com" title="hubojing@outlook.com" class="mail">hubojing@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archive"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hubojing/"  >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/friends"  >
+                <i class="icon icon-lg icon-users"></i>
+                友情链接
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/Chinese"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/comment"  >
+                <i class="icon icon-lg icon-book"></i>
+                留言板
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/littletalk"  >
+                <i class="icon icon-lg icon-edit"></i>
+                自言自语
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://blog.csdn.net/hubojing/"  >
+                <i class="icon icon-lg icon-pencil"></i>
+                CSDN博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/advertising"  >
+                <i class="icon icon-lg icon-link"></i>
+                推广
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes"  >
+                <i class="icon icon-lg icon-qq"></i>
+                和我在线交流
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">【Paper】Entire Space Multi-Task Model-An Effective Approach for Estimating Post-Click Conversion Rate</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">【Paper】Entire Space Multi-Task Model-An Effective Approach for Estimating Post-Click Conversion Rate</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2021-04-27T02:23:10.000Z" itemprop="datePublished" class="page-time">
+  2021-04-27
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#论文背景"><span class="post-toc-text">论文背景</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#摘要-ABSTRACT"><span class="post-toc-text">摘要 ABSTRACT</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#介绍-INTRODUCTION"><span class="post-toc-text">介绍 INTRODUCTION</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#提出的方法-THE-PROPOSED-APPROACH"><span class="post-toc-text">提出的方法 THE PROPOSED APPROACH</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#注释-Notation"><span class="post-toc-text">注释 Notation</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#CVR建模和挑战-CVR-Modeling-and-Challenges"><span class="post-toc-text">CVR建模和挑战 CVR Modeling and Challenges</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#多任务全空间模型-Entire-Space-Multi-Task-Model"><span class="post-toc-text">多任务全空间模型 Entire Space Multi-Task Model</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-ESMM"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">【Paper】Entire Space Multi-Task Model-An Effective Approach for Estimating Post-Click Conversion Rate</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2021-04-27 02:23:10" datetime="2021-04-27T02:23:10.000Z"  itemprop="datePublished">2021-04-27</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/论文/">论文</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div align="left"><br><img src="\images\ESMM-f2.png" width="300" height="180" style="float:right;"><br><br><br>　　<strong>多任务学习之ESMM</strong><br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="论文背景"><a href="#论文背景" class="headerlink" title="论文背景"></a>论文背景</h1><p>2018年 阿里巴巴</p>
+<h1 id="摘要-ABSTRACT"><a href="#摘要-ABSTRACT" class="headerlink" title="摘要 ABSTRACT"></a>摘要 ABSTRACT</h1><p>传统的CVR建模应用流行的深度学习方法，并实现最先进的性能。遇到的问题：传统的CVR模型用点击曝光的样本进行训练，同时用所有曝光的样本对整个空间进行推断。这导致样本选择偏差（sample selection bias）问题。另外还有数据稀疏的问题。本文提出ESMM(Entire Space Multi-task Model)，通过用户行为序列模式对CVR建模，比如，曝光(impression)–&gt;点击(click)–&gt;转换(conversion)。该模型直接在整个空间建模CVR，并使用了一种特征表示转移学习策略。数据集采用淘宝推荐系统，显示ESMM效果显著。本文还发布了第一个包含点击和转化标签用于CVR建模的时序样本数据集。</p>
+<p>关键词：CVR(post-click conversion rate), 多任务学习(multi-task learning), 样本选择偏差(sample selection bias), 数据稀疏(data sparsity), 全空间建模(entire-space modeling)</p>
+<h1 id="介绍-INTRODUCTION"><a href="#介绍-INTRODUCTION" class="headerlink" title="介绍 INTRODUCTION"></a>介绍 INTRODUCTION</h1><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\ESMM-f1.png" alt="ESMM" title="">
+                </div>
+                <div class="image-caption">ESMM</div>
+            </figure>
+<p>1）传统的CVR模型在由impression组成的数据集上训练，同时利用所有impression的样本在整个空间上进行推断。该问题（SSB）会影响训练模型的泛化性能。<br>2）数据稀疏问题。在实践中，为训练CVR模型而收集的数据通常比CTR任务少得多。训练数据的稀疏性使得CVR模型拟合相当困难。</p>
+<p>以前的研究试图解决这些问题。在[5]中，建立了不同特征的分层估计量，并结合逻辑回归模型来解决直接序列问题。然而，它依赖于先验知识来构建层次结构，这在拥有数千万用户和项目的推荐系统中很难应用。过采样方法[11]复制了罕见的类别样本，这有助于减轻数据的稀疏性，但对采样率敏感。全部缺失为阴性(AMAN)应用随机抽样策略选择未点击的impression作为负样本[6]。通过引入未观察到的例子，它可以在一定程度上消除SSB问题，但会导致始终被低估的预测。无偏方法[10]通过剔除抽样从观测值中拟合真实的潜在分布，解决了CTR建模中的SSB问题。然而，当用拒绝概率划分来加权样本时，可能会遇到数值不稳定性。总之，无论是SSB还是DS问题都没有在CVR建模的场景中得到了很好的解决，上述方法都没有利用序列动作信息。</p>
+<p>pCVR = p(conversion|click, impression)</p>
+<p>ESMM可以同时解决SSB和DS问题。它引入了CTR和CTCVR的两个辅助任务。ESMM没有直接用曝光的样本来训练CVR模型，而是把pCVR作为一个中间变量，乘以pCTR等于pCTCVR。PCTCVR和pCTR都是在整个空间上用所有曝光的样本来估计的，因此导出的pCVR也适用于整个空间。这表明SSB问题已经消除。此外，CVR网络特征表示的参数与CTR网络共享。后者是用更丰富的样本训练的。这种参数迁移学习有助于显著缓解DS问题。</p>
+<p>对于这项工作，我们从淘宝的推荐系统中收集流量日志。整个数据集由89亿个样本组成，并带有点击和转换的序列标签。ESMM的表现始终优于其它模型，这证明了所提出方法的有效性。</p>
+<p>数据集开源：<a href="https://tianchi.aliyun.com/datalab/dataSet.html?dataId=408" target="_blank" rel="noopener">https://tianchi.aliyun.com/datalab/dataSet.html?dataId=408</a></p>
+<h1 id="提出的方法-THE-PROPOSED-APPROACH"><a href="#提出的方法-THE-PROPOSED-APPROACH" class="headerlink" title="提出的方法 THE PROPOSED APPROACH"></a>提出的方法 THE PROPOSED APPROACH</h1><h2 id="注释-Notation"><a href="#注释-Notation" class="headerlink" title="注释 Notation"></a>注释 Notation</h2><p>$S = {(x_i, y_i -&gt; z_i)}|^N_{i=1}$，x代表已观察曝光的特征向量，它通常是一个有多域(field)的高维稀疏向量，比如用户域，物品域等。y和z是二分标签，y = 1或者z = 1代表各自被点击或转化事件发生。y-&gt;z代表点击和转化标签的序列依赖，即转化事件发生时总会有前序点击。<br>pCVR = p(z = 1|y = 1, x)<br>pCTR = p(y = 1|x)<br>pCTCVR = p(y = 1, z = 1|x)<br>p(y = 1, z = 1|x) = p(y = 1|x) × p(z = 1|y = 1, x)<br>—–pCTCVR————pCTR———–pCVR——–</p>
+<h2 id="CVR建模和挑战-CVR-Modeling-and-Challenges"><a href="#CVR建模和挑战-CVR-Modeling-and-Challenges" class="headerlink" title="CVR建模和挑战 CVR Modeling and Challenges"></a>CVR建模和挑战 CVR Modeling and Challenges</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="\images\ESMM-f2.png" alt="ESMM架构" title="">
+                </div>
+                <div class="image-caption">ESMM架构</div>
+            </figure>
+<p>图2左边的DNN CVR建模作为基线模型，传统的CVR模型直接建模p(z = 1|y = 1, x)，使用点击的曝光样本训练模型。比如，$S_c = {(x_j, z_j)|y_j = 1}|^M_{j=1}$，M是所有曝光样本数。$S_c$是S的子集。在$S_c$中，被点击但没有被转化的样本作为负样本，被转化也被点击的样本作为正样本。<br><strong>Sample selection bias(SSB)</strong><br>通过引入一个辅助特征向量$x_c$，传统CVR做了一个近似：$p(z = 1|y = 1, x) ≈ q(z = 1|x_c)$。<br>推理阶段，p(z = 1|y = 1, x)在整个X空间将近似为q(z = 1|x)。<br>传统的CVR训练数据是曝光和点击的数据，然而预测时又要在整个样本空间。点击事件只是整个曝光样本空间的一个子集，在子集中提取的特征在完整集中使用是有偏的，且数据分布也不一致，违背了机器学习算法有效训练的前提（iid），减弱模型的泛化能力。</p>
+<p><strong>Data sparsity (DS)</strong><br>一般CVR比关联的CTR任务少1-3个数量级，CTR任务是在全印象的S的数据集上训练的。表1显示了我们的实验数据集的统计数据，其中CVR任务的样本数量仅为CTR任务的4%。<br>值得一提的是，CVR建模还存在其他挑战，例如延迟反馈。本文不涉及。</p>
+<h2 id="多任务全空间模型-Entire-Space-Multi-Task-Model"><a href="#多任务全空间模型-Entire-Space-Multi-Task-Model" class="headerlink" title="多任务全空间模型 Entire Space Multi-Task Model"></a>多任务全空间模型 Entire Space Multi-Task Model</h2><p>在整个空间建模。<br>$p(z = 1|y = 1, x) = \frac{p(y = 1, z = 1|x)}{p(y = 1|x)}$</p>
+<p>这里p(y = 1，z = 1|x)和p(y = 1|x)是在具有所有曝光的S的数据集上建模的。</p>
+<p>损失函数：$L(θ<em>{cvr}, θ</em>{ctr}) = \sum_{i=1}^N{l(y_i,f(x_i; θ<em>{ctr}))} + \sum</em>{i=1}^N{l(y_i \&amp; z_i,f(x_i; θ_{ctr}) × f(x_i;θ_{cvr}))}$<br>l(·)是交叉熵损失函数。</p>
+<p>特征表征转移。<br>嵌入层将大规模稀疏输入映射到低维表示向量中。它贡献了深层网络的大部分参数，而深层网络的学习需要大量的训练样本。在ESMM，CVR网络的嵌入式词典与CTR的嵌入式词典是共享的。它遵循特征表征迁移学习范式。CTR任务的全曝光训练样本相对比CVR任务丰富得多。这种参数共享机制使ESMM的CVR网络能够借鉴未点击的曝光，为缓解数据稀疏问题提供了很大的帮助。<br>请注意，ESMM的子网络可以用一些最近开发的模型来代替，这可能会获得更好的性能。由于篇幅有限，我们省略了它，而把重点放在解决CVR建模在实际实践中遇到的挑战上。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2021-05-06T09:39:04.000Z" itemprop="dateUpdated">2021-05-06 09:39:04</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2021/04/27/ESMM/" target="_blank" rel="external">https://hubojing.github.io/2021/04/27/ESMM/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hubojing.github.io">
+            <img src="/img/avatar.jpg" alt="靖待">
+            靖待
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ESMM/">ESMM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/推荐算法/">推荐算法</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2021/04/27/ESMM/&title=《【Paper】Entire Space Multi-Task Model-An Effective Approach for Estimating Post-Click Conversion Rate》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2021/04/27/ESMM/&title=《【Paper】Entire Space Multi-Task Model-An Effective Approach for Estimating Post-Click Conversion Rate》 — 靖待的技术博客&source=　　多任务学习之ESMM " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2021/04/27/ESMM/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【Paper】Entire Space Multi-Task Model-An Effective Approach for Estimating Post-Click Conversion Rate》 — 靖待的技术博客&url=https://hubojing.github.io/2021/04/27/ESMM/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2021/04/27/ESMM/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2021/05/06/DIN/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">【Paper】DIN模型</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2021/03/05/多机共用一套键鼠方案/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">多机共用一套键鼠方案</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+	<script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css"/>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+	Waline.init({
+      el: '#comments',
+      serverURL: 'https://waline-1-r2604942.deta.app/',
+    });
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        码代码和码字，都是人生乐趣
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>靖待 &copy; 2015 - 2024</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2021/04/27/ESMM/&title=《【Paper】Entire Space Multi-Task Model-An Effective Approach for Estimating Post-Click Conversion Rate》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2021/04/27/ESMM/&title=《【Paper】Entire Space Multi-Task Model-An Effective Approach for Estimating Post-Click Conversion Rate》 — 靖待的技术博客&source=　　多任务学习之ESMM " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2021/04/27/ESMM/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《【Paper】Entire Space Multi-Task Model-An Effective Approach for Estimating Post-Click Conversion Rate》 — 靖待的技术博客&url=https://hubojing.github.io/2021/04/27/ESMM/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2021/04/27/ESMM/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJElEQVR42u3aMW7DMAwF0Nz/0u7SLY39STkFTD1NRZLaehoIUuTrFa8jXue///Tk9/96fWNhYGA8llHd1vvrz3/T+yTfGwYGxj6MJBTmgPImgvde7BkDAwOjtcVz3vmTMTAwMNYZ0aM/gJMUEAMDA6MXOu8NxHnAvbkWx8DAeCAjv3X//7+/0t/AwMB4FOMoriSNy0vZ9f38PhMDA2M0o1qgrmw6h/X2g4GBMZVRLTjPAUlTszqcEcEwMDBGM3pX/L1WQW/sLGkkYGBgzGbkl19JUph/u37eGBgYuzF6qVjeVuy1HgtjGRgYGNszeldpebDuBe6oYsbAwBjB6F17rV+xrR/QH59gYGBsxuglf70YmG/0go2BgTGaUQ2dvXBcbS18JVnEwMB4LGPl+j4pTauw5rAFBgbGUEYvLaumj/kRVAvai04sBgbGCEY1RasOQ1SL4aWFgYExlLG+rbxVeVc6eFG+YmBgjGOcvzK/VqsOh/WmJi6eg4GBsQHjrg7D+aFUD6JQEmNgYGzAWClHq42E/NquUPpiYGBswKi2NnuFbnP6Izl0DAyMoYyjuFYak737sWjUFQMDYzSjF+Z64TJPGZOtN1uhGBgYj2XkpWkV2ctV8+dgYGDsxqgGvur1fX6pVw39GBgYGMlv8tGuPDSXi1gMDAyMYiOzWpTeUEJjYGBswMhHKHplaj6c0UtPMTAwZjPykNcLlL2DyNsDGBgYoxk/xY4i4K9Mmo8AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来嘛！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)抱抱~你回来了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

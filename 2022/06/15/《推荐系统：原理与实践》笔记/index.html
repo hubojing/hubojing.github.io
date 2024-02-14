@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    
+
+    
+
+    
+<!-- Baidu Tongji -->
+<script>var _hmt = _hmt || []</script>
+<script async src="//hm.baidu.com/hm.js?86125ece8b26a0a600d8b5b04d6e4695"></script>
+<!-- End Baidu Tongji -->
+
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <link rel="canonical" href="https://hubojing.github.io//2022/06/15/《推荐系统：原理与实践》笔记/">
+    
+    
+    <title>《推荐系统：原理与实践》笔记 | 靖待的技术博客 | 小清新IT旅程 | 为中华之崛起而读书</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="推荐算法">
+    <meta name="description" content="砖头书笔记（自用）">
+<meta name="keywords" content="推荐算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《推荐系统：原理与实践》笔记">
+<meta property="og:url" content="https://hubojing.github.io/2022/06/15/《推荐系统：原理与实践》笔记/index.html">
+<meta property="og:site_name" content="靖待的技术博客">
+<meta property="og:description" content="砖头书笔记（自用）">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://hubojing.github.io/images/假装有图片.jpg">
+<meta property="og:updated_time" content="2022-06-15T09:06:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《推荐系统：原理与实践》笔记">
+<meta name="twitter:description" content="砖头书笔记（自用）">
+<meta name="twitter:image" content="https://hubojing.github.io/images/假装有图片.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="靖待的技术博客" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+	
+	
+	
+	
+	
+	
+	
+    
+
+</head>
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu"  >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">靖待</h5>
+          <a href="mailto:hubojing@outlook.com" title="hubojing@outlook.com" class="mail">hubojing@outlook.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archive"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/hubojing/"  >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/friends"  >
+                <i class="icon icon-lg icon-users"></i>
+                友情链接
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about/Chinese"  >
+                <i class="icon icon-lg icon-child"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/comment"  >
+                <i class="icon icon-lg icon-book"></i>
+                留言板
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/littletalk"  >
+                <i class="icon icon-lg icon-edit"></i>
+                自言自语
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://blog.csdn.net/hubojing/"  >
+                <i class="icon icon-lg icon-pencil"></i>
+                CSDN博客
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/advertising"  >
+                <i class="icon icon-lg icon-link"></i>
+                推广
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://wpa.qq.com/msgrd?v=3&uin=417797456&site=qq&menu=yes"  >
+                <i class="icon icon-lg icon-qq"></i>
+                和我在线交流
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">《推荐系统：原理与实践》笔记</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">《推荐系统：原理与实践》笔记</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2022-06-15T02:41:55.000Z" itemprop="datePublished" class="page-time">
+  2022-06-15
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/推荐系统/">推荐系统</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#前言"><span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#高级论问题和应用"><span class="post-toc-text">高级论问题和应用</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#推荐系统评估"><span class="post-toc-text">推荐系统评估</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#评估设计的总体目标"><span class="post-toc-text">评估设计的总体目标</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#离线评估的精确性指标"><span class="post-toc-text">离线评估的精确性指标</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#独立预测评分的精确性"><span class="post-toc-text">独立预测评分的精确性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#通过相关性评估排名"><span class="post-toc-text">通过相关性评估排名</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#通过效用评估排名"><span class="post-toc-text">通过效用评估排名</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#通过ROC曲线评估排名"><span class="post-toc-text">通过ROC曲线评估排名</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#抵抗攻击的推荐系统"><span class="post-toc-text">抵抗攻击的推荐系统</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#攻击类型"><span class="post-toc-text">攻击类型</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#健壮推荐设计策略"><span class="post-toc-text">健壮推荐设计策略</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#排名学习"><span class="post-toc-text">排名学习</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#多臂赌博机算法"><span class="post-toc-text">多臂赌博机算法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#组推荐系统"><span class="post-toc-text">组推荐系统</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#多标准推荐系统"><span class="post-toc-text">多标准推荐系统</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#推荐系统中的主动学习"><span class="post-toc-text">推荐系统中的主动学习</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#推荐系统中的隐私"><span class="post-toc-text">推荐系统中的隐私</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#应用领域"><span class="post-toc-text">应用领域</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-《推荐系统：原理与实践》笔记"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">《推荐系统：原理与实践》笔记</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2022-06-15 02:41:55" datetime="2022-06-15T02:41:55.000Z"  itemprop="datePublished">2022-06-15</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/推荐系统/">推荐系统</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <div align="left"><br><img src="\images\假装有图片.jpg" width="300" height="180" style="float:right;"><br><br><br>　　<strong>砖头书笔记（自用）</strong><br><br><br> </div>
+
+<a id="more"></a>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>　　有几本砖头书在图书馆里我不断续借，网上又没有PDF，现在要毕业了，只有勉强把它看完了……</p>
+<h1 id="高级论问题和应用"><a href="#高级论问题和应用" class="headerlink" title="高级论问题和应用"></a>高级论问题和应用</h1><ul>
+<li>推荐系统中的冷启动问题<br>太常见不说了。</li>
+<li>抗攻击推荐系统<br>只要指恶意评论。</li>
+<li>组推荐系统<br>针对一组用户推荐，而不是单一用户。</li>
+<li>多标准推荐系统<br>如，用户可以给予情节、音乐、特效等对电影进行评分。在多标准推荐系统中，用户可能根本没有给出整体评分。</li>
+<li>推荐系统中的主动学习<br>鼓励用户输入评分以完善系统的机制。例如，用户可能会为某些物品评分获得奖励。因此，必须明智地选择由特定用户进行评分的物品。如，某用户已评价大量动作片，那么要求该用户去评价另一部动作电影对预测其他的动作电影评分帮助不大，并且对预测属于无关种类的电影评分的帮助甚至更少。另一方面，要求用户评价不太热门种类的电影将对预测这种类型的电影评分有显著帮助。当然，如果用户被要求评价无关的电影，他不一定能够提供反馈，因为他可能根本没有看过那部电影。<strong>（此处举例我存疑）</strong>因此，在推荐系统的主动学习问题中有许多在其他问题领域（如分类问题）没有遇到的有趣权衡问题。</li>
+<li>推荐系统中的隐私问题</li>
+<li>保护隐私的推荐算法。</li>
+<li>应用领域</li>
+</ul>
+<h1 id="推荐系统评估"><a href="#推荐系统评估" class="headerlink" title="推荐系统评估"></a>推荐系统评估</h1><h2 id="评估设计的总体目标"><a href="#评估设计的总体目标" class="headerlink" title="评估设计的总体目标"></a>评估设计的总体目标</h2><ul>
+<li>精确性</li>
+<li>覆盖率</li>
+<li>置信度和信任度</li>
+<li>新颖度</li>
+<li>惊喜度</li>
+<li>多样性</li>
+<li>健壮性和稳定性</li>
+<li>可扩展性<h2 id="离线评估的精确性指标"><a href="#离线评估的精确性指标" class="headerlink" title="离线评估的精确性指标"></a>离线评估的精确性指标</h2><h3 id="独立预测评分的精确性"><a href="#独立预测评分的精确性" class="headerlink" title="独立预测评分的精确性"></a>独立预测评分的精确性</h3>　　RMSE, MAE<br>　　RMSE计算时用的是误差的平方，所以它更加显著地被大的误差值或者异常值所影响。一些被预测失败的评分会显著地破坏RMSE方法。在各种评分的预测健壮性非常重要的应用中，RMSE可能是一个更加合适的方法。另一方面，当评估的异常值有限时，MAE能更好地反映精确性。RMSE主要的问题是它不是平均误差的真实反映，而且它又是会导致有误导的结果。<h3 id="通过相关性评估排名"><a href="#通过相关性评估排名" class="headerlink" title="通过相关性评估排名"></a>通过相关性评估排名</h3></li>
+<li>Spearman等级相关系数</li>
+<li>肯德尔等级相关系数<h3 id="通过效用评估排名"><a href="#通过效用评估排名" class="headerlink" title="通过效用评估排名"></a>通过效用评估排名</h3>　　基于效用方法的总体目标就是给出用户可能找到推荐系统排名的有用程度的简单量化。这种方法下隐含的一个重要准则就是相对于物品的总量而言，推荐列表是简短的。因此一个具体评分的效用大部分情况下应该基于在推荐列表中相关性高的物品。这种情况下，RMSE指标有一个缺点，因为它对低排名物品和那些高排名物品赋予了同样的权重。</li>
+</ul>
+<p>　　NDCG, ARHR（平均逆命中率）<br>　　ARHR也被称作是平均倒数排名（MRR）</p>
+<h3 id="通过ROC曲线评估排名"><a href="#通过ROC曲线评估排名" class="headerlink" title="通过ROC曲线评估排名"></a>通过ROC曲线评估排名</h3><h1 id="抵抗攻击的推荐系统"><a href="#抵抗攻击的推荐系统" class="headerlink" title="抵抗攻击的推荐系统"></a>抵抗攻击的推荐系统</h1><h2 id="攻击类型"><a href="#攻击类型" class="headerlink" title="攻击类型"></a>攻击类型</h2><ul>
+<li>随机攻击</li>
+<li>均值攻击</li>
+<li>bandwagon攻击</li>
+<li>流行攻击</li>
+<li>爱/憎攻击</li>
+<li>反向bandwagon攻击</li>
+<li>探测攻击</li>
+<li>分段攻击<h2 id="健壮推荐设计策略"><a href="#健壮推荐设计策略" class="headerlink" title="健壮推荐设计策略"></a>健壮推荐设计策略</h2></li>
+<li>用CAPTCHA防止自动攻击</li>
+<li>使用社会信任</li>
+<li>设计健壮的推荐算法</li>
+</ul>
+<h1 id="排名学习"><a href="#排名学习" class="headerlink" title="排名学习"></a>排名学习</h1><p>　　pointwise<br>　　pairwise: BPR, Eigen Rank, pLPA, CR<br>　　listwise: NDCG, MRR</p>
+<h1 id="多臂赌博机算法"><a href="#多臂赌博机算法" class="headerlink" title="多臂赌博机算法"></a>多臂赌博机算法</h1><h1 id="组推荐系统"><a href="#组推荐系统" class="headerlink" title="组推荐系统"></a>组推荐系统</h1><ul>
+<li>协同和基于内容的系统</li>
+<li>基于知识的系统<h1 id="多标准推荐系统"><a href="#多标准推荐系统" class="headerlink" title="多标准推荐系统"></a>多标准推荐系统</h1></li>
+<li>基于近邻的方法</li>
+<li>基于集成的方法</li>
+<li>无整体评分的多标准系统<h1 id="推荐系统中的主动学习"><a href="#推荐系统中的主动学习" class="headerlink" title="推荐系统中的主动学习"></a>推荐系统中的主动学习</h1></li>
+<li>基于异质性的模型</li>
+<li>基于性能的模型<h1 id="推荐系统中的隐私"><a href="#推荐系统中的隐私" class="headerlink" title="推荐系统中的隐私"></a>推荐系统中的隐私</h1></li>
+<li>基于冷凝的隐私</li>
+<li>高维数据的挑战</li>
+</ul>
+<h1 id="应用领域"><a href="#应用领域" class="headerlink" title="应用领域"></a>应用领域</h1><ul>
+<li>门户内容个性化</li>
+<li>计算广告与推荐系统</li>
+<li>互惠推荐系统<br>　　基本思想是当考虑多个具有不对称兴趣的利益相关人的推荐的效用时，推荐的任务会发生改变。如在线约会的互惠推荐系统。</li>
+</ul>
+<ol>
+<li>用户意识到交易的成功取决于另一方的许可。另一方是互惠环境中的“物品”。</li>
+<li>用户和物品在系统中可能只出现一次，在一次成功的事物后它们可能永远不会重现。冷启动问题在互惠场景中更加显著。<br>　　方法：</li>
+<li>利用混合方法<br>在这些方法中，两个传统的推荐方法被构造出来，分别对应着两个互惠方的喜好。然后，这两个互惠方的预测被组合起来。</li>
+<li>利用链路预测方法<br>当冷启动问题不是很严重或者可以用来自类似用户和物品的数据来增加评分数据时，可以在系统中采用链路预测方法。</li>
+</ol>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2022-06-15T09:06:02.000Z" itemprop="dateUpdated">2022-06-15 09:06:02</time>
+</span><br>
+
+
+        
+        原始链接：<a href="/2022/06/15/《推荐系统：原理与实践》笔记/" target="_blank" rel="external">https://hubojing.github.io/2022/06/15/《推荐系统：原理与实践》笔记/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://hubojing.github.io">
+            <img src="/img/avatar.jpg" alt="靖待">
+            靖待
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/推荐算法/">推荐算法</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2022/06/15/《推荐系统：原理与实践》笔记/&title=《《推荐系统：原理与实践》笔记》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2022/06/15/《推荐系统：原理与实践》笔记/&title=《《推荐系统：原理与实践》笔记》 — 靖待的技术博客&source=　　砖头书笔记（自用） " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2022/06/15/《推荐系统：原理与实践》笔记/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《《推荐系统：原理与实践》笔记》 — 靖待的技术博客&url=https://hubojing.github.io/2022/06/15/《推荐系统：原理与实践》笔记/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2022/06/15/《推荐系统：原理与实践》笔记/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2022/06/29/毕业/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">毕业</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2022/06/08/Hexo+GitLab搭建个人博客最新教程/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">2022年最新教程！Hexo + GitLab搭建个人博客详细教程</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+	<script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script>
+	<link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css"/>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+	Waline.init({
+      el: '#comments',
+      serverURL: 'https://waline-1-r2604942.deta.app/',
+    });
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        码代码和码字，都是人生乐趣
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>靖待 &copy; 2015 - 2024</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2022/06/15/《推荐系统：原理与实践》笔记/&title=《《推荐系统：原理与实践》笔记》 — 靖待的技术博客&pic=https://hubojing.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2022/06/15/《推荐系统：原理与实践》笔记/&title=《《推荐系统：原理与实践》笔记》 — 靖待的技术博客&source=　　砖头书笔记（自用） " data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://hubojing.github.io/2022/06/15/《推荐系统：原理与实践》笔记/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《《推荐系统：原理与实践》笔记》 — 靖待的技术博客&url=https://hubojing.github.io/2022/06/15/《推荐系统：原理与实践》笔记/&via=https://hubojing.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://hubojing.github.io/2022/06/15/《推荐系统：原理与实践》笔记/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACs0lEQVR42u3aQW4bMRAEQP3/0841gKBN9wxpO0DtSZAlkiUDO9wevl7x9fXX9f7+++v3b3262nFeNy48PDy8xdKfp39eUI5/xjyvLV8zHh4e3m3ep6GfMbPv5uWnHQcPDw/v9/P2mHYnjIeHh/c/8pLltiHF5kfEw8PD+yleeyNOotVZjJtvtQ9nLXh4eHgxL+8i/Z7XV/p7eHh4eOuuehvXbmZ8Lj/D1eLh4eFd4LVBQxsiJItr580/j4eHh/c9vCRInQUK7aLbA14fyxUeHh7eUd7zNHnDKQl5n8dvt9TD1hceHh7emrdvNbWb6dmWffMD4eHh4d3g5bf1/KacF5v6CaD9v+Hh4eEd5bWRa97g38DajX7R38PDw8Nb89rFnW2VbUbOY188PDy8s7y2/d9uefMAIh+/KCR4eHh4F3j5Jjhv6idpcRsHz4584eHh4d3gzUKBPHLdh7+bsoSHh4d3m3ejcZUXmM22u9hM4+Hh4R196k8KQztNW1pmP/eB8xF4eHh4JW/W1G+310XwWmaww6MDeHh4eGteEqq21DbkncW7UZcPDw8P7yhv055v21Sbv66KDR4eHt4h3myyfFu8CR3yIOPjavHw8PAu8GYRwKnDAbPN8ewdPDw8vBu82TT7iCEPMlaFCg8PD+8or23wt/jND9e2yoqF4uHh4a15swZ/HrzmDba2wETPB3h4eHgXeP/40KIkJBvlYWqSH1fFw8PDO8T7Kq+24ZRHD3konIcjeHh4eDd47Q233f4mxWAzTj4+Hh4e3lleXgz2xwLazfQm/MXDw8O7zctvyvktfhNVrPKVTc3Bw8PDu8DLSfuSkK9teHQADw8P71t4s/A0mSUPGo6djMDDw8Nbn0pqm16z8KIduW2S4eHh4d3mtQ/8syMFbSyb3OdXJDw8PLwJ7w9M9gMn8c0A8gAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '快回来嘛！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)抱抱~你回来了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
