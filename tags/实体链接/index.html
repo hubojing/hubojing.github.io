@@ -47,91 +47,213 @@
 
     <!-- custom head -->
     
+	
+	<script defer>
 
+  const LCCounter = {
+    app_id: '7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI',
+    app_key: 'dfM6uHEFDxJWSQaxhyCsuPXG',
+    custom_api_server: 'null',
 
+    // 查询存储的记录
+    getRecord(Counter, url, title) {
+      return new Promise(function (resolve, reject) {
+        Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({url})))
+          .then(resp => resp.json())
+          .then(({results, code, error}) => {
+            if (code === 401) {
+              throw error;
+            }
+            if (results && results.length > 0) {
+              var record = results[0];
+              resolve(record);
+            } else {
+              Counter('post', '/classes/Counter', {url, title: title, times: 0})
+                .then(resp => resp.json())
+                .then((record, error) => {
+                  if (error) {
+                    throw error;
+                  }
+                  resolve(record);
+                }).catch(error => {
+                console.error('Failed to create', error);
+                reject(error);
+              });
+            }
+          }).catch((error) => {
+          console.error('LeanCloud Counter Error:', error);
+          reject(error);
+        });
+      })
+    },
 
-<!-- 同时兼容http与https -->
-<script src="//cdn1.lncld.net/static/js/2.5.0/av-min.js"></script>
-<script>
-    // 第一个参数是appid，第二个参数是appkey，此处的只是示例
-    AV.initialize("7yiiw4KwscKOgqLuMFHmXnUi-MdYXbMMI", "dfM6uHEFDxJWSQaxhyCsuPXG");
-    // 自己创建的Class的名字
-    var name='Counter';
-    function createRecord(Counter){
-      // 设置 ACL
-      var acl = new AV.ACL();
-      acl.setPublicReadAccess(true);
-      acl.setPublicWriteAccess(true);
-      // 获得span的所有元素
-      var elements=document.getElementsByClassName('leancloud_visitors');
-      // 一次创建多条记录
-      var allcounter=[];
-      for (var i = 0; i < elements.length ; i++) {
-        // 若某span的内容不包括 '-' ，则不必创建记录
-        if(elements[i].textContent.indexOf('-') == -1){
-          continue;
+    // 发起自增请求
+    increment(Counter, incrArr) {
+      return new Promise(function (resolve, reject) {
+        Counter('post', '/batch', {
+          "requests": incrArr
+        }).then((res) => {
+          res = res.json();
+          if (res.error) {
+            throw res.error;
+          }
+          resolve(res);
+        }).catch((error) => {
+          console.error('Failed to save visitor count', error);
+          reject(error);
+        });
+      });
+    },
+
+    // 构建自增请求体
+    buildIncrement(objectId) {
+      return {
+        "method": "PUT",
+        "path": `/1.1/classes/Counter/${ objectId }`,
+        "body": {
+          "times": {
+            '__op': 'Increment',
+            'amount': 1
+          }
         }
-        var title = elements[i].getAttribute('data-flag-title');
-        var url = elements[i].id;
-        var newcounter = new Counter();
-        newcounter.setACL(acl);
-        newcounter.set("title", title);
-        newcounter.set("url", url);
-        newcounter.set("time", 0);
-        allcounter.push(newcounter);
-        // 顺便更新显示span为默认值0
-        elements[i].textContent=0;
       }
-      AV.Object.saveAll(allcounter).then(function (todo) {
-        // 成功保存记录之后
-        console.log('创建记录成功！');
-      }, function (error) {
-        // 异常错误 
-        console.error('创建记录失败: ' + error.message);
-      });
+    },
+
+    // 校验是否为有效的 UV
+    validUV() {
+      var key = 'LeanCloudUVTimestamp';
+      var flag = localStorage.getItem(key);
+      if (flag) {
+        // 距离标记小于 24 小时则不计为 UV
+        if (new Date().getTime() - parseInt(flag) <= 86400000) {
+          return false;
+        }
+      }
+      localStorage.setItem(key, new Date().getTime().toString());
+      return true;
+    },
+
+    addCount(Counter) {
+      var enableIncr = 'undefined' === 'true' && window.location.hostname !== 'localhost';
+      enableIncr = true;
+      var getterArr = [];
+      var incrArr = [];
+      // 请求 PV 并自增
+      var pvCtn = document.querySelector('#lc-sv');
+      if (pvCtn || enableIncr) {
+        var pvGetter = this.getRecord(Counter, 'https://hubojing.github.io' + '/#lc-sv', 'Visits').then((record) => {
+          incrArr.push(this.buildIncrement(record.objectId))
+          var eles = document.querySelectorAll('#lc-sv #number');
+          if (eles.length > 0) {
+            eles.forEach((el,index,array)=>{
+              el.innerText = record.times + 1;
+              if (pvCtn) {
+                pvCtn.style.display = 'inline';
+              }
+            })
+          }
+        });
+        getterArr.push(pvGetter);
+      }
+
+      // 请求 UV 并自增
+      var uvCtn = document.querySelector('#lc-uv');
+      if (uvCtn || enableIncr) {
+        var uvGetter = this.getRecord(Counter, 'https://hubojing.github.io' + '/#lc-uv', 'Visitors').then((record) => {
+          var vuv = this.validUV();
+          vuv && incrArr.push(this.buildIncrement(record.objectId))
+          var eles = document.querySelectorAll('#lc-uv #number');
+          if (eles.length > 0) {
+            eles.forEach((el,index,array)=>{
+              el.innerText = record.times + (vuv ? 1 : 0);
+              if (uvCtn) {
+                uvCtn.style.display = 'inline';
+              }
+            })
+          }
+        });
+        getterArr.push(uvGetter);
+      }
+
+      // 请求文章的浏览数，如果是当前页面就自增
+      var allPV = document.querySelectorAll('#lc-pv');
+      if (allPV.length > 0 || enableIncr) {
+        for (i = 0; i < allPV.length; i++) {
+          let pv = allPV[i];
+          let title = pv.getAttribute('data-title');
+          var url = 'https://hubojing.github.io' + pv.getAttribute('data-path');
+          if (url) {
+            var viewGetter = this.getRecord(Counter, url, title).then((record) => {
+              // 是当前页面就自增
+              let curPath = window.location.pathname;
+              if (curPath.includes('index.html')) {
+                curPath = curPath.substring(0, curPath.lastIndexOf('index.html'));
+              }
+              if (pv.getAttribute('data-path') == curPath) {
+                incrArr.push(this.buildIncrement(record.objectId));
+              }
+              if (pv) {
+                var ele = pv.querySelector('#lc-pv #number');
+                if (ele) {
+                  if (pv.getAttribute('data-path') == curPath) {
+                    ele.innerText = (record.times || 0) + 1;
+                  } else {
+                    ele.innerText = record.times || 0;
+                  }
+                  pv.style.display = 'inline';
+                }
+              }
+            });
+            getterArr.push(viewGetter);
+          }
+        }
+      }
+
+      // 如果启动计数自增，批量发起自增请求
+      if (enableIncr) {
+        Promise.all(getterArr).then(() => {
+          incrArr.length > 0 && this.increment(Counter, incrArr);
+        })
+      }
+
+    },
+
+
+    fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${ api_server }/1.1${ url }`, {
+          method,
+          headers: {
+            'X-LC-Id': this.app_id,
+            'X-LC-Key': this.app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      this.addCount(Counter);
+    },
+
+    refreshCounter() {
+      var api_server = this.app_id.slice(-9) !== '-MdYXbMMI' ? this.custom_api_server : `https://${ this.app_id.slice(0, 8).toLowerCase() }.api.lncldglobal.com`;
+      if (api_server) {
+        this.fetchData(api_server);
+      } else {
+        fetch('https://app-router.leancloud.cn/2/route?appId=' + this.app_id)
+          .then(resp => resp.json())
+          .then(({api_server}) => {
+            this.fetchData('https://' + api_server);
+          });
+      }
     }
-    function showCount(Counter){
-      // 是否需要创建新纪录的标志（添加一篇新文章）
-      var flag=false;
-      var query = new AV.Query(name);
-      query.greaterThanOrEqualTo('time', 0);
-      query.find().then(function (results) {
-        // 当获取到的记录为0时置默认值
-        if(results.length==0){
-          $('.leancloud_visitors').text('-');
-          flag=true;
-          console.log('返回查询记录为空');
-          // 如果获取到空记录就创建新记录
-          createRecord(Counter);
-          return;
-        }
-        // 将获取到的数据设置为text
-        for (var i = 0; i < results.length; i++) {
-          var item = results[i];
-          var url = item.get('url');
-          var time = item.get('time');
-          var element = document.getElementById(url);
-          element.textContent = time;
-        }
-        // 当某个span含有默认值时说明需要创建记录
-        if($('.leancloud_visitors').text().indexOf("-") != -1){
-          flag=true;
-        }
-        // 当获取的记录数与span个数不吻合时
-        if(results.length != $('.leancloud_visitors').length){
-          flag=true;
-        }
-        if(flag){
-          createRecord(Counter);
-        }
-      }, function (error) {
-        console.log('query error:'+error.message);
-      });
-    }
-    $(function() {
-      var Counter = AV.Object.extend(name);
-      showCount(Counter);
-    });
+
+  };
+
+  LCCounter.refreshCounter();
+
+  document.addEventListener('pjax:complete', function () {
+    LCCounter.refreshCounter();
+  });
 </script>
 
 
@@ -288,327 +410,315 @@
             ">全部</a>
         
 
-            <a href="/tags/杂谈/" style="-webkit-order:20;order:20" class="tags-list-item waves-effect waves-button waves-light">杂谈</a>
+            <a href="/tags/单片机/" style="-webkit-order:23;order:23" class="tags-list-item waves-effect waves-button waves-light">单片机</a>
 
         
 
-            <a href="/tags/年终总结/" style="-webkit-order:21;order:21" class="tags-list-item waves-effect waves-button waves-light">年终总结</a>
+            <a href="/tags/年终总结/" style="-webkit-order:24;order:24" class="tags-list-item waves-effect waves-button waves-light">年终总结</a>
 
         
 
-            <a href="/tags/单片机/" style="-webkit-order:22;order:22" class="tags-list-item waves-effect waves-button waves-light">单片机</a>
+            <a href="/tags/杂谈/" style="-webkit-order:25;order:25" class="tags-list-item waves-effect waves-button waves-light">杂谈</a>
 
         
 
-            <a href="/tags/CPP/" style="-webkit-order:23;order:23" class="tags-list-item waves-effect waves-button waves-light">CPP</a>
+            <a href="/tags/Android/" style="-webkit-order:26;order:26" class="tags-list-item waves-effect waves-button waves-light">Android</a>
 
         
 
-            <a href="/tags/GIS/" style="-webkit-order:24;order:24" class="tags-list-item waves-effect waves-button waves-light">GIS</a>
+            <a href="/tags/Java/" style="-webkit-order:27;order:27" class="tags-list-item waves-effect waves-button waves-light">Java</a>
 
         
 
-            <a href="/tags/BERT/" style="-webkit-order:25;order:25" class="tags-list-item waves-effect waves-button waves-light">BERT</a>
+            <a href="/tags/GIS/" style="-webkit-order:28;order:28" class="tags-list-item waves-effect waves-button waves-light">GIS</a>
 
         
 
-            <a href="/tags/NLP/" style="-webkit-order:26;order:26" class="tags-list-item waves-effect waves-button waves-light">NLP</a>
+            <a href="/tags/CPP/" style="-webkit-order:29;order:29" class="tags-list-item waves-effect waves-button waves-light">CPP</a>
 
         
 
-            <a href="/tags/Android/" style="-webkit-order:27;order:27" class="tags-list-item waves-effect waves-button waves-light">Android</a>
+            <a href="/tags/BERT/" style="-webkit-order:30;order:30" class="tags-list-item waves-effect waves-button waves-light">BERT</a>
 
         
 
-            <a href="/tags/Java/" style="-webkit-order:28;order:28" class="tags-list-item waves-effect waves-button waves-light">Java</a>
+            <a href="/tags/NLP/" style="-webkit-order:31;order:31" class="tags-list-item waves-effect waves-button waves-light">NLP</a>
 
         
 
-            <a href="/tags/CRF/" style="-webkit-order:29;order:29" class="tags-list-item waves-effect waves-button waves-light">CRF</a>
+            <a href="/tags/CRF/" style="-webkit-order:32;order:32" class="tags-list-item waves-effect waves-button waves-light">CRF</a>
 
         
 
-            <a href="/tags/CRF/" style="-webkit-order:30;order:30" class="tags-list-item waves-effect waves-button waves-light">CRF++</a>
+            <a href="/tags/CRF/" style="-webkit-order:33;order:33" class="tags-list-item waves-effect waves-button waves-light">CRF++</a>
 
         
 
-            <a href="/tags/DIN/" style="-webkit-order:31;order:31" class="tags-list-item waves-effect waves-button waves-light">DIN</a>
+            <a href="/tags/Web/" style="-webkit-order:34;order:34" class="tags-list-item waves-effect waves-button waves-light">Web</a>
 
         
 
-            <a href="/tags/推荐算法/" style="-webkit-order:32;order:32" class="tags-list-item waves-effect waves-button waves-light">推荐算法</a>
+            <a href="/tags/DIN/" style="-webkit-order:35;order:35" class="tags-list-item waves-effect waves-button waves-light">DIN</a>
 
         
 
-            <a href="/tags/Web/" style="-webkit-order:33;order:33" class="tags-list-item waves-effect waves-button waves-light">Web</a>
+            <a href="/tags/推荐算法/" style="-webkit-order:36;order:36" class="tags-list-item waves-effect waves-button waves-light">推荐算法</a>
 
         
 
-            <a href="/tags/ESMM/" style="-webkit-order:34;order:34" class="tags-list-item waves-effect waves-button waves-light">ESMM</a>
+            <a href="/tags/备忘/" style="-webkit-order:37;order:37" class="tags-list-item waves-effect waves-button waves-light">备忘</a>
 
         
 
-            <a href="/tags/备忘/" style="-webkit-order:35;order:35" class="tags-list-item waves-effect waves-button waves-light">备忘</a>
+            <a href="/tags/ESMM/" style="-webkit-order:38;order:38" class="tags-list-item waves-effect waves-button waves-light">ESMM</a>
 
         
 
-            <a href="/tags/Github/" style="-webkit-order:36;order:36" class="tags-list-item waves-effect waves-button waves-light">Github</a>
+            <a href="/tags/Flash/" style="-webkit-order:39;order:39" class="tags-list-item waves-effect waves-button waves-light">Flash</a>
 
         
 
-            <a href="/tags/SSH/" style="-webkit-order:37;order:37" class="tags-list-item waves-effect waves-button waves-light">SSH</a>
+            <a href="/tags/Github/" style="-webkit-order:40;order:40" class="tags-list-item waves-effect waves-button waves-light">Github</a>
 
         
 
-            <a href="/tags/Flash/" style="-webkit-order:38;order:38" class="tags-list-item waves-effect waves-button waves-light">Flash</a>
+            <a href="/tags/SSH/" style="-webkit-order:41;order:41" class="tags-list-item waves-effect waves-button waves-light">SSH</a>
 
         
 
-            <a href="/tags/3D/" style="-webkit-order:39;order:39" class="tags-list-item waves-effect waves-button waves-light">3D</a>
+            <a href="/tags/3D/" style="-webkit-order:42;order:42" class="tags-list-item waves-effect waves-button waves-light">3D</a>
 
         
 
-            <a href="/tags/博客/" style="-webkit-order:40;order:40" class="tags-list-item waves-effect waves-button waves-light">博客</a>
+            <a href="/tags/博客/" style="-webkit-order:43;order:43" class="tags-list-item waves-effect waves-button waves-light">博客</a>
 
         
 
-            <a href="/tags/Hexo/" style="-webkit-order:41;order:41" class="tags-list-item waves-effect waves-button waves-light">Hexo</a>
+            <a href="/tags/GitLab/" style="-webkit-order:44;order:44" class="tags-list-item waves-effect waves-button waves-light">GitLab</a>
 
         
 
-            <a href="/tags/Github-Action/" style="-webkit-order:42;order:42" class="tags-list-item waves-effect waves-button waves-light">Github Action</a>
+            <a href="/tags/Hexo/" style="-webkit-order:45;order:45" class="tags-list-item waves-effect waves-button waves-light">Hexo</a>
 
         
 
-            <a href="/tags/GitLab/" style="-webkit-order:43;order:43" class="tags-list-item waves-effect waves-button waves-light">GitLab</a>
+            <a href="/tags/Github-Action/" style="-webkit-order:46;order:46" class="tags-list-item waves-effect waves-button waves-light">Github Action</a>
 
         
 
-            <a href="/tags/Hulu/" style="-webkit-order:44;order:44" class="tags-list-item waves-effect waves-button waves-light">Hulu</a>
+            <a href="/tags/Hulu/" style="-webkit-order:47;order:47" class="tags-list-item waves-effect waves-button waves-light">Hulu</a>
 
         
 
-            <a href="/tags/截图/" style="-webkit-order:45;order:45" class="tags-list-item waves-effect waves-button waves-light">截图</a>
+            <a href="/tags/GPT/" style="-webkit-order:48;order:48" class="tags-list-item waves-effect waves-button waves-light">GPT</a>
 
         
 
-            <a href="/tags/链接/" style="-webkit-order:46;order:46" class="tags-list-item waves-effect waves-button waves-light">链接</a>
+            <a href="/tags/MFC/" style="-webkit-order:49;order:49" class="tags-list-item waves-effect waves-button waves-light">MFC</a>
 
         
 
-            <a href="/tags/markdown/" style="-webkit-order:47;order:47" class="tags-list-item waves-effect waves-button waves-light">markdown</a>
+            <a href="/tags/LBSN/" style="-webkit-order:50;order:50" class="tags-list-item waves-effect waves-button waves-light">LBSN</a>
 
         
 
-            <a href="/tags/软件开发/" style="-webkit-order:48;order:48" class="tags-list-item waves-effect waves-button waves-light">软件开发</a>
+            <a href="/tags/POI/" style="-webkit-order:51;order:51" class="tags-list-item waves-effect waves-button waves-light">POI</a>
 
         
 
-            <a href="/tags/GPT/" style="-webkit-order:49;order:49" class="tags-list-item waves-effect waves-button waves-light">GPT</a>
+            <a href="/tags/推荐系统/" style="-webkit-order:52;order:52" class="tags-list-item waves-effect waves-button waves-light">推荐系统</a>
 
         
 
-            <a href="/tags/MFC/" style="-webkit-order:50;order:50" class="tags-list-item waves-effect waves-button waves-light">MFC</a>
+            <a href="/tags/截图/" style="-webkit-order:53;order:53" class="tags-list-item waves-effect waves-button waves-light">截图</a>
 
         
 
-            <a href="/tags/LBSN/" style="-webkit-order:51;order:51" class="tags-list-item waves-effect waves-button waves-light">LBSN</a>
+            <a href="/tags/链接/" style="-webkit-order:54;order:54" class="tags-list-item waves-effect waves-button waves-light">链接</a>
 
         
 
-            <a href="/tags/POI/" style="-webkit-order:52;order:52" class="tags-list-item waves-effect waves-button waves-light">POI</a>
+            <a href="/tags/markdown/" style="-webkit-order:55;order:55" class="tags-list-item waves-effect waves-button waves-light">markdown</a>
 
         
 
-            <a href="/tags/推荐系统/" style="-webkit-order:53;order:53" class="tags-list-item waves-effect waves-button waves-light">推荐系统</a>
+            <a href="/tags/软件开发/" style="-webkit-order:56;order:56" class="tags-list-item waves-effect waves-button waves-light">软件开发</a>
 
         
 
-            <a href="/tags/Linux/" style="-webkit-order:54;order:54" class="tags-list-item waves-effect waves-button waves-light">Linux</a>
+            <a href="/tags/Linux/" style="-webkit-order:57;order:57" class="tags-list-item waves-effect waves-button waves-light">Linux</a>
 
         
 
-            <a href="/tags/C/" style="-webkit-order:55;order:55" class="tags-list-item waves-effect waves-button waves-light">C</a>
+            <a href="/tags/C/" style="-webkit-order:58;order:58" class="tags-list-item waves-effect waves-button waves-light">C</a>
 
         
 
-            <a href="/tags/爬虫/" style="-webkit-order:56;order:56" class="tags-list-item waves-effect waves-button waves-light">爬虫</a>
+            <a href="/tags/硬件/" style="-webkit-order:59;order:59" class="tags-list-item waves-effect waves-button waves-light">硬件</a>
 
         
 
-            <a href="/tags/硬件/" style="-webkit-order:57;order:57" class="tags-list-item waves-effect waves-button waves-light">硬件</a>
+            <a href="/tags/爬虫/" style="-webkit-order:60;order:60" class="tags-list-item waves-effect waves-button waves-light">爬虫</a>
 
         
 
-            <a href="/tags/PPT/" style="-webkit-order:58;order:58" class="tags-list-item waves-effect waves-button waves-light">PPT</a>
+            <a href="/tags/PPT/" style="-webkit-order:61;order:61" class="tags-list-item waves-effect waves-button waves-light">PPT</a>
 
         
 
-            <a href="/tags/动画/" style="-webkit-order:59;order:59" class="tags-list-item waves-effect waves-button waves-light">动画</a>
+            <a href="/tags/动画/" style="-webkit-order:62;order:62" class="tags-list-item waves-effect waves-button waves-light">动画</a>
 
         
 
-            <a href="/tags/OpenCV/" style="-webkit-order:60;order:60" class="tags-list-item waves-effect waves-button waves-light">OpenCV</a>
+            <a href="/tags/OpenCV/" style="-webkit-order:63;order:63" class="tags-list-item waves-effect waves-button waves-light">OpenCV</a>
 
         
 
-            <a href="/tags/兴趣点推荐/" style="-webkit-order:61;order:61" class="tags-list-item waves-effect waves-button waves-light">兴趣点推荐</a>
+            <a href="/tags/Python/" style="-webkit-order:64;order:64" class="tags-list-item waves-effect waves-button waves-light">Python</a>
 
         
 
-            <a href="/tags/图神经网络/" style="-webkit-order:62;order:62" class="tags-list-item waves-effect waves-button waves-light">图神经网络</a>
+            <a href="/tags/Pandas/" style="-webkit-order:65;order:65" class="tags-list-item waves-effect waves-button waves-light">Pandas</a>
 
         
 
-            <a href="/tags/注意力机制/" style="-webkit-order:63;order:63" class="tags-list-item waves-effect waves-button waves-light">注意力机制</a>
+            <a href="/tags/兴趣点推荐/" style="-webkit-order:66;order:66" class="tags-list-item waves-effect waves-button waves-light">兴趣点推荐</a>
 
         
 
-            <a href="/tags/ASGNN/" style="-webkit-order:64;order:64" class="tags-list-item waves-effect waves-button waves-light">ASGNN</a>
+            <a href="/tags/图神经网络/" style="-webkit-order:67;order:67" class="tags-list-item waves-effect waves-button waves-light">图神经网络</a>
 
         
 
-            <a href="/tags/Python/" style="-webkit-order:65;order:65" class="tags-list-item waves-effect waves-button waves-light">Python</a>
+            <a href="/tags/注意力机制/" style="-webkit-order:68;order:68" class="tags-list-item waves-effect waves-button waves-light">注意力机制</a>
 
         
 
-            <a href="/tags/Pandas/" style="-webkit-order:66;order:66" class="tags-list-item waves-effect waves-button waves-light">Pandas</a>
+            <a href="/tags/ASGNN/" style="-webkit-order:69;order:69" class="tags-list-item waves-effect waves-button waves-light">ASGNN</a>
 
         
 
-            <a href="/tags/STAN/" style="-webkit-order:67;order:67" class="tags-list-item waves-effect waves-button waves-light">STAN</a>
+            <a href="/tags/CHAML/" style="-webkit-order:70;order:70" class="tags-list-item waves-effect waves-button waves-light">CHAML</a>
 
         
 
-            <a href="/tags/CHAML/" style="-webkit-order:68;order:68" class="tags-list-item waves-effect waves-button waves-light">CHAML</a>
+            <a href="/tags/元学习/" style="-webkit-order:71;order:71" class="tags-list-item waves-effect waves-button waves-light">元学习</a>
 
         
 
-            <a href="/tags/元学习/" style="-webkit-order:69;order:69" class="tags-list-item waves-effect waves-button waves-light">元学习</a>
+            <a href="/tags/课程学习/" style="-webkit-order:72;order:72" class="tags-list-item waves-effect waves-button waves-light">课程学习</a>
 
         
 
-            <a href="/tags/课程学习/" style="-webkit-order:70;order:70" class="tags-list-item waves-effect waves-button waves-light">课程学习</a>
+            <a href="/tags/LSTPM/" style="-webkit-order:73;order:73" class="tags-list-item waves-effect waves-button waves-light">LSTPM</a>
 
         
 
-            <a href="/tags/LSTPM/" style="-webkit-order:71;order:71" class="tags-list-item waves-effect waves-button waves-light">LSTPM</a>
+            <a href="/tags/Non-local-Neural-Networks/" style="-webkit-order:74;order:74" class="tags-list-item waves-effect waves-button waves-light">Non-local Neural Networks</a>
 
         
 
-            <a href="/tags/Non-local-Neural-Networks/" style="-webkit-order:72;order:72" class="tags-list-item waves-effect waves-button waves-light">Non-local Neural Networks</a>
+            <a href="/tags/STAN/" style="-webkit-order:75;order:75" class="tags-list-item waves-effect waves-button waves-light">STAN</a>
 
         
 
-            <a href="/tags/浅拷贝/" style="-webkit-order:73;order:73" class="tags-list-item waves-effect waves-button waves-light">浅拷贝</a>
+            <a href="/tags/浅拷贝/" style="-webkit-order:76;order:76" class="tags-list-item waves-effect waves-button waves-light">浅拷贝</a>
 
         
 
-            <a href="/tags/深拷贝/" style="-webkit-order:74;order:74" class="tags-list-item waves-effect waves-button waves-light">深拷贝</a>
+            <a href="/tags/深拷贝/" style="-webkit-order:77;order:77" class="tags-list-item waves-effect waves-button waves-light">深拷贝</a>
 
         
 
-            <a href="/tags/Photoshop/" style="-webkit-order:75;order:75" class="tags-list-item waves-effect waves-button waves-light">Photoshop</a>
+            <a href="/tags/Photoshop/" style="-webkit-order:78;order:78" class="tags-list-item waves-effect waves-button waves-light">Photoshop</a>
 
         
 
-            <a href="/tags/装机/" style="-webkit-order:76;order:76" class="tags-list-item waves-effect waves-button waves-light">装机</a>
+            <a href="/tags/装机/" style="-webkit-order:79;order:79" class="tags-list-item waves-effect waves-button waves-light">装机</a>
 
         
 
-            <a href="/tags/Waline/" style="-webkit-order:77;order:77" class="tags-list-item waves-effect waves-button waves-light">Waline</a>
+            <a href="/tags/Waline/" style="-webkit-order:80;order:80" class="tags-list-item waves-effect waves-button waves-light">Waline</a>
 
         
 
-            <a href="/tags/Deta/" style="-webkit-order:78;order:78" class="tags-list-item waves-effect waves-button waves-light">Deta</a>
+            <a href="/tags/Deta/" style="-webkit-order:81;order:81" class="tags-list-item waves-effect waves-button waves-light">Deta</a>
 
         
 
-            <a href="/tags/ffmpeg/" style="-webkit-order:79;order:79" class="tags-list-item waves-effect waves-button waves-light">ffmpeg</a>
+            <a href="/tags/Django/" style="-webkit-order:82;order:82" class="tags-list-item waves-effect waves-button waves-light">Django</a>
 
         
 
-            <a href="/tags/Django/" style="-webkit-order:80;order:80" class="tags-list-item waves-effect waves-button waves-light">Django</a>
+            <a href="/tags/ffmpeg/" style="-webkit-order:83;order:83" class="tags-list-item waves-effect waves-button waves-light">ffmpeg</a>
 
         
 
-            <a href="/tags/Markdown/" style="-webkit-order:81;order:81" class="tags-list-item waves-effect waves-button waves-light">Markdown</a>
+            <a href="/tags/Markdown/" style="-webkit-order:84;order:84" class="tags-list-item waves-effect waves-button waves-light">Markdown</a>
 
         
 
-            <a href="/tags/Matlab/" style="-webkit-order:82;order:82" class="tags-list-item waves-effect waves-button waves-light">Matlab</a>
+            <a href="/tags/office/" style="-webkit-order:85;order:85" class="tags-list-item waves-effect waves-button waves-light">office</a>
 
         
 
-            <a href="/tags/office/" style="-webkit-order:83;order:83" class="tags-list-item waves-effect waves-button waves-light">office</a>
+            <a href="/tags/word/" style="-webkit-order:86;order:86" class="tags-list-item waves-effect waves-button waves-light">word</a>
 
         
 
-            <a href="/tags/word/" style="-webkit-order:84;order:84" class="tags-list-item waves-effect waves-button waves-light">word</a>
+            <a href="/tags/excel/" style="-webkit-order:87;order:87" class="tags-list-item waves-effect waves-button waves-light">excel</a>
 
         
 
-            <a href="/tags/excel/" style="-webkit-order:85;order:85" class="tags-list-item waves-effect waves-button waves-light">excel</a>
+            <a href="/tags/ppt/" style="-webkit-order:88;order:88" class="tags-list-item waves-effect waves-button waves-light">ppt</a>
 
         
 
-            <a href="/tags/ppt/" style="-webkit-order:86;order:86" class="tags-list-item waves-effect waves-button waves-light">ppt</a>
+            <a href="/tags/Matlab/" style="-webkit-order:89;order:89" class="tags-list-item waves-effect waves-button waves-light">Matlab</a>
 
         
 
-            <a href="/tags/samba/" style="-webkit-order:87;order:87" class="tags-list-item waves-effect waves-button waves-light">samba</a>
+            <a href="/tags/samba/" style="-webkit-order:90;order:90" class="tags-list-item waves-effect waves-button waves-light">samba</a>
 
         
 
-            <a href="/tags/Windows/" style="-webkit-order:88;order:88" class="tags-list-item waves-effect waves-button waves-light">Windows</a>
+            <a href="/tags/Windows/" style="-webkit-order:91;order:91" class="tags-list-item waves-effect waves-button waves-light">Windows</a>
 
         
 
-            <a href="/tags/CF/" style="-webkit-order:89;order:89" class="tags-list-item waves-effect waves-button waves-light">CF</a>
+            <a href="/tags/CF/" style="-webkit-order:92;order:92" class="tags-list-item waves-effect waves-button waves-light">CF</a>
 
         
 
-            <a href="/tags/Autoencoder/" style="-webkit-order:90;order:90" class="tags-list-item waves-effect waves-button waves-light">Autoencoder</a>
+            <a href="/tags/Autoencoder/" style="-webkit-order:93;order:93" class="tags-list-item waves-effect waves-button waves-light">Autoencoder</a>
 
         
 
-            <a href="/tags/MF/" style="-webkit-order:91;order:91" class="tags-list-item waves-effect waves-button waves-light">MF</a>
+            <a href="/tags/FM/" style="-webkit-order:94;order:94" class="tags-list-item waves-effect waves-button waves-light">FM</a>
 
         
 
-            <a href="/tags/FM/" style="-webkit-order:92;order:92" class="tags-list-item waves-effect waves-button waves-light">FM</a>
+            <a href="/tags/MF/" style="-webkit-order:95;order:95" class="tags-list-item waves-effect waves-button waves-light">MF</a>
 
         
 
-            <a href="/tags/Wide-Deep/" style="-webkit-order:93;order:93" class="tags-list-item waves-effect waves-button waves-light">Wide & Deep</a>
+            <a href="/tags/Wide-Deep/" style="-webkit-order:96;order:96" class="tags-list-item waves-effect waves-button waves-light">Wide & Deep</a>
 
         
 
-            <a href="/tags/深度学习/" style="-webkit-order:94;order:94" class="tags-list-item waves-effect waves-button waves-light">深度学习</a>
+            <a href="/tags/深度学习/" style="-webkit-order:97;order:97" class="tags-list-item waves-effect waves-button waves-light">深度学习</a>
 
         
 
-            <a href="/tags/XML/" style="-webkit-order:95;order:95" class="tags-list-item waves-effect waves-button waves-light">XML</a>
+            <a href="/tags/XML/" style="-webkit-order:98;order:98" class="tags-list-item waves-effect waves-button waves-light">XML</a>
 
         
 
-            <a href="/tags/元宇宙/" style="-webkit-order:96;order:96" class="tags-list-item waves-effect waves-button waves-light">元宇宙</a>
+            <a href="/tags/元宇宙/" style="-webkit-order:99;order:99" class="tags-list-item waves-effect waves-button waves-light">元宇宙</a>
 
         
 
-            <a href="/tags/公告/" style="-webkit-order:97;order:97" class="tags-list-item waves-effect waves-button waves-light">公告</a>
-
-        
-
-            <a href="/tags/TensorFlow/" style="-webkit-order:98;order:98" class="tags-list-item waves-effect waves-button waves-light">TensorFlow</a>
-
-        
-
-            <a href="/tags/Pytorch/" style="-webkit-order:99;order:99" class="tags-list-item waves-effect waves-button waves-light">Pytorch</a>
-
-        
-
-            <a href="/tags/GPU/" style="-webkit-order:100;order:100" class="tags-list-item waves-effect waves-button waves-light">GPU</a>
+            <a href="/tags/公告/" style="-webkit-order:100;order:100" class="tags-list-item waves-effect waves-button waves-light">公告</a>
 
         
 
@@ -620,55 +730,55 @@
 
         
 
-            <a href="/tags/Hadoop/" style="-webkit-order:103;order:103" class="tags-list-item waves-effect waves-button waves-light">Hadoop</a>
+            <a href="/tags/TensorFlow/" style="-webkit-order:103;order:103" class="tags-list-item waves-effect waves-button waves-light">TensorFlow</a>
 
         
 
-            <a href="/tags/Maven/" style="-webkit-order:104;order:104" class="tags-list-item waves-effect waves-button waves-light">Maven</a>
+            <a href="/tags/Pytorch/" style="-webkit-order:104;order:104" class="tags-list-item waves-effect waves-button waves-light">Pytorch</a>
 
         
 
-            <a href="/tags/Valine/" style="-webkit-order:105;order:105" class="tags-list-item waves-effect waves-button waves-light">Valine</a>
+            <a href="/tags/GPU/" style="-webkit-order:105;order:105" class="tags-list-item waves-effect waves-button waves-light">GPU</a>
 
         
 
-            <a href="/tags/评论/" style="-webkit-order:106;order:106" class="tags-list-item waves-effect waves-button waves-light">评论</a>
+            <a href="/tags/Hadoop/" style="-webkit-order:106;order:106" class="tags-list-item waves-effect waves-button waves-light">Hadoop</a>
 
         
 
-            <a href="/tags/向量检索/" style="-webkit-order:107;order:107" class="tags-list-item waves-effect waves-button waves-light">向量检索</a>
+            <a href="/tags/Maven/" style="-webkit-order:107;order:107" class="tags-list-item waves-effect waves-button waves-light">Maven</a>
 
         
 
-            <a href="/tags/命名实体识别/" style="-webkit-order:108;order:108" class="tags-list-item waves-effect waves-button waves-light">命名实体识别</a>
+            <a href="/tags/Valine/" style="-webkit-order:108;order:108" class="tags-list-item waves-effect waves-button waves-light">Valine</a>
 
         
 
-            <a href="/tags/NER/" style="-webkit-order:109;order:109" class="tags-list-item waves-effect waves-button waves-light">NER</a>
+            <a href="/tags/评论/" style="-webkit-order:109;order:109" class="tags-list-item waves-effect waves-button waves-light">评论</a>
 
         
 
-            <a href="/tags/数据结构/" style="-webkit-order:110;order:110" class="tags-list-item waves-effect waves-button waves-light">数据结构</a>
+            <a href="/tags/向量检索/" style="-webkit-order:110;order:110" class="tags-list-item waves-effect waves-button waves-light">向量检索</a>
 
         
 
-            <a href="/tags/Weka/" style="-webkit-order:111;order:111" class="tags-list-item waves-effect waves-button waves-light">Weka</a>
+            <a href="/tags/命名实体识别/" style="-webkit-order:111;order:111" class="tags-list-item waves-effect waves-button waves-light">命名实体识别</a>
 
         
 
-            <a href="/tags/多机协作/" style="-webkit-order:112;order:112" class="tags-list-item waves-effect waves-button waves-light">多机协作</a>
+            <a href="/tags/NER/" style="-webkit-order:112;order:112" class="tags-list-item waves-effect waves-button waves-light">NER</a>
 
         
 
-            <a href="/tags/大模型/" style="-webkit-order:113;order:113" class="tags-list-item waves-effect waves-button waves-light">大模型</a>
+            <a href="/tags/数据结构/" style="-webkit-order:113;order:113" class="tags-list-item waves-effect waves-button waves-light">数据结构</a>
 
         
 
-            <a href="/tags/LLM/" style="-webkit-order:114;order:114" class="tags-list-item waves-effect waves-button waves-light">LLM</a>
+            <a href="/tags/Weka/" style="-webkit-order:114;order:114" class="tags-list-item waves-effect waves-button waves-light">Weka</a>
 
         
 
-            <a href="/tags/论文/" style="-webkit-order:115;order:115" class="tags-list-item waves-effect waves-button waves-light">论文</a>
+            <a href="/tags/多机协作/" style="-webkit-order:115;order:115" class="tags-list-item waves-effect waves-button waves-light">多机协作</a>
 
         
 
@@ -684,71 +794,83 @@
 
         
 
-            <a href="/tags/笔记/" style="-webkit-order:3;order:3" class="tags-list-item waves-effect waves-button waves-light">笔记</a>
+            <a href="/tags/大模型/" style="-webkit-order:3;order:3" class="tags-list-item waves-effect waves-button waves-light">大模型</a>
 
         
 
-            <a href="/tags/显示技术/" style="-webkit-order:4;order:4" class="tags-list-item waves-effect waves-button waves-light">显示技术</a>
+            <a href="/tags/LLM/" style="-webkit-order:4;order:4" class="tags-list-item waves-effect waves-button waves-light">LLM</a>
 
         
 
-            <a href="/tags/域名/" style="-webkit-order:5;order:5" class="tags-list-item waves-effect waves-button waves-light">域名</a>
+            <a href="/tags/论文/" style="-webkit-order:5;order:5" class="tags-list-item waves-effect waves-button waves-light">论文</a>
 
         
 
-            <a href="/tags/毕业/" style="-webkit-order:6;order:6" class="tags-list-item waves-effect waves-button waves-light">毕业</a>
+            <a href="/tags/笔记/" style="-webkit-order:6;order:6" class="tags-list-item waves-effect waves-button waves-light">笔记</a>
 
         
 
-            <a href="/tags/总结/" style="-webkit-order:7;order:7" class="tags-list-item waves-effect waves-button waves-light">总结</a>
+            <a href="/tags/域名/" style="-webkit-order:7;order:7" class="tags-list-item waves-effect waves-button waves-light">域名</a>
 
         
 
-            <a href="/tags/论文笔记/" style="-webkit-order:8;order:8" class="tags-list-item waves-effect waves-button waves-light">论文笔记</a>
+            <a href="/tags/显示技术/" style="-webkit-order:8;order:8" class="tags-list-item waves-effect waves-button waves-light">显示技术</a>
 
         
 
-            <a href="/tags/Electron/" style="-webkit-order:9;order:9" class="tags-list-item waves-effect waves-button waves-light">Electron</a>
+            <a href="/tags/毕业/" style="-webkit-order:9;order:9" class="tags-list-item waves-effect waves-button waves-light">毕业</a>
 
         
 
-            <a href="/tags/数学/" style="-webkit-order:10;order:10" class="tags-list-item waves-effect waves-button waves-light">数学</a>
+            <a href="/tags/总结/" style="-webkit-order:10;order:10" class="tags-list-item waves-effect waves-button waves-light">总结</a>
 
         
 
-            <a href="/tags/计算机图形学/" style="-webkit-order:11;order:11" class="tags-list-item waves-effect waves-button waves-light">计算机图形学</a>
+            <a href="/tags/论文笔记/" style="-webkit-order:11;order:11" class="tags-list-item waves-effect waves-button waves-light">论文笔记</a>
 
         
 
-            <a href="/tags/设计模式/" style="-webkit-order:12;order:12" class="tags-list-item waves-effect waves-button waves-light">设计模式</a>
+            <a href="/tags/Electron/" style="-webkit-order:12;order:12" class="tags-list-item waves-effect waves-button waves-light">Electron</a>
 
         
 
-            <a href="/tags/软件架构/" style="-webkit-order:13;order:13" class="tags-list-item waves-effect waves-button waves-light">软件架构</a>
+            <a href="/tags/数学/" style="-webkit-order:13;order:13" class="tags-list-item waves-effect waves-button waves-light">数学</a>
 
         
 
-            <a href="/tags/Embedding/" style="-webkit-order:14;order:14" class="tags-list-item waves-effect waves-button waves-light">Embedding</a>
+            <a href="/tags/计算机图形学/" style="-webkit-order:14;order:14" class="tags-list-item waves-effect waves-button waves-light">计算机图形学</a>
 
         
 
-            <a href="/tags/评测/" style="-webkit-order:15;order:15" class="tags-list-item waves-effect waves-button waves-light">评测</a>
+            <a href="/tags/设计模式/" style="-webkit-order:15;order:15" class="tags-list-item waves-effect waves-button waves-light">设计模式</a>
 
         
 
-            <a href="/tags/OnePlus/" style="-webkit-order:16;order:16" class="tags-list-item waves-effect waves-button waves-light">OnePlus</a>
+            <a href="/tags/软件架构/" style="-webkit-order:16;order:16" class="tags-list-item waves-effect waves-button waves-light">软件架构</a>
 
         
 
-            <a href="/tags/数字信号处理/" style="-webkit-order:17;order:17" class="tags-list-item waves-effect waves-button waves-light">数字信号处理</a>
+            <a href="/tags/Embedding/" style="-webkit-order:17;order:17" class="tags-list-item waves-effect waves-button waves-light">Embedding</a>
 
         
 
-            <a href="/tags/idea/" style="-webkit-order:18;order:18" class="tags-list-item waves-effect waves-button waves-light">idea</a>
+            <a href="/tags/评测/" style="-webkit-order:18;order:18" class="tags-list-item waves-effect waves-button waves-light">评测</a>
 
         
 
-            <a href="/tags/ECharts/" style="-webkit-order:19;order:19" class="tags-list-item waves-effect waves-button waves-light">ECharts</a>
+            <a href="/tags/OnePlus/" style="-webkit-order:19;order:19" class="tags-list-item waves-effect waves-button waves-light">OnePlus</a>
+
+        
+
+            <a href="/tags/数字信号处理/" style="-webkit-order:20;order:20" class="tags-list-item waves-effect waves-button waves-light">数字信号处理</a>
+
+        
+
+            <a href="/tags/idea/" style="-webkit-order:21;order:21" class="tags-list-item waves-effect waves-button waves-light">idea</a>
+
+        
+
+            <a href="/tags/ECharts/" style="-webkit-order:22;order:22" class="tags-list-item waves-effect waves-button waves-light">ECharts</a>
 
         
     </nav>
