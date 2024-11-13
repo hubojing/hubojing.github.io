@@ -28,15 +28,18 @@
   <!-- front-matter head_begin begin -->
   <!-- front-matter head_begin end -->
   <link rel="preload" href="/css/style.css" as="style">
-  <link rel="preload" href="https://unpkg.com/volantis-static@0.0.1654736714924/media/fonts/VarelaRound/VarelaRound-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
-<link rel="preload" href="https://unpkg.com/volantis-static@0.0.1654736714924/media/fonts/UbuntuMono/UbuntuMono-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="https://gcore.jsdelivr.net/gh/volantis-x/cdn-fonts/Helvetica/Helvetica.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+<link rel="preload" href="https://unpkg.com/volantis-static@0.0.1654736714924/media/fonts/Helvetica/Helvetica.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 
   <!-- feed -->
       <link rel="alternate" href="/atom.xml" title="靖待的技术博客" type="application/atom+xml">
   <!-- 页面元数据 -->
   <title>词的向量表示方法 - 靖待的技术博客</title>
   <meta name="keywords" content="NLP,Embedding,undefined">
-  <meta desc name="description" content="　　思想简记  - 靖待 - 靖待的技术博客">
+  <meta desc name="description" content="
+
+思想简记
+  - 靖待 - 靖待的技术博客">
   
 <meta property="og:type" content="article">
 <meta property="og:title" content="词的向量表示方法">
@@ -67,7 +70,7 @@
   --color-block: #f6f6f6;
   --color-inlinecode: #c74f00;
   --color-codeblock: #fff7ea;
-  --color-h1: #003eb3;
+  --color-h1: #000;
   --color-h2: #3a3a3a;
   --color-h3: #333;
   --color-h4: #444;
@@ -132,7 +135,7 @@ body {
   background-color: var(--color-site-body);
   text-rendering: optimizelegibility;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
-  line-height: 'normal';
+  line-height: 1.5;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
 }
@@ -879,15 +882,15 @@ button {
   }
 }
 @font-face {
-  font-family: 'UbuntuMono';
-  src: url("https://unpkg.com/volantis-static@0.0.1654736714924/media/fonts/UbuntuMono/UbuntuMono-Regular.ttf");
+  font-family: 'Helvetica';
+  src: url("https://unpkg.com/volantis-static@0.0.1654736714924/media/fonts/Helvetica/Helvetica.ttf");
   font-weight: 'normal';
   font-style: 'normal';
   font-display: swap;
 }
 @font-face {
-  font-family: 'Varela Round';
-  src: url("https://unpkg.com/volantis-static@0.0.1654736714924/media/fonts/VarelaRound/VarelaRound-Regular.ttf");
+  font-family: 'Helvetica';
+  src: url("https://gcore.jsdelivr.net/gh/volantis-x/cdn-fonts/Helvetica/Helvetica.ttf");
   font-weight: 'normal';
   font-style: 'normal';
   font-display: swap;
@@ -1009,7 +1012,7 @@ button {
   flex-shrink: 0;
   line-height: 64px;
   padding: 0 24px;
-  font-size: 1.12rem;
+  font-size: 1.2rem;
   font-family: Arial, "Varela Round", "PingFang SC", "Microsoft YaHei", Helvetica, Arial, Helvetica, monospace;
 }
 .l_header #wrapper .nav-main .title img {
@@ -1775,7 +1778,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: "env",
     cdn: {"js":{"app":"/js/app.js","parallax":"/js/plugins/parallax.js","rightMenu":"/js/plugins/rightMenu.js","rightMenus":"/js/plugins/rightMenus.js","sites":"/js/plugins/tags/sites.js","friends":"/js/plugins/tags/friends.js","contributors":"/js/plugins/tags/contributors.js","search":"/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"/images/icons/avatar.jpg","link":"/images/icons/avatar.jpg","cover":"/images/icons/avatar.jpg","image":"/images/icons/avatar.jpg"},
-    lastupdate: new Date(1731501372180),
+    lastupdate: new Date(1731511770324),
     sidebar: {
       for_page: ["blogger","category","tagcloud","webinfo"],
       for_post: ["toc"],
@@ -2708,25 +2711,44 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
   <div id="layoutHelper-page-plugins"></div>
   <div id="post-body" itemprop="articleBody">
-    <div align="left"><br><img src="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——Word2Vec.png?raw=true" class="lazyload" data-srcset="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——Word2Vec.png?raw=true" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="300" height="180" style="float:right;"/><br><br><br>　　<strong>思想简记</strong><br><br><br> </div>
-
+    <div align="left">
+<img src="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——Word2Vec.png?raw=true" class="lazyload" data-srcset="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——Word2Vec.png?raw=true" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="300" height="180" style="float:right;"/>
+<p><strong>思想简记</strong></p>
+ </div>
 <span id="more"></span>
 <p>NLP中，离散符号化的词语不能包含语义信息，所以把词映射到向量空间。</p>
-<h1 id="独热编码（One-Hot-Encoding）"><a href="#独热编码（One-Hot-Encoding）" class="headerlink" title="独热编码（One-Hot Encoding）"></a>独热编码（One-Hot Encoding）</h1><p>思想：将一个词表示成很长的向量，该向量的维度是整个词表的大小。对某一具体词，除了该词编号的维度为1，其余都为0。<br><img src="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——独热编码.png?raw=true" class="lazyload" data-srcset="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——独热编码.png?raw=true" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="独热编码"></p>
-<h1 id="词袋模型（Bag-of-Words-BoW）"><a href="#词袋模型（Bag-of-Words-BoW）" class="headerlink" title="词袋模型（Bag-of-Words, BoW）"></a>词袋模型（Bag-of-Words, BoW）</h1><p>思想：将文本视为装词的袋子，不考虑词的上下文关系和顺序，只记录每个词在该文本（词袋）中出现的次数。<br><img src="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——词袋模型.png?raw=true" class="lazyload" data-srcset="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——词袋模型.png?raw=true" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="词袋模型"></p>
-<h1 id="词向量-词嵌入（Word-Embedding）"><a href="#词向量-词嵌入（Word-Embedding）" class="headerlink" title="词向量/词嵌入（Word Embedding）"></a>词向量/词嵌入（Word Embedding）</h1><p>上面对词的表示方法没有考虑语义层面信息。为表示词与词之间的语义相似程度，提出词的分布式表示，即基于上下文的稠密向量表示法，通常称为词向量或词嵌入（Word Embedding）。<br>产生词向量的手段：</p>
+<h1 id="独热编码one-hot-encoding"><a class="markdownIt-Anchor" href="#独热编码one-hot-encoding"></a> 独热编码（One-Hot Encoding）</h1>
+<p>思想：将一个词表示成很长的向量，该向量的维度是整个词表的大小。对某一具体词，除了该词编号的维度为1，其余都为0。<br />
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95%E2%80%94%E2%80%94%E7%8B%AC%E7%83%AD%E7%BC%96%E7%A0%81.png?raw=true" class="lazyload" data-srcset="https://github.com/hubojing/BlogImages/blob/master/%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95%E2%80%94%E2%80%94%E7%8B%AC%E7%83%AD%E7%BC%96%E7%A0%81.png?raw=true" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="独热编码" /></p>
+<h1 id="词袋模型bag-of-words-bow"><a class="markdownIt-Anchor" href="#词袋模型bag-of-words-bow"></a> 词袋模型（Bag-of-Words, BoW）</h1>
+<p>思想：将文本视为装词的袋子，不考虑词的上下文关系和顺序，只记录每个词在该文本（词袋）中出现的次数。<br />
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95%E2%80%94%E2%80%94%E8%AF%8D%E8%A2%8B%E6%A8%A1%E5%9E%8B.png?raw=true" class="lazyload" data-srcset="https://github.com/hubojing/BlogImages/blob/master/%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95%E2%80%94%E2%80%94%E8%AF%8D%E8%A2%8B%E6%A8%A1%E5%9E%8B.png?raw=true" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="词袋模型" /></p>
+<h1 id="词向量词嵌入word-embedding"><a class="markdownIt-Anchor" href="#词向量词嵌入word-embedding"></a> 词向量/词嵌入（Word Embedding）</h1>
+<p>上面对词的表示方法没有考虑语义层面信息。为表示词与词之间的语义相似程度，提出词的分布式表示，即基于上下文的稠密向量表示法，通常称为词向量或词嵌入（Word Embedding）。<br />
+产生词向量的手段：</p>
 <ul>
 <li>Count-based。基于计数的方法，即记录词的出现次数。</li>
 <li>Predictive。基于预测的方法，即可通过上下文预测中心词，又可通过中心词预测上下文。</li>
 <li>Task-based。基于任务的，即通过任务驱动的方法。通过对词向量在具体任务上的表现效果对词向量进行学习。</li>
 </ul>
 <p>下面是经典开源工具word2vec中的CBoW模型和Skip-gram模型。</p>
-<h2 id="连续词袋模型（Continuous-Bag-of-Words-CBoW）"><a href="#连续词袋模型（Continuous-Bag-of-Words-CBoW）" class="headerlink" title="连续词袋模型（Continuous Bag-of-Words, CBoW）"></a>连续词袋模型（Continuous Bag-of-Words, CBoW）</h2><p>和BoW相同点：不考虑词的顺序。<br>思想：将上下文词的独热表示与词向量矩阵相乘，提取相应的词向量并求和得到投影层，然后再经过一个Softmax层最终得到输出，输出的每一维表达的就是词表中每个词作为该上下文中心词的概率。整个模型训练时类似于一个窗口在训练语料上滑动，所以得名连续词袋模型。</p>
-<h2 id="Skip-gram模型（Continuous-skip-gram-Model）"><a href="#Skip-gram模型（Continuous-skip-gram-Model）" class="headerlink" title="Skip-gram模型（Continuous skip-gram Model）"></a>Skip-gram模型（Continuous skip-gram Model）</h2><p>思想：与CBoW思想刚好相反，它用中心词来预测上下文词。先通过中心词的独热表示从词向量矩阵中得到中心词的词向量，得到投影层，再经过一层Softmax得到输出，输出的每一维中代表某个词作为输入中心词的上下文出现的概率。</p>
-<p>这两种模型都包含三层，输入层、投影层、输出层：<br><img src="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——Word2Vec.png?raw=true" class="lazyload" data-srcset="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——Word2Vec.png?raw=true" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Word2Vec"></p>
-<p>训练好的词向量中，具有一定的空间平移性。<br><img src="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——空间平移性.png?raw=true" class="lazyload" data-srcset="https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——空间平移性.png?raw=true" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="空间平移性"></p>
-<p>如图，Rome和Italy之间存在is-capital-of关系，而Paris和France也同样存在。可以理解为知识图谱中的relation，即（Rome, is-capital-of, Italy）和（Paris, is-capital-of, France）。<br>通过两对在语义上关系相同的词向量相减可得相似结果，这种连续向量可近似地平移到其它具有类似关系的两个词向量之间。<br>如：<br>vector(‘Paris’) - Vector(‘France’) + Vector(‘Italy’) ≈ Vector(‘Rome’)</p>
-<h1 id="论文"><a href="#论文" class="headerlink" title="论文"></a>论文</h1><p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1301.3781v3">Efficient Estimation of Word Representations in Vector Space</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1405.4053">Distributed Representations of Sentences and Documents</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1607.04606">Enriching Word Vectors with Subword Information</a></p>
+<h2 id="连续词袋模型continuous-bag-of-words-cbow"><a class="markdownIt-Anchor" href="#连续词袋模型continuous-bag-of-words-cbow"></a> 连续词袋模型（Continuous Bag-of-Words, CBoW）</h2>
+<p>和BoW相同点：不考虑词的顺序。<br />
+思想：将上下文词的独热表示与词向量矩阵相乘，提取相应的词向量并求和得到投影层，然后再经过一个Softmax层最终得到输出，输出的每一维表达的就是词表中每个词作为该上下文中心词的概率。整个模型训练时类似于一个窗口在训练语料上滑动，所以得名连续词袋模型。</p>
+<h2 id="skip-gram模型continuous-skip-gram-model"><a class="markdownIt-Anchor" href="#skip-gram模型continuous-skip-gram-model"></a> Skip-gram模型（Continuous skip-gram Model）</h2>
+<p>思想：与CBoW思想刚好相反，它用中心词来预测上下文词。先通过中心词的独热表示从词向量矩阵中得到中心词的词向量，得到投影层，再经过一层Softmax得到输出，输出的每一维中代表某个词作为输入中心词的上下文出现的概率。</p>
+<p>这两种模型都包含三层，输入层、投影层、输出层：<br />
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95%E2%80%94%E2%80%94Word2Vec.png?raw=true" class="lazyload" data-srcset="https://github.com/hubojing/BlogImages/blob/master/%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95%E2%80%94%E2%80%94Word2Vec.png?raw=true" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Word2Vec" /></p>
+<p>训练好的词向量中，具有一定的空间平移性。<br />
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95%E2%80%94%E2%80%94%E7%A9%BA%E9%97%B4%E5%B9%B3%E7%A7%BB%E6%80%A7.png?raw=true" class="lazyload" data-srcset="https://github.com/hubojing/BlogImages/blob/master/%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95%E2%80%94%E2%80%94%E7%A9%BA%E9%97%B4%E5%B9%B3%E7%A7%BB%E6%80%A7.png?raw=true" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="空间平移性" /></p>
+<p>如图，Rome和Italy之间存在is-capital-of关系，而Paris和France也同样存在。可以理解为知识图谱中的relation，即（Rome, is-capital-of, Italy）和（Paris, is-capital-of, France）。<br />
+通过两对在语义上关系相同的词向量相减可得相似结果，这种连续向量可近似地平移到其它具有类似关系的两个词向量之间。<br />
+如：<br />
+vector(‘Paris’) - Vector(‘France’) + Vector(‘Italy’) ≈ Vector(‘Rome’)</p>
+<h1 id="论文"><a class="markdownIt-Anchor" href="#论文"></a> 论文</h1>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1301.3781v3">Efficient Estimation of Word Representations in Vector Space</a><br />
+<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1405.4053">Distributed Representations of Sentences and Documents</a><br />
+<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1607.04606">Enriching Word Vectors with Subword Information</a></p>
 
   </div>
   
@@ -2744,7 +2766,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
             <blockquote>
               
                 
-                  <p>博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</p>
+                  <p>博客内容遵循：署名-非商业性使用-相同方式共享4.0国际(CC BY-NC-SA 4.0)协议。</p>
 
                 
               
@@ -2794,7 +2816,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       
         <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer noopener"
           
-          target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2020/01/15/%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95/&title=词的向量表示方法 - 靖待的技术博客&summary=　　思想简记 "
+          target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://hubojing.github.io/2020/01/15/%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95/&title=词的向量表示方法 - 靖待的技术博客&summary=
+
+思想简记
+ "
           
           >
           
@@ -2806,7 +2831,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       
         <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer noopener"
           
-          target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://hubojing.github.io/2020/01/15/%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95/&title=词的向量表示方法 - 靖待的技术博客&summary=　　思想简记 "
+          target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://hubojing.github.io/2020/01/15/%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95/&title=词的向量表示方法 - 靖待的技术博客&summary=
+
+思想简记
+ "
           
           >
           
@@ -2818,7 +2846,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       
         <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer noopener"
           
-          target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2020/01/15/%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95/&title=词的向量表示方法 - 靖待的技术博客&summary=　　思想简记 "
+          target="_blank" href="http://service.weibo.com/share/share.php?url=https://hubojing.github.io/2020/01/15/%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95/&title=词的向量表示方法 - 靖待的技术博客&summary=
+
+思想简记
+ "
           
           >
           
@@ -2853,26 +2884,41 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       
         <a class='prev' href='/2020/04/08/Echarts%E7%AC%94%E8%AE%B0/'>
           <p class='title'><i class="fa-solid fa-chevron-left" aria-hidden="true"></i>ECharts笔记</p>
-          <p class='content'>　　备忘 
+          <p class='content'>
+
+备忘
+ 
+
+ 浏览器画图原理
 
 
-浏览器画图原理
-Canvas基于像素单个html，类似于画笔在画布上画画Echarts基于canvas画图
+Canvas
+基于像素
+单个html，类似于画笔在画布上画画
+Echarts基于canvas画图
 
-Svg基于对象模型多个图形元素高保真
+
+Svg
+基于对象模型
+多个图形元素
+高保真
 
 
-下载安装官网
-在线定制下载...</p>
+ 下载...</p>
         </a>
       
       
         <a class='next' href='/2020/01/02/2020%E2%80%94%E2%80%94%E6%96%B0%E7%9A%84%E5%90%AF%E8%88%AA/'>
           <p class='title'>2020——新的启航<i class="fa-solid fa-chevron-right" aria-hidden="true"></i></p>
-          <p class='content'>　　20年代第一年的Flag已立　　这篇文章差不多写完了 
+          <p class='content'>
 
+20年代第一年的Flag已立
+　　这篇文章差不多写完了
+ 
 
-2020-01-18更新　　前段时间去友链博客串门，看了他们的计划，相比之下我的计划可执行性太差了，只是泛泛而谈。应量化之。　　于...</p>
+ 2020-01-18更新
+前段时间去友链博客串门，看了他们的计划，相比之下我的计划可执行性太差了，只是泛泛而谈。应量化之。
+　...</p>
         </a>
       
     </div>
@@ -2930,7 +2976,7 @@ Svg基于对象模型多个图形元素高保真
 
 
     <div class='content'>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8B%AC%E7%83%AD%E7%BC%96%E7%A0%81%EF%BC%88One-Hot-Encoding%EF%BC%89"><span class="toc-text">独热编码（One-Hot Encoding）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%8D%E8%A2%8B%E6%A8%A1%E5%9E%8B%EF%BC%88Bag-of-Words-BoW%EF%BC%89"><span class="toc-text">词袋模型（Bag-of-Words, BoW）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%8D%E5%90%91%E9%87%8F-%E8%AF%8D%E5%B5%8C%E5%85%A5%EF%BC%88Word-Embedding%EF%BC%89"><span class="toc-text">词向量&#x2F;词嵌入（Word Embedding）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9E%E7%BB%AD%E8%AF%8D%E8%A2%8B%E6%A8%A1%E5%9E%8B%EF%BC%88Continuous-Bag-of-Words-CBoW%EF%BC%89"><span class="toc-text">连续词袋模型（Continuous Bag-of-Words, CBoW）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Skip-gram%E6%A8%A1%E5%9E%8B%EF%BC%88Continuous-skip-gram-Model%EF%BC%89"><span class="toc-text">Skip-gram模型（Continuous skip-gram Model）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BA%E6%96%87"><span class="toc-text">论文</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%8B%AC%E7%83%AD%E7%BC%96%E7%A0%81one-hot-encoding"><span class="toc-text"> 独热编码（One-Hot Encoding）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%8D%E8%A2%8B%E6%A8%A1%E5%9E%8Bbag-of-words-bow"><span class="toc-text"> 词袋模型（Bag-of-Words, BoW）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%8D%E5%90%91%E9%87%8F%E8%AF%8D%E5%B5%8C%E5%85%A5word-embedding"><span class="toc-text"> 词向量&#x2F;词嵌入（Word Embedding）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9E%E7%BB%AD%E8%AF%8D%E8%A2%8B%E6%A8%A1%E5%9E%8Bcontinuous-bag-of-words-cbow"><span class="toc-text"> 连续词袋模型（Continuous Bag-of-Words, CBoW）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#skip-gram%E6%A8%A1%E5%9E%8Bcontinuous-skip-gram-model"><span class="toc-text"> Skip-gram模型（Continuous skip-gram Model）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BA%E6%96%87"><span class="toc-text"> 论文</span></a></li></ol>
     </div>
   </section>
 
@@ -3920,7 +3966,7 @@ window.matchMedia('(prefers-color-scheme: light)').addListener(darkModelListener
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"靖待的技术博客","url":"https://hubojing.github.io/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"靖待","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"https://hubojing.github.io/","sameAs":["https://github.com/volantis-x"],"description":"算法研究员|算法工程师|大模型算法|自然语言处理|推荐算法|AI|人工智能|计算机|算法|研发|数据挖掘|软件开发|互联网"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https://hubojing.github.io/","name":"靖待的技术博客"}},{"@type":"ListItem","position":2,"item":{"@id":"https://hubojing.github.io/categories/数据挖掘/","name":"数据挖掘"}},{"@type":"ListItem","position":3,"item":{"@id":"https://hubojing.github.io/2020/01/15/词的向量表示方法/","name":"词的向量表示方法"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"靖待的技术博客","url":"https://hubojing.github.io/","description":"算法研究员|算法工程师|大模型算法|自然语言处理|推荐算法|AI|人工智能|计算机|算法|研发|数据挖掘|软件开发|互联网","author":{"@type":"Person","name":"靖待","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"https://hubojing.github.io/","description":"算法研究员|算法工程师|大模型算法|自然语言处理|推荐算法|AI|人工智能|计算机|算法|研发|数据挖掘|软件开发|互联网"},"publisher":{"@type":"Organization","name":"靖待的技术博客","url":"https://hubojing.github.io/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"https://hubojing.github.io?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"词的向量表示方法","description":"　　思想简记 ","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https://hubojing.github.io/2020/01/15/%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95/"},"author":{"@type":"Person","name":"靖待","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"https://hubojing.github.io/"},"publisher":{"@type":"Organization","name":"靖待的技术博客","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"https://hubojing.github.io/2020/01/15/%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95/","wordCount":7,"datePublished":"2020-01-15T12:14:49.000Z","dateModified":"2020-01-15T12:14:49.000Z","articleSection":"数据挖掘","keywords":"NLP,Embedding","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"靖待的技术博客","url":"https://hubojing.github.io/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"靖待","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"https://hubojing.github.io/","sameAs":["https://github.com/volantis-x"],"description":"算法研究员|算法工程师|大模型算法|自然语言处理|推荐算法|AI|人工智能|计算机|算法|研发|数据挖掘|软件开发|互联网"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https://hubojing.github.io/","name":"靖待的技术博客"}},{"@type":"ListItem","position":2,"item":{"@id":"https://hubojing.github.io/categories/数据挖掘/","name":"数据挖掘"}},{"@type":"ListItem","position":3,"item":{"@id":"https://hubojing.github.io/2020/01/15/词的向量表示方法/","name":"词的向量表示方法"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"靖待的技术博客","url":"https://hubojing.github.io/","description":"算法研究员|算法工程师|大模型算法|自然语言处理|推荐算法|AI|人工智能|计算机|算法|研发|数据挖掘|软件开发|互联网","author":{"@type":"Person","name":"靖待","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"https://hubojing.github.io/","description":"算法研究员|算法工程师|大模型算法|自然语言处理|推荐算法|AI|人工智能|计算机|算法|研发|数据挖掘|软件开发|互联网"},"publisher":{"@type":"Organization","name":"靖待的技术博客","url":"https://hubojing.github.io/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"https://hubojing.github.io?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"词的向量表示方法","description":"\n\n思想简记\n ","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https://hubojing.github.io/2020/01/15/%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95/"},"author":{"@type":"Person","name":"靖待","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"https://hubojing.github.io/"},"publisher":{"@type":"Organization","name":"靖待的技术博客","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"https://hubojing.github.io/2020/01/15/%E8%AF%8D%E7%9A%84%E5%90%91%E9%87%8F%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95/","wordCount":8,"datePublished":"2020-01-15T12:14:49.000Z","dateModified":"2020-01-15T12:14:49.000Z","articleSection":"数据挖掘","keywords":"NLP,Embedding","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 
