@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>FM on 靖待</title>
+        <link>https://hubojing.github.io/tags/fm/</link>
+        <description>Recent content in FM on 靖待</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>靖待</copyright>
+        <lastBuildDate>Wed, 09 Dec 2020 11:18:31 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/tags/fm/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>【Paper】Factorization Machines</title>
+        <link>https://hubojing.github.io/ucapbpue/</link>
+        <pubDate>Wed, 09 Dec 2020 11:18:31 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/ucapbpue/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\Paper-FM-feature_x.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;FM算法原文。&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;　　2010 IEEE International Conference on Data Mining
+　　Steffen Rendle
+　　Department of Reasoning for Intelligence
+　　The Institute of Scientific and Industrial Research Osaka University, Japan
+谷歌学术被引用次数1396（截至2020年12月14日）
+　　论文关键词：factorization machine; sparse data; tensor factorization; support vector machine
+　　&lt;a class=&#34;link&#34; href=&#34;https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;amp;arnumber=5694074&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;introduction-引言&#34;&gt;Introduction 引言
+&lt;/h1&gt;&lt;p&gt;　　FM优点：
+　1. FM能在很稀疏的数据上进行参数估计，但SVM不行。
+　2. FM是线性复杂度，不需要类似于SVM中的支持向量。
+　3. FM是通用预测方法，适用于任何特征向量。其它的因子分解方法都受限于特定的输入。（对比biased MF, SVD++, PITF和FPMC）&lt;/p&gt;
+&lt;h1 id=&#34;prediction-under-sparsity-稀疏情况下的预测&#34;&gt;Prediction under sparsity 稀疏情况下的预测
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-FM-feature_x.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;feature x&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;factorization-machinesfm-因子分解机&#34;&gt;Factorization machines(FM) 因子分解机
+&lt;/h1&gt;&lt;h2 id=&#34;factorization-machine-model-因子分解机模型&#34;&gt;Factorization machine model 因子分解机模型
+&lt;/h2&gt;$$\hat{y}(x):=w_0 + \sum_{i=1}^nw_ix_i + \sum_{i=1}^n\sum_{j=i+1}^n&lt;v_i,v_j&gt;x_ix_j$$$$&lt;v_i,v_j&gt;:=\sum_{f=1}^kv_{i,f}·v_{j,f}$$&lt;p&gt;
+　　V中的$v_i$描述k个因素中的第i个变量。$Ks∈N_0^+$是定义因子分解的维度的超参数。
+　　2-way FM捕捉所有变量的单个和成对交互：
+　　$w_0$是全局偏置，$w_i$模拟了第i个变量的程度。
+　　$\hat{w}_{i,j}:=&amp;lt;v_i, v_j&amp;gt;$模拟了第i和第j个变量间的交互。这个在高阶交互时（d &amp;gt; 2）高质量估计的关键。
+　　时间复杂度O($kn^2$)，因为所有的交互对都要被计算。但可以变形使之化为O(kn)。&lt;/p&gt;
+&lt;h2 id=&#34;factorization-machines-as-predictors-fm作为预测器&#34;&gt;Factorization machines as predictors FM作为预测器
+&lt;/h2&gt;&lt;p&gt;　　可用于回归、二分类和排序问题。&lt;/p&gt;
+&lt;h2 id=&#34;learning-factorization-machines-fm学习策略&#34;&gt;Learning factorization machines FM学习策略
+&lt;/h2&gt;&lt;p&gt;　　使用随机梯度下降（SGD）来学习。&lt;/p&gt;
+&lt;h2 id=&#34;d-way-factorization-machine-多维fm&#34;&gt;d-way factorization machine 多维FM
+&lt;/h2&gt;&lt;p&gt;　　同时2-way FM可以拓展为d-way。&lt;/p&gt;
+&lt;h2 id=&#34;summary-总结&#34;&gt;Summary 总结
+&lt;/h2&gt;&lt;p&gt;　　FM优点：
+　　1. 在高稀疏下可估计特征交互，尤其是不可观测的交互。
+　　2. 预测和学习的时间复杂度是线性的。使SGD优化可行，并允许多种损失函数优化。&lt;/p&gt;
+&lt;h1 id=&#34;fms-vs-svms-因子分解机对比支持向量机&#34;&gt;FMs vs. SVMs 因子分解机对比支持向量机
+&lt;/h1&gt;&lt;h2 id=&#34;svm-model-支持向量机模型&#34;&gt;SVM model 支持向量机模型
+&lt;/h2&gt;$$\hat{y}(x) = &lt;\Phi(x), w&gt;$$$$K:R^n × R^n → R, K(x, z) = &lt;\Phi(x), \Phi(z)&gt;$$&lt;ol&gt;
+&lt;li&gt;
+$$\hat{y}(x) = w_0 + \sum^n_{i=1}w_ix_i, w_0∈R, w∈R^n$$&lt;p&gt;
+　　这等价于FM中d = 1的情况。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+$$\hat{y}(x) = w_0 + \sqrt{2}\sum^n_{i=1}w_ix_i + \sum^n_{i = 1}w_{i,i}^{(2)}x_i^2 + \sqrt{2}\sum^n_{i=1}\sum^n_{j=i+1}w_{i,j}^{(2)}x_ix_j$$&lt;p&gt;
+　　其中$w_0∈R, w∈R^n, w^(2)∈R^{n×n}$。
+　　d = 2时，FM和SVM的区别在于SVM中$w_{i,j}$是完全独立的，而FM中参数是因子分解的，所以$&amp;lt;v_i, v_j&amp;gt;$依赖于彼此。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;parameter-estimation-under-sparsity-在稀疏情况下的参数估计&#34;&gt;Parameter Estimation Under Sparsity 在稀疏情况下的参数估计
+&lt;/h2&gt;&lt;p&gt;　　举例：使用协同过滤（上图中蓝色和红色部分数据）。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;线性SVM
+$$\hat{y}(x) = w_0 + w_u + w_i$$
+　　只有j = u 或 j = i时$x_j$ = 1，即只有用户和物品偏好被选中时才有用。由于模型简单，在稀疏情况也能进不错的参数估计，但预测质量低。&lt;/li&gt;
+&lt;li&gt;多项式SVM
+$$\hat{y}(x) = w_0 + \sqrt{2}(w_u + w_i) + w_{u,u}^{(2)} +  w_{i,i}^{(2)} + \sqrt{2}w_{u,i}^{(2)}$$
+　　$w_u$和$w_{u,u}^{(2)}$是一样的。该等式除了一个额外的$w_{u,i}$，等价于线性SVM。在训练集中，对于每一个$w_{u,i}$最多只有一条记录，在测试集中通常没有。因此，2-way的SVM效果也不比线性SVM好。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;summary-总结-1&#34;&gt;Summary 总结
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;SVM需要直接观测交互数据，但稀疏数据集经常没有。FM参数可以在系数情况下进行不错的参数估计。&lt;/li&gt;
+&lt;li&gt;FM可以一开始就直接学习，但非线性SVM需要成对学习。&lt;/li&gt;
+&lt;li&gt;FM是独立于训练集的，SVM的预测是基于部分训练数据的。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;fms-vs-other-factorization-models-其它因子分解方法对比&#34;&gt;FMs VS. Other Factorization Models 其它因子分解方法对比
+&lt;/h1&gt;&lt;p&gt;　　改写FM公式形式，分别与Matrix and Tensor Factorization矩阵和张量分解、SVD++、PITF for Tag Recommendation、Factorized Personalized Markov Chains(FPMC)方法对比，FM改写后性能与这些方法实现效果类似。&lt;/p&gt;
+&lt;h2 id=&#34;summary-总结-2&#34;&gt;Summary 总结
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;标准因子分解模型（比如PARAFAC或者MF）不像FM一样是通用预测模型。&lt;/li&gt;
+&lt;li&gt;修改特征提取部分，FM可以模拟在特定任务下的成功模型（比如MF,PARAFAC,SVD++,PITF,FPMC)。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;conclusion-and-future-work-总结和展望&#34;&gt;Conclusion and Future Work 总结和展望
+&lt;/h1&gt;&lt;p&gt;　　与SVM对比，&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在数据稀疏情况下，FM可以进行参数估计。&lt;/li&gt;
+&lt;li&gt;模型时间复杂度是线性的，并且只依赖于模型参数。&lt;/li&gt;
+&lt;li&gt;从最开始就能直接优化。&lt;/li&gt;
+&lt;/ol&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

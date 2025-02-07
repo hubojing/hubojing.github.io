@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Embedding on 靖待</title>
+        <link>https://hubojing.github.io/tags/embedding/</link>
+        <description>Recent content in Embedding on 靖待</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>靖待</copyright>
+        <lastBuildDate>Wed, 15 Jan 2020 20:14:49 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/tags/embedding/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>词的向量表示方法</title>
+        <link>https://hubojing.github.io/h7qeqvnf/</link>
+        <pubDate>Wed, 15 Jan 2020 20:14:49 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/h7qeqvnf/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——Word2Vec.png?raw=true&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;思想简记&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;p&gt;NLP中，离散符号化的词语不能包含语义信息，所以把词映射到向量空间。&lt;/p&gt;
+&lt;h1 id=&#34;独热编码one-hot-encoding&#34;&gt;独热编码（One-Hot Encoding）
+&lt;/h1&gt;&lt;p&gt;思想：将一个词表示成很长的向量，该向量的维度是整个词表的大小。对某一具体词，除了该词编号的维度为1，其余都为0。
+&lt;img src=&#34;https://github.com/hubojing/BlogImages/blob/master/%e8%af%8d%e7%9a%84%e5%90%91%e9%87%8f%e8%a1%a8%e7%a4%ba%e6%96%b9%e6%b3%95%e2%80%94%e2%80%94%e7%8b%ac%e7%83%ad%e7%bc%96%e7%a0%81.png?raw=true&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;独热编码&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;词袋模型bag-of-words-bow&#34;&gt;词袋模型（Bag-of-Words, BoW）
+&lt;/h1&gt;&lt;p&gt;思想：将文本视为装词的袋子，不考虑词的上下文关系和顺序，只记录每个词在该文本（词袋）中出现的次数。
+&lt;img src=&#34;https://github.com/hubojing/BlogImages/blob/master/%e8%af%8d%e7%9a%84%e5%90%91%e9%87%8f%e8%a1%a8%e7%a4%ba%e6%96%b9%e6%b3%95%e2%80%94%e2%80%94%e8%af%8d%e8%a2%8b%e6%a8%a1%e5%9e%8b.png?raw=true&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;词袋模型&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;词向量词嵌入word-embedding&#34;&gt;词向量/词嵌入（Word Embedding）
+&lt;/h1&gt;&lt;p&gt;上面对词的表示方法没有考虑语义层面信息。为表示词与词之间的语义相似程度，提出词的分布式表示，即基于上下文的稠密向量表示法，通常称为词向量或词嵌入（Word Embedding）。
+产生词向量的手段：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Count-based。基于计数的方法，即记录词的出现次数。&lt;/li&gt;
+&lt;li&gt;Predictive。基于预测的方法，即可通过上下文预测中心词，又可通过中心词预测上下文。&lt;/li&gt;
+&lt;li&gt;Task-based。基于任务的，即通过任务驱动的方法。通过对词向量在具体任务上的表现效果对词向量进行学习。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;下面是经典开源工具word2vec中的CBoW模型和Skip-gram模型。&lt;/p&gt;
+&lt;h2 id=&#34;连续词袋模型continuous-bag-of-words-cbow&#34;&gt;连续词袋模型（Continuous Bag-of-Words, CBoW）
+&lt;/h2&gt;&lt;p&gt;和BoW相同点：不考虑词的顺序。
+思想：将上下文词的独热表示与词向量矩阵相乘，提取相应的词向量并求和得到投影层，然后再经过一个Softmax层最终得到输出，输出的每一维表达的就是词表中每个词作为该上下文中心词的概率。整个模型训练时类似于一个窗口在训练语料上滑动，所以得名连续词袋模型。&lt;/p&gt;
+&lt;h2 id=&#34;skip-gram模型continuous-skip-gram-model&#34;&gt;Skip-gram模型（Continuous skip-gram Model）
+&lt;/h2&gt;&lt;p&gt;思想：与CBoW思想刚好相反，它用中心词来预测上下文词。先通过中心词的独热表示从词向量矩阵中得到中心词的词向量，得到投影层，再经过一层Softmax得到输出，输出的每一维中代表某个词作为输入中心词的上下文出现的概率。&lt;/p&gt;
+&lt;p&gt;这两种模型都包含三层，输入层、投影层、输出层：
+&lt;img src=&#34;https://github.com/hubojing/BlogImages/blob/master/%e8%af%8d%e7%9a%84%e5%90%91%e9%87%8f%e8%a1%a8%e7%a4%ba%e6%96%b9%e6%b3%95%e2%80%94%e2%80%94Word2Vec.png?raw=true&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Word2Vec&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;训练好的词向量中，具有一定的空间平移性。
+&lt;img src=&#34;https://github.com/hubojing/BlogImages/blob/master/%e8%af%8d%e7%9a%84%e5%90%91%e9%87%8f%e8%a1%a8%e7%a4%ba%e6%96%b9%e6%b3%95%e2%80%94%e2%80%94%e7%a9%ba%e9%97%b4%e5%b9%b3%e7%a7%bb%e6%80%a7.png?raw=true&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;空间平移性&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;如图，Rome和Italy之间存在is-capital-of关系，而Paris和France也同样存在。可以理解为知识图谱中的relation，即（Rome, is-capital-of, Italy）和（Paris, is-capital-of, France）。
+通过两对在语义上关系相同的词向量相减可得相似结果，这种连续向量可近似地平移到其它具有类似关系的两个词向量之间。
+如：
+vector(&amp;lsquo;Paris&amp;rsquo;) - Vector(&amp;lsquo;France&amp;rsquo;) + Vector(&amp;lsquo;Italy&amp;rsquo;) ≈ Vector(&amp;lsquo;Rome&amp;rsquo;)&lt;/p&gt;
+&lt;h1 id=&#34;论文&#34;&gt;论文
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1301.3781v3&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Efficient Estimation of Word Representations in Vector Space&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1405.4053&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Distributed Representations of Sentences and Documents&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1607.04606&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Enriching Word Vectors with Subword Information&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

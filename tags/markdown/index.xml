@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Markdown on 靖待</title>
+        <link>https://hubojing.github.io/tags/markdown/</link>
+        <description>Recent content in Markdown on 靖待</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>靖待</copyright>
+        <lastBuildDate>Sun, 03 Jul 2022 21:26:39 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/tags/markdown/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>JingSLink</title>
+        <link>https://hubojing.github.io/cuu2edep/</link>
+        <pubDate>Sun, 03 Jul 2022 21:26:39 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/cuu2edep/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;https://hubojing.github.io/images/假装有图片.jpg&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;简单开发一个截图保存并返回链接的小工具JingSLink&lt;/strong&gt;
+　　&lt;strong&gt;JingPic迎来重构版JingSLink&lt;/strong&gt;
+　　&lt;strong&gt;自用简陋小工具系列&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;前言&#34;&gt;前言
+&lt;/h1&gt;&lt;p&gt;　　写markdown文章时，贴图这件事儿真的很麻烦。我需要把图片手动保存到对应文件夹，再手动在文章里引入图片链接。所以很多时候我能不配图就不配图。多年前为了方便插入图床链接，用MFC做了个自用小工具&lt;a class=&#34;link&#34; href=&#34;https://github.com/hubojing/JingPic&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;JingPic&lt;/a&gt;。但是它是基于保存了的图片进行的操作，将图片转移到需要的位置。后期也没有维护，操作上依然不够简洁。比如我更喜欢直接截图能自动保存到指定位置，这样就减少一步自己保存的操作。&lt;/p&gt;
+&lt;p&gt;　　自己定制还是最爽的，我想要什么功能我自己开发好了。而且这个小工具开发起来也很简单，几十行很快就写完了。&lt;/p&gt;
+&lt;p&gt;　　首先，要起个名字，以前的叫JingPic，这个重构版就叫JingSLink（Jinger Screenshot for Link）吧。&lt;/p&gt;
+&lt;h1 id=&#34;需求&#34;&gt;需求
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;能够截图&lt;/li&gt;
+&lt;li&gt;截图能保存到指定文件夹中&lt;/li&gt;
+&lt;li&gt;截图完成后，自动将图片相对路径复制到剪贴板&lt;/li&gt;
+&lt;li&gt;有exe可执行文件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;技术&#34;&gt;技术
+&lt;/h1&gt;&lt;p&gt;　　语言：Python
+　　用到的库：tkinter, PIL, keyboard, pyperclip&lt;/p&gt;
+&lt;h1 id=&#34;实现&#34;&gt;实现
+&lt;/h1&gt;&lt;p&gt;　　一开始我是想自己实现截图操作的，后来一想，我平日用QQ截图最多，它功能齐全，那我直接调用它的截图不就好了。
+　　所以，大体实现思路如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;监听键盘，捕捉QQ截图快捷键ctrl+alt+a，并设置一个结束键ctrl。&lt;/li&gt;
+&lt;li&gt;使用PIL库的ImageGrab读取截图。&lt;/li&gt;
+&lt;li&gt;弹出一个输入框，输入图片名称。
+&lt;img src=&#34;https://hubojing.github.io/images/JingSLink.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;输入框&#34;
+	
+	
+&gt;&lt;/li&gt;
+&lt;li&gt;拼凑出图片完整链接，将图片保存到该地址。&lt;/li&gt;
+&lt;li&gt;拼凑出hexo博文中所需的图片插入相对地址，复制到剪贴板。
+　　当然，为了不每次都打开pycharm编译器，得导出一个exe文件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;　　打包exe：
+　　安装pyinstaller。
+　　在pycharm中，&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-py&#34; data-lang=&#34;py&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;pyinstaller&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;F&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;py&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;pyinstaller&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;F&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;w&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;py&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;#（-w是取消dos窗口）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;pyinstaller&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;F&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;w&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;--&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;icon&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ico&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;py&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# (ico为图标的文件名，与dist目录为同目录)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;　　最后生成的exe文件在dist文件夹下。&lt;/p&gt;
+&lt;h1 id=&#34;代码&#34;&gt;代码
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/hubojing/JingSLink&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/hubojing/JingSLink&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;后期优化&#34;&gt;后期优化
+&lt;/h1&gt;&lt;p&gt;　　如有必要：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一些异常情况的提示&lt;/li&gt;
+&lt;li&gt;右下角有最小化托盘，右键有设置和退出菜单&lt;/li&gt;
+&lt;li&gt;可扩展性：可以更改文件夹路径&lt;/li&gt;
+&lt;li&gt;可扩展性：可以更改图片路径格式（绝对路径/相对路径）&lt;/li&gt;
+&lt;li&gt;换pyqt框架&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;参考资料&#34;&gt;参考资料
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://tkdocs.com/tutorial/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://tkdocs.com/tutorial/index.html&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>Markdown语法简记</title>
+        <link>https://hubojing.github.io/ffpy5d3r/</link>
+        <pubDate>Tue, 08 Mar 2016 16:10:49 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/ffpy5d3r/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1313983748,591596023&amp;fm=26&amp;gp=0.jpg&#34; width=&#34;300&#34; height=&#34;180&#34; alt=&#34;配图&#34; style=&#34;float:right;&#34;/&gt;
+&lt;/div&gt;  
+　　**自查笔记。**
+&lt;p&gt;　　
+　　&lt;/p&gt;
+&lt;h1 id=&#34;标题&#34;&gt;标题
+&lt;/h1&gt;&lt;p&gt;# 一级标题
+## 二级标题
+### 三级标题
+#### 四级标题
+##### 五级标题
+###### 六级标题&lt;/p&gt;
+&lt;p&gt;例：&lt;/p&gt;
+&lt;h1 id=&#34;一级标题&#34;&gt;一级标题
+&lt;/h1&gt;&lt;h2 id=&#34;二级标题&#34;&gt;二级标题
+&lt;/h2&gt;&lt;h3 id=&#34;三级标题&#34;&gt;三级标题
+&lt;/h3&gt;&lt;h4 id=&#34;四级标题&#34;&gt;四级标题
+&lt;/h4&gt;&lt;h5 id=&#34;五级标题&#34;&gt;五级标题
+&lt;/h5&gt;&lt;h6 id=&#34;六级标题&#34;&gt;六级标题
+&lt;/h6&gt;&lt;h1 id=&#34;加粗&#34;&gt;加粗
+&lt;/h1&gt;&lt;p&gt;*斜体文本* &lt;br&gt;
+例：&lt;em&gt;斜体文本&lt;/em&gt;
+_斜体文本_&lt;br&gt;
+例：&lt;em&gt;斜体文本&lt;/em&gt;
+**粗体文本**
+例：&lt;strong&gt;粗体文本&lt;/strong&gt;
+***粗斜体文本***&lt;br&gt;
+例：&lt;em&gt;&lt;strong&gt;粗斜体文本&lt;/strong&gt;&lt;/em&gt;
+___粗斜体文本___
+例：&lt;em&gt;&lt;strong&gt;粗斜体文本&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;h1 id=&#34;链接&#34;&gt;链接
+&lt;/h1&gt;&lt;p&gt;　　网址链接 [网站名](http://网址)&lt;/p&gt;
+&lt;h1 id=&#34;引用&#34;&gt;引用
+&lt;/h1&gt;&lt;p&gt;　　链接用 1 作为网址变量[例子1][1].
+　　链接用 hubojing 作为网址变量[例子2][hubojing].
+　　然后在文档的结尾为变量赋值（网址）
+[1]:hubojing.github.io
+[hubojing]:https://hubojing.github.io&lt;/p&gt;
+&lt;h1 id=&#34;图片&#34;&gt;图片
+&lt;/h1&gt;&lt;p&gt;![引用名称](引用地址)
+例：
+&lt;img src=&#34;https://hubojing.github.io/%e5%bc%95%e7%94%a8%e5%9c%b0%e5%9d%80&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;引用名称&#34;
+	
+	
+&gt;
+内联方式：![alt text](/path/to/img.jpg &amp;ldquo;Title&amp;rdquo;)
+例：
+&lt;img src=&#34;https://hubojing.github.io/path/to/img.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;alt text&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;分隔符&#34;&gt;分隔符
+&lt;/h1&gt;&lt;p&gt;三个星号***
+例：&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;例&#34;&gt;三个减号---(上面一行文字需空一行，否则自动变为二级标题)
+例：
+&lt;/h2&gt;&lt;p&gt;三个下划线___
+例：&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;转义符&#34;&gt;转义符
+&lt;/h1&gt;&lt;p&gt;　　如果描述中用到 markdown 符号，比如 _ # * 等，又不想它被转义，此时可在这些符号前加反斜杠，如 \# 进行避免。&lt;/p&gt;
+&lt;h1 id=&#34;块注释blockquote&#34;&gt;块注释（blockquote）
+&lt;/h1&gt;&lt;p&gt;- 是这样？
+&amp;gt; like this.
+例：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;是这样？&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;like this.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;h1 id=&#34;删除线&#34;&gt;删除线
+&lt;/h1&gt;&lt;p&gt;~~这是删除线~~
+例：&lt;del&gt;这是删除线&lt;/del&gt;&lt;/p&gt;
+&lt;h1 id=&#34;换行&#34;&gt;换行
+&lt;/h1&gt;&lt;p&gt;打两个空格再回车&lt;/p&gt;
+&lt;h1 id=&#34;标记&#34;&gt;标记
+&lt;/h1&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-mysql&#34; data-lang=&#34;mysql&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;blockquote&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;例：&lt;code&gt;blockquote&lt;/code&gt;&lt;/p&gt;
+&lt;h1 id=&#34;语言使用范围&#34;&gt;语言使用范围
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://blog.csdn.net/peng_hong_fu/article/details/52805408&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://blog.csdn.net/peng_hong_fu/article/details/52805408&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;缩进&#34;&gt;缩进
+&lt;/h1&gt;&lt;p&gt;法一&lt;br&gt;
+　　将输入法切换成全角 两个空格&lt;br&gt;
+法二&lt;br&gt;
+　　在每一行开头，先输入下面的代码，然后紧跟着输入文本即可。&lt;/p&gt;
+&lt;p&gt;　　半角空格: &amp;amp; ensp;(去掉&amp;amp;和ensp的空格)或 &amp;amp;#8194;
+　　全角空格: &amp;amp; emsp;(去掉&amp;amp;和emsp的空格)或 &amp;amp;#8195;
+　　不换行空格: &amp;amp; nbsp;(去掉&amp;amp;和nbsp的空格)或 &amp;amp;#160;
+　　注意分号&lt;/p&gt;
+&lt;h1 id=&#34;公式&#34;&gt;公式
+&lt;/h1&gt;$$y = x^2$$&lt;h2 id=&#34;分式&#34;&gt;分式
+&lt;/h2&gt;&lt;p&gt;法一&lt;br&gt;
+&lt;code&gt;\frac&lt;/code&gt;&lt;br&gt;
+例：$\frac {a+b}{c+d}$&lt;br&gt;
+$\frac {a+b}{c+d}$&lt;br&gt;
+法二&lt;br&gt;
+&lt;code&gt;\over&lt;/code&gt;&lt;br&gt;
+例：$a+1 \over b+1$&lt;br&gt;
+$a+1 \over b+1$&lt;/p&gt;
+&lt;h2 id=&#34;根号&#34;&gt;根号
+&lt;/h2&gt;&lt;p&gt;&lt;code&gt;sqrt&lt;/code&gt;
+例：$sqrt[3]{\frac xy}$&lt;br&gt;
+$\sqrt{a+b}$&lt;br&gt;
+$\sqrt[3]{\frac xy}$&lt;br&gt;
+$\sqrt{a+b}$&lt;/p&gt;
+&lt;h2 id=&#34;求和&#34;&gt;求和
+&lt;/h2&gt;&lt;p&gt;&lt;code&gt;\sum&lt;/code&gt;&lt;br&gt;
+例：$\sum_{k=1}^n$&lt;br&gt;
+$\sum_{k=1}^n$&lt;/p&gt;
+&lt;h2 id=&#34;连乘&#34;&gt;连乘
+&lt;/h2&gt;&lt;p&gt;&lt;code&gt;\prod&lt;/code&gt;
+例：$\prod_{i=0}^n$
+$\prod_{i=0}^n$&lt;/p&gt;
+&lt;h1 id=&#34;符号&#34;&gt;符号
+&lt;/h1&gt;&lt;h2 id=&#34;关系运算符&#34;&gt;关系运算符
+&lt;/h2&gt;&lt;p&gt;$\ast$	\ast
+$\times$ \times
+$\div$ \div
+$\pm$ \pm
+$\approx$ \approx
+$\equiv$ \equiv
+$\neq$ \neq
+$\cdot$ \cdot
+$\circ$ \circ
+$\bigodot$ \bigodot
+$\bigotimes$ \bigotimes
+$\bigoplus$ \bigoplus
+$\prod$ \prod
+$\coprod$ \coprod&lt;/p&gt;
+&lt;h1 id=&#34;集合运算符&#34;&gt;集合运算符
+&lt;/h1&gt;&lt;p&gt;$\in$ \in
+$\notin$ \notin
+$\emptyset$ \emptyset
+$\subset$ \subset
+$\supset$ \supset
+$\subseteq$ \subseteq
+$\supseteq$ \supseteq
+$\bigcap$ \bigcap
+$\bigcup$ \bigcup&lt;/p&gt;
+&lt;h2 id=&#34;希腊字母&#34;&gt;希腊字母
+&lt;/h2&gt;&lt;p&gt;ϵ \epsilon&lt;br&gt;
+∂ \partial&lt;br&gt;
+λ \lambda
+θ \theta
+$\eta$ \eta
+&lt;img src=&#34;https://img2020.cnblogs.com/blog/1858979/202104/1858979-20210422172736006-507694544.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;希腊字母&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;戴帽符号&#34;&gt;戴帽符号
+&lt;/h2&gt;&lt;p&gt;$\hat{xy}$
+$\hat{xy}$
+$\widehat{xyz}$
+$\widehat{xyz}$
+$\tilde{xy}$
+$\tilde{xy}$
+$\widetilde{xyz}$
+$\widetilde{xyz}$
+$\check{x}$
+$\check{x}$
+$\breve{y}$
+$\breve{y}$
+$\grave{x}$
+$\grave{x}$
+$\acute{y}$
+$\acute{y}$&lt;/p&gt;
+&lt;h2 id=&#34;空心符号&#34;&gt;空心符号
+&lt;/h2&gt;&lt;p&gt;A~Z
+A \mathbb{A}
+$\mathbb{A}$&lt;/p&gt;
+&lt;h2 id=&#34;花体字母&#34;&gt;花体字母
+&lt;/h2&gt;&lt;p&gt;A~Z
+A \mathcal{A}
+$\mathcal{A}$&lt;/p&gt;
+&lt;h2 id=&#34;箭头&#34;&gt;箭头
+&lt;/h2&gt;&lt;p&gt;$\uparrow$ \uparrow
+$\downarrow$ \downarrow
+$\leftarrow$ \leftarrow
+$\rightarrow$ \rightarrow
+$\updownarrow$ \updownarrow
+$\leftrightarrow$ \leftrightarrow
+$\Uparrow$ \Uparrow
+$\Downarrow$ \Downarrow
+$\Leftarrow$ \Leftarrow
+$\Rightarrow$ \Rightarrow
+$\Updownarrow$ \Updownarrow
+$\Leftrightarrow$ \Leftrightarrow&lt;/p&gt;
+&lt;h1 id=&#34;括号&#34;&gt;括号
+&lt;/h1&gt;$$ f(x)=\left\{
+\begin{aligned}
+x &amp; = &amp; 123 \\
+y &amp; = &amp; \cos(t) \\
+z &amp; = &amp; \frac 12
+\end{aligned}
+\right.$$&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;f(x)=\left\{
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;\begin{aligned}
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;x &amp;amp; = &amp;amp; 123 \\
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;y &amp;amp; = &amp;amp; \cos(t) \\
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;z &amp;amp; = &amp;amp; \frac 12
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;\end{aligned}
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;\right.
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h1 id=&#34;参考文章&#34;&gt;参考文章
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://segmentfault.com/markdown&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Markdown编辑器语法指南&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.360doc.com/content/13/1119/13/3300331_330476656.shtml&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Markdown入门&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;http://www.appinn.com/markdown/#em&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Markdown 语法说明 (简体中文版)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.jianshu.com/p/25f0139637b7&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;markdown中公式编辑教程&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_18150255/article/details/88040858&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Markdown中数学公式及符号整理&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.jianshu.com/p/d63887d0c706&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Markdown箭头的输入方法汇总&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/jockming/p/14120987.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Markdown常见数学符号和运算&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://katex.org/docs/supported.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;KATRX&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

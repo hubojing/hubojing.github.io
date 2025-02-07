@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="\rOpenCV文件编译及问题记录。\n">
+<title>OpenCV3.4.0编译</title>
+
+<link rel='canonical' href='https://hubojing.github.io/spuyglzb/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="OpenCV3.4.0编译">
+<meta property='og:description' content="\rOpenCV文件编译及问题记录。\n">
+<meta property='og:url' content='https://hubojing.github.io/spuyglzb/'>
+<meta property='og:site_name' content='靖待'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='OpenCV' /><meta property='article:tag' content='CPP' /><meta property='article:published_time' content='2018-01-28T22:18:39&#43;00:00'/><meta property='article:modified_time' content='2018-01-28T22:18:39&#43;00:00'/>
+<meta name="twitter:title" content="OpenCV3.4.0编译">
+<meta name="twitter:description" content="\rOpenCV文件编译及问题记录。\n">
+    <link rel="shortcut icon" href="/avatar.jpg" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_999351c94d8e06aa.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">靖待</a></h1>
+            <h2 class="site-description">创造是人生乐趣</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://blog.csdn.net/hubojing/'
+                        target="_blank"
+                        title="csdn"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:hubojing@outlook.com'
+                        target="_blank"
+                        title="mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://music.163.com/#/user/home?id=92203594'
+                        target="_blank"
+                        title="netease"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='/atom.xml'
+                        target="_blank"
+                        title="rss"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                <span>存档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friends/' >
+                
+                
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#法一使用官方提供的已编译好的文件">法一：使用官方提供的已编译好的文件</a></li>
+    <li><a href="#法二自行编译">法二：自行编译</a>
+      <ol>
+        <li><a href="#下载源码source-code并解压">下载源码Source code并解压</a></li>
+        <li><a href="#下载cmake">下载CMake</a></li>
+        <li><a href="#使用cmake">使用CMake</a></li>
+        <li><a href="#用vs2013编译">用VS2013编译</a></li>
+        <li><a href="#添加到所需工程">添加到所需工程</a></li>
+        <li><a href="#测试">测试</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/" >
+                软件开发
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/spuyglzb/">OpenCV3.4.0编译</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jan 28, 2018</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 7 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <div align="left">
+<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1517760219&di=39b7b7cc2c84d7dd42bf4db67fa2cd4e&imgtype=jpg&er=1&src=http%3A%2F%2Fpic.baike.soso.com%2Fp%2F20140221%2Fbki-20140221032221-753276011.jpg" width="300" height="180" style="float:right;"/>
+<p>　　<strong>OpenCV文件编译及问题记录。</strong></p>
+ </div>
+<p>目前最新OpenCV官网发布最新版为3.4.0（2017年12月23日发布）。</p>
+<h1 id="opencv库使用方法">OpenCV库使用方法
+</h1><p>下载地址：https://github.com/opencv/opencv/releases/tag/3.4.0
+或
+<a class="link" href="https://sourceforge.net/projects/opencvlibrary/"  target="_blank" rel="noopener"
+    >https://sourceforge.net/projects/opencvlibrary/</a></p>
+<h2 id="法一使用官方提供的已编译好的文件">法一：使用官方提供的已编译好的文件
+</h2><p>优点：方便快捷
+缺点：版本限制
+选择opencv-3.4.0-vc14_vc15.exe，下载完成后可以直接打开解压，即可在自己的项目中直接使用。
+具体步骤为：</p>
+<ol>
+<li>
+<p>配置环境变量
+打开电脑右键属性-高级系统设置-环境变量，Path中新增：E:\opencv\build\x64\vc14\bin，（此处为解压对应目录）。</p>
+</li>
+<li>
+<p>引入相应头文件、库文件、链接库
+打开自己的工程，右键属性-配置属性-VC++目录-包含目录，新增：
+E:\opencv\build\include\opencv
+E:\opencv\build\include\opencv2
+E:\opencv\build\include</p>
+</li>
+</ol>
+<p>库目录，新增：
+E:\opencv\build\x64\vc14\lib
+（注意修改为你解压对应的目录）。</p>
+<p>链接器-输入-附加依赖项，新增：
+opencv_world340d.lib
+点击确定即可。
+至此所有准备工作就绪，可以愉快地编译自己的工程啦。</p>
+<p>但想如此一劳永逸解决问题，需符合以下特点：你的VS版本是VC14（2015）或VC15（2017）。
+另附几种对应关系：
+Microsoft Visual Studio 6.0:          VC6.0
+Microsoft Visual Studio 2002：     	 VC7.0
+Microsoft Visual Studio 2003：        VC7.1
+Microsoft Visual Studio 2005：      	 VC8.0
+Microsoft Visual Studio 2008：        VC9.0
+Microsoft Visual Studio 2010：        VC10.0
+Microsoft Visual Studio 2012：        VC11.0
+Microsoft Visual Studio 2013：        VC12.0
+Microsoft Visual Studio 2014：        VC13.0
+Microsoft Visual Studio 2015：        VC14.0
+Microsoft Visual studio 2017：		 VC15.0</p>
+<p>由于我使用VS2013，因此无法使用该方法。（当然，可以自行下载VS2015的运行库）。
+我使用法二。</p>
+<h2 id="法二自行编译">法二：自行编译
+</h2><h3 id="下载源码source-code并解压">下载源码Source code并解压
+</h3><h3 id="下载cmake">下载CMake
+</h3><p>下载地址：https://cmake.org/download/
+选择相应操作系统版本，例如我选择Windows win64-x64 Installer。安装，打开bin\cmake-gui.exe。</p>
+<h3 id="使用cmake">使用CMake
+</h3><p>在Where is the source code中选择OpenCV解压目录，如：E:/opencv-3.4.0/opencv-3.4.0。
+一般可以在解压目录下新建一个build文件夹，用来存放编译生成的文件。
+于是，在Where to build the binaries中填入该路径，如：E:/opencv-3.4.0/opencv-3.4.0/build。（也可自行选择路径）</p>
+<p>点击Configure，选择所需环境，如：Visual Studio 12 2013。进入漫长的等待。
+如果区域有红色出现，需再次点击Configure，直到全部变成白色。</p>
+<p>第一次Configure后：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">General</span> <span class="n">configuration</span> <span class="k">for</span> <span class="n">OpenCV</span> <span class="mf">3.4</span><span class="o">.</span><span class="mi">0</span> <span class="o">=====================================</span>
+</span></span><span class="line"><span class="cl">  <span class="n">Version</span> <span class="n">control</span><span class="p">:</span>               <span class="n">unknown</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">Platform</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Timestamp</span><span class="p">:</span>                   <span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">29</span><span class="n">T14</span><span class="p">:</span><span class="mi">29</span><span class="p">:</span><span class="mi">24</span><span class="n">Z</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Host</span><span class="p">:</span>                        <span class="n">Windows</span> <span class="mf">10.0</span><span class="o">.</span><span class="mi">16299</span> <span class="n">AMD64</span>
+</span></span><span class="line"><span class="cl">    <span class="n">CMake</span><span class="p">:</span>                       <span class="mf">3.10</span><span class="o">.</span><span class="mi">2</span>
+</span></span><span class="line"><span class="cl">    <span class="n">CMake</span> <span class="n">generator</span><span class="p">:</span>             <span class="n">Visual</span> <span class="n">Studio</span> <span class="mi">12</span> <span class="mi">2013</span>
+</span></span><span class="line"><span class="cl">    <span class="n">CMake</span> <span class="n">build</span> <span class="k">tool</span><span class="p">:</span>            <span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">Program</span> <span class="n">Files</span> <span class="p">(</span><span class="n">x86</span><span class="p">)</span><span class="o">/</span><span class="n">MSBuild</span><span class="o">/</span><span class="mf">12.0</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">MSBuild</span><span class="o">.</span><span class="n">exe</span>
+</span></span><span class="line"><span class="cl">    <span class="n">MSVC</span><span class="p">:</span>                        <span class="mi">1800</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">CPU</span><span class="o">/</span><span class="n">HW</span> <span class="n">features</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Baseline</span><span class="p">:</span>                    <span class="n">SSE</span> <span class="n">SSE2</span>
+</span></span><span class="line"><span class="cl">      <span class="n">requested</span><span class="p">:</span>                 <span class="n">SSE2</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Dispatched</span> <span class="n">code</span> <span class="n">generation</span><span class="p">:</span>  <span class="n">SSE4_1</span> <span class="n">SSE4_2</span> <span class="n">FP16</span> <span class="n">AVX</span>
+</span></span><span class="line"><span class="cl">      <span class="n">requested</span><span class="p">:</span>                 <span class="n">SSE4_1</span> <span class="n">SSE4_2</span> <span class="n">AVX</span> <span class="n">FP16</span> <span class="n">AVX2</span>
+</span></span><span class="line"><span class="cl">      <span class="n">SSE4_1</span> <span class="p">(</span><span class="mi">3</span> <span class="n">files</span><span class="p">):</span>          <span class="o">+</span> <span class="n">SSE3</span> <span class="n">SSSE3</span> <span class="n">SSE4_1</span>
+</span></span><span class="line"><span class="cl">      <span class="n">SSE4_2</span> <span class="p">(</span><span class="mi">1</span> <span class="n">files</span><span class="p">):</span>          <span class="o">+</span> <span class="n">SSE3</span> <span class="n">SSSE3</span> <span class="n">SSE4_1</span> <span class="n">POPCNT</span> <span class="n">SSE4_2</span>
+</span></span><span class="line"><span class="cl">      <span class="n">FP16</span> <span class="p">(</span><span class="mi">2</span> <span class="n">files</span><span class="p">):</span>            <span class="o">+</span> <span class="n">SSE3</span> <span class="n">SSSE3</span> <span class="n">SSE4_1</span> <span class="n">POPCNT</span> <span class="n">SSE4_2</span> <span class="n">FP16</span> <span class="n">AVX</span>
+</span></span><span class="line"><span class="cl">      <span class="n">AVX</span> <span class="p">(</span><span class="mi">5</span> <span class="n">files</span><span class="p">):</span>             <span class="o">+</span> <span class="n">SSE3</span> <span class="n">SSSE3</span> <span class="n">SSE4_1</span> <span class="n">POPCNT</span> <span class="n">SSE4_2</span> <span class="n">AVX</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">C</span><span class="o">/</span><span class="n">C</span><span class="o">++</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Built</span> <span class="n">as</span> <span class="n">dynamic</span> <span class="n">libs</span><span class="err">?</span><span class="p">:</span>      <span class="n">YES</span>
+</span></span><span class="line"><span class="cl">    <span class="n">C</span><span class="o">++</span><span class="mi">11</span><span class="p">:</span>                       <span class="n">YES</span>
+</span></span><span class="line"><span class="cl">    <span class="n">C</span><span class="o">++</span> <span class="n">Compiler</span><span class="p">:</span>                <span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">software</span><span class="o">/</span><span class="n">vs2013</span><span class="o">/</span><span class="n">VC</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">cl</span><span class="o">.</span><span class="n">exe</span>  <span class="p">(</span><span class="n">ver</span> <span class="mf">18.0</span><span class="o">.</span><span class="mf">21005.1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">C</span><span class="o">++</span> <span class="n">flags</span> <span class="p">(</span><span class="n">Release</span><span class="p">):</span>         <span class="o">/</span><span class="n">DWIN32</span> <span class="o">/</span><span class="n">D_WINDOWS</span> <span class="o">/</span><span class="n">W4</span> <span class="o">/</span><span class="n">GR</span>  <span class="o">/</span><span class="n">EHa</span>  <span class="o">/</span><span class="n">D</span> <span class="n">_CRT_SECURE_NO_DEPRECATE</span> <span class="o">/</span><span class="n">D</span> <span class="n">_CRT_NONSTDC_NO_DEPRECATE</span> <span class="o">/</span><span class="n">D</span> <span class="n">_SCL_SECURE_NO_WARNINGS</span> <span class="o">/</span><span class="n">Gy</span> <span class="o">/</span><span class="n">bigobj</span> <span class="o">/</span><span class="n">Oi</span> <span class="o">/</span><span class="n">fp</span><span class="p">:</span><span class="n">fast</span>   <span class="o">/</span><span class="n">arch</span><span class="p">:</span><span class="n">SSE</span> <span class="o">/</span><span class="n">arch</span><span class="p">:</span><span class="n">SSE2</span> <span class="o">/</span><span class="n">wd4127</span> <span class="o">/</span><span class="n">wd4251</span> <span class="o">/</span><span class="n">wd4324</span> <span class="o">/</span><span class="n">wd4275</span> <span class="o">/</span><span class="n">wd4512</span> <span class="o">/</span><span class="n">wd4589</span> <span class="o">/</span><span class="n">MP12</span>  <span class="o">/</span><span class="n">MD</span> <span class="o">/</span><span class="n">O2</span> <span class="o">/</span><span class="n">Ob2</span> <span class="o">/</span><span class="n">DNDEBUG</span>  <span class="o">/</span><span class="n">Zi</span>
+</span></span><span class="line"><span class="cl">    <span class="n">C</span><span class="o">++</span> <span class="n">flags</span> <span class="p">(</span><span class="n">Debug</span><span class="p">):</span>           <span class="o">/</span><span class="n">DWIN32</span> <span class="o">/</span><span class="n">D_WINDOWS</span> <span class="o">/</span><span class="n">W4</span> <span class="o">/</span><span class="n">GR</span>  <span class="o">/</span><span class="n">EHa</span>  <span class="o">/</span><span class="n">D</span> <span class="n">_CRT_SECURE_NO_DEPRECATE</span> <span class="o">/</span><span class="n">D</span> <span class="n">_CRT_NONSTDC_NO_DEPRECATE</span> <span class="o">/</span><span class="n">D</span> <span class="n">_SCL_SECURE_NO_WARNINGS</span> <span class="o">/</span><span class="n">Gy</span> <span class="o">/</span><span class="n">bigobj</span> <span class="o">/</span><span class="n">Oi</span> <span class="o">/</span><span class="n">fp</span><span class="p">:</span><span class="n">fast</span>   <span class="o">/</span><span class="n">arch</span><span class="p">:</span><span class="n">SSE</span> <span class="o">/</span><span class="n">arch</span><span class="p">:</span><span class="n">SSE2</span> <span class="o">/</span><span class="n">wd4127</span> <span class="o">/</span><span class="n">wd4251</span> <span class="o">/</span><span class="n">wd4324</span> <span class="o">/</span><span class="n">wd4275</span> <span class="o">/</span><span class="n">wd4512</span> <span class="o">/</span><span class="n">wd4589</span> <span class="o">/</span><span class="n">MP12</span>  <span class="o">/</span><span class="n">MDd</span> <span class="o">/</span><span class="n">Zi</span> <span class="o">/</span><span class="n">Ob0</span> <span class="o">/</span><span class="n">Od</span> <span class="o">/</span><span class="n">RTC1</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">C</span> <span class="n">Compiler</span><span class="p">:</span>                  <span class="n">C</span><span class="p">:</span><span class="o">/</span><span class="n">software</span><span class="o">/</span><span class="n">vs2013</span><span class="o">/</span><span class="n">VC</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">cl</span><span class="o">.</span><span class="n">exe</span>
+</span></span><span class="line"><span class="cl">    <span class="n">C</span> <span class="n">flags</span> <span class="p">(</span><span class="n">Release</span><span class="p">):</span>           <span class="o">/</span><span class="n">DWIN32</span> <span class="o">/</span><span class="n">D_WINDOWS</span> <span class="o">/</span><span class="n">W3</span>  <span class="o">/</span><span class="n">D</span> <span class="n">_CRT_SECURE_NO_DEPRECATE</span> <span class="o">/</span><span class="n">D</span> <span class="n">_CRT_NONSTDC_NO_DEPRECATE</span> <span class="o">/</span><span class="n">D</span> <span class="n">_SCL_SECURE_NO_WARNINGS</span> <span class="o">/</span><span class="n">Gy</span> <span class="o">/</span><span class="n">bigobj</span> <span class="o">/</span><span class="n">Oi</span> <span class="o">/</span><span class="n">fp</span><span class="p">:</span><span class="n">fast</span>   <span class="o">/</span><span class="n">arch</span><span class="p">:</span><span class="n">SSE</span> <span class="o">/</span><span class="n">arch</span><span class="p">:</span><span class="n">SSE2</span>   <span class="o">/</span><span class="n">MP12</span>  <span class="o">/</span><span class="n">MD</span> <span class="o">/</span><span class="n">O2</span> <span class="o">/</span><span class="n">Ob2</span> <span class="o">/</span><span class="n">DNDEBUG</span>  <span class="o">/</span><span class="n">Zi</span>
+</span></span><span class="line"><span class="cl">    <span class="n">C</span> <span class="n">flags</span> <span class="p">(</span><span class="n">Debug</span><span class="p">):</span>             <span class="o">/</span><span class="n">DWIN32</span> <span class="o">/</span><span class="n">D_WINDOWS</span> <span class="o">/</span><span class="n">W3</span>  <span class="o">/</span><span class="n">D</span> <span class="n">_CRT_SECURE_NO_DEPRECATE</span> <span class="o">/</span><span class="n">D</span> <span class="n">_CRT_NONSTDC_NO_DEPRECATE</span> <span class="o">/</span><span class="n">D</span> <span class="n">_SCL_SECURE_NO_WARNINGS</span> <span class="o">/</span><span class="n">Gy</span> <span class="o">/</span><span class="n">bigobj</span> <span class="o">/</span><span class="n">Oi</span> <span class="o">/</span><span class="n">fp</span><span class="p">:</span><span class="n">fast</span>   <span class="o">/</span><span class="n">arch</span><span class="p">:</span><span class="n">SSE</span> <span class="o">/</span><span class="n">arch</span><span class="p">:</span><span class="n">SSE2</span>   <span class="o">/</span><span class="n">MP12</span>  <span class="o">/</span><span class="n">MDd</span> <span class="o">/</span><span class="n">Zi</span> <span class="o">/</span><span class="n">Ob0</span> <span class="o">/</span><span class="n">Od</span> <span class="o">/</span><span class="n">RTC1</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">Linker</span> <span class="n">flags</span> <span class="p">(</span><span class="n">Release</span><span class="p">):</span>      <span class="o">/</span><span class="n">machine</span><span class="p">:</span><span class="n">X86</span>  <span class="o">/</span><span class="n">INCREMENTAL</span><span class="p">:</span><span class="n">NO</span>  <span class="o">/</span><span class="n">debug</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Linker</span> <span class="n">flags</span> <span class="p">(</span><span class="n">Debug</span><span class="p">):</span>        <span class="o">/</span><span class="n">machine</span><span class="p">:</span><span class="n">X86</span>  <span class="o">/</span><span class="n">debug</span> <span class="o">/</span><span class="n">INCREMENTAL</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">ccache</span><span class="p">:</span>                      <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Precompiled</span> <span class="n">headers</span><span class="p">:</span>         <span class="n">YES</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Extra</span> <span class="n">dependencies</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="mi">3</span><span class="n">rdparty</span> <span class="n">dependencies</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">OpenCV</span> <span class="n">modules</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">To</span> <span class="n">be</span> <span class="n">built</span><span class="p">:</span>                 <span class="n">calib3d</span> <span class="n">core</span> <span class="n">dnn</span> <span class="n">features2d</span> <span class="n">flann</span> <span class="n">highgui</span> <span class="n">imgcodecs</span> <span class="n">imgproc</span> <span class="n">ml</span> <span class="n">objdetect</span> <span class="n">photo</span> <span class="n">python_bindings_generator</span> <span class="n">shape</span> <span class="n">stitching</span> <span class="n">superres</span> <span class="n">ts</span> <span class="n">video</span> <span class="n">videoio</span> <span class="n">videostab</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Disabled</span><span class="p">:</span>                    <span class="n">js</span> <span class="n">world</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Disabled</span> <span class="n">by</span> <span class="n">dependency</span><span class="p">:</span>      <span class="o">-</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Unavailable</span><span class="p">:</span>                 <span class="n">cudaarithm</span> <span class="n">cudabgsegm</span> <span class="n">cudacodec</span> <span class="n">cudafeatures2d</span> <span class="n">cudafilters</span> <span class="n">cudaimgproc</span> <span class="n">cudalegacy</span> <span class="n">cudaobjdetect</span> <span class="n">cudaoptflow</span> <span class="n">cudastereo</span> <span class="n">cudawarping</span> <span class="n">cudev</span> <span class="n">java</span> <span class="n">python2</span> <span class="n">python3</span> <span class="n">viz</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Applications</span><span class="p">:</span>                <span class="n">tests</span> <span class="n">perf_tests</span> <span class="n">apps</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Documentation</span><span class="p">:</span>               <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Non</span><span class="o">-</span><span class="n">free</span> <span class="n">algorithms</span><span class="p">:</span>         <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">Windows</span> <span class="n">RT</span> <span class="n">support</span><span class="p">:</span>            <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">GUI</span><span class="p">:</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">Win32</span> <span class="n">UI</span><span class="p">:</span>                    <span class="n">YES</span>
+</span></span><span class="line"><span class="cl">    <span class="n">VTK</span> <span class="n">support</span><span class="p">:</span>                 <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">Media</span> <span class="n">I</span><span class="o">/</span><span class="n">O</span><span class="p">:</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">ZLib</span><span class="p">:</span>                        <span class="n">build</span> <span class="p">(</span><span class="n">ver</span> <span class="mf">1.2</span><span class="o">.</span><span class="mi">11</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">JPEG</span><span class="p">:</span>                        <span class="n">build</span> <span class="p">(</span><span class="n">ver</span> <span class="mi">90</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">WEBP</span><span class="p">:</span>                        <span class="n">build</span> <span class="p">(</span><span class="n">ver</span> <span class="n">encoder</span><span class="p">:</span> <span class="mh">0x020e</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">PNG</span><span class="p">:</span>                         <span class="n">build</span> <span class="p">(</span><span class="n">ver</span> <span class="mf">1.6</span><span class="o">.</span><span class="mi">34</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">TIFF</span><span class="p">:</span>                        <span class="n">build</span> <span class="p">(</span><span class="n">ver</span> <span class="mi">42</span> <span class="o">-</span> <span class="mf">4.0</span><span class="o">.</span><span class="mi">9</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">JPEG</span> <span class="mi">2000</span><span class="p">:</span>                   <span class="n">build</span> <span class="p">(</span><span class="n">ver</span> <span class="mf">1.900</span><span class="o">.</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">OpenEXR</span><span class="p">:</span>                     <span class="n">build</span> <span class="p">(</span><span class="n">ver</span> <span class="mf">1.7</span><span class="o">.</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">Video</span> <span class="n">I</span><span class="o">/</span><span class="n">O</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Video</span> <span class="k">for</span> <span class="n">Windows</span><span class="p">:</span>           <span class="n">YES</span>
+</span></span><span class="line"><span class="cl">    <span class="n">DC1394</span><span class="p">:</span>                      <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">    <span class="n">FFMPEG</span><span class="p">:</span>                      <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">      <span class="n">avcodec</span><span class="p">:</span>                   <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">      <span class="n">avformat</span><span class="p">:</span>                  <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">      <span class="n">avutil</span><span class="p">:</span>                    <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">      <span class="n">swscale</span><span class="p">:</span>                   <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">      <span class="n">avresample</span><span class="p">:</span>                <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">    <span class="n">GStreamer</span><span class="p">:</span>                   <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">    <span class="n">DirectShow</span><span class="p">:</span>                  <span class="n">YES</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">Parallel</span> <span class="n">framework</span><span class="p">:</span>            <span class="n">Concurrency</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">Trace</span><span class="p">:</span>                         <span class="n">YES</span> <span class="p">(</span><span class="n">with</span> <span class="n">Intel</span> <span class="n">ITT</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">Other</span> <span class="n">third</span><span class="o">-</span><span class="n">party</span> <span class="n">libraries</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Lapack</span><span class="p">:</span>                      <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Eigen</span><span class="p">:</span>                       <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Custom</span> <span class="n">HAL</span><span class="p">:</span>                  <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">NVIDIA</span> <span class="n">CUDA</span><span class="p">:</span>                   <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">OpenCL</span><span class="p">:</span>                        <span class="n">YES</span> <span class="p">(</span><span class="n">no</span> <span class="n">extra</span> <span class="n">features</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Include</span> <span class="n">path</span><span class="p">:</span>                <span class="n">E</span><span class="p">:</span><span class="o">/</span><span class="n">opencv</span><span class="o">-</span><span class="mf">3.4</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">opencv</span><span class="o">-</span><span class="mf">3.4</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="mi">3</span><span class="n">rdparty</span><span class="o">/</span><span class="n">include</span><span class="o">/</span><span class="n">opencl</span><span class="o">/</span><span class="mf">1.2</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Link</span> <span class="n">libraries</span><span class="p">:</span>              <span class="n">Dynamic</span> <span class="nb">load</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">Python</span> <span class="p">(</span><span class="k">for</span> <span class="n">build</span><span class="p">):</span>            <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">Java</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ant</span><span class="p">:</span>                         <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">    <span class="n">JNI</span><span class="p">:</span>                         <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Java</span> <span class="n">wrappers</span><span class="p">:</span>               <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Java</span> <span class="n">tests</span><span class="p">:</span>                  <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">Matlab</span><span class="p">:</span>                        <span class="n">NO</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">Install</span> <span class="n">to</span><span class="p">:</span>                    <span class="n">E</span><span class="p">:</span><span class="o">/</span><span class="n">opencv</span><span class="o">-</span><span class="mf">3.4</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">opencv</span><span class="o">-</span><span class="mf">3.4</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">build</span><span class="o">/</span><span class="n">install</span>
+</span></span><span class="line"><span class="cl"><span class="o">-----------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Configuring</span> <span class="n">done</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>此时可能出现常见问题：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">FFMPEG</span><span class="p">:</span> <span class="n">Download</span><span class="p">:</span> <span class="n">opencv_ffmpeg</span><span class="o">.</span><span class="n">dll</span>
+</span></span><span class="line"><span class="cl"><span class="n">CMake</span> <span class="n">Warning</span> <span class="n">at</span> <span class="n">cmake</span><span class="o">/</span><span class="n">OpenCVDownload</span><span class="o">.</span><span class="n">cmake</span><span class="p">:</span><span class="mi">190</span> <span class="p">(</span><span class="n">message</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">FFMPEG</span><span class="p">:</span> <span class="n">Download</span> <span class="n">failed</span><span class="p">:</span> <span class="mi">28</span><span class="p">;</span><span class="s2">&#34;Timeout was reached&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">FFMPEG</span><span class="p">:</span> <span class="n">Download</span><span class="p">:</span> <span class="n">opencv_ffmpeg_64</span><span class="o">.</span><span class="n">dll</span>
+</span></span><span class="line"><span class="cl"><span class="n">CMake</span> <span class="n">Warning</span> <span class="n">at</span> <span class="n">cmake</span><span class="o">/</span><span class="n">OpenCVDownload</span><span class="o">.</span><span class="n">cmake</span><span class="p">:</span><span class="mi">190</span> <span class="p">(</span><span class="n">message</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">FFMPEG</span><span class="p">:</span> <span class="n">Download</span> <span class="n">failed</span><span class="p">:</span> <span class="mi">28</span><span class="p">;</span><span class="s2">&#34;Timeout was reached&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">IPPICV</span><span class="p">:</span> <span class="n">Download</span><span class="p">:</span> <span class="n">ippicv_2017u3_win_ia32_general_20170822</span><span class="o">.</span><span class="n">zip</span>
+</span></span><span class="line"><span class="cl"><span class="n">CMake</span> <span class="n">Warning</span> <span class="n">at</span> <span class="n">cmake</span><span class="o">/</span><span class="n">OpenCVDownload</span><span class="o">.</span><span class="n">cmake</span><span class="p">:</span><span class="mi">190</span> <span class="p">(</span><span class="n">message</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">  <span class="n">IPPICV</span><span class="p">:</span> <span class="n">Download</span> <span class="n">failed</span><span class="p">:</span> <span class="mi">28</span><span class="p">;</span><span class="s2">&#34;Timeout was reached&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>总之就是有文件下载不成功。根据CMake的提示，打开build下的CMakeDownloadLog.txt，上面写着：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">use_cache</span> <span class="s2">&#34;E:/opencv-3.4.0/opencv-3.4.0/.cache&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">do_copy</span> <span class="s2">&#34;opencv_ffmpeg.dll&#34;</span> <span class="s2">&#34;3ae76b105113d944984b2351c61e21c6&#34;</span> <span class="s2">&#34;https://raw.githubusercontent.com/opencv/opencv_3rdparty/66b1fed06cf3510235f367f96aa26da5cb234a15/ffmpeg/opencv_ffmpeg.dll&#34;</span> <span class="s2">&#34;E:/opencv-3.4.0/opencv-3.4.0/build/3rdparty/ffmpeg&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#missing &#34;E:/opencv-3.4.0/opencv-3.4.0/build/3rdparty/ffmpeg/opencv_ffmpeg.dll&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#check_md5 &#34;E:/opencv-3.4.0/opencv-3.4.0/.cache/ffmpeg/3ae76b105113d944984b2351c61e21c6-opencv_ffmpeg.dll&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#mismatch_md5 &#34;E:/opencv-3.4.0/opencv-3.4.0/.cache/ffmpeg/3ae76b105113d944984b2351c61e21c6-opencv_ffmpeg.dll&#34; &#34;299b46e2c4cf8047b0ef420c9a61c6ef&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#delete &#34;E:/opencv-3.4.0/opencv-3.4.0/.cache/ffmpeg/3ae76b105113d944984b2351c61e21c6-opencv_ffmpeg.dll&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#cmake_download &#34;E:/opencv-3.4.0/opencv-3.4.0/.cache/ffmpeg/3ae76b105113d944984b2351c61e21c6-opencv_ffmpeg.dll&#34; &#34;https://raw.githubusercontent.com/opencv/opencv_3rdparty/66b1fed06cf3510235f367f96aa26da5cb234a15/ffmpeg/opencv_ffmpeg.dll&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">do_copy</span> <span class="s2">&#34;opencv_ffmpeg_64.dll&#34;</span> <span class="s2">&#34;cf3bb5bc9d393b022ea7a42eb63e794d&#34;</span> <span class="s2">&#34;https://raw.githubusercontent.com/opencv/opencv_3rdparty/66b1fed06cf3510235f367f96aa26da5cb234a15/ffmpeg/opencv_ffmpeg_64.dll&#34;</span> <span class="s2">&#34;E:/opencv-3.4.0/opencv-3.4.0/build/3rdparty/ffmpeg&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#missing &#34;E:/opencv-3.4.0/opencv-3.4.0/build/3rdparty/ffmpeg/opencv_ffmpeg_64.dll&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#check_md5 &#34;E:/opencv-3.4.0/opencv-3.4.0/.cache/ffmpeg/cf3bb5bc9d393b022ea7a42eb63e794d-opencv_ffmpeg_64.dll&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#mismatch_md5 &#34;E:/opencv-3.4.0/opencv-3.4.0/.cache/ffmpeg/cf3bb5bc9d393b022ea7a42eb63e794d-opencv_ffmpeg_64.dll&#34; &#34;3ab964d23e60d2b961737a8bb556bd45&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#delete &#34;E:/opencv-3.4.0/opencv-3.4.0/.cache/ffmpeg/cf3bb5bc9d393b022ea7a42eb63e794d-opencv_ffmpeg_64.dll&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#cmake_download &#34;E:/opencv-3.4.0/opencv-3.4.0/.cache/ffmpeg/cf3bb5bc9d393b022ea7a42eb63e794d-opencv_ffmpeg_64.dll&#34; &#34;https://raw.githubusercontent.com/opencv/opencv_3rdparty/66b1fed06cf3510235f367f96aa26da5cb234a15/ffmpeg/opencv_ffmpeg_64.dll&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">do_copy</span> <span class="s2">&#34;ffmpeg_version.cmake&#34;</span> <span class="s2">&#34;ec59008da403fb18ab3c1ed66aed583b&#34;</span> <span class="s2">&#34;https://raw.githubusercontent.com/opencv/opencv_3rdparty/66b1fed06cf3510235f367f96aa26da5cb234a15/ffmpeg/ffmpeg_version.cmake&#34;</span> <span class="s2">&#34;E:/opencv-3.4.0/opencv-3.4.0/build/3rdparty/ffmpeg&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#check_md5 &#34;E:/opencv-3.4.0/opencv-3.4.0/build/3rdparty/ffmpeg/ffmpeg_version.cmake&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#match_md5 &#34;E:/opencv-3.4.0/opencv-3.4.0/build/3rdparty/ffmpeg/ffmpeg_version.cmake&#34; &#34;ec59008da403fb18ab3c1ed66aed583b&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">do_unpack</span> <span class="s2">&#34;ippicv_2017u3_win_ia32_general_20170822.zip&#34;</span> <span class="s2">&#34;8a7680ae352c192de2e2e34936164bd0&#34;</span> <span class="s2">&#34;https://raw.githubusercontent.com/opencv/opencv_3rdparty/dfe3162c237af211e98b8960018b564bc209261d/ippicv/ippicv_2017u3_win_ia32_general_20170822.zip&#34;</span> <span class="s2">&#34;E:/opencv-3.4.0/opencv-3.4.0/build/3rdparty/ippicv&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#check_md5 &#34;E:/opencv-3.4.0/opencv-3.4.0/.cache/ippicv/8a7680ae352c192de2e2e34936164bd0-ippicv_2017u3_win_ia32_general_20170822.zip&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#mismatch_md5 &#34;E:/opencv-3.4.0/opencv-3.4.0/.cache/ippicv/8a7680ae352c192de2e2e34936164bd0-ippicv_2017u3_win_ia32_general_20170822.zip&#34; &#34;c7fcfb626b50daa8bd728b7598328455&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#delete &#34;E:/opencv-3.4.0/opencv-3.4.0/.cache/ippicv/8a7680ae352c192de2e2e34936164bd0-ippicv_2017u3_win_ia32_general_20170822.zip&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#cmake_download &#34;E:/opencv-3.4.0/opencv-3.4.0/.cache/ippicv/8a7680ae352c192de2e2e34936164bd0-ippicv_2017u3_win_ia32_general_20170822.zip&#34; &#34;https://raw.githubusercontent.com/opencv/opencv_3rdparty/dfe3162c237af211e98b8960018b564bc209261d/ippicv/ippicv_2017u3_win_ia32_general_20170822.zip&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><del>可以看到文本中记录了下载链接，于是在浏览器中复制上述链接，自行下载好这几个文件到文本指向的路径中。
+比如：我缺的三个文件是：
+opencv_ffmpeg.dll，需放到：E:/opencv-3.4.0/opencv-3.4.0/build/3rdparty/ffmpeg。
+下载链接：https://raw.githubusercontent.com/opencv/opencv_3rdparty/66b1fed06cf3510235f367f96aa26da5cb234a15/ffmpeg/opencv_ffmpeg.dll
+opencv_ffmpeg_64.dll，需放到：E:/opencv-3.4.0/opencv-3.4.0/build/3rdparty/ffmpeg。
+下载链接：
+<a class="link" href="https://raw.githubusercontent.com/opencv/opencv_3rdparty/66b1fed06cf3510235f367f96aa26da5cb234a15/ffmpeg/opencv_ffmpeg_64.dll"  target="_blank" rel="noopener"
+    >https://raw.githubusercontent.com/opencv/opencv_3rdparty/66b1fed06cf3510235f367f96aa26da5cb234a15/ffmpeg/opencv_ffmpeg_64.dll</a>
+ippicv_2017u3_win_ia32_general_20170822.zip，注意：需在压缩包前加上文件的hash值，即压缩名变为hash值-原名。提供一个在线查看哈希值的网站：http://www.atool.org/file_hash.php ，需要的是MD5 Hash。
+需放到：E:/opencv-3.4.0/opencv-3.4.0/build/3rdparty/ippicv。（然而并没有生成ippicv文件夹）
+下载链接：
+<a class="link" href="https://raw.githubusercontent.com/opencv/opencv_3rdparty/dfe3162c237af211e98b8960018b564bc209261d/ippicv/ippicv_2017u3_win_ia32_general_20170822.zip"  target="_blank" rel="noopener"
+    >https://raw.githubusercontent.com/opencv/opencv_3rdparty/dfe3162c237af211e98b8960018b564bc209261d/ippicv/ippicv_2017u3_win_ia32_general_20170822.zip</a>
+建议科学上网后下载，不然网速感人。
+不过还是不匹配。</del>
+根据大佬提示，CMake3.10.2没有downloader.cmake，干脆……不要这三个文件了……
+修改E:\opencv-3.4.0\opencv-3.4.0\3rdparty\ffmpeg中的ffmpeg.cmake，如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="c1"># Binary branch name: ffmpeg/master_20171009</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Binaries were created for OpenCV: 8ac2c5d620b467d3f22802e96c88ddde6da707af</span>
+</span></span><span class="line"><span class="cl"><span class="n">set</span><span class="p">(</span><span class="n">FFMPEG_BINARIES_COMMIT</span> <span class="s2">&#34;66b1fed06cf3510235f367f96aa26da5cb234a15&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">set</span><span class="p">(</span><span class="n">FFMPEG_FILE_HASH_BIN32</span> <span class="s2">&#34;3ae76b105113d944984b2351c61e21c6&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">set</span><span class="p">(</span><span class="n">FFMPEG_FILE_HASH_BIN64</span> <span class="s2">&#34;cf3bb5bc9d393b022ea7a42eb63e794d&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">set</span><span class="p">(</span><span class="n">FFMPEG_FILE_HASH_CMAKE</span> <span class="s2">&#34;ec59008da403fb18ab3c1ed66aed583b&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">function</span><span class="p">(</span><span class="n">download_win_ffmpeg</span> <span class="n">script_var</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="n">set</span><span class="p">(</span><span class="o">$</span><span class="p">{</span><span class="n">script_var</span><span class="p">}</span> <span class="s2">&#34;&#34;</span> <span class="n">PARENT_SCOPE</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1"># set(ids BIN32 BIN64 CMAKE)</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># set(name_BIN32 &#34;opencv_ffmpeg.dll&#34;)</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># set(name_BIN64 &#34;opencv_ffmpeg_64.dll&#34;)</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># set(name_CMAKE &#34;ffmpeg_version.cmake&#34;)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1"># set(FFMPEG_DOWNLOAD_DIR &#34;${OpenCV_BINARY_DIR}/3rdparty/ffmpeg&#34;)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1"># set(status TRUE)</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># foreach(id ${ids})</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># ocv_download(FILENAME ${name_${id}}</span>
+</span></span><span class="line"><span class="cl">               <span class="c1"># HASH ${FFMPEG_FILE_HASH_${id}}</span>
+</span></span><span class="line"><span class="cl">               <span class="c1"># URL</span>
+</span></span><span class="line"><span class="cl">                 <span class="c1"># &#34;$ENV{OPENCV_FFMPEG_URL}&#34;</span>
+</span></span><span class="line"><span class="cl">                 <span class="c1"># &#34;${OPENCV_FFMPEG_URL}&#34;</span>
+</span></span><span class="line"><span class="cl">                 <span class="c1"># &#34;https://raw.githubusercontent.com/opencv/opencv_3rdparty/${FFMPEG_BINARIES_COMMIT}/ffmpeg/&#34;</span>
+</span></span><span class="line"><span class="cl">               <span class="c1"># DESTINATION_DIR ${FFMPEG_DOWNLOAD_DIR}</span>
+</span></span><span class="line"><span class="cl">               <span class="c1"># ID FFMPEG</span>
+</span></span><span class="line"><span class="cl">               <span class="c1"># RELATIVE_URL</span>
+</span></span><span class="line"><span class="cl">               <span class="c1"># STATUS res)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># if(NOT res)</span>
+</span></span><span class="line"><span class="cl">      <span class="c1"># set(status FALSE)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># endif()</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># endforeach()</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># if(status)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># set(${script_var} &#34;${FFMPEG_DOWNLOAD_DIR}/ffmpeg_version.cmake&#34; PARENT_SCOPE)</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># endif()</span>
+</span></span><span class="line"><span class="cl"><span class="n">endfunction</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>修改E:\opencv-3.4.0\opencv-3.4.0\3rdparty\ippicv中的ippicv.cmake，如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">function</span><span class="p">(</span><span class="n">download_ippicv</span> <span class="n">root_var</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># set(${root_var} &#34;&#34; PARENT_SCOPE)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1"># # Commit SHA in the opencv_3rdparty repo</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># set(IPPICV_COMMIT &#34;dfe3162c237af211e98b8960018b564bc209261d&#34;)</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># # Define actual ICV versions</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># if(APPLE)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># set(OPENCV_ICV_PLATFORM &#34;macosx&#34;)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># set(OPENCV_ICV_PACKAGE_SUBDIR &#34;ippicv_mac&#34;)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># if(X86_64)</span>
+</span></span><span class="line"><span class="cl">      <span class="c1"># set(OPENCV_ICV_NAME &#34;ippicv_2017u3_mac_intel64_general_20170822.tgz&#34;)</span>
+</span></span><span class="line"><span class="cl">      <span class="c1"># set(OPENCV_ICV_HASH &#34;c1ebb5dfa5b7f54b0c44e1917805a463&#34;)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># else()</span>
+</span></span><span class="line"><span class="cl">      <span class="c1"># set(OPENCV_ICV_NAME &#34;ippicv_2017u3_mac_ia32_general_20170822.tgz&#34;)</span>
+</span></span><span class="line"><span class="cl">      <span class="c1"># set(OPENCV_ICV_HASH &#34;49b05a669042753ae75895a445ebd612&#34;)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># endif()</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># elseif((UNIX AND NOT ANDROID) OR (UNIX AND ANDROID_ABI MATCHES &#34;x86&#34;))</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># set(OPENCV_ICV_PLATFORM &#34;linux&#34;)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># set(OPENCV_ICV_PACKAGE_SUBDIR &#34;ippicv_lnx&#34;)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># if(X86_64)</span>
+</span></span><span class="line"><span class="cl">      <span class="c1"># set(OPENCV_ICV_NAME &#34;ippicv_2017u3_lnx_intel64_general_20170822.tgz&#34;)</span>
+</span></span><span class="line"><span class="cl">      <span class="c1"># set(OPENCV_ICV_HASH &#34;4e0352ce96473837b1d671ce87f17359&#34;)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># else()</span>
+</span></span><span class="line"><span class="cl">      <span class="c1"># set(OPENCV_ICV_NAME &#34;ippicv_2017u3_lnx_ia32_general_20170822.tgz&#34;)</span>
+</span></span><span class="line"><span class="cl">      <span class="c1"># set(OPENCV_ICV_HASH &#34;dcdb0ba4b123f240596db1840cd59a76&#34;)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># endif()</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># elseif(WIN32 AND NOT ARM)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># set(OPENCV_ICV_PLATFORM &#34;windows&#34;)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># set(OPENCV_ICV_PACKAGE_SUBDIR &#34;ippicv_win&#34;)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># if(X86_64)</span>
+</span></span><span class="line"><span class="cl">      <span class="c1"># set(OPENCV_ICV_NAME &#34;ippicv_2017u3_win_intel64_general_20170822.zip&#34;)</span>
+</span></span><span class="line"><span class="cl">      <span class="c1"># set(OPENCV_ICV_HASH &#34;0421e642bc7ad741a2236d3ec4190bdd&#34;)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># else()</span>
+</span></span><span class="line"><span class="cl">      <span class="c1"># set(OPENCV_ICV_NAME &#34;ippicv_2017u3_win_ia32_general_20170822.zip&#34;)</span>
+</span></span><span class="line"><span class="cl">      <span class="c1"># set(OPENCV_ICV_HASH &#34;8a7680ae352c192de2e2e34936164bd0&#34;)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># endif()</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># else()</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># return()</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># endif()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1"># set(THE_ROOT &#34;${OpenCV_BINARY_DIR}/3rdparty/ippicv&#34;)</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># ocv_download(FILENAME ${OPENCV_ICV_NAME}</span>
+</span></span><span class="line"><span class="cl">               <span class="c1"># HASH ${OPENCV_ICV_HASH}</span>
+</span></span><span class="line"><span class="cl">               <span class="c1"># URL</span>
+</span></span><span class="line"><span class="cl">                 <span class="c1"># &#34;${OPENCV_IPPICV_URL}&#34;</span>
+</span></span><span class="line"><span class="cl">                 <span class="c1"># &#34;$ENV{OPENCV_IPPICV_URL}&#34;</span>
+</span></span><span class="line"><span class="cl">                 <span class="c1"># &#34;https://raw.githubusercontent.com/opencv/opencv_3rdparty/${IPPICV_COMMIT}/ippicv/&#34;</span>
+</span></span><span class="line"><span class="cl">               <span class="c1"># DESTINATION_DIR &#34;${THE_ROOT}&#34;</span>
+</span></span><span class="line"><span class="cl">               <span class="c1"># ID IPPICV</span>
+</span></span><span class="line"><span class="cl">               <span class="c1"># STATUS res</span>
+</span></span><span class="line"><span class="cl">               <span class="c1"># UNPACK RELATIVE_URL)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1"># if(res)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># set(${root_var} &#34;${THE_ROOT}/${OPENCV_ICV_PACKAGE_SUBDIR}&#34; PARENT_SCOPE)</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># endif()</span>
+</span></span><span class="line"><span class="cl"><span class="n">endfunction</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>再重新Configure两次，Generate一次，成功。</p>
+<h3 id="用vs2013编译">用VS2013编译
+</h3><p>打开OpenCV.sln编译，debug-Win32调试器。</p>
+<h3 id="添加到所需工程">添加到所需工程
+</h3><p>根据法一：
+添加环境变量：
+E:\opencv-3.4.0\opencv-3.4.0\build\install\x86\vc12\bin
+VS包含目录：E:\opencv-3.4.0\opencv-3.4.0\build\install\include
+E:\opencv-3.4.0\opencv-3.4.0\build\install\include\opencv
+E:\opencv-3.4.0\opencv-3.4.0\build\install\include\opencv2
+库目录：
+E:\opencv-3.4.0\opencv-3.4.0\build\install\x86\vc12\lib
+链接器：
+opencv_calib3d340d.lib
+opencv_core340d.lib
+opencv_dnn340d.lib
+opencv_features2d340d.lib
+opencv_flann340d.lib
+opencv_highgui340d.lib
+opencv_imgcodecs340d.lib
+opencv_imgproc340d.lib
+opencv_ml340d.lib
+opencv_objdetect340d.lib
+opencv_photo340d.lib
+opencv_shape340d.lib
+opencv_stitching340d.lib
+opencv_superres340d.lib
+opencv_video340d.lib
+opencv_videoio340d.lib
+opencv_videostab340d.lib</p>
+<h3 id="测试">测试
+</h3><p>比较两张图片的不同之处。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;cv.h&gt;  </span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;highgui.h&gt;  </span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;  </span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">IplImage</span> <span class="o">*</span><span class="n">pSrc</span> <span class="o">=</span> <span class="nf">cvLoadImage</span><span class="p">(</span><span class="s">&#34;1.jpg&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CvSize</span> <span class="n">size</span> <span class="o">=</span> <span class="nf">cvSize</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">376</span><span class="p">);</span><span class="c1">//区域大小  
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">cvSetImageROI</span><span class="p">(</span><span class="n">pSrc</span><span class="p">,</span> <span class="nf">cvRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">));</span><span class="c1">//设置源图像ROI  
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">IplImage</span><span class="o">*</span> <span class="n">pDest1</span> <span class="o">=</span> <span class="nf">cvCreateImage</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">pSrc</span><span class="o">-&gt;</span><span class="n">depth</span><span class="p">,</span> <span class="n">pSrc</span><span class="o">-&gt;</span><span class="n">nChannels</span><span class="p">);</span><span class="c1">//创建目标图像  
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">cvCopy</span><span class="p">(</span><span class="n">pSrc</span><span class="p">,</span> <span class="n">pDest1</span><span class="p">);</span> <span class="c1">//复制图像  
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">cvResetImageROI</span><span class="p">(</span><span class="n">pDest1</span><span class="p">);</span><span class="c1">//源图像用完后，清空ROI  
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">cvSaveImage</span><span class="p">(</span><span class="s">&#34;Image_1.jpg&#34;</span><span class="p">,</span> <span class="n">pDest1</span><span class="p">);</span><span class="c1">//保存目标图像  
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">cvSetImageROI</span><span class="p">(</span><span class="n">pSrc</span><span class="p">,</span> <span class="nf">cvRect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">393</span><span class="p">,</span> <span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">));</span><span class="c1">//设置源图像ROI  
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">IplImage</span><span class="o">*</span> <span class="n">pDest2</span> <span class="o">=</span> <span class="nf">cvCreateImage</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">pSrc</span><span class="o">-&gt;</span><span class="n">depth</span><span class="p">,</span> <span class="n">pSrc</span><span class="o">-&gt;</span><span class="n">nChannels</span><span class="p">);</span><span class="c1">//创建目标图像  
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">cvCopy</span><span class="p">(</span><span class="n">pSrc</span><span class="p">,</span> <span class="n">pDest2</span><span class="p">);</span> <span class="c1">//复制图像  
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">cvResetImageROI</span><span class="p">(</span><span class="n">pDest2</span><span class="p">);</span><span class="c1">//源图像用完后，清空ROI  
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="nf">cvSaveImage</span><span class="p">(</span><span class="s">&#34;Image_2.jpg&#34;</span><span class="p">,</span> <span class="n">pDest2</span><span class="p">);</span><span class="c1">//保存目标图像  
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">IplImage</span> <span class="o">*</span><span class="n">dst</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">dst</span> <span class="o">=</span> <span class="nf">cvCreateImage</span><span class="p">(</span><span class="nf">cvGetSize</span><span class="p">(</span><span class="n">pDest1</span><span class="p">),</span> <span class="n">pDest1</span><span class="o">-&gt;</span><span class="n">depth</span><span class="p">,</span> <span class="n">pDest1</span><span class="o">-&gt;</span><span class="n">nChannels</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">cvAbsDiff</span><span class="p">(</span><span class="n">pDest1</span><span class="p">,</span> <span class="n">pDest2</span><span class="p">,</span> <span class="n">dst</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">cvNamedWindow</span><span class="p">(</span><span class="s">&#34;Compare_Images&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">cvShowImage</span><span class="p">(</span><span class="s">&#34;Compare_Images&#34;</span><span class="p">,</span> <span class="n">dst</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="nf">cvWaitKey</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>以上程序转自http://blog.csdn.net/cooelf/article/details/24663097</p>
+<p>可成功编译和运行，到此，基础环境算是磕磕绊绊搭建好了。</p>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/opencv/">OpenCV</a>
+        
+            <a href="/tags/cpp/">CPP</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/qwabswct/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">微信自动跳一跳</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/gtexwcbw/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">JingPic——github图床外链小工具</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/tnzags96/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">ffmpeg开发环境搭建</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/kkvtowpf/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">WatchYourPC</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/75qsjbvh/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">古风自动造句器</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":"评论一句，好运+1！"},"requiredMeta":["name"],"serverURL":"https://zippy-halva-8e20f0.netlify.app/.netlify/functions/comment"});
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2015 - 
+        
+        2025 靖待
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

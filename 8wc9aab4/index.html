@@ -1,0 +1,2094 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="\r**每周一点图形学重启，不弃坑。。。。。。**\r几年之后的最新：多边形图像转换补完\r">
+<title>计算机图形学学习笔记</title>
+
+<link rel='canonical' href='https://hubojing.github.io/8wc9aab4/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="计算机图形学学习笔记">
+<meta property='og:description' content="\r**每周一点图形学重启，不弃坑。。。。。。**\r几年之后的最新：多边形图像转换补完\r">
+<meta property='og:url' content='https://hubojing.github.io/8wc9aab4/'>
+<meta property='og:site_name' content='靖待'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='计算机图形学' /><meta property='article:tag' content='CPP' /><meta property='article:published_time' content='2018-03-05T21:55:05&#43;00:00'/><meta property='article:modified_time' content='2018-03-05T21:55:05&#43;00:00'/>
+<meta name="twitter:title" content="计算机图形学学习笔记">
+<meta name="twitter:description" content="\r**每周一点图形学重启，不弃坑。。。。。。**\r几年之后的最新：多边形图像转换补完\r">
+    <link rel="shortcut icon" href="/avatar.jpg" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_999351c94d8e06aa.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">靖待</a></h1>
+            <h2 class="site-description">创造是人生乐趣</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://blog.csdn.net/hubojing/'
+                        target="_blank"
+                        title="csdn"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:hubojing@outlook.com'
+                        target="_blank"
+                        title="mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://music.163.com/#/user/home?id=92203594'
+                        target="_blank"
+                        title="netease"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='/atom.xml'
+                        target="_blank"
+                        title="rss"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                <span>存档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friends/' >
+                
+                
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#向量分析">向量分析</a></li>
+    <li><a href="#图形变换">图形变换</a>
+      <ol>
+        <li><a href="#分类">分类</a></li>
+        <li><a href="#二维变换">二维变换</a></li>
+        <li><a href="#窗口视区变换">窗口视区变换</a></li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li><a href="#基本变换">基本变换</a>
+      <ol>
+        <li><a href="#平移变换">平移变换</a></li>
+        <li><a href="#比例变换">比例变换</a>
+          <ol>
+            <li><a href="#局部比例变换">局部比例变换</a></li>
+            <li><a href="#整体比例变换">整体比例变换</a></li>
+          </ol>
+        </li>
+        <li><a href="#旋转变换">旋转变换</a>
+          <ol>
+            <li><a href="#绕z轴旋转θ">绕z轴旋转θ</a></li>
+            <li><a href="#绕x轴旋转">绕x轴旋转</a></li>
+            <li><a href="#绕y轴旋转">绕y轴旋转</a></li>
+          </ol>
+        </li>
+        <li><a href="#对称变换">对称变换</a>
+          <ol>
+            <li><a href="#关于坐标平面的对称">关于坐标平面的对称</a></li>
+            <li><a href="#关于坐标轴对称">关于坐标轴对称</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#投影变换">投影变换</a>
+      <ol>
+        <li><a href="#三视图的计算">三视图的计算</a>
+          <ol>
+            <li><a href="#主视图">主视图</a></li>
+            <li><a href="#俯视图">俯视图</a></li>
+          </ol>
+        </li>
+        <li><a href="#侧视图">侧视图</a></li>
+      </ol>
+    </li>
+    <li><a href="#正轴测图">正轴测图</a></li>
+    <li><a href="#透视投影">透视投影</a>
+      <ol>
+        <li><a href="#一点透视">一点透视</a></li>
+        <li><a href="#多点透视">多点透视</a></li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li><a href="#研究内容">研究内容</a></li>
+    <li><a href="#直线段的扫描转换算法">直线段的扫描转换算法</a></li>
+    <li><a href="#直线绘制的三个著名的常用算法">直线绘制的三个著名的常用算法</a>
+      <ol>
+        <li><a href="#数值微分ddadigital-differential-analyzer">数值微分DDA（Digital Differential Analyzer）</a></li>
+        <li><a href="#dda算法代码">DDA算法代码</a></li>
+        <li><a href="#中点画线法">中点画线法</a></li>
+        <li><a href="#中点画线法代码">中点画线法代码</a></li>
+        <li><a href="#bresenham算法">Bresenham算法</a></li>
+        <li><a href="#bresenham算法代码">Bresenham算法代码</a></li>
+      </ol>
+    </li>
+    <li><a href="#多边形扫描转换">多边形扫描转换</a>
+      <ol>
+        <li><a href="#x-扫描线算法">X-扫描线算法</a></li>
+        <li><a href="#改进的x扫描线算法">改进的x扫描线算法</a></li>
+        <li><a href="#边缘填充算法">边缘填充算法</a></li>
+        <li><a href="#栅栏填充算法">栅栏填充算法</a></li>
+        <li><a href="#边界标志算法">边界标志算法</a></li>
+      </ol>
+    </li>
+    <li><a href="#区域填充算法">区域填充算法</a>
+      <ol>
+        <li><a href="#简单四连通种子填充算法区域填充递归算法">简单四连通种子填充算法（区域填充递归算法）</a></li>
+        <li><a href="#多边形的扫描转换与区域填充算法小结">多边形的扫描转换与区域填充算法小结</a></li>
+      </ol>
+    </li>
+    <li><a href="#反走样">反走样</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#点的裁剪">点的裁剪</a></li>
+    <li><a href="#直线段的裁剪">直线段的裁剪</a>
+      <ol>
+        <li><a href="#cohen-sutherland算法">Cohen-Sutherland算法</a></li>
+        <li><a href="#中点分割算法">中点分割算法</a></li>
+        <li><a href="#liang-barsky算法">Liang-Barsky算法</a>
+          <ol>
+            <li><a href="#步骤">步骤</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#多边形裁剪">多边形裁剪</a>
+      <ol>
+        <li><a href="#sutherland-hodgeman多边形裁剪">Sutherland-Hodgeman多边形裁剪</a></li>
+      </ol>
+    </li>
+    <li><a href="#文字裁剪">文字裁剪</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E4%BA%92%E8%81%94%E7%BD%91/" >
+                互联网
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/8wc9aab4/">计算机图形学学习笔记</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 05, 2018</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 21 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <div align="left">
+<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522260185415&di=c78f4ea45fb5db5337c73e8189e82ff8&imgtype=0&src=http%3A%2F%2Fp.ananas.chaoxing.com%2Fstar%2F1024_0%2F1385010809221kidou.jpg" width="300" height="180" style="float:right;"/>
+　　
+　　**每周一点图形学重启，不弃坑。。。。。。**
+　　几年之后的最新：多边形图像转换补完
+   　　
+</div>
+<h1 id="帧缓冲器及分辨率">帧缓冲器及分辨率
+</h1><p>帧缓冲器每一个存储单元的位长决定了一幅画面上能同时显示的不同灰度的数目或颜色的种类。
+如果是单色，则每个像素只需要1Bit表示；
+如果是16色，则每个像素需要4Bit(2^4=16)表示；
+如果是256色，则每个需要1个字节（8位，2^8=256）表示；
+如果是65536（64K）色，则每个像素需要2个字节（16位，2^16=64K）表示；
+如果是16777216（16.7M）色，则每个需要3个字节（24位，2^24=16.7M）表示（24位真彩色）。</p>
+<p>举例：显卡有2MB显存，当分辨率是1024x768时，可支持的色彩数又是多少？
+2MB=2x1024x1024=2097152(字节)
+1024x768=786432(个像素)
+每个像素如果需要3个字节表示，将超过2MB显存，最多只需要2个字节表示，故只能支持64K色彩数。</p>
+<blockquote>
+<p>题目：显示颜色64K，分辨率为1024*1024的显示器，至少需要的帧缓存容量为(C)
+A.1MB B.3MB C.2MB D.512KB</p></blockquote>
+<ul>
+<li>解：显示颜色64K，故每个像素需要2个字节表示。1024x1024=1048576(个像素)，1048576x2=2097152(字节)
+2097152/1024/1024=2MB</li>
+</ul>
+<h1 id="二维图形变换">二维图形变换
+</h1><p>两大基本工具：向量分析	图形变换</p>
+<h2 id="向量分析">向量分析
+</h2><p>向量线性组合
+w=a1v1+a2v2+&hellip;+anvn</p>
+<ol>
+<li>仿射组合
+a1+a2+&hellip;+am=1</li>
+<li>凸组合
+a1+a2+&hellip;+am=1
+i=1,2,&hellip;,m		ai≥0</li>
+</ol>
+<ul>
+<li>点积
+a=(a1,a2) b=(b1,b2)
+a·b=a1b1+a2b2
+点积最重要的应用是计算两个向量的夹角或者两条直线的夹角。
+b·c=|b||c|cosθ
+cosθ=(b·c)/(|b||c|)=b的单位向量·c的单位向量
+b·c &gt; 0   θ &lt; 90°
+b·c = 0   θ = 90°
+b·c &lt; 0   θ &gt; 90°</li>
+</ul>
+<blockquote>
+<p>如何设计一个算法描述任意两篇新闻的相似性？
+用一个向量来描述一篇新闻。当夹角的余弦接近1时，相似，归为一类。夹角余弦越小，两条新闻越不相关。</p></blockquote>
+<ul>
+<li>叉积
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%8F%89%E7%A7%AF%E5%85%AC%E5%BC%8F.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="叉积公式"
+	
+	
+></li>
+</ul>
+<ol>
+<li>axb和a、b两个向量都正交</li>
+<li>axb的长度等于由a和b决定的平行四边形面积
+axb=|a||b|sinθ
+利用叉积求平面的法向量</li>
+</ol>
+<h2 id="图形变换">图形变换
+</h2><p>将程序中用于描述对象几何信息的数值和那些用于表示对象中大小和位置的数值区分开来。前者通常被看作一个建模（modeling）的任务，后者是一个观察（viewing）的任务。
+图形显示的过程是几何（对象）模型在不同坐标系之间的映射变换。</p>
+<h3 id="分类">分类
+</h3><p><strong>世界坐标系</strong>
+用最适合手中问题的坐标系来描述对象，并且可以自动的缩放和平移图形，使得其能正确地在屏幕窗口中显示。
+<strong>建模坐标系（局部坐标系）</strong>
+建模坐标系独立于世界坐标系来定义物体的几何特性
+<strong>观察坐标系</strong>
+观察坐标系主要用于从观察者的角度对整个世界坐标系内的对象进行重新定位和描述。依据观察窗口的方向和形状在世界坐标系中定义的坐标系成为观察坐标系。观察坐标系用于指定图形的输出范围。
+二维观察变换的一般方法是在世界坐标系中指定一个观察坐标系统，以该系统为参考通过选定方向和位置来指定矩形剪裁窗口。
+<strong>设备坐标系</strong>
+适合特定输出设备输出对象的坐标系。比如屏幕坐标系。
+在多数情况下，对于每一个具体的显示设备，都有一个单独的坐标系统。设备坐标是整数。
+<strong>规范化坐标系</strong>
+规范化坐标系独立于设备，能容易地转变为设备坐标系，是一个中间坐标系。
+为使图形软件能在不同的设备之间移植，采用规范化坐标，坐标轴取值范围是0-1。</p>
+<h3 id="二维变换">二维变换
+</h3><p>变换图形就是要变换图形的几何关系，即改变顶点的坐标；同时，保持图形的原拓扑关系不变。
+<strong>仿射变换</strong>（Affine Transformation或Affine Map）是一种二维坐标到二维坐标之间的线性变换。
+（1）“平直性”。即：直线经过变换之后依然是直线
+（2）“平行性”。即：平行线依然是平行线，且直线上
+点的位置顺序不变）</p>
+<p><strong>齐次坐标</strong>
+如n维向量（p1,p2,&hellip;,pn）表示为（hp1,hp2,&hellip;,hpn,h），其中h称为哑坐标。
+普通坐标与齐次坐标的关系为“一对多”：
+普通坐标×h→齐次坐标
+齐次坐标÷h→普通坐标
+当h = 1时产生的齐次坐标称为“规格化坐标”，因为前n个
+坐标就是普通坐标系下的n维坐标</p>
+<ul>
+<li>基本几何变换</li>
+</ul>
+<ol>
+<li>平移变换</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">x*=x+Tx
+</span></span><span class="line"><span class="cl">y*=y+Ty
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>比例变换</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">x*=x·Sx
+</span></span><span class="line"><span class="cl">y*=y·Sy
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>对称变换（反射变换/镜像变换）</li>
+<li>旋转变换</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">x*=rcos(α+θ)=rcosαcosθ-rsinαsinθ
+</span></span><span class="line"><span class="cl">y*=rsin(α+θ)=rcosasinθ+rsinαcosθ
+</span></span><span class="line"><span class="cl">x*=xcosθ-ysinθ
+</span></span><span class="line"><span class="cl">y*=xsinθ+ycosθ
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="5">
+<li>错切变换</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">x*=x+cy
+</span></span><span class="line"><span class="cl">y*=bx+y
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>坐标系变换</strong>
+1.平移变换
+2.旋转变换
+<strong>相对任意参考点的二维几何变换</strong>
+比例、旋转变换等均与参考点相关。如要对某个参考点（xf，yf）作二维几何变换，其变换过程如下：
+a、将固定点移至坐标原点，此时进行平移变换
+b、针对原点进行二维几何变换
+c、进行反平移，将固定点又移回到原来的位置
+<strong>二维变换矩阵</strong>
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%BA%8C%E7%BB%B4%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="二维变换矩阵"
+	
+	
+>
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%BA%8C%E7%BB%B4%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5%E8%AF%B4%E6%98%8E.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="二维变换矩阵说明"
+	
+	
+></p>
+<h3 id="窗口视区变换">窗口视区变换
+</h3><p>窗口：世界坐标系中药显示的区域成为窗口。
+视区：窗口映射到显示器（设备）上的区域称为视区。
+观察变换（Viewing Transformation），将窗口到视区的变换处理。
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E7%AA%97%E5%8F%A3%E8%A7%86%E5%8C%BA%E5%8F%98%E6%8D%A2.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="窗口视区变换"
+	
+	
+>
+窗口到视区的映射是基于一个等式，即对每一个在世界坐标下的点（x,y），产生屏幕坐标系中的一个点（sx,sy）。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">sx=A*x+C
+</span></span><span class="line"><span class="cl">sy=B*y+D
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>A、B、C、D为常数
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E7%AA%97%E5%8F%A3%E8%A7%86%E5%8C%BA%E5%8F%98%E6%8D%A2%E6%98%A0%E5%B0%84%E5%85%B3%E7%B3%BB.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="映射关系"
+	
+	
+>
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E7%AA%97%E5%8F%A3%E8%A7%86%E5%8C%BA%E5%8F%98%E6%8D%A2%E5%85%AC%E5%BC%8F1.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="公式"
+	
+	
+>
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E7%AA%97%E5%8F%A3%E8%A7%86%E5%8C%BA%E5%8F%98%E6%8D%A2%E5%85%AC%E5%BC%8F2.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="公式"
+	
+	
+></p>
+<h1 id="三维图形几何变换">三维图形几何变换
+</h1><p>三维空间中某点的变换可以表示成点的齐次坐标与四阶的三维变换矩阵相乘：
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%B8%89%E7%BB%B4%E5%8F%98%E6%8D%A2%E7%9F%A9%E9%98%B5.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="三维变换矩阵"
+	
+	
+>
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94T3D.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="T3D"
+	
+	
+></p>
+<h2 id="基本变换">基本变换
+</h2><h3 id="平移变换">平移变换
+</h3><p><img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%B8%89%E7%BB%B4%E5%B9%B3%E7%A7%BB.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="三维平移"
+	
+	
+></p>
+<h3 id="比例变换">比例变换
+</h3><h4 id="局部比例变换">局部比例变换
+</h4><p><img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E5%B1%80%E9%83%A8%E6%AF%94%E4%BE%8B%E5%8F%98%E6%8D%A2.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="局部比例变换"
+	
+	
+></p>
+<h4 id="整体比例变换">整体比例变换
+</h4><p><img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%95%B4%E4%BD%93%E6%AF%94%E4%BE%8B%E5%8F%98%E6%8D%A2.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="整体比例变换"
+	
+	
+></p>
+<h3 id="旋转变换">旋转变换
+</h3><h4 id="绕z轴旋转θ">绕z轴旋转θ
+</h4><p><img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94-%E4%B8%89%E7%BB%B4%E7%BB%95z%E6%97%8B%E8%BD%AC.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="三维绕z旋转"
+	
+	
+></p>
+<h4 id="绕x轴旋转">绕x轴旋转
+</h4><p><img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94-%E4%B8%89%E7%BB%B4%E7%BB%95x%E6%97%8B%E8%BD%AC.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="三维绕x旋转"
+	
+	
+></p>
+<h4 id="绕y轴旋转">绕y轴旋转
+</h4><p><img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94-%E4%B8%89%E7%BB%B4%E7%BB%95y%E6%97%8B%E8%BD%AC.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="三维绕y旋转"
+	
+	
+></p>
+<h3 id="对称变换">对称变换
+</h3><h4 id="关于坐标平面的对称">关于坐标平面的对称
+</h4><p>xoy:
+[x&rsquo; y&rsquo; z&rsquo; 1] =  [x y -z 1]
+yoz:
+[x&rsquo; y&rsquo; z&rsquo; 1] =  [-x y z 1]
+zox:
+[x&rsquo; y&rsquo; z&rsquo; 1] =  [x -y z 1]</p>
+<h4 id="关于坐标轴对称">关于坐标轴对称
+</h4><p>x:
+[x&rsquo; y&rsquo; z&rsquo; 1] = [x -y -z 1]
+y:
+[x&rsquo; y&rsquo; z&rsquo; 1] = [-x y -z 1]
+z:
+[x&rsquo; y&rsquo; z&rsquo; 1] = [-x -y z 1]</p>
+<h2 id="投影变换">投影变换
+</h2><p>在二维平面上显示三维物体的解决方法：投影变换。
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94-%E5%B9%B3%E9%9D%A2%E5%87%A0%E4%BD%95%E6%8A%95%E5%BD%B1.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="平面几何投影分类"
+	
+	
+>
+正投影根据投影面与坐标轴的夹角又可分为两类：三视图和
+正轴侧图。
+当投影面与某一坐标轴垂直时，得到的投影为三视图，这时
+投影方向与这个坐标轴的方向一致；否则，得到的投影为正
+轴侧图。</p>
+<h3 id="三视图的计算">三视图的计算
+</h3><p>具体计算步骤如下：
+a、确定三维物体上各点的位置坐标；
+b、引入齐次坐标，求出所作变换相应的变换矩阵；
+c、将所作变换用矩阵表示，通过运算求得三维物
+体上各点经变换后的点坐标值；
+d、由变换后得到的二维点绘出三维物体投影后的三视图</p>
+<h4 id="主视图">主视图
+</h4><p>投影变换矩阵：[x&rsquo; y&rsquo; z&rsquo; 1] = [x 0 z 1]</p>
+<h4 id="俯视图">俯视图
+</h4><p>投影变换矩阵：[x&rsquo; y&rsquo; z&rsquo; 1] = [x y 0 1]
+为了使俯视图与主视图都画在一个平面内，就要使H面绕x轴
+顺时针转90°，即应有一个旋转变换。为了使主视图和俯视图有一定的间距，还要使H面沿z方向平移一段距离-z<sub>0</sub>，有一个平移矩阵。
+所以，最终俯视图投影变换矩阵：
+[x&rsquo; y&rsquo; z&rsquo; 1] = [x y -(y+z<sub>0</sub>） 1]</p>
+<h3 id="侧视图">侧视图
+</h3><p>为了使侧视图与主视图也在一个平面内，就要使W面绕z轴正
+转90°，有一个旋转矩阵。为使主视图和侧视图有一定的间距，还要使W面沿负x方向平移一段距离-x<sub>0</sub>，有一个平移矩阵。
+所以，最终侧视图投影变换矩阵：
+[x&rsquo; y&rsquo; z&rsquo; 1] = [-(y+z<sub>0</sub>) 0 z 1]</p>
+<p>三个视图中的y’均为0，表明三个视图均落在xoz面上。</p>
+<h2 id="正轴测图">正轴测图
+</h2><p>正轴测有等轴测、正二测和正三测三种：
+当投影面与三个坐标轴之间的夹角都相等时为等轴测
+当投影面与两个坐标轴之间的夹角相等时为正二测
+当投影面与三个坐标轴之间的夹角都不相等时为正三测
+变换矩阵为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">x*=xcosγ-ysinγ
+</span></span><span class="line"><span class="cl">y*=0
+</span></span><span class="line"><span class="cl">z*=-xsinγsinα-ycosγsina+zcosα
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="透视投影">透视投影
+</h2><p><img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94T3D.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="T3D"
+	
+	
+>
+其中的[p,q,r]能产生透视变换的效果</p>
+<h3 id="一点透视">一点透视
+</h3><p>灭点：聚焦的那个点</p>
+<h3 id="多点透视">多点透视
+</h3><p>多个灭点</p>
+<p>构造二点透视的一般步骤如下：
+（1）将物体平移到适当位置l、m、n
+（2）将物体绕y轴旋转θ角
+（3）进行透视变换
+（4）最后向xoy面做正投影，即得二点透视图</p>
+<p>构造三点透视的一般步骤如下：
+（1）将物体平移到适当位置
+（2）将物体绕y轴旋转θ角
+（3）再绕x轴旋转α角
+（4）进行透视变换
+（5）最后向xoy面做正投影，即得三点透视图</p>
+<h1 id="光栅图形学算法">光栅图形学算法
+</h1><h2 id="研究内容">研究内容
+</h2><ul>
+<li>直线段的扫描转换算法</li>
+<li>多边形的扫描转换与区域填充算法</li>
+<li>裁剪算法</li>
+<li>反走样算法</li>
+<li>消隐算法</li>
+</ul>
+<h2 id="直线段的扫描转换算法">直线段的扫描转换算法
+</h2><p>P<sub>0</sub>（x<sub>0</sub>,y<sub>0</sub>）	P<sub>1</sub>(x<sub>1</sub>,y<sub>1</sub>)
+y=kx+b
+k=(y<sub>1</sub>-y<sub>o</sub>)/(x<sub>1</sub>-x<sub>0</sub>)  (x<sub>1</sub>≠x<sub>0</sub>)
+假设x已知，即从x的起点xo开始，沿x方向前进一个像素（步长=1），可以计算出相应的y值。因为像素的坐标是整数，所以y值要进行取整处理。
+如何把数学上的一个点扫描转换一个屏幕像素点？
+如：P（1.7, 0.8）—(取整)—&gt;P(1, 0)
+P(1.7, 0.8) -(+0.5)-&gt; p(2.2, 1.3)
+P(2.2, 1.3) -(取整)-&gt; p(2, 1)
+为提高效率，减小计算量，要把乘法消掉。</p>
+<h2 id="直线绘制的三个著名的常用算法">直线绘制的三个著名的常用算法
+</h2><ol>
+<li>数值微分法（DDA）</li>
+<li>中点画线法</li>
+<li>Bresenham算法</li>
+</ol>
+<h3 id="数值微分ddadigital-differential-analyzer">数值微分DDA（Digital Differential Analyzer）
+</h3><p>引进图形学中一个重要思想——增量思想
+直线斜率小于1：
+x=x+1
+y=y+k
+(注意y+0.5化为整数)
+直线斜率大于1：
+x=x+1/k
+y=y+1
+（注意x+0.5化为整数）</p>
+<h3 id="dda算法代码">DDA算法代码
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CDrawLinesDlg</span><span class="o">::</span><span class="n">DDALine</span><span class="p">(</span><span class="kt">int</span> <span class="n">iBeginX</span><span class="p">,</span> <span class="kt">int</span> <span class="n">iBeginY</span><span class="p">,</span> <span class="kt">int</span> <span class="n">iEndX</span><span class="p">,</span> <span class="kt">int</span> <span class="n">iEndY</span><span class="p">,</span> <span class="n">COLORREF</span> <span class="n">col</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CDC</span> <span class="o">*</span><span class="n">pDC</span> <span class="o">=</span> <span class="n">GetDC</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="n">pDC</span><span class="o">-&gt;</span><span class="n">TextOut</span><span class="p">(</span><span class="mi">450</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="n">_T</span><span class="p">(</span><span class="s">&#34;DDA画线成功！&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kt">float</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">r</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">float</span> <span class="n">xm</span><span class="p">,</span> <span class="n">ym</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">dx</span> <span class="o">=</span> <span class="n">iEndX</span> <span class="o">-</span> <span class="n">iBeginX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">dy</span> <span class="o">=</span> <span class="n">iEndY</span> <span class="o">-</span> <span class="n">iBeginY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">k</span> <span class="o">=</span> <span class="n">dy</span> <span class="o">/</span> <span class="n">dx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">r</span> <span class="o">=</span> <span class="n">dx</span> <span class="o">/</span> <span class="n">dy</span><span class="p">;</span><span class="c1">//r为斜率倒数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">x</span> <span class="o">=</span> <span class="n">iEndX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">y</span> <span class="o">=</span> <span class="n">iEndY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">xm</span> <span class="o">=</span> <span class="n">iBeginX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ym</span> <span class="o">=</span> <span class="n">iBeginY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">abs</span><span class="p">(</span><span class="n">dx</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">abs</span><span class="p">(</span><span class="n">dy</span><span class="p">))</span><span class="c1">//斜率小于1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">iBeginX</span> <span class="o">&lt;=</span> <span class="n">iEndX</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">x</span> <span class="o">=</span> <span class="n">iBeginX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">xm</span> <span class="o">=</span> <span class="n">iEndX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">y</span> <span class="o">=</span> <span class="n">iBeginY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">ym</span> <span class="o">=</span> <span class="n">iEndY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="k">while</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">xm</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">k</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">pDC</span><span class="o">-&gt;</span><span class="n">SetPixel</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)(</span><span class="n">y</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">col</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="o">++</span><span class="n">x</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span><span class="c1">//斜率大于1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">iBeginY</span> <span class="o">&lt;=</span> <span class="n">iEndY</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">x</span> <span class="o">=</span> <span class="n">iBeginX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">xm</span> <span class="o">=</span> <span class="n">iEndX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">y</span> <span class="o">=</span> <span class="n">iBeginY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">ym</span> <span class="o">=</span> <span class="n">iEndY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="k">while</span> <span class="p">(</span><span class="n">y</span> <span class="o">&lt;=</span> <span class="n">ym</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">r</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">pDC</span><span class="o">-&gt;</span><span class="n">SetPixel</span><span class="p">((</span><span class="kt">int</span><span class="p">)(</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">y</span><span class="p">,</span> <span class="n">col</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="o">++</span><span class="n">y</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="中点画线法">中点画线法
+</h3><p>核心思想：考虑斜率小于1，若x每次+1，y值要么+1，要么不+1。
+直线一般式方程；Ax+By+C=0
+设y+1和y之间的中点M，把M带入方程。d=Ax+By+C
+d &lt; 0	M在直线下方 选上面那个点(y+1)
+d &gt; 0	M在直线上方 选下面那个点(y)</p>
+<h3 id="中点画线法代码">中点画线法代码
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CDrawLinesDlg</span><span class="o">::</span><span class="n">MidLine</span><span class="p">(</span><span class="kt">int</span> <span class="n">iBeginX</span><span class="p">,</span> <span class="kt">int</span> <span class="n">iBeginY</span><span class="p">,</span> <span class="kt">int</span> <span class="n">iEndX</span><span class="p">,</span> <span class="kt">int</span> <span class="n">iEndY</span><span class="p">,</span> <span class="n">COLORREF</span> <span class="n">col</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CDC</span>  <span class="o">*</span><span class="n">pDc</span> <span class="o">=</span> <span class="n">GetDC</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="n">pDc</span><span class="o">-&gt;</span><span class="n">TextOut</span><span class="p">(</span><span class="mi">450</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="n">_T</span><span class="p">(</span><span class="s">&#34;中点画线法成功！&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span>  <span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">d</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">p</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">q1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">iBeginX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">iBeginY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="n">iBeginY</span> <span class="o">-</span> <span class="n">iEndY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">iEndX</span> <span class="o">-</span> <span class="n">iEndY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">abs</span><span class="p">(</span><span class="n">iBeginX</span> <span class="o">-</span> <span class="n">iEndX</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">abs</span><span class="p">(</span><span class="n">iBeginY</span> <span class="o">-</span> <span class="n">iEndY</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">//第二、四象限
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="p">(((</span><span class="n">iEndX</span> <span class="o">-</span> <span class="n">iBeginX</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">iEndY</span> <span class="o">-</span> <span class="n">iBeginY</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">))</span> <span class="o">||</span> <span class="p">((</span><span class="n">iEndX</span> <span class="o">-</span> <span class="n">iBeginX</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">iEndY</span> <span class="o">-</span> <span class="n">iBeginY</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">//从第四象限到第二象限
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="k">if</span> <span class="p">((</span><span class="n">iEndX</span> <span class="o">-</span> <span class="n">iBeginX</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">iEndY</span> <span class="o">-</span> <span class="n">iBeginY</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">a</span> <span class="o">=</span> <span class="o">-</span><span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">x</span> <span class="o">=</span> <span class="n">iEndX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">y</span> <span class="o">=</span> <span class="n">iEndY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">//斜率小于1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="k">if</span> <span class="p">(</span><span class="n">dx</span> <span class="o">&gt;=</span> <span class="n">dy</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">num</span> <span class="o">=</span> <span class="n">dx</span><span class="p">;</span><span class="c1">//以x轴为基准
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="n">p</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">p1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">q</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">q1</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">d</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">;</span><span class="c1">//初始值
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="n">d2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">;</span><span class="c1">//当大于0时的增量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="n">d1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">);</span><span class="c1">//当小于0时的增量
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="k">else</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">num</span> <span class="o">=</span> <span class="n">dy</span><span class="p">;</span><span class="c1">//以y轴为基准
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>			<span class="n">p</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">p1</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">q</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">q1</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">d</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">d1</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">b</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="n">d2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span><span class="c1">//第一、三象限
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">((</span><span class="n">iEndX</span> <span class="o">-</span> <span class="n">iBeginX</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">iEndY</span> <span class="o">-</span> <span class="n">iBeginY</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">a</span> <span class="o">=</span> <span class="o">-</span><span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">x</span> <span class="o">=</span> <span class="n">iEndX</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">y</span> <span class="o">=</span> <span class="n">iEndY</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">dx</span> <span class="o">&gt;=</span> <span class="n">dy</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">num</span> <span class="o">=</span> <span class="n">dx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">p</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">p1</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">q</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">q1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">d</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">d1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">d2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="k">else</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">num</span> <span class="o">=</span> <span class="n">dy</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">p</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">p1</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">q</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">q1</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">d</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">d2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">d1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">pDc</span><span class="o">-&gt;</span><span class="n">SetPixel</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">col</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">num</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">d</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span><span class="c1">//d(new)=d(old)+A+B	选Pu(上面一点)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">x</span> <span class="o">+=</span> <span class="n">p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">y</span> <span class="o">+=</span> <span class="n">p1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">d</span> <span class="o">+=</span> <span class="n">d2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="k">else</span><span class="c1">//d(new)=d(old)+A 选Pd(下面一点)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">x</span> <span class="o">+=</span> <span class="n">q</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">y</span> <span class="o">+=</span> <span class="n">q1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">d</span> <span class="o">+=</span> <span class="n">d1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="n">pDc</span><span class="o">-&gt;</span><span class="n">SetPixel</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">col</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="bresenham算法">Bresenham算法
+</h3><p><img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94Bresenham%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="算法步骤"
+	
+	
+></p>
+<h3 id="bresenham算法代码">Bresenham算法代码
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">void CDrawLinesDlg::BresenhamLine(int iBeginX, int iBeginY, int iEndX, int iEndY, COLORREF col)
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">	CDC *pDC = GetDC();
+</span></span><span class="line"><span class="cl">	pDC-&gt;TextOut(450, 18, _T(&#34;Bresenham画线成功！&#34;));
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	int dx = abs(iEndX - iBeginX);
+</span></span><span class="line"><span class="cl">	int dy = abs(iEndY - iBeginY);
+</span></span><span class="line"><span class="cl">	int x = iBeginX;
+</span></span><span class="line"><span class="cl">	int y = iBeginY;
+</span></span><span class="line"><span class="cl">	int stepX = 1;
+</span></span><span class="line"><span class="cl">	int stepY = 1;
+</span></span><span class="line"><span class="cl">	if (iBeginX &gt; iEndX)  //从右向左画  
+</span></span><span class="line"><span class="cl">	{
+</span></span><span class="line"><span class="cl">		stepX = -1;
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	if (iBeginY &gt; iEndY)//从下往上画
+</span></span><span class="line"><span class="cl">	{
+</span></span><span class="line"><span class="cl">		stepY = -1;
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	if (dx &gt; dy)  //斜率大于1
+</span></span><span class="line"><span class="cl">	{
+</span></span><span class="line"><span class="cl">		int e = dy * 2 - dx;
+</span></span><span class="line"><span class="cl">		for (int i = 0; i &lt;= dx; i++)
+</span></span><span class="line"><span class="cl">		{
+</span></span><span class="line"><span class="cl">			pDC-&gt;SetPixel(x, y, col);
+</span></span><span class="line"><span class="cl">			x += stepX;
+</span></span><span class="line"><span class="cl">			e += dy;
+</span></span><span class="line"><span class="cl">			if (e &gt;= 0)
+</span></span><span class="line"><span class="cl">			{
+</span></span><span class="line"><span class="cl">				y += stepY;
+</span></span><span class="line"><span class="cl">				e -= dx;
+</span></span><span class="line"><span class="cl">			}
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">	else//斜率小于1
+</span></span><span class="line"><span class="cl">	{
+</span></span><span class="line"><span class="cl">		int e = 2 * dx - dy;
+</span></span><span class="line"><span class="cl">		for (int i = 0; i &lt;= dy; i++)
+</span></span><span class="line"><span class="cl">		{
+</span></span><span class="line"><span class="cl">			pDC-&gt;SetPixel(x, y, col);
+</span></span><span class="line"><span class="cl">			y += stepY;
+</span></span><span class="line"><span class="cl">			e += dx;
+</span></span><span class="line"><span class="cl">			if (e &gt;= 0)
+</span></span><span class="line"><span class="cl">			{
+</span></span><span class="line"><span class="cl">				x += stepX;
+</span></span><span class="line"><span class="cl">				e -= dy;
+</span></span><span class="line"><span class="cl">			}
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>三者区别</strong>：DDA是浮点数加法，中点画线是整数加法，Bresenham不判断大小，是判断符号。</p>
+<h2 id="多边形扫描转换">多边形扫描转换
+</h2><p>多边形的扫描转换和区域填充这个问题是怎么样在离散的像素集上表示一个连续的二维图形<br>
+多边形有两种重要的表示方法：顶点表示和点阵表示<br>
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="表示方法"
+	
+	
+>
+顶点表示是用多边形的顶点序列来表示多边形。这种表示直观、几何意义强、占内存少，易于进行几何变换<br>
+但由于它没有明确指出哪些像素在多边形内，故不能直接用于面着色</p>
+<p>点阵表示是用位于多边形内的像素集合来刻画多边形。这种表示丢失了许多几何信息（如边界、顶点等），但它却是光栅显示系统显示时所需的表示形式。</p>
+<p>涉及两个问题：<br>
+1、 如果知道边界，能否求出哪些像素在多边形内？<br>
+2、 如果知道多边形内部的像素，反过来如何求多边形的边界？——得不到，不是计算机图形学问题，属于图像识别领域</p>
+<p>光栅图形的一个基本问题是把多边形的顶点表示转换为点阵表示。这种转换称为多边形的扫描转换。<br>
+多边形分为凸多边形、凹多边形、含内环的多边形等<br>
+凸多边形：任意两顶点间的连线均在多边形内<br>
+凹多边形：任意两顶点间的连线有不在多边形内<br>
+含内环的多边形：多边形内包含多边形</p>
+<p>现在的问题：知道多边形的边界，如何找到多边形内部的点，即把多边形内部填上颜色</p>
+<h3 id="x-扫描线算法">X-扫描线算法
+</h3><p>基本思想：按照扫描线顺序，计算扫描线与多边形的相交区间，再用要求的颜色显示这些区间的像素，即完成填充工作<br>
+区间的端点可以通过计算扫描线与多边形边界线的交点获得<br>
+步骤：<br>
+1、 确定多边形所占有的最大扫描线数，得到多边形顶点的最小和最大y值（ymin和ymax）<br>
+2、 从y = ymin到y = ymax，每次用一条扫描线进行填充<br>
+3、 对一条扫描线填充的过程分为四步：<br>
+a. 求交：计算扫描线与多边形各边的交点<br>
+b. 排序：把所有交点按递增顺序进行排序<br>
+c. 交点配对：第一个与第二个，第三个与第四个<br>
+d. 区间填色：把这些相交区间内的像素置成不同于背景色的填充色</p>
+<p>当扫描线与多边形顶点相交时，交点的取舍问题（交点的个数应保证为偶数个）<br>
+解决方案：<br>
+1、 若共享顶点的两条边分别落在扫描线的两边，交点只算一个<br>
+2、 若共享顶点的两条边在扫描线的同一边，这时交点作为零个或两个<br>
+检查共享顶点的两条边的另外两个端点的y值，按这两个y值中大于交点y值的个数来决定交点数<br>
+为了计算每条扫描线与多边形各边的交点，最简单的方法是把多边形的所有边放在一个表中。在处理每条扫描线时，按顺序从表中取出所有的边，分别与扫描线求交。<br>
+该算法效率低。求交计算量很大。但排序、配对、填色总是要的。</p>
+<h3 id="改进的x扫描线算法">改进的x扫描线算法
+</h3><p>扫描转换算法重要意义是提出了图形学里两个重要的思想：<br>
+1、 扫描线<br>
+2、 增量思想</p>
+<p>三方面改进：<br>
+1、 在处理一条扫描线时，仅对与它相交的多边形的边（有效边）进行求交运算<br>
+2、 考虑扫描线的连贯性，即当前扫描线与各边的交点顺序与下一条扫描线与各边的交点顺序很可能相同或非常相似<br>
+3、 最后考虑多边形的连贯性，即当某条边与当前扫描线相交时，它很可能也与下一条扫描线相交</p>
+<p>为了避免求交运算，需引入一套特殊的数据结构：<br>
+1、 活性边表（AET）：把与当前扫描线相交的边称为活性边，并把他们按与扫描线交点x坐标递增的顺序存放在一个链表中。<br>
+2、结点内容：<br>
+x：当前扫描线与边的交点坐标<br>
+△x：从当前扫描线到下一条扫描线间x的增量<br>
+ymax：该边所交的最高扫描线的坐标值ymax<br>
+next：指向下一条边的指针</p>
+<p>随着扫描线的移动，扫描线与多边形的交点和上一次交点相关：<br>
+设边的直线斜率为k<br>
+k = △y/△x = (yi+1 - yi) / (xi+1 - xi)<br>
+xi+1 - xi = 1/k<br>
+xi+1 = xi + 1/k<br>
+(1/k即为增量)<br>
+即△x = 1/k</p>
+<p>另外需要知道一条边何时不再与下一条扫描线相交，以便及时把它从有效边表中删除出去，避免下一步无谓计算。</p>
+<p>为了方便活性边表的建立与更新，需构造一个新边表（NET），用来存放多边形的边的信息，步骤：<br>
+1、构造一个纵向链表，链表长度为多边形所占有的最大扫描线数，链表的每个节点，称为一个吊桶，对应多边形覆盖的每一条扫描线<br>
+2、NET挂在与该边低端y值相同的扫描线桶中。即存放在该扫描线第一次出现的边<br>
+ymax：该边的ymax<br>
+xmin：该边较低点的x坐标值xmin<br>
+1/k：该边的斜率1/k<br>
+next：指向下一条具有相同较低端y坐标的边的指针<br>
+每做一次新的扫描线时，要对已有的边进行三个处理：<br>
+1、是否被去除掉<br>
+2、如果不被去除，第二就要对它的数据进行更新。即更新它的x值，x+ 1/k<br>
+3、看有没有新的边进来，新的边在NET里，可插入排序插进来<br>
+该算法避免了求交运算。<br>
+缺点：无法实现对未知边界的区域填充。</p>
+<h3 id="边缘填充算法">边缘填充算法
+</h3><p>基本思想：按任意顺序处理多边形的每条边。在处理每条边时，首先求出该边与扫描线的交点，然后将每一条扫描线上交点右方的所有像素取补。多边形的所有边处理完毕后，填充即完成。<br>
+算法简单，但对复杂模型，每一像素可能被访问多次。输入和输出量比有效边算法大得多。</p>
+<p>为了减少边缘填充法访问像素的次数，可采用栅栏填充算法。</p>
+<h3 id="栅栏填充算法">栅栏填充算法
+</h3><p>栅栏指的是一条过多边形顶点且与扫描线垂直的直线。它把多边形分为两半。在处理每条边与扫描线的交点时，将交点与栅栏之间的像素取补。</p>
+<h3 id="边界标志算法">边界标志算法
+</h3><p>帧缓冲器中对多边形的每条边进行直线扫描转换，即对多边形边界所经过的像素打上标志。<br>
+然后再采用和扫描线算法类似的方法将位于多边形内的各个区段着上所需颜色。<br>
+由于边界标志算法不必建立维护边表以及对它进行排序，所以边界标志算法更适合硬件实现，这时它的执行速度比有序边表算法快一至两个数量级。</p>
+<h2 id="区域填充算法">区域填充算法
+</h2><p>区域——指已经表示成点阵形式的填充图形，是像素的集合。<br>
+区域填充是指将区域内的一点（常称种子点）赋予给定颜色，然后将这种颜色扩展到整个区域内的过程。<br>
+区域可采用内点表示和边界表示两种表示形式。<br>
+区域填充算法要求区域是连通的。<br>
+区域可分为4向连通区域（上下左右）和8向连通区域（上下左右、左上、左下、右上、右下）。</p>
+<h3 id="简单四连通种子填充算法区域填充递归算法">简单四连通种子填充算法（区域填充递归算法）
+</h3><p>原理：假设在多边形区域内部有一像素已知，由此出发找到区域内的所有像素，用一定的颜色或灰度来填充。<br>
+假设区域采用边界定义，即区域边界上所有像素均具有某个特定值，区域内部所有像素均不取这一特定值，而边界外的像素则可具有与边界相同的值。<br>
+使用栈结构来实现简单的种子填充算法：<br>
+种子像素入栈，当栈非空时重复以下操作：<br>
+1、 栈顶像素出栈<br>
+2、 将出栈像素置成要填充色<br>
+3、 按左、上、右、下顺序检查与栈像素相邻 的四个像素，若其中某个像素不在边界且未置成填充色，则把该像素入栈</p>
+<p>不足：<br>
+1、 有些像素入栈多次，降低算法效率；栈结构占空间<br>
+2、 递归执行，算法简单，但效率不高。区域内每一像素都引进一次递归，进/出栈，费时费内存<br>
+3、 改进算法，减少递归次数，提高效率<br>
+可采用区域填充的扫描线算法</p>
+<h3 id="多边形的扫描转换与区域填充算法小结">多边形的扫描转换与区域填充算法小结
+</h3><ul>
+<li>
+<p>基本思想不同<br>
+多边形扫描转换是指将多边形的顶点表示转化为点阵表示<br>
+区域填充只改变区域的填充颜色，不改变区域表示方法</p>
+</li>
+<li>
+<p>基本条件不同<br>
+在区域填充算法中，要求给定区域内一点作为种子点，然后从这一点根据连通性将新的颜色扩散到整个区域<br>
+扫描转换多边形是从多边形的边界（顶点）信息出发，利用多种形式的连贯性进行填充的<br>
+烧苗转换区域填充的核心是知道多边形的边界，要得到多边形内部的像素集，有多种方法。其中扫描线算法是利用一套特殊的数据结构，避免求交，然后一条条扫描线确定。<br>
+区域填充条件更强一些，不但知道边界，而且还知道区域内的一点，可以利用四连通或八连通区域不断往外扩展。</p>
+</li>
+</ul>
+<p>填充一个定义的区域的选择包括：<br>
+选择实区域颜色或图案填充方式<br>
+选择某种颜色和图案</p>
+<p>这些填充选择可应用于多边形区域或用曲线边界定义的区域；此外，区域可用多种画笔、颜色和透明度参数来绘制。</p>
+<h2 id="反走样">反走样
+</h2><p>以上待填坑</p>
+<hr>
+<h1 id="裁剪算法">裁剪算法
+</h1><p>使用计算机处理图形信息时，计算机内部存储的图像往往比较大，而屏幕显示的只是图形的一部分。
+因此需要确定图形哪些部分落在显示区之内，哪些落在显示区之外。这个选择的过程称为<strong>裁剪</strong>。
+最简单的裁剪方法是把各种图形扫描转换为点之后，再判断点是否在窗口内。</p>
+<h2 id="点的裁剪">点的裁剪
+</h2><p>对于任意一点P(x, y)
+若满足下列两个不等式：
+x<sub>left</sub> ≤ x ≤ x<sub>right</sub>
+y<sub>bottom</sub> ≤ y ≤ y<sub>top</sub>
+则点P在矩形窗口内；否则在矩形窗口外
+但判断图形中每个点是否在窗口内，太费时，一般不可取</p>
+<h2 id="直线段的裁剪">直线段的裁剪
+</h2><p>直线段裁剪算法是复杂图形裁剪的基础
+直线段和剪裁窗口的可能关系：</p>
+<ul>
+<li>完全落在窗口内</li>
+<li>完全落在窗口外</li>
+<li>与窗口边界相交
+要裁剪一条直线段，首先要判断：
+（1）它是否完全落在裁剪窗口内？
+（2）它是否完全在窗口外？
+（3）如果不满足以上两个条件，则计算它与一个或多个裁剪边界的交点
+常用的裁剪算法有三种：Cohen-Sutherland、中点分割法、Liang-Barsky裁剪算法</li>
+</ul>
+<h3 id="cohen-sutherland算法">Cohen-Sutherland算法
+</h3><p>本算法又称为编码裁剪算法，基本思想：</p>
+<ul>
+<li>若点p1和p2完全在裁剪窗口内
+“简取”之</li>
+<li>若点p1(x1, y1)和p2(x2, y2)均在窗口外，且满足下列四个条件之一：
+x<sub>1</sub> &lt; x<sub>left</sub> 且 x<sub>2</sub> &lt; x<sub>left</sub>
+x<sub>1</sub> &gt; x<sub>right</sub> 且 x<sub>2</sub> &gt; x<sub>right</sub>
+y<sub>1</sub> &lt; y<sub>bottom</sub> 且 y<sub>2</sub> &lt; y<sub>bottom</sub>
+y<sub>1</sub> &lt; y<sub>top</sub> 且 y<sub>2</sub> &lt; y<sub>top</sub></li>
+</ul>
+<p>这四种类型的直线，“简弃”之</p>
+<ul>
+<li>既不满足“简取”也不满足“简弃”
+需要对直线段按交点进行分段，分段后判断直线是“简取”还是“简弃”
+每条线段的端点都赋以四位二进制码D3D2D1D0，编码规则如下：
+若x &lt; x<sub>left</sub> ，则D<sub>0</sub>=1，否则为0
+若x &gt; x<sub>right</sub> ，则D<sub>1</sub>=1，否则为0
+若y &lt; y<sub>bottom</sub> ，则D<sub>2</sub>=1，否则为0
+若y &lt; y<sub>top</sub> ，则D<sub>3</sub>=1，否则为0</li>
+</ul>
+<p><img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94Cohen-Sutherland%E7%AE%97%E6%B3%95.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Cohen-Sutherland算法"
+	
+	
+>
+窗口及其延长线构成了9个区域。根据编码规则：
+D<sub>0</sub>对应窗口左边界
+D<sub>1</sub>对应窗口右边界
+D<sub>2</sub>对应窗口下边界
+D<sub>3</sub>对应窗口上边界</p>
+<p>裁剪一条线段时，先求出端点p1和p2的编码code1和code2，然后进行二进制“或”运算和“与”运算。
+（1）若code1|code2=0，对直线段简取之
+（2）若code1&amp;code2≠0，对直线段简弃之
+（3）若上述两条件均不成立
+需求出直线段与窗口边界的交点在交点处把线段一分为二</p>
+<p>比较适合两种情况：一是大部分线段完全可见；二是大部分线段完全不可见</p>
+<p>存在的问题：
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94Cohen-Sutherland%E7%AE%97%E6%B3%95%E5%AD%98%E5%9C%A8%E7%9A%84%E9%97%AE%E9%A2%98.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="最坏情况"
+	
+	
+>
+或：0001 | 0100 = 0101
+与：0001 &amp; 0100 = 0000
+最坏情况下，被裁剪线段与窗口4条边计算交点，然后所得的裁剪结果却可能是全部舍弃。</p>
+<h3 id="中点分割算法">中点分割算法
+</h3><p>和Cohen-Sutherland算法一样，首先对直线段的端点进行编码。
+把线段和窗口的关系分成三种情况：</p>
+<ol>
+<li>完全在窗口内</li>
+<li>完全在窗口外</li>
+<li>和窗口有交点</li>
+</ol>
+<p>核心思想：通过<strong>二分逼近</strong>来确定直线段与窗口的交点。
+注意：1. 若中点不在窗口内，则把中点和离窗口边界最远点构成的线段丢掉，以线段上的另一点和该中点再构成线段求其中点。
+<img src="https://github.com/hubojing/BlogImages/blob/0af2eaee70de59ca7907796db13b07ead7ae75d7/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%B8%AD%E7%82%B9%E5%88%86%E5%89%B2%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%951.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="图1"
+	
+	
+>
+2. 如中点再窗口内，则又以中点和最远点构成线段，并求其中点，直到中点与窗口边界的坐标值在规定的误差范围内相等。
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E4%B8%AD%E7%82%B9%E5%88%86%E5%89%B2%E7%BC%96%E7%A0%81%E7%AE%97%E6%B3%952.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="图2"
+	
+	
+>
+中点分割算法会不会无限循环二分下去？
+不会。因为屏幕像素有限。</p>
+<p>假如屏幕分辨率是1024*1024，请问被裁减线段最多被分割几次？
+10次。</p>
+<h3 id="liang-barsky算法">Liang-Barsky算法
+</h3><p>主要思想：
+（1）用参数方程表示一条直线
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E7%94%A8%E5%8F%82%E6%95%B0%E6%96%B9%E7%A8%8B%E8%A1%A8%E7%A4%BA%E4%B8%80%E6%9D%A1%E7%9B%B4%E7%BA%BF.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="用参数方程表示一条直线"
+	
+	
+></p>
+<p>x = x1 + u · (x2 - x1) = x1 + △x · u
+y = y1 + u · (y2 - y1) = y1 + △y · u
+(0 ≤ u ≤ 1)</p>
+<p>（2）把被裁剪的红色直线段看成是一条有方向的线段，把窗口的四条边分成两类：
+入边和出边
+裁剪结果的线段起点是直线和两条入边的交点以及始端点三个点里最前面的一个点，即参数u最大的那个点；
+裁剪线段的终点是和两条出边的交点以及端点最后面的一个点，取参数u最小的那个点。</p>
+<p><img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%A2%81%E7%AE%97%E6%B3%95%E7%9A%84%E4%B8%BB%E8%A6%81%E6%80%9D%E6%83%B3.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="梁算法的主要思想"
+	
+	
+>
+即取图中的绿点。</p>
+<p>注意，当u从负无穷到正无穷遍历直线时，首先对裁剪窗口的两条边界直线（下边和左边）从外面向里面移动，再对裁剪窗口两条边界直线（上边和右边）从里面向外面移动。</p>
+<p><img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%A2%81%E7%AE%97%E6%B3%95.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="梁算法"
+	
+	
+></p>
+<p>如果用u1, u2分别表示线段（u1 ≤ u2）可见部分的开始和结束
+u1 = max(0, u1, ub)
+u2 = min(1, ut, ur)</p>
+<p>若窗口如下
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%A2%81%E7%AE%97%E6%B3%95%E4%B9%8B%E7%AA%97%E5%8F%A3.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="梁算法之窗口"
+	
+	
+>
+x<sub>left</sub> ≤ x1 + u · △x ≤ x<sub>right</sub>
+y<sub>bottom</sub> ≤ y1 + u · △y ≤ y<sub>top</sub></p>
+<p>简单的推导变形后：
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%A2%81%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC1.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="梁算法推导1"
+	
+	
+>
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94%E6%A2%81%E7%AE%97%E6%B3%95%E6%8E%A8%E5%AF%BC2.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="梁算法推导2"
+	
+	
+></p>
+<p>（1）分析Pk = 0的情况
+若P1 = P2 = 0
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94P1=P2=0.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="P1=P2=0"
+	
+	
+>
+平行于y轴</p>
+<p>若P3 = P4 = 0
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94P3=P4=0.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="P3=P4=0"
+	
+	
+>
+平行于x轴</p>
+<p>任何平行于窗口某边界的直线，其Pk=0</p>
+<p>如果还满足qk &lt; 0
+<img src="https://github.com/hubojing/BlogImages/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E2%80%94%E2%80%94pk=0,qk%E5%B0%8F%E4%BA%8E0.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="pk=0, qk &lt; 0"
+	
+	
+>
+则线段完全在边界外，应舍弃</p>
+<p>如果qk ≥ 0 ，则进一步判断</p>
+<p>(2)当pk ≠ 0 时：
+当pk &lt; 0时
+线段从裁剪边界延长线的外部延伸到内部，是入边交点
+当pk &gt; 0时
+线段从裁剪边界延长线的内部延伸到外部，是出边交点</p>
+<p>线段和窗口边界一共有四个交点，根据pk的符号，就知道哪两个是入交点，哪两个是出交点</p>
+<p>当pk &lt; 0时：对应入边交点
+当pk &gt; 0时：对应出边交点</p>
+<p>一共四个u值，再叫上u=0、u=1两个端点值，总共六个值</p>
+<p>把pk &lt; 0的两个u值和0比较去找最大的，把pk &gt; 0的两个u值和1比较去找最小的，这样得到两个端点的参数值。</p>
+<p>uk = qk / pk (pk≠0， k = 1,2,3,4)
+uk是窗口边界及其延长线的交点的对应参数值</p>
+<p>umax =max(0, uk|pk &lt; 0, uk|pk &lt; 0)
+umin =min(0, uk|pk &gt; 0, uk|pk &gt; 0, 1)</p>
+<p>注意：pk &lt; 0，代表入边；pk &gt; 0代表出边</p>
+<p>umax &gt; umin，则直线段在窗口外，删除该直线
+若umax≤umin，将umax和umin代回直线参数方程，即求出直线与窗口的两实交点坐标。
+x = x1 + u·(x2 - x1)
+y = y1 + u·(y2 - y1)</p>
+<p>注意：因为对于实交点0≤u≤1，因此umax不能小于0，umin不能大于1</p>
+<h4 id="步骤">步骤
+</h4><p><img src="https://github.com/hubojing/BlogImages/blob/master/%e8%ae%a1%e7%ae%97%e6%9c%ba%e5%9b%be%e5%bd%a2%e5%ad%a6%e5%ad%a6%e4%b9%a0%e7%ac%94%e8%ae%b0%e2%80%94%e2%80%94%e6%a2%81%e7%ae%97%e6%b3%95%e6%ad%a5%e9%aa%a4.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="梁算法步骤"
+	
+	
+></p>
+<h2 id="多边形裁剪">多边形裁剪
+</h2><h3 id="sutherland-hodgeman多边形裁剪">Sutherland-Hodgeman多边形裁剪
+</h3><p>思想：将边界看作整体，每次用窗口的一条边对要裁剪的多边形和中间结果多边形进行裁剪。分而治之的思想。
+缺点：只适合凸多边形</p>
+<p>过程：
+<img src="https://github.com/hubojing/BlogImages/blob/master/%e8%ae%a1%e7%ae%97%e6%9c%ba%e5%9b%be%e5%bd%a2%e5%ad%a6%e5%ad%a6%e4%b9%a0%e7%ac%94%e8%ae%b0%e2%80%94%e2%80%94%e5%a4%9a%e8%be%b9%e5%bd%a2%e8%a3%81%e5%89%aa.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="多边形裁剪"
+	
+	
+></p>
+<p>顶点处理四种情况：
+<img src="https://github.com/hubojing/BlogImages/blob/master/%e8%ae%a1%e7%ae%97%e6%9c%ba%e5%9b%be%e5%bd%a2%e5%ad%a6%e5%ad%a6%e4%b9%a0%e7%ac%94%e8%ae%b0%e2%80%94%e2%80%94%e9%a1%b6%e7%82%b9%e5%a4%84%e7%90%86.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="顶点处理"
+	
+	
+></p>
+<h2 id="文字裁剪">文字裁剪
+</h2><ol>
+<li>串精度裁剪
+当字符串中的所有字符都在裁剪窗口内时，就全部保留它，否则舍弃整个字符串。</li>
+<li>字符精度裁剪
+裁剪时，任何与窗口有重叠或落在窗口边界以外的字符都被裁减掉。</li>
+<li>笔画/像素精度裁剪
+将笔划分解成直线段对窗口作裁剪。判断字符串中各字符的哪些像素、笔划的哪一部分在窗口内，保留窗口内部分，裁减掉窗口外的部分。</li>
+</ol>
+<h1 id="消隐算法">消隐算法
+</h1><p>&hellip;未完待续</p>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/">计算机图形学</a>
+        
+            <a href="/tags/cpp/">CPP</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/3nfb9jnv/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">浅谈面向接口编程</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/ewpqxiwc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">计算机图形学实验</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/46qhsdeg/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">递归中的return</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/gwlxfwxf/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">samba映射</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/q4exeafp/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Github&#43;SSH就这么连</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":"评论一句，好运+1！"},"requiredMeta":["name"],"serverURL":"https://zippy-halva-8e20f0.netlify.app/.netlify/functions/comment"});
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2015 - 
+        
+        2025 靖待
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

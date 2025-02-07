@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="\r**开发一个网页分析程序，可以抓取特定网页的内容，加以分析之后将结果保存至数据库。**\rV1.5上线，保存至sqlite数据库用时2分13秒。 ">
+<title>MFC网页分析程序</title>
+
+<link rel='canonical' href='https://hubojing.github.io/9a9iuxhr/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="MFC网页分析程序">
+<meta property='og:description' content="\r**开发一个网页分析程序，可以抓取特定网页的内容，加以分析之后将结果保存至数据库。**\rV1.5上线，保存至sqlite数据库用时2分13秒。 ">
+<meta property='og:url' content='https://hubojing.github.io/9a9iuxhr/'>
+<meta property='og:site_name' content='靖待'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='MFC' /><meta property='article:tag' content='CPP' /><meta property='article:tag' content='爬虫' /><meta property='article:published_time' content='2017-06-14T22:45:38&#43;00:00'/><meta property='article:modified_time' content='2017-06-14T22:45:38&#43;00:00'/>
+<meta name="twitter:title" content="MFC网页分析程序">
+<meta name="twitter:description" content="\r**开发一个网页分析程序，可以抓取特定网页的内容，加以分析之后将结果保存至数据库。**\rV1.5上线，保存至sqlite数据库用时2分13秒。 ">
+    <link rel="shortcut icon" href="/avatar.jpg" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_999351c94d8e06aa.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">靖待</a></h1>
+            <h2 class="site-description">创造是人生乐趣</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://blog.csdn.net/hubojing/'
+                        target="_blank"
+                        title="csdn"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:hubojing@outlook.com'
+                        target="_blank"
+                        title="mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://music.163.com/#/user/home?id=92203594'
+                        target="_blank"
+                        title="netease"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='/atom.xml'
+                        target="_blank"
+                        title="rss"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                <span>存档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friends/' >
+                
+                
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#编码问题">编码问题</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#htmlcxx">HTMLCXX</a>
+      <ol>
+        <li><a href="#下载htmlcxx库">下载htmlcxx库</a></li>
+        <li><a href="#编译">编译</a></li>
+        <li><a href="#导入">导入</a></li>
+        <li><a href="#测试">测试</a></li>
+        <li><a href="#参考">参考</a></li>
+      </ol>
+    </li>
+    <li><a href="#mshtml">MSHTML</a>
+      <ol>
+        <li><a href="#mshtml导入">MSHTML导入</a></li>
+        <li><a href="#解析过程">解析过程</a>
+          <ol>
+            <li><a href="#创建">创建</a></li>
+            <li><a href="#元素遍历">元素遍历</a></li>
+            <li><a href="#正文解析">正文解析</a></li>
+            <li><a href="#列表控件和编辑框交互">列表控件和编辑框交互</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li><a href="#下载导入">下载导入</a></li>
+    <li><a href="#保存至sqlite数据库">保存至sqlite数据库</a></li>
+    <li><a href="#出现的问题">出现的问题</a></li>
+    <li><a href="#效果">效果</a></li>
+    <li><a href="#从sqlite数据库读取数据">从sqlite数据库读取数据</a></li>
+    <li><a href="#成品">成品</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/" >
+                软件开发
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/9a9iuxhr/">MFC网页分析程序</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jun 14, 2017</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 12 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <div align="left">
+<img src="http://img.blog.csdn.net/20170805145839785?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" width="300" height="180" style="float:right;"/>
+  </div>
+ 　　
+ 　　
+　　**开发一个网页分析程序，可以抓取特定网页的内容，加以分析之后将结果保存至数据库。**
+<p>　　<strong>V1.5上线，保存至sqlite数据库用时2分13秒。</strong>
+　　
+　　
+　　</p>
+<p>网页分析程序具体要求描述如下：
+1. 使用http技术获取一个博客的首页http://blog.csdn.net/jiangsheng
+2. 分析这个网页的内容，从中找到博客中每一篇文章的链接。
+3. 通过这些链接，获取文章的正文网页，从内容中提取文章的标题和文章的内容。
+4. 将文章的标题与内容分别保存至数据库。
+5. 布局要求：提供一个列表框和一个多行文本框。列表框中显示从数据库中获取的文章标题列表；当点击列表框中的某一篇文章时，在文本框中显示该文章的内容。</p>
+<h1 id="获取源码">获取源码
+</h1><p>因为需多次调用获取源码功能，将它放入一个函数中。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">CString</span> <span class="n">CGetWebDlg</span><span class="o">::</span><span class="n">DownloadCodes</span><span class="p">(</span><span class="n">CString</span> <span class="n">path</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CInternetSession</span> <span class="n">session</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CHttpFile</span> <span class="o">*</span><span class="n">file</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CString</span> <span class="n">strURL</span> <span class="o">=</span> <span class="n">path</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CString</span> <span class="n">strHtml</span> <span class="o">=</span> <span class="n">_T</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">);</span> <span class="c1">//存放网页数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">try</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">file</span> <span class="o">=</span> <span class="p">(</span><span class="n">CHttpFile</span><span class="o">*</span><span class="p">)</span><span class="n">session</span><span class="p">.</span><span class="n">OpenURL</span><span class="p">(</span><span class="n">strURL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">catch</span> <span class="p">(</span><span class="n">CInternetException</span> <span class="o">*</span><span class="n">m_pException</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">file</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">m_pException</span><span class="o">-&gt;</span><span class="n">m_dwError</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">m_pException</span><span class="o">-&gt;</span><span class="n">Delete</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">		<span class="n">session</span><span class="p">.</span><span class="n">Close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">		<span class="n">MessageBox</span><span class="p">(</span><span class="s">&#34;网络连接错误！&#34;</span><span class="p">,</span> <span class="s">&#34;提示&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CString</span> <span class="n">strLine</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">char</span> <span class="n">sRecived</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">file</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">while</span> <span class="p">(</span><span class="n">file</span><span class="o">-&gt;</span><span class="n">ReadString</span><span class="p">((</span><span class="n">LPTSTR</span><span class="p">)</span><span class="n">sRecived</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">strHtml</span> <span class="o">+=</span> <span class="n">sRecived</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">AfxMessageBox</span><span class="p">(</span><span class="n">_T</span><span class="p">(</span><span class="s">&#34;失败！&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">session</span><span class="p">.</span><span class="n">Close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="n">file</span><span class="o">-&gt;</span><span class="n">Close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="k">delete</span> <span class="n">file</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">file</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">strHtml</span> <span class="o">=</span> <span class="n">ConvertUtf8ToGBK</span><span class="p">(</span><span class="n">strHtml</span><span class="p">);</span><span class="c1">//源码转换
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">strHtml</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="编码问题">编码问题
+</h2><p>注意网页编码问题，因此需要格式转换，编写一个函数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">void</span>  <span class="nf">ConvertUtf8ToGBK</span><span class="p">(</span><span class="n">CString</span> <span class="o">&amp;</span><span class="n">strUtf8</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">          
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">len</span><span class="o">=</span><span class="n">MultiByteToWideChar</span><span class="p">(</span><span class="n">CP_UTF8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">LPCTSTR</span><span class="p">)</span><span class="n">strUtf8</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">unsigned</span> <span class="kt">short</span> <span class="o">*</span> <span class="n">wszGBK</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">unsigned</span> <span class="kt">short</span><span class="p">[</span><span class="n">len</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="n">memset</span><span class="p">(</span><span class="n">wszGBK</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">len</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">MultiByteToWideChar</span><span class="p">(</span><span class="n">CP_UTF8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">LPCTSTR</span><span class="p">)</span><span class="n">strUtf8</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">LPWSTR</span><span class="p">)</span><span class="n">wszGBK</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">	<span class="n">len</span> <span class="o">=</span> <span class="n">WideCharToMultiByte</span><span class="p">(</span><span class="n">CP_ACP</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">LPCWSTR</span><span class="p">)</span><span class="n">wszGBK</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">	<span class="kt">char</span> <span class="o">*</span><span class="n">szGBK</span><span class="o">=</span><span class="k">new</span> <span class="kt">char</span><span class="p">[</span><span class="n">len</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="n">memset</span><span class="p">(</span><span class="n">szGBK</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">len</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">WideCharToMultiByte</span> <span class="p">(</span><span class="n">CP_ACP</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">LPCWSTR</span><span class="p">)</span><span class="n">wszGBK</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">szGBK</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span><span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">	<span class="n">strUtf8</span> <span class="o">=</span> <span class="n">szGBK</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	 <span class="k">delete</span><span class="p">[]</span> <span class="n">szGBK</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	 <span class="k">delete</span><span class="p">[]</span> <span class="n">wszGBK</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="http://img.blog.csdn.net/20170614232311302?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"
+	
+	
+	
+	loading="lazy"
+	
+		alt="显示源码"
+	
+	
+></p>
+<p>有些类似网页爬虫的感觉。</p>
+<p>由于我刚开始是用VC6.0创建项目，现在用VS2013打开，因此，提示报错：
+error MSB8031: Building an MFC project for a non-Unicode character set is deprecated. You must change the project property to Unicode or download an additional library. See <a class="link" href="http://go.microsoft.com/fwlink/p/?LinkId=286820"  target="_blank" rel="noopener"
+    >http://go.microsoft.com/fwlink/p/?LinkId=286820</a> for more information.</p>
+<p>解决：用于多字节字符编码 (MBCS) 的 MFC 库 (DLL) 不再包含于 Visual Studio 中，但是可用作插件，可以在任何装有 Visual Studio Professional、Visual Studio Premium 或 Visual Studio Ultimate 的计算机上下载和安装。下载地址：https://www.microsoft.com/zh-cn/download/details.aspx?id=40770</p>
+<h1 id="解析">解析
+</h1><p><del>为了接下来的操作，我去学正则表达式了……</del>
+还是学习html解析库 htmlcxx
+<a class="link" href="http://htmlcxx.sourceforge.net/"  target="_blank" rel="noopener"
+    >官方</a>
+<a class="link" href="http://blog.csdn.net/youfangyuan/article/details/7816518"  target="_blank" rel="noopener"
+    >HtmlCxx用户手册</a></p>
+<h2 id="htmlcxx">HTMLCXX
+</h2><h3 id="下载htmlcxx库">下载htmlcxx库
+</h3><p><a class="link" href="http://sourceforge.net/projects/htmlcxx/"  target="_blank" rel="noopener"
+    >http://sourceforge.net/projects/htmlcxx/</a>
+并解压。</p>
+<h3 id="编译">编译
+</h3><p>打开htmlcxx.vcproj，右键属性，配置属性-C/C++-代码生成-运行库：多线程调试 DLL (/ MDd)进行编译。编译会报错，将</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">signature</span> <span class="o">=</span> <span class="s">&#34;﻿&#34;</span><span class="p">;</span>  
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>改为</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">signature</span> <span class="o">=</span> <span class="s">&#34;﻿</span><span class="se">\xEF\xBB\xBF</span><span class="s">&#34;</span><span class="p">;</span>  
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>即可编译成功。</p>
+<h3 id="导入">导入
+</h3><p>把生成的htmlcxx.lib和html文件夹拷贝到所需的工程中。即：
+在所开发项目文件夹中，新建”htmlcxx“文件，里面添加两个子文件夹”lib“和”include“。将编译好的htmlcxx.lib拷贝到lib文件夹，将html文件夹中所有的.h头文件和ParserSax.tcc添加到include文件夹。添加库文件htmlcxx.lib到项目中，具体说来：</p>
+<blockquote>
+<p>在VS工程中，添加c/c++工程中外部头文件及库的基本步骤：
+1、添加工程的头文件目录：工程&mdash;属性&mdash;配置属性&mdash;c/c++&mdash;常规&mdash;附加包含目录：加上头文件存放目录。
+2、添加文件引用的lib静态库路径：工程&mdash;属性&mdash;配置属性&mdash;链接器&mdash;常规&mdash;附加库目录：加上lib文件存放目录。
+然后添加工程引用的lib文件名：工程&mdash;属性&mdash;配置属性&mdash;链接器&mdash;输入&mdash;附加依赖项：加上lib文件名。
+3、添加工程引用的dll动态库：把引用的dll放到工程的可执行文件所在的目录下。
+注意：第一步可以不用，直接在工程里加入动态库的头文件，在使用代码处引用这个头文件。</p></blockquote>
+<p>所开发的项目的头文件中添加以下内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;htmlcxx/include/ParserDom.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span> 
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="k">namespace</span> <span class="n">htmlcxx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="cp">#pragma comment(lib,&#34;htmlcxx.lib&#34;)
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="测试">测试
+</h3><p>官方测试代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"> <span class="cp">#include</span> <span class="cpf">&lt;htmlcxx/html/ParserDom.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>  <span class="p">...</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="c1">//Parse some html code
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">string</span> <span class="n">html</span> <span class="o">=</span> <span class="s">&#34;&lt;html&gt;&lt;body&gt;hey&lt;/body&gt;&lt;/html&gt;&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">HTML</span><span class="o">::</span><span class="n">ParserDom</span> <span class="n">parser</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">tree</span><span class="o">&lt;</span><span class="n">HTML</span><span class="o">::</span><span class="n">Node</span><span class="o">&gt;</span> <span class="n">dom</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">parseTree</span><span class="p">(</span><span class="n">html</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="c1">//Print whole DOM tree
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">dom</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="c1">//Dump all links in the tree
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">tree</span><span class="o">&lt;</span><span class="n">HTML</span><span class="o">::</span><span class="n">Node</span><span class="o">&gt;::</span><span class="n">iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">dom</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="n">tree</span><span class="o">&lt;</span><span class="n">HTML</span><span class="o">::</span><span class="n">Node</span><span class="o">&gt;::</span><span class="n">iterator</span> <span class="n">end</span> <span class="o">=</span> <span class="n">dom</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(;</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">end</span><span class="p">;</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  	<span class="k">if</span> <span class="p">(</span><span class="n">it</span><span class="o">-&gt;</span><span class="n">tagName</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#34;A&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">  		<span class="n">it</span><span class="o">-&gt;</span><span class="n">parseAttributes</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  		<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">attributes</span><span class="p">(</span><span class="s">&#34;href&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="c1">//Dump all text of the document
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">it</span> <span class="o">=</span> <span class="n">dom</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="n">end</span> <span class="o">=</span> <span class="n">dom</span><span class="p">.</span><span class="n">end</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="k">for</span> <span class="p">(;</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">end</span><span class="p">;</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  	<span class="k">if</span> <span class="p">((</span><span class="o">!</span><span class="n">it</span><span class="o">-&gt;</span><span class="n">isTag</span><span class="p">())</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">!</span><span class="n">it</span><span class="o">-&gt;</span><span class="n">isComment</span><span class="p">()))</span>
+</span></span><span class="line"><span class="cl">  	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">  		<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然而……</p>
+<p><img src="http://img.blog.csdn.net/20170709011136986?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"
+	
+	
+	
+	loading="lazy"
+	
+		alt="报错1"
+	
+	
+></p>
+<p>加入#include&quot;iostream&quot;头文件即可。</p>
+<p><img src="http://img.blog.csdn.net/20170709011240176?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"
+	
+	
+	
+	loading="lazy"
+	
+		alt="报错2"
+	
+	
+></p>
+<p>修改为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="n">it</span><span class="o">-&gt;</span><span class="n">tagName</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#34;A&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="p">{</span>
+</span></span><span class="line"><span class="cl">				<span class="n">it</span><span class="o">-&gt;</span><span class="n">parseAttributes</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">				<span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="kt">bool</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">pa</span> <span class="o">=</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">attribute</span><span class="p">(</span><span class="s">&#34;href&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">				<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">pa</span><span class="p">.</span><span class="n">second</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>编译通过。</p>
+<p>还有其他的库也可以用，比如<a class="link" href="http://blog.csdn.net/lanuage/article/details/72825878"  target="_blank" rel="noopener"
+    >使用MSHTML解析HTML页面</a>
+比如<a class="link" href="http://www.oschina.net/question/565065_67992"  target="_blank" rel="noopener"
+    >LIBXML2库使用指南</a>
+还可以用正则表达式写库……</p>
+<p>突然发现 原来的计划里有COM组件 XML和HTML 数据库访问技术
+都没怎么接触过  补补补
+在填坑的路上不能止步…</p>
+<h3 id="参考">参考
+</h3><p><a class="link" href="http://www.cnblogs.com/striver-zhu/p/4451781.html"  target="_blank" rel="noopener"
+    >C++ 使用Htmlcxx解析Html内容(VS编译库文件)</a>
+<a class="link" href="http://blog.csdn.net/farcall/article/details/20378475"  target="_blank" rel="noopener"
+    >html与xml解析库htmlcxx使用过程中的若干问题及解决方案</a>
+<a class="link" href="http://www.cnblogs.com/learning-lzj2014/p/3928346.html"  target="_blank" rel="noopener"
+    >c++ hmtlcxx 学习之旅</a></p>
+<h2 id="mshtml">MSHTML
+</h2><p>因为最近用过MSXML，就试试MSHTML。学有余力的话，htmlcxx之后还是想玩一下…
+<a class="link" href="https://msdn.microsoft.com/en-us/library/aa741317%28v=vs.85%29.aspx"  target="_blank" rel="noopener"
+    >https://msdn.microsoft.com/en-us/library/aa741317(v=vs.85).aspx</a>
+<a class="link" href="http://blog.csdn.net/jiangsheng/article/details/3793"  target="_blank" rel="noopener"
+    >蒋晟-关于MSHTML</a>
+<a class="link" href="https://msdn.microsoft.com/zh-cn/library/mshtml%28v=vs.110%29.aspx"  target="_blank" rel="noopener"
+    >https://msdn.microsoft.com/zh-cn/library/mshtml(v=vs.110).aspx</a></p>
+<h3 id="mshtml导入">MSHTML导入
+</h3><p>系统中自带了mshtml，和msxml一样，在C盘windows/system32中可找到。</p>
+<p><a class="link" href="http://blog.csdn.net/mimica247706624/article/details/6128239"  target="_blank" rel="noopener"
+    >如何导入</a></p>
+<p>先看MSDN……
+<a class="link" href="https://msdn.microsoft.com/en-us/library/aa741317%28v=vs.85%29.aspx?f=255&amp;MSPPError=-2147217396"  target="_blank" rel="noopener"
+    >MSDN-MSHTML</a></p>
+<p>再看各种搜集的文章
+<a class="link" href="http://bbs.csdn.net/topics/330214041"  target="_blank" rel="noopener"
+    >http://bbs.csdn.net/topics/330214041</a>
+<a class="link" href="http://www.cnblogs.com/speedmancs/archive/2010/08/11/1797442.html"  target="_blank" rel="noopener"
+    >http://www.cnblogs.com/speedmancs/archive/2010/08/11/1797442.html</a>
+<a class="link" href="http://blog.csdn.net/jinyaba/article/details/17097323"  target="_blank" rel="noopener"
+    >http://blog.csdn.net/jinyaba/article/details/17097323</a>
+<a class="link" href="https://social.msdn.microsoft.com/Search/zh-CN?query=MSHTML&amp;pgArea=header&amp;emptyWatermark=true&amp;ac=4#refinementChanges=117&amp;pageNumber=1&amp;showMore=false"  target="_blank" rel="noopener"
+    >https://social.msdn.microsoft.com/Search/zh-CN?query=MSHTML&pgArea=header&emptyWatermark=true&ac=4#refinementChanges=117&pageNumber=1&showMore=false</a>
+<a class="link" href="https://wenku.baidu.com/view/d571abc4ec3a87c24028c4bb.html"  target="_blank" rel="noopener"
+    >https://wenku.baidu.com/view/d571abc4ec3a87c24028c4bb.html</a>
+<a class="link" href="http://www.codeguru.com/cpp/i-n/ieprogram/article.php/c4385/Lightweight-HTML-Parsing-Using-MSHTML.htm"  target="_blank" rel="noopener"
+    >http://www.codeguru.com/cpp/i-n/ieprogram/article.php/c4385/Lightweight-HTML-Parsing-Using-MSHTML.htm</a>
+<a class="link" href="http://www.yesky.com/403/1938403.shtml?qq-pf-to=pcqq.c2c"  target="_blank" rel="noopener"
+    >http://www.yesky.com/403/1938403.shtml?qq-pf-to=pcqq.c2c</a>
+<a class="link" href="http://www.bianceng.cn/Programming/vc/201411/46771.htm"  target="_blank" rel="noopener"
+    >http://www.bianceng.cn/Programming/vc/201411/46771.htm</a>
+<a class="link" href="https://wenku.baidu.com/view/299bba4a336c1eb91a375df5.html"  target="_blank" rel="noopener"
+    >https://wenku.baidu.com/view/299bba4a336c1eb91a375df5.html</a></p>
+<p><del>思路：下载源码和获取链接是两个独立函数，会被多次调用。先获取首页源码，div id=&ldquo;archive_list&rdquo; 遍历该div获取各月份归档链接，再使用多线程（48个线程？？？）进入每个归档链接里下载源码，获取源码中h1的每篇文章标题,保存到数据库。</del></p>
+<p>虽然有两种方法，一种通过归档获得链接，一种通过翻页获得链接，但根据本html特点，明显通过翻页要简洁方便一些，因为翻页的链接是有规律的，可通过循环搞定。每页5篇直接获得正文链接，比从归档获得少一层。<del>两核4个逻辑处理器，所以是开2个线程好还是4个好呢……</del></p>
+<p>获取每篇正文链接，下载源码，解析得正文，保存到数据库。最后从数据库中提取标题和正文显示到对应窗口(使用ADO)。</p>
+<h3 id="解析过程">解析过程
+</h3><h4 id="创建">创建
+</h4><p>1.使用CoCreateInstance创建一个接口</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">	HRESULT hr = CoCreateInstance(CLSID_HTMLDocument, NULL, CLSCTX_INPROC_SERVER, IID_IHTMLDocument2, (void**)&amp;pDoc);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>2.创建一个COM中的数组，将HTML字符串写到数组中</p>
+<p>a）SafeArrayCreateVector:函数用来创建一个对应的数组结构。函数有三个参数，第一个参数表示数组中元素类型，一般给VT_VARIANT表示它是一个自动类型，第二个参数数组元素起始位置的下标，对于VC来说，数组元素总是从0开始，所以这个位置一般给0，第三个参数是数组的维数，在这将它作为一个字符数组，所以是一个一维数组。
+b）SafeArrayAccessData：允许用户操作这个数组，在需要读写这个数组时都需要调用这个函数，以便获取这个数组的操作权。它有两个参数，第一个参数是数组变量，第二个参数是一个输出参数，当调用这个函数成功，会提供一个缓冲区，操作这个缓冲区就相当于操作了这个数组。
+c）SafeArrayUnaccessData：每当操作数组完成时需要调用这个函数，函数与SafeArrayAccessData配套使用，用来回收这个权限，并使对数组的操作生效。</p>
+<ol start="3">
+<li>调用接口的write方法，将接口与HTML字符串绑定</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl">	<span class="n">SAFEARRAY</span><span class="o">*</span> <span class="n">psa</span> <span class="o">=</span> <span class="n">SafeArrayCreateVector</span><span class="p">(</span><span class="n">VT_VARIANT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">VARIANT</span> <span class="o">*</span><span class="n">param</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">bstr_t</span> <span class="n">bsData</span> <span class="o">=</span> <span class="p">(</span><span class="n">LPCTSTR</span><span class="p">)</span><span class="n">strHtml</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">hr</span> <span class="o">=</span> <span class="n">SafeArrayAccessData</span><span class="p">(</span><span class="n">psa</span><span class="p">,</span> <span class="p">(</span><span class="n">LPVOID</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">param</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">param</span><span class="o">-&gt;</span><span class="n">vt</span> <span class="o">=</span> <span class="n">VT_BSTR</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">param</span><span class="o">-&gt;</span><span class="n">bstrVal</span> <span class="o">=</span> <span class="p">(</span><span class="n">BSTR</span><span class="p">)</span><span class="n">bsData</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">hr</span> <span class="o">=</span> <span class="n">pDoc</span><span class="o">-&gt;</span><span class="n">write</span><span class="p">(</span><span class="n">psa</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">hr</span> <span class="o">=</span> <span class="n">SafeArrayUnaccessData</span><span class="p">(</span><span class="n">psa</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>目标：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">        &lt;span class=&#34;link_title&#34;&gt;&lt;a href=&#34;/jiangsheng/article/details/9870241&#34;&gt;
+</span></span><span class="line"><span class="cl">        选择剪贴板格式顺序            
+</span></span><span class="line"><span class="cl">        &lt;/a&gt;
+</span></span><span class="line"><span class="cl">        &lt;/span&gt;
+</span></span><span class="line"><span class="cl"> 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>整个 &lt;span&gt; &lt;/span&gt;  是元素， &lt;span&gt;  是标签，class是属性名，link_title是属性值，“选择剪贴板格式顺序”是文本。</p>
+<h4 id="元素遍历">元素遍历
+</h4><p>至少两种方法：
+法一：
+获取了HTML文档的IID_IHTMLDocument2接口后，开始遍历：
+1.get_all方法获取所有标签节点，这个函数通过一个输出参数输出IHTMLElementCollection类型的接口指针
+2.用IHTMLElementCollection接口的get_length方法获取标签的总数量，据此写一个循环，在循环进行元素的遍历
+3.循环中用IHTMLElementCollection接口的item方法进行迭代，获取各元素对应的IDispatch接口指针
+4.调用IDispatch接口指针的QueryInterface方法生成对应的IHTMLElement接口。通过这个接口获取元素的各种信息</p>
+<p>以下已能成功获取标题：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">void</span> <span class="n">CGetWebDlg</span><span class="p">::</span><span class="n">EnumElements</span><span class="p">(</span><span class="n">IHTMLDocument2</span><span class="o">*</span> <span class="n">pDoc</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CComPtr</span><span class="o">&lt;</span><span class="n">IHTMLElementCollection</span><span class="o">&gt;</span> <span class="n">pCollection</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">pDoc</span><span class="o">-&gt;</span><span class="n">get_all</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pCollection</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">NULL</span> <span class="o">==</span> <span class="n">pCollection</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">VARIANT</span> <span class="n">varName</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CString</span> <span class="n">strText</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">long</span> <span class="n">len</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">pCollection</span><span class="o">-&gt;</span><span class="n">get_length</span><span class="p">(</span><span class="o">&amp;</span><span class="n">len</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="ne">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">len</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">varName</span><span class="o">.</span><span class="n">vt</span> <span class="o">=</span> <span class="n">VT_I4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">varName</span><span class="o">.</span><span class="n">lVal</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CComPtr</span><span class="o">&lt;</span><span class="n">IHTMLElement</span><span class="o">&gt;</span> <span class="n">pElement</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CComPtr</span><span class="o">&lt;</span><span class="n">IDispatch</span><span class="o">&gt;</span> <span class="n">pDisp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">pCollection</span><span class="o">-&gt;</span><span class="n">item</span><span class="p">(</span><span class="n">varName</span><span class="p">,</span> <span class="n">varName</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pDisp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">NULL</span> <span class="o">==</span> <span class="n">pDisp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="n">pDisp</span><span class="o">-&gt;</span><span class="n">QueryInterface</span><span class="p">(</span><span class="n">IID_IHTMLElement</span><span class="p">,</span> <span class="p">(</span><span class="n">LPVOID</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">pElement</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">NULL</span> <span class="o">!=</span> <span class="n">pElement</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">BSTR</span> <span class="n">bstrClass</span><span class="p">;</span>	
+</span></span><span class="line"><span class="cl">			<span class="n">pElement</span><span class="o">-&gt;</span><span class="n">get_className</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bstrClass</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="n">CString</span> <span class="n">strClass</span> <span class="o">=</span> <span class="n">_com_util</span><span class="p">::</span><span class="n">ConvertBSTRToString</span><span class="p">(</span><span class="n">bstrClass</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="p">(</span><span class="n">strClass</span><span class="o">.</span><span class="n">Compare</span><span class="p">(</span><span class="s2">&#34;link_title&#34;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="p">{</span>
+</span></span><span class="line"><span class="cl">					<span class="n">BSTR</span> <span class="n">bstrText</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">					<span class="n">pElement</span><span class="o">-&gt;</span><span class="n">get_innerText</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bstrText</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">					<span class="n">strText</span> <span class="o">=</span> <span class="n">bstrText</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">					<span class="n">m_list</span><span class="o">.</span><span class="n">InsertItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">strText</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="p">}</span>			
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>法二：
+利用IHTMLDocument2将字符串形式的HTML转换为DOM对象，利用IHTMLDocument3的getElementByTagName等方法来操作DOM对象。
+以下已能成功获取标题：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">	MSHTML::IHTMLDocument3Ptr pDoc3;
+</span></span><span class="line"><span class="cl">	 	MSHTML::IHTMLElementCollectionPtr pCollection;
+</span></span><span class="line"><span class="cl">	 	MSHTML::IHTMLElementPtr pElement;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	pDoc3 = pDoc;
+</span></span><span class="line"><span class="cl">	pCollection = pDoc3-&gt;getElementsByTagName(L&#34;span&#34;);
+</span></span><span class="line"><span class="cl">	for (long i = 0; i &lt; pCollection-&gt;length; i++)
+</span></span><span class="line"><span class="cl">	{
+</span></span><span class="line"><span class="cl">		pElement = pCollection-&gt;item(i, (long)0);
+</span></span><span class="line"><span class="cl">		if (pElement != NULL)
+</span></span><span class="line"><span class="cl">		{
+</span></span><span class="line"><span class="cl">			BSTR bstrClass;
+</span></span><span class="line"><span class="cl">			pElement-&gt;get_className(&amp;bstrClass);
+</span></span><span class="line"><span class="cl">			CString strClass = _com_util::ConvertBSTRToString(bstrClass);
+</span></span><span class="line"><span class="cl">			if (strClass.Compare(&#34;link_title&#34;) == 0)
+</span></span><span class="line"><span class="cl">			{
+</span></span><span class="line"><span class="cl">				BSTR bstrText = NULL;
+</span></span><span class="line"><span class="cl">				pElement-&gt;get_innerText(&amp;bstrText);
+</span></span><span class="line"><span class="cl">				CString strText = bstrText;
+</span></span><span class="line"><span class="cl">				m_list.InsertItem(i, strText);
+</span></span><span class="line"><span class="cl">			}
+</span></span><span class="line"><span class="cl">		}
+</span></span><span class="line"><span class="cl">	}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>其实两种方法大同小异，相较而言可能数据量大的话，法二效率高些吧。因为法一是直接遍历所有的元素寻找class相同的，而法二是先定位span，然后在span中找寻class。（getElementsByTagName只有IHTMLDocument3Ptr）</p>
+<p><a class="link" href="http://blog.csdn.net/lanuage/article/details/72825878"  target="_blank" rel="noopener"
+    >使用MSHTML解析HTML页面</a>
+<a class="link" href="http://www.2cto.com/kf/201305/214730.html"  target="_blank" rel="noopener"
+    >变体VARIANT</a>
+MSDN-DOM	https://msdn.microsoft.com/en-us/library/ms766487(v=vs.85).aspx
+<a class="link" href="http://www.360doc.com/content/12/0427/19/8006573_207099529.shtml"  target="_blank" rel="noopener"
+    >使用MSHTML接口获取链接</a></p>
+<p>晚上几个小时做完了一半，抵了之前一两个月。
+数据库这块没来得及做，没加多线程，很多细节还得调。但比起之前心有余而力不足的感觉还是好多了。  学过msxml后，学习mshtml确实强一点，比一个月前完全不知道怎么下手好很多了。</p>
+<p>今晚总算做出来个半成品
+<img src="http://img.blog.csdn.net/20170802003740628?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"
+	
+	
+	
+	loading="lazy"
+	
+		alt="半成品"
+	
+	
+></p>
+<h4 id="正文解析">正文解析
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CGetWebDlg</span><span class="o">::</span><span class="n">ArticleParse</span><span class="p">(</span><span class="n">CString</span> <span class="n">strArticle</span><span class="p">,</span> <span class="n">Blog</span><span class="o">*</span> <span class="n">blog</span><span class="p">,</span> <span class="kt">int</span> <span class="n">iRow</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">IHTMLDocument2</span><span class="o">*</span> <span class="n">pDoc</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">MSHTML</span><span class="o">::</span><span class="n">IHTMLDocument3Ptr</span> <span class="n">pDoc3</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">MSHTML</span><span class="o">::</span><span class="n">IHTMLElementCollectionPtr</span> <span class="n">pCollection</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">MSHTML</span><span class="o">::</span><span class="n">IHTMLElementPtr</span> <span class="n">pElement</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">HRESULT</span> <span class="n">hr</span> <span class="o">=</span> <span class="n">CoCreateInstance</span><span class="p">(</span><span class="n">CLSID_HTMLDocument</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">CLSCTX_INPROC_SERVER</span><span class="p">,</span> <span class="n">IID_IHTMLDocument2</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span><span class="o">**</span><span class="p">)</span><span class="o">&amp;</span><span class="n">pDoc</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">//将代码放入安全数组并写入文档
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">SAFEARRAY</span><span class="o">*</span> <span class="n">psa</span> <span class="o">=</span> <span class="n">SafeArrayCreateVector</span><span class="p">(</span><span class="n">VT_VARIANT</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">psa</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">||</span> <span class="n">pDoc</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">MessageBox</span><span class="p">(</span><span class="n">_T</span><span class="p">(</span><span class="s">&#34;创建Document2对象失败！&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">VARIANT</span> <span class="o">*</span><span class="n">param</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">bstr_t</span> <span class="n">bsData</span> <span class="o">=</span> <span class="p">(</span><span class="n">LPCTSTR</span><span class="p">)</span><span class="n">strArticle</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">hr</span> <span class="o">=</span> <span class="n">SafeArrayAccessData</span><span class="p">(</span><span class="n">psa</span><span class="p">,</span> <span class="p">(</span><span class="n">LPVOID</span><span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">param</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">param</span><span class="o">-&gt;</span><span class="n">vt</span> <span class="o">=</span> <span class="n">VT_BSTR</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">param</span><span class="o">-&gt;</span><span class="n">bstrVal</span> <span class="o">=</span> <span class="p">(</span><span class="n">BSTR</span><span class="p">)</span><span class="n">bsData</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">hr</span> <span class="o">=</span> <span class="n">pDoc</span><span class="o">-&gt;</span><span class="n">write</span><span class="p">(</span><span class="n">psa</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//hr = pDoc-&gt;close();
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//SafeArrayDestroy(psa);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">hr</span> <span class="o">=</span> <span class="n">SafeArrayUnaccessData</span><span class="p">(</span><span class="n">psa</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">_bstr_t</span> <span class="n">href</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">pDoc3</span> <span class="o">=</span> <span class="n">pDoc</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">pCollection</span> <span class="o">=</span> <span class="n">pDoc3</span><span class="o">-&gt;</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="sa">L</span><span class="s">&#34;div&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">long</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">pCollection</span><span class="o">-&gt;</span><span class="n">length</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">pElement</span> <span class="o">=</span> <span class="n">pCollection</span><span class="o">-&gt;</span><span class="n">item</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">pElement</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">BSTR</span> <span class="n">bstrClass</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">pElement</span><span class="o">-&gt;</span><span class="n">get_id</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bstrClass</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="n">CString</span> <span class="n">strClass</span> <span class="o">=</span> <span class="n">_com_util</span><span class="o">::</span><span class="n">ConvertBSTRToString</span><span class="p">(</span><span class="n">bstrClass</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="k">if</span> <span class="p">(</span><span class="n">strClass</span><span class="p">.</span><span class="n">CompareNoCase</span><span class="p">(</span><span class="s">&#34;article_content&#34;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">			<span class="p">{</span>
+</span></span><span class="line"><span class="cl">				<span class="n">BSTR</span> <span class="n">bstrText</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">				<span class="n">pElement</span><span class="o">-&gt;</span><span class="n">get_innerText</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bstrText</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">				<span class="n">CString</span> <span class="n">strText</span> <span class="o">=</span> <span class="n">bstrText</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">				<span class="n">blog</span><span class="o">-&gt;</span><span class="n">article</span> <span class="o">=</span> <span class="n">strText</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">				<span class="n">m_list</span><span class="p">.</span><span class="n">SetItemData</span><span class="p">(</span><span class="n">iRow</span><span class="p">,</span> <span class="p">(</span><span class="n">DWORD_PTR</span><span class="p">)</span><span class="n">blog</span><span class="p">);</span>							
+</span></span><span class="line"><span class="cl">			<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>建立了一个结构体用来存放每篇文章的标题和正文，方便点击列表控件项时读取对应的结构体。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">Blog</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CString</span> <span class="n">title</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CString</span> <span class="n">article</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">};</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="列表控件和编辑框交互">列表控件和编辑框交互
+</h4><h5 id="列表控件初始化">列表控件初始化
+</h5><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl">	<span class="n">CRect</span> <span class="n">rectLocal</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">m_list</span><span class="p">.</span><span class="n">GetClientRect</span><span class="p">(</span><span class="n">rectLocal</span><span class="p">);</span> <span class="c1">//获得当前客户区信息
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">m_list</span><span class="p">.</span><span class="n">InsertColumn</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">&#34;序号&#34;</span><span class="p">,</span> <span class="n">LVCFMT_LEFT</span><span class="p">,</span> <span class="n">rectLocal</span><span class="p">.</span><span class="n">Width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">m_list</span><span class="p">.</span><span class="n">InsertColumn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#34;文章列表&#34;</span><span class="p">,</span> <span class="n">LVCFMT_LEFT</span><span class="p">,</span> <span class="n">rectLocal</span><span class="p">.</span><span class="n">Width</span><span class="p">()</span> <span class="o">/</span> <span class="mi">6</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>添加多列后，单击只能选中第一列，这时需要修改风格 LVS_EX_FULLROWSELECT   表示整行。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl">	<span class="n">m_list</span><span class="p">.</span><span class="n">SetExtendedStyle</span><span class="p">(</span><span class="n">LVS_EX_FULLROWSELECT</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h5 id="添加数据">添加数据
+</h5><p>单纯添加一项的话：	m_list.InsertItem(项的索引, 数据);
+但要指定列的话：
+m_list.InsertItem(项的索引, &ldquo;&rdquo;);
+m_list.SetItemText(行, 列, 数据);</p>
+<h5 id="onlvnitemchangedlist">OnLvnItemchangedList
+</h5><p>试了多种方法，只有这一种成功了：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CGetWebDlg</span><span class="o">::</span><span class="n">OnLvnItemchangedList1</span><span class="p">(</span><span class="n">NMHDR</span> <span class="o">*</span><span class="n">pNMHDR</span><span class="p">,</span> <span class="n">LRESULT</span> <span class="o">*</span><span class="n">pResult</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">LPNMLISTVIEW</span> <span class="n">pNMLV</span> <span class="o">=</span> <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="n">LPNMLISTVIEW</span><span class="o">&gt;</span><span class="p">(</span><span class="n">pNMHDR</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// TODO:  在此添加控件通知处理程序代码
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 	m_edit.SetWindowText(&#34;&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 	int index = m_list.GetNextItem(-1, LVNI_ALL | LVNI_SELECTED);
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 	Blog *pStructure = (Blog*)m_list.GetItemData(index);
+</span></span></span><span class="line"><span class="cl"><span class="c1">// 	m_edit.SetWindowText(pStructure-&gt;article);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">if</span> <span class="p">(</span><span class="n">pNMLV</span><span class="o">-&gt;</span><span class="n">uNewState</span> <span class="o">==</span> <span class="p">(</span><span class="n">LVIS_SELECTED</span> <span class="o">|</span> <span class="n">LVIS_FOCUSED</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">m_edit</span><span class="p">.</span><span class="n">SetWindowText</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Blog</span> <span class="o">*</span><span class="n">pStructure</span> <span class="o">=</span> <span class="p">(</span><span class="n">Blog</span><span class="o">*</span><span class="p">)</span><span class="n">m_list</span><span class="p">.</span><span class="n">GetItemData</span><span class="p">(</span><span class="n">pNMLV</span><span class="o">-&gt;</span><span class="n">iItem</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">m_edit</span><span class="p">.</span><span class="n">SetWindowText</span><span class="p">(</span><span class="n">pStructure</span><span class="o">-&gt;</span><span class="n">article</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="o">*</span><span class="n">pResult</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>实现列表和编辑框交互后，可以说这已经是一个可以完整运行的程序了，V1.0版本出炉。
+实测解析时间：1分41秒
+能够成功获取该博客111篇文章，能够正确显示正文（包括清晰显示代码）。现在的运行图：
+<img src="http://img.blog.csdn.net/20170805145839785?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"
+	
+	
+	
+	loading="lazy"
+	
+		alt="V1.0"
+	
+	
+>
+该版本未添加多线程、未和数据库关联。</p>
+<p>V2.0实现数据库操作</p>
+<h1 id="使用sqlite数据库">使用sqlite数据库
+</h1><h2 id="下载导入">下载导入
+</h2><p>官网下载sqlite
+Source Code  sqlite-amalgamation-3200000.zip  有三个东西  shell.c  sqlite3.c  sqlite3.h
+根据<a class="link" href="http://blog.csdn.net/sunnyloves/article/details/39010831"  target="_blank" rel="noopener"
+    >VS2010下SQLite3生成lib库文件</a> 文章方法生成sqlite3.lib</p>
+<p>Precompiled Binaries for Windows  sqlite-dll-win32-x86-3200000.zip  有一个所需 sqlite3.dll</p>
+<p>将lib和dll放入项目工程里，在.cpp开头加上</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;sqlite3.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#pragma comment(lib,&#34;sqlite3.lib&#34;)
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="保存至sqlite数据库">保存至sqlite数据库
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">CGetWebDlg</span><span class="o">::</span><span class="n">Database</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Blog</span><span class="o">*&gt;</span> <span class="o">&amp;</span><span class="n">vecBlog</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">sqlite3</span> <span class="o">*</span> <span class="n">pDB</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">char</span><span class="o">*</span> <span class="n">errMsg</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 连接SQLite数据库
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="kt">int</span> <span class="n">res</span> <span class="o">=</span> <span class="n">sqlite3_open</span><span class="p">(</span><span class="s">&#34;test.db&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pDB</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">res</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">MessageBox</span><span class="p">(</span><span class="n">_T</span><span class="p">(</span><span class="s">&#34;数据库打开失败，请检查后再操作！&#34;</span><span class="p">),</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">MB_ICONSTOP</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">sqlite3_close</span><span class="p">(</span><span class="n">pDB</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// 创建表
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">string</span> <span class="n">strSQL</span> <span class="o">=</span> <span class="s">&#34;create table blog (title text, article text);&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">res</span> <span class="o">=</span> <span class="n">sqlite3_exec</span><span class="p">(</span><span class="n">pDB</span><span class="p">,</span> <span class="n">strSQL</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">errMsg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">res</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">MessageBox</span><span class="p">(</span><span class="n">_T</span><span class="p">(</span><span class="s">&#34;数据库打开失败，请检查后再操作！&#34;</span><span class="p">),</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">MB_ICONSTOP</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">//return -1;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">		<span class="c1">// 插入数据
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">vector</span><span class="o">&lt;</span><span class="n">Blog</span><span class="o">*&gt;::</span><span class="n">iterator</span> <span class="n">iter</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="k">for</span> <span class="p">(</span><span class="n">iter</span> <span class="o">=</span> <span class="n">vecBlog</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">iter</span> <span class="o">!=</span> <span class="n">vecBlog</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="n">iter</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			
+</span></span><span class="line"><span class="cl">			<span class="n">CString</span> <span class="n">cstrTitle</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">iter</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">title</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">CString</span> <span class="n">cstrArticle</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">iter</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">article</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="n">cstrTitle</span> <span class="o">=</span> <span class="n">ConvertGBKToUtf8</span><span class="p">(</span><span class="n">cstrTitle</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="n">cstrArticle</span> <span class="o">=</span> <span class="n">ConvertGBKToUtf8</span><span class="p">(</span><span class="n">cstrArticle</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">			<span class="kt">char</span> <span class="o">*</span><span class="n">p1</span> <span class="o">=</span> <span class="n">cstrTitle</span><span class="p">.</span><span class="n">GetBuffer</span><span class="p">(</span><span class="n">cstrTitle</span><span class="p">.</span><span class="n">GetLength</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="n">cstrTitle</span><span class="p">.</span><span class="n">ReleaseBuffer</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">			<span class="kt">char</span> <span class="o">*</span><span class="n">p2</span> <span class="o">=</span> <span class="n">cstrArticle</span><span class="p">.</span><span class="n">GetBuffer</span><span class="p">(</span><span class="n">cstrArticle</span><span class="p">.</span><span class="n">GetLength</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="n">cstrArticle</span><span class="p">.</span><span class="n">ReleaseBuffer</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">			<span class="kt">char</span> <span class="o">*</span><span class="n">strSQL</span> <span class="o">=</span> <span class="n">sqlite3_mprintf</span><span class="p">(</span><span class="s">&#34;INSERT INTO blog VALUES(&#39;%q&#39;,&#39;%q&#39;)&#34;</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="n">sqlite3_exec</span><span class="p">(</span><span class="n">pDB</span><span class="p">,</span> <span class="n">strSQL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">errMsg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>当然，也可以事先把数据库和表创建好……
+<img src="http://img.blog.csdn.net/20170812235933407?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"
+	
+	
+	
+	loading="lazy"
+	
+		alt="创建数据库和表"
+	
+	
+></p>
+<p>因为sqlite数据库是UTF-8格式存储，于是，需要一个转换函数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">CString</span>  <span class="nf">ConvertUtf8ToGBK</span><span class="p">(</span><span class="n">CString</span> <span class="o">&amp;</span><span class="n">strUtf8</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">          
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">len</span><span class="o">=</span><span class="n">MultiByteToWideChar</span><span class="p">(</span><span class="n">CP_UTF8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">LPCTSTR</span><span class="p">)</span><span class="n">strUtf8</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">unsigned</span> <span class="kt">short</span> <span class="o">*</span> <span class="n">wszGBK</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">unsigned</span> <span class="kt">short</span><span class="p">[</span><span class="n">len</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="n">memset</span><span class="p">(</span><span class="n">wszGBK</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">len</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">MultiByteToWideChar</span><span class="p">(</span><span class="n">CP_UTF8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">LPCTSTR</span><span class="p">)</span><span class="n">strUtf8</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">LPWSTR</span><span class="p">)</span><span class="n">wszGBK</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">	<span class="n">len</span> <span class="o">=</span> <span class="n">WideCharToMultiByte</span><span class="p">(</span><span class="n">CP_ACP</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">LPCWSTR</span><span class="p">)</span><span class="n">wszGBK</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">	<span class="kt">char</span> <span class="o">*</span><span class="n">szGBK</span><span class="o">=</span><span class="k">new</span> <span class="kt">char</span><span class="p">[</span><span class="n">len</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="n">memset</span><span class="p">(</span><span class="n">szGBK</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">len</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">WideCharToMultiByte</span> <span class="p">(</span><span class="n">CP_ACP</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">LPCWSTR</span><span class="p">)</span><span class="n">wszGBK</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">szGBK</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span><span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">	<span class="n">strUtf8</span> <span class="o">=</span> <span class="n">szGBK</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	 <span class="k">delete</span><span class="p">[]</span> <span class="n">szGBK</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	 <span class="k">delete</span><span class="p">[]</span> <span class="n">wszGBK</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	 <span class="k">return</span> <span class="n">strUtf8</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="出现的问题">出现的问题
+</h2><ol>
+<li>如图，数据少时并不会出现。
+<img src="http://img.blog.csdn.net/20171006211052844?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Q1"
+	
+	
+>
+<img src="http://img.blog.csdn.net/20171006211119313?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Q2"
+	
+	
+></li>
+</ol>
+<p>2.好像是运行了脚本
+<img src="http://img.blog.csdn.net/20171006211200087?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Q3"
+	
+	
+>
+据查将“script”修改成别的字符便不会运行脚本，并没尝试成功。</p>
+<h2 id="效果">效果
+</h2><p>下载了一个SQLiteStudio可视化管理工具。可见数据已成功保存至数据库。
+<img src="http://img.blog.csdn.net/20171006211410475?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"
+	
+	
+	
+	loading="lazy"
+	
+		alt="sqlite"
+	
+	
+></p>
+<h2 id="从sqlite数据库读取数据">从sqlite数据库读取数据
+</h2><p>新建工程。
+主要用到该函数：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">sqlite3_get_table</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">  <span class="n">sqlite3</span> <span class="o">*</span><span class="n">db</span><span class="p">,</span>          <span class="cm">/* An open database */</span>
+</span></span><span class="line"><span class="cl">  <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">zSql</span><span class="p">,</span>     <span class="cm">/* SQL to be evaluated */</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="o">***</span><span class="n">pazResult</span><span class="p">,</span>    <span class="cm">/* Results of the query */</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="o">*</span><span class="n">pnRow</span><span class="p">,</span>           <span class="cm">/* Number of result rows written here */</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">int</span> <span class="o">*</span><span class="n">pnColumn</span><span class="p">,</span>        <span class="cm">/* Number of result columns written here */</span>
+</span></span><span class="line"><span class="cl">  <span class="kt">char</span> <span class="o">**</span><span class="n">pzErrmsg</span>       <span class="cm">/* Error msg written here */</span>
+</span></span><span class="line"><span class="cl"><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">sqlite3_free_table</span><span class="p">(</span><span class="kt">char</span> <span class="o">**</span><span class="n">result</span><span class="p">);</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CGetDataFromSqliteDlg</span><span class="o">::</span><span class="n">OnBnClickedBtnreaddata</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// TODO:  在此添加控件通知处理程序代码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">sqlite3</span> <span class="o">*</span> <span class="n">pDB</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">char</span><span class="o">*</span> <span class="n">errMsg</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// 连接SQLite数据库
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="kt">int</span> <span class="n">res</span> <span class="o">=</span> <span class="n">sqlite3_open</span><span class="p">(</span><span class="s">&#34;test.db&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pDB</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">res</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span><span class="p">){</span>
+</span></span><span class="line"><span class="cl">		<span class="n">MessageBox</span><span class="p">(</span><span class="n">_T</span><span class="p">(</span><span class="s">&#34;数据库打开失败，请检查后再操作！&#34;</span><span class="p">),</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">MB_ICONSTOP</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">sqlite3_close</span><span class="p">(</span><span class="n">pDB</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="n">string</span> <span class="n">strSql</span> <span class="o">=</span> <span class="s">&#34;select * from blog&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">char</span><span class="o">**</span> <span class="n">pResult</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">nRow</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">nCol</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">nResult</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">nResult</span> <span class="o">=</span> <span class="n">sqlite3_get_table</span><span class="p">(</span><span class="n">pDB</span><span class="p">,</span> <span class="n">strSql</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="o">&amp;</span><span class="n">pResult</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">nRow</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">nCol</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">errMsg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">nResult</span> <span class="o">!=</span> <span class="n">SQLITE_OK</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">sqlite3_close</span><span class="p">(</span><span class="n">pDB</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">errMsg</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">sqlite3_free</span><span class="p">(</span><span class="n">errMsg</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Blog</span><span class="o">*&gt;</span><span class="n">vecBlog</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">string</span> <span class="n">strOut</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">nIndex</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nRow</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">Blog</span><span class="o">*</span> <span class="n">blog</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Blog</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">string</span> <span class="n">tempTitle</span> <span class="o">=</span> <span class="n">pResult</span><span class="p">[</span><span class="n">nIndex</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">		<span class="n">string</span> <span class="n">tempArticle</span> <span class="o">=</span> <span class="n">pResult</span><span class="p">[</span><span class="n">nIndex</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CString</span> <span class="n">number</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">number</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&#34;%d&#34;</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="n">m_list</span><span class="p">.</span><span class="n">InsertItem</span><span class="p">(</span><span class="n">nRow</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CString</span> <span class="nf">strTitle</span><span class="p">(</span><span class="n">tempTitle</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CString</span> <span class="nf">strArticle</span><span class="p">(</span><span class="n">tempArticle</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">		<span class="n">ConvertUtf8ToGBK</span><span class="p">(</span><span class="n">strTitle</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">ConvertUtf8ToGBK</span><span class="p">(</span><span class="n">strArticle</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">blog</span><span class="o">-&gt;</span><span class="n">title</span> <span class="o">=</span> <span class="n">strTitle</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">blog</span><span class="o">-&gt;</span><span class="n">article</span> <span class="o">=</span> <span class="n">strArticle</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">vecBlog</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">blog</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">m_list</span><span class="p">.</span><span class="n">SetItemText</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">number</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">m_list</span><span class="p">.</span><span class="n">SetItemText</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">strTitle</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">m_list</span><span class="p">.</span><span class="n">SetItemData</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">DWORD_PTR</span><span class="p">)</span><span class="n">blog</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="n">nIndex</span> <span class="o">=</span> <span class="n">nIndex</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">sqlite3_free_table</span><span class="p">(</span><span class="n">pResult</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">sqlite3_close</span><span class="p">(</span><span class="n">pDB</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>同样地，注意格式转码。</p>
+<h2 id="成品">成品
+</h2><p><img src="http://img.blog.csdn.net/20171006231410366?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"
+	
+	
+	
+	loading="lazy"
+	
+		alt="V1.5"
+	
+	
+></p>
+<p>V1.5成功实现从sqlite数据库读取数据并反映在列表和编辑框中。</p>
+<p>To be continued&hellip;</p>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/mfc/">MFC</a>
+        
+            <a href="/tags/cpp/">CPP</a>
+        
+            <a href="/tags/%E7%88%AC%E8%99%AB/">爬虫</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/gtexwcbw/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">JingPic——github图床外链小工具</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/75qsjbvh/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">古风自动造句器</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/rkmjbvmy/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MFC&#43;多线程&#43;进度条&#43;复制文件（夹）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/5gg34isc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Socket点对点聊天&#43;文件传输</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/nmcsqtsh/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MFC绘制时钟</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":"评论一句，好运+1！"},"requiredMeta":["name"],"serverURL":"https://zippy-halva-8e20f0.netlify.app/.netlify/functions/comment"});
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2015 - 
+        
+        2025 靖待
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

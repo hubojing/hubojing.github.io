@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>向量检索 on 靖待</title>
+        <link>https://hubojing.github.io/tags/%E5%90%91%E9%87%8F%E6%A3%80%E7%B4%A2/</link>
+        <description>Recent content in 向量检索 on 靖待</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>靖待</copyright>
+        <lastBuildDate>Tue, 28 Feb 2023 21:48:28 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/tags/%E5%90%91%E9%87%8F%E6%A3%80%E7%B4%A2/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>向量检索技术</title>
+        <link>https://hubojing.github.io/8ztt3yfv/</link>
+        <pubDate>Tue, 28 Feb 2023 21:48:28 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/8ztt3yfv/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\假装有图片.jpg&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;笔记。&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;背景&#34;&gt;背景
+&lt;/h1&gt;&lt;p&gt;大数据领域检索分两类：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;结构化数据检索，如ElasticSearch、Solr、关系型数据库等&lt;/li&gt;
+&lt;li&gt;非结构化数据检索，如图片、音频、视频等&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;向量检索第一步：对非结构化的数据进行向量化表示&lt;/p&gt;
+&lt;p&gt;即物品的向量要满足相似物品的距离近，不相似的距离远，这种对物品进行特征表示的方法称为&lt;strong&gt;度量学习（metric learning)&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;传统度量学习方法：线性投影  核方法&lt;/p&gt;
+&lt;p&gt;缺点：无法解决非线性特征&lt;/p&gt;
+&lt;p&gt;深度度量学习：通过激活函数提供非线性变换能力&lt;/p&gt;
+&lt;h1 id=&#34;概述&#34;&gt;概述
+&lt;/h1&gt;&lt;p&gt;向量检索定义：在一个给定向量数据集中，按照某种度量方式，检索出与查询向量相近的K个向量（K-Nearest Neighbor, KNN），但KNN计算量大，通常只关注近似近邻（Approximate Nearest Neighbor, ANN）问题。&lt;/p&gt;
+&lt;p&gt;向量检索算法需解决两个问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;减少候选向量集：通过各种策略，比如构建索引结构，实现检索时绕开不相关向量；&lt;/li&gt;
+&lt;li&gt;降低单个向量计算的复杂度：找到候选向量后，要对单个向量的相似度进行计算，但复杂度搞，需要处理。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;经典检索算法有三个：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;NSW&lt;/p&gt;
+&lt;p&gt;关键是在构图过程中通过贪婪搜索算法记录下搜索最优路径。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;HNSW&lt;/p&gt;
+&lt;p&gt;对NSW的升级，使用跳表结构代替NSW的链表结构通过空间换时间的方法将向量检索的复杂度从多重对数复杂度降至对数复杂度。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;IVF_PQ&lt;/p&gt;
+&lt;p&gt;通过乘积量化（PQ）将向量进行压缩，降低计算复杂度；通过聚类加倒排（IVF）减少检索候选集。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;其它：&lt;/p&gt;
+&lt;p&gt;IVFSQ8、IVF_FLAT是IVF算法变种，分别在召回率、内存占用和响应时间做了折中处理；适用于测试生成groud truth集合的FLAT纯暴力检索算法。&lt;/p&gt;
+&lt;p&gt;常见的四种向量度量方式：&lt;/p&gt;
+&lt;p&gt;欧氏距离（L2）、余弦、内积（IP）、杰卡德距离&lt;/p&gt;
+&lt;p&gt;通常欧式距离用于图片检索，余弦用于人脸识别，内积、杰卡德距离多用于推荐。&lt;/p&gt;
+&lt;h1 id=&#34;一些结论&#34;&gt;一些结论
+&lt;/h1&gt;&lt;p&gt;高召回率从高到底&lt;/p&gt;
+&lt;p&gt;FLAT（仅供测试使用） &amp;gt; HNSW &amp;gt; IVFFLAT &amp;gt; IVF*SQ8 *&amp;gt; IVF_PQ&lt;/p&gt;
+&lt;p&gt;查询响应时间从低到高&lt;/p&gt;
+&lt;p&gt;HNSW &amp;gt; IVF*PQ *&amp;gt; IVF_SQ8 &amp;gt; IVF_FLAT &amp;gt; FLAT&lt;/p&gt;
+&lt;p&gt;资源占用从高到底&lt;/p&gt;
+&lt;p&gt;IVF_PQ &amp;gt; IVF_SQ8 &amp;gt; HNSW&lt;/p&gt;
+&lt;p&gt;如，内存和磁盘足够，百万~千万级，选HNSW算法；召回率要求不高，相应时间要求较高，集群资源有限，数据集较大（亿级），选IVF_SQ8算法。&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

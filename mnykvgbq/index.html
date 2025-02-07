@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="\rWhere to Go Next: Modeling Long- and Short-Term User Preferences for Point-of-Interest Recommendation 下一步去哪儿：用户长短期偏好建模用于兴趣点推荐\n">
+<title>LSTPM</title>
+
+<link rel='canonical' href='https://hubojing.github.io/mnykvgbq/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="LSTPM">
+<meta property='og:description' content="\rWhere to Go Next: Modeling Long- and Short-Term User Preferences for Point-of-Interest Recommendation 下一步去哪儿：用户长短期偏好建模用于兴趣点推荐\n">
+<meta property='og:url' content='https://hubojing.github.io/mnykvgbq/'>
+<meta property='og:site_name' content='靖待'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='LSTPM' /><meta property='article:tag' content='兴趣点推荐' /><meta property='article:tag' content='Non-local Neural Networks' /><meta property='article:published_time' content='2022-02-25T15:59:46&#43;00:00'/><meta property='article:modified_time' content='2022-02-25T15:59:46&#43;00:00'/>
+<meta name="twitter:title" content="LSTPM">
+<meta name="twitter:description" content="\rWhere to Go Next: Modeling Long- and Short-Term User Preferences for Point-of-Interest Recommendation 下一步去哪儿：用户长短期偏好建模用于兴趣点推荐\n">
+    <link rel="shortcut icon" href="/avatar.jpg" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_999351c94d8e06aa.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">靖待</a></h1>
+            <h2 class="site-description">创造是人生乐趣</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://blog.csdn.net/hubojing/'
+                        target="_blank"
+                        title="csdn"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:hubojing@outlook.com'
+                        target="_blank"
+                        title="mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://music.163.com/#/user/home?id=92203594'
+                        target="_blank"
+                        title="netease"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='/atom.xml'
+                        target="_blank"
+                        title="rss"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                <span>存档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friends/' >
+                
+                
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#长期偏好建模">长期偏好建模</a></li>
+    <li><a href="#短期偏好建模">短期偏好建模</a></li>
+    <li><a href="#预测">预测</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#数据集">数据集</a></li>
+    <li><a href="#基线">基线</a></li>
+    <li><a href="#评价指标">评价指标</a></li>
+    <li><a href="#性能">性能</a>
+      <ol>
+        <li><a href="#基线对比">基线对比</a></li>
+        <li><a href="#消融实验">消融实验</a></li>
+        <li><a href="#参数分析">参数分析</a></li>
+        <li><a href="#跳数自动化">跳数自动化</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E8%AE%BA%E6%96%87/" >
+                论文
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/mnykvgbq/">LSTPM</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Feb 25, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <div align="left">
+<img src="/images/LSTPM架构.png" width="300" height="180" style="float:right;"/>
+<p>　　<strong>Where to Go Next: Modeling Long- and Short-Term User Preferences for Point-of-Interest Recommendation</strong>
+　　下一步去哪儿：用户长短期偏好建模用于兴趣点推荐</p>
+</div>
+<h1 id="论文背景">论文背景
+</h1><p>　　Where to Go Next: Modeling Long- and Short-Term User Preferences for Point-of-Interest Recommendation
+　　下一步去哪儿：用户长短期偏好建模用于兴趣点推荐
+　　AAAI 2020
+　　<a class="link" href="https://ojs.aaai.org/index.php/AAAI/article/view/5353"  target="_blank" rel="noopener"
+    >PDF</a>
+　　<a class="link" href="https://github.com/NLPWM-WHU/LSTPM"  target="_blank" rel="noopener"
+    >CODE</a></p>
+<h1 id="问题提出">问题提出
+</h1><p>　　现有的基于RNN的方法在对用户的短期偏好建模时，要么忽略了用户的长期偏好，要么忽略了最近访问的兴趣点之间的地理关系，从而使得推荐结果不可靠。（所有基于RNN/LSTM的短期偏好建模方法都存在不能对两个非连续兴趣点之间的关系建模的缺点。）
+　　为此，提出LSTPM（Long- and Short-Term Preference Modeling）架构。</p>
+<h1 id="架构">架构
+</h1><p><img src="/images/LSTPM%e6%9e%b6%e6%9e%84.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="架构"
+	
+	
+>
+　　它包含三个部分：长期偏好建模、短期偏好建模和预测模块。</p>
+<h2 id="长期偏好建模">长期偏好建模
+</h2><p>　　核心：使用非局部神经操作（nonlocal neural operation）建模长期偏好。
+　　以前的做法是直接用LSTM建模签到序列，但是对时间戳的认识不够深。比如人们会在中午时间去餐馆，在晚上去酒吧。所以本文提出了融合时间戳去捕捉时间敏感的属性。论文将一周分成48个段slot（24个工作日段和24个周末段）。计算每两个时间段之间用户签到的兴趣点集合相似性。重合的兴趣点越多，相似性越高。
+　　所以历史签到轨迹就可以用这些时间段的兴趣点来表示，从而可以给这些时间段加权重。时间越近影响越大。
+　　同时，地理方面计算了各轨迹的中心，计算中心与最近轨迹相似度，得出距离加权公式。</p>
+$$y_i = \frac{1}{C(x)}\sum{_{\forall j}f(x_i, x_j)g(x_j)}$$<p>
+　　<code>f</code>用来度量输出位置和周围其他位置的尺度（例如相似度），<code>g</code>是在位置j对于输入信号的表示（如卷积操作）。对于non-local behaiver来说，上式中的<code>j</code>是取遍所有可能的邻居，而对于local操作，如3*3的卷积来说，<code>j</code>只是取了周围8个像素点。
+　　所以这里借鉴这个思想，将每个轨迹S都和历史轨迹和当前轨迹进行了分数计算，并除以标准化因素（全部特征求和）。</p>
+<h2 id="短期偏好建模">短期偏好建模
+</h2><p>　　核心：使用联合方式的地理扩张LSTM建模短期偏好。
+　　RNN本身只能用于序列建模，所以有人提出了跳步RNN。但是跳步RNN总是事先定义好和固定好的。所以提出geo-dilated LSTM根据地理和时间因素，来自动决定使用哪些相关输入。
+<img src="/images/LSTPM%e6%9e%b6%e6%9e%842.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="geo-dilated LSTM"
+	
+	
+>
+　　直观地，我们的地理扩张LSTM首先从当前轨迹中挑选poi作为输入，其具有由地理相关性确定的不同跳跃长度，然后通过扩展LSTM方案学习短期用户偏好。具体的算法论文给出了伪代码。</p>
+<p>　　<strong>关键理解</strong>：那它究竟是怎么自动确定跳跃长度的呢？
+　　如上图所示，标准的LSTM序列是从l1-&gt;l2-&gt;l3-&gt;l4-&gt;l5。但是加入地理距离后发现，对于l3的前面两个兴趣点l1和l2来说，l1到l3的距离比l1到l2的距离要近，所以留下{l1, l2}路径。依次类推，留下{l1, l2}{l2, l5}路径，也就是两跳。所以，将LSTM设计为两跳。</p>
+<p>　　最后的表示，是标准LSTM和geo-dilated LSTM的平均向量。</p>
+<h2 id="预测">预测
+</h2><p>　　将长短期偏好联结起来，设置一个W全部兴趣点的可训练投影矩阵参数。预测的是下一个时间段t内目标用户最可能访问的兴趣点。损失函数是负对数似然函数。</p>
+<h1 id="实验">实验
+</h1><h2 id="数据集">数据集
+</h2><p>　　Foursqure, Gowalla</p>
+<p><img src="/images/LSTPM_datasets.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="数据集"
+	
+	
+></p>
+<h2 id="基线">基线
+</h2><ul>
+<li>LSTM</li>
+<li>Time-LSTM</li>
+<li>ST-RNN</li>
+<li>TMCA</li>
+<li>CARA</li>
+<li>DCRF</li>
+<li>DeepMove</li>
+<li>STGN</li>
+</ul>
+<h2 id="评价指标">评价指标
+</h2><ul>
+<li>召回率Recall</li>
+<li>NDCG</li>
+</ul>
+<h2 id="性能">性能
+</h2><h3 id="基线对比">基线对比
+</h3><p><img src="/images/LSTPM%e6%80%a7%e8%83%bd.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="性能"
+	
+	
+></p>
+<h3 id="消融实验">消融实验
+</h3><p><img src="/images/LSTPM%e8%87%aa%e8%ba%ab%e5%af%b9%e6%af%94.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="消融实验"
+	
+	
+></p>
+<h3 id="参数分析">参数分析
+</h3><p><img src="/images/LSTPM%e5%8f%82%e6%95%b0%e5%88%86%e6%9e%90.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="参数分析"
+	
+	
+></p>
+<h3 id="跳数自动化">跳数自动化
+</h3><p><img src="/images/LSTPM_LSTM%e5%af%b9%e6%af%94.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="LSTM对比"
+	
+	
+></p>
+<h1 id="贡献点">贡献点
+</h1><ol>
+<li>提出LSTPM框架解决上述存在的问题。</li>
+<li>LSTPM受非局部操作（nonlocal operations）和dilated RNNs的启发，在构建长期偏好时，设计了非局部操作网络结构来探索历史和最近轨迹的时空联系。在克服RNN在短期用户偏好建模的限制时，提出geo-dilated RNN来全面探索非连续兴趣点间的地理联系。</li>
+<li>在真实世界数据集上效果超过SOTA模型。</li>
+</ol>
+<h1 id="参考资料">参考资料
+</h1><p><a class="link" href="https://blog.csdn.net/py184473894/article/details/85322937"  target="_blank" rel="noopener"
+    >https://blog.csdn.net/py184473894/article/details/85322937</a>
+<a class="link" href="https://zhuanlan.zhihu.com/p/85776086"  target="_blank" rel="noopener"
+    >https://zhuanlan.zhihu.com/p/85776086</a></p>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/lstpm/">LSTPM</a>
+        
+            <a href="/tags/%E5%85%B4%E8%B6%A3%E7%82%B9%E6%8E%A8%E8%8D%90/">兴趣点推荐</a>
+        
+            <a href="/tags/non-local-neural-networks/">Non-Local Neural Networks</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/adedun3u/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">兴趣点推荐（POI Recommendation）论文泛读</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/wpzth4rk/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">TEMN</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/gwmprssu/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">ASGNN</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/fhfxfwzp/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">STAN</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/pd2tgrcn/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CHAML</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":"评论一句，好运+1！"},"requiredMeta":["name"],"serverURL":"https://zippy-halva-8e20f0.netlify.app/.netlify/functions/comment"});
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2015 - 
+        
+        2025 靖待
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

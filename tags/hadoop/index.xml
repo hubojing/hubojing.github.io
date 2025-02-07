@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Hadoop on 靖待</title>
+        <link>https://hubojing.github.io/tags/hadoop/</link>
+        <description>Recent content in Hadoop on 靖待</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>靖待</copyright>
+        <lastBuildDate>Tue, 24 Sep 2019 18:45:27 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/tags/hadoop/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>初涉Hadoop</title>
+        <link>https://hubojing.github.io/kammayy2/</link>
+        <pubDate>Tue, 24 Sep 2019 18:45:27 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/kammayy2/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;https://github.com/hubojing/BlogImages/blob/master/%E5%88%9D%E6%B6%89Hadoop%E2%80%94%E2%80%94%E5%8C%BA%E5%88%AB.png?raw=true&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;最基本的概念+简单实战。&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;p&gt;最近看到一篇用Hadoop解决交通问题的论文，然而我还没有接触过……&lt;/p&gt;
+&lt;h1 id=&#34;hadoop是什么&#34;&gt;Hadoop是什么
+&lt;/h1&gt;&lt;p&gt;Hadoop是一个开源的大数据框架
+Hadoop是一个分布式计算的解决方案
+Hadoop=HDFS(分布式文件系统)+MapReduce(分布式计算)
+HDFS：存储是大数据技术的基础
+MapReduce编程模型：分布式计算是大数据应用的解决方案&lt;/p&gt;
+&lt;h2 id=&#34;hdfs概念&#34;&gt;HDFS概念
+&lt;/h2&gt;&lt;h3 id=&#34;数据块&#34;&gt;数据块
+&lt;/h3&gt;&lt;p&gt;默认大小为64MB，一般设置为128M，备份x3&lt;/p&gt;
+&lt;h3 id=&#34;namenode&#34;&gt;NameNode
+&lt;/h3&gt;&lt;p&gt;管理文件系统的命名空间，存放文件元数据
+维护着文件系统的所有文件和目录，文件与数据块的映射
+记录每个文件中各个块所在数据节点的信息&lt;/p&gt;
+&lt;h3 id=&#34;datanode&#34;&gt;DataNode
+&lt;/h3&gt;&lt;p&gt;存储并检索数据块
+向NameNode更新所存储块的列表&lt;/p&gt;
+&lt;h2 id=&#34;hdfs优缺点&#34;&gt;HDFS优缺点
+&lt;/h2&gt;&lt;h3 id=&#34;优点&#34;&gt;优点
+&lt;/h3&gt;&lt;p&gt;适合大文件存储，支持TB、PB级的数据存储，并有副本策略
+可以构建在廉价的机器上，并有一定的容错和恢复机制
+支持流式数据访问，一次写入，多次读取最高效&lt;/p&gt;
+&lt;h3 id=&#34;缺点&#34;&gt;缺点
+&lt;/h3&gt;&lt;p&gt;不适合大量小文件存储
+不适合并发写入，不支持文件随机修改
+不支持随机读等低延时的访问方式&lt;/p&gt;
+&lt;h1 id=&#34;hadoop基础架构&#34;&gt;Hadoop基础架构
+&lt;/h1&gt;&lt;h2 id=&#34;yarn概念&#34;&gt;YARN概念
+&lt;/h2&gt;&lt;h3 id=&#34;resourcemanager&#34;&gt;ResourceManager
+&lt;/h3&gt;&lt;p&gt;分配和调度资源
+启动并监控ApplicationMaster
+监控NodeManager&lt;/p&gt;
+&lt;h3 id=&#34;applicationmaster&#34;&gt;ApplicationMaster
+&lt;/h3&gt;&lt;p&gt;为MR类型的程序申请资源，并分配给内部任务
+负责数据的切分
+监控任务的执行及容错
+NodeManager
+管理单个节点的资源
+处理来自ResourceManager的命令
+处理来自ApplicationMaster的命令&lt;/p&gt;
+&lt;h2 id=&#34;mapreduce编程模型&#34;&gt;MapReduce编程模型
+&lt;/h2&gt;&lt;p&gt;输入一个大文件，通过Split之后，将其分为多个分片
+每个文件分片由单独的机器去处理，这就是Map方法
+将各个机器计算的结果进行汇总并得到最终的结果，这就是Reduce方法&lt;/p&gt;
+&lt;h2 id=&#34;10和20区别&#34;&gt;1.0和2.0区别
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://github.com/hubojing/BlogImages/blob/master/%E5%88%9D%E6%B6%89Hadoop%E2%80%94%E2%80%94%E5%8C%BA%E5%88%AB.png?raw=true&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;区别&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;hadoop生态圈&#34;&gt;Hadoop生态圈
+&lt;/h1&gt;&lt;p&gt;很多&amp;hellip;&lt;/p&gt;
+&lt;h2 id=&#34;hbase&#34;&gt;HBase
+&lt;/h2&gt;&lt;p&gt;高可靠，高性能，面向列，可伸缩，实时读写的分布式数据库
+利用HDFS作为其文件存储系统，支持MR程序读取数据
+存储非结构化和半结构化数据
+RowKey:数据唯一标识，按字典排序
+Column Family:列族，多个列的集合。最多不要超过3个
+TimeStamp时间戳：支持多版本数据同时存在&lt;/p&gt;
+&lt;h2 id=&#34;spark&#34;&gt;Spark
+&lt;/h2&gt;&lt;p&gt;基于内存计算的大数据并行计算框架
+Spark是MapReduce的替代方案，兼容HDFS, HIVE等数据源
+优点：
+基于内存计算的分布式计算框架
+抽象出分布式内存存储数据结构 弹性分布式数据集RDD
+基于事件驱动，通过线程池复用线程提高性能&lt;/p&gt;
+&lt;h1 id=&#34;简单实战&#34;&gt;简单实战
+&lt;/h1&gt;&lt;p&gt;常用HDFS Shell命令
+类Linux系统：ls, cat, mkdir, rm, chmod, chown等
+HDFS文件交互：copyFromLocal, copyToLocal, get, put&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

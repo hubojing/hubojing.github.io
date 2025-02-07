@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>课程学习 on 靖待</title>
+        <link>https://hubojing.github.io/tags/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/</link>
+        <description>Recent content in 课程学习 on 靖待</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>靖待</copyright>
+        <lastBuildDate>Sat, 22 Jan 2022 18:02:37 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/tags/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>CHAML</title>
+        <link>https://hubojing.github.io/pd2tgrcn/</link>
+        <pubDate>Sat, 22 Jan 2022 18:02:37 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/pd2tgrcn/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\CHAML-2.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;Curriculum Meta-Learning for Next POI Recommendation&lt;/strong&gt;
+　　基于课程元学习的下一个兴趣点推荐&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;　　Curriculum Meta-Learning for Next POI Recommendation
+　　基于课程元学习的下一个兴趣点推荐
+　　KDD 21
+　　&lt;a class=&#34;link&#34; href=&#34;https://dl.acm.org/doi/abs/10.1145/3447548.3467132&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;现有问题&#34;&gt;现有问题
+&lt;/h1&gt;&lt;p&gt;　　在下一个兴趣点推荐的研究中，在有限的用户-兴趣点交互数据下，在冷启动城市中提供满意的推荐是重要问题，这需要许多其它城市丰富数据下隐含的知识进行迁移。现有文献没有考虑到城市转移的问题或者不能同时处理数据稀疏和用户在多个城市的模式多样性的问题。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cCHAML-1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;问题描述&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;　　问题描述如图所示。
+　　该问题关键是提出一个合适的迁移算法，但难点有二：
+　　1. 不同城市的数据太少
+　　2. 用户在不同城市下有不同的多样性表达
+　　现有算法不能同时解决这两个问题。传统的预训练和微调技术不能解决问题2，跨域推荐不能解决问题1。&lt;/p&gt;
+&lt;h1 id=&#34;架构&#34;&gt;架构
+&lt;/h1&gt;&lt;p&gt;　　提出 Curriculum Hardness Aware Meta-Learning (CHAML) 框架。
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cCHAML-2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;架构&#34;
+	
+	
+&gt;
+　　架构分为两部分，一部分是基础推荐器，另一部分是MAML扩展。后者用于将元学习引入到POI推荐中。
+　　两种采用策略组件，一种是硬意识元学习(hardness aware meta-learning)，另一种是城市级别采样课程(city-level sampling curriculum)。这用于细致思考采样多样性问题。
+　　一些概念：
+　　Curriculum Learning，主张让模型先从容易的样本开始学习，并逐渐进阶到复杂的样本和知识。
+　　meta-learning，又叫learning to learn，即学习如何学习，元学习围绕任务（task）展开。元学习是要去学习任务中的特征表示，从而在新的任务上泛化。&lt;/p&gt;
+&lt;h2 id=&#34;基础推荐器&#34;&gt;基础推荐器
+&lt;/h2&gt;&lt;p&gt;　　使用DIN作为基础推荐器，由三部分组成，嵌入模块（Embedding module）、注意力模块（Attention module）和输出模块（Output module）。&lt;/p&gt;
+&lt;h2 id=&#34;元学习&#34;&gt;元学习
+&lt;/h2&gt;&lt;p&gt;　　使用MAML策略。
+　　MAML论文：Model-agnostic meta-learning for fast adaptation of deep networks&lt;/p&gt;
+&lt;p&gt;　　每轮MAML包括两步骤：局部更新和全局更新。见图中左上部分。
+　　每一次元学习任务都有支持训练集$D^{spt}$用于训练，query训练集$D^{qry}$用于测试。
+　　元学习目标就是学习一个选学习器F，F可以预测推荐器f中的参数$\theta$，使损失函数最小化。&lt;/p&gt;
+&lt;h2 id=&#34;硬意识元学习-hardness-aware-meta-learning&#34;&gt;硬意识元学习 Hardness Aware Meta-Learning
+&lt;/h2&gt;&lt;p&gt;　　这里的&amp;quot;hardness&amp;quot;是模型在query样本上的现有性能自判的。
+　　分为两个阶段，hard_city阶段和hard_user阶段。两个任务交替循环。对应图右上。&lt;/p&gt;
+&lt;h2 id=&#34;城市级别采样课程-city-level-sampling-curriculum&#34;&gt;城市级别采样课程 City-level Sampling Curriculum
+&lt;/h2&gt;&lt;p&gt;　　见图下方。
+　　分为两阶段，一是困难度测量，使用诸如AUC指标来衡量。二是调度器用于城市pool，定义了一个函数g。课程学习使模型有更大的概率在优化过程中选择容易的梯度步骤。&lt;/p&gt;
+&lt;h1 id=&#34;实验&#34;&gt;实验
+&lt;/h1&gt;&lt;p&gt;　　数据集：百度地图MapSmall、MapLarge（未开源）
+　　输入：POI ID, POI category, time, user-POI dist
+　　输出：POI预测分数$y^{hat}_i$&lt;/p&gt;
+&lt;h2 id=&#34;基线&#34;&gt;基线
+&lt;/h2&gt;&lt;p&gt;　　针对POI推荐：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;NeuMF&lt;/li&gt;
+&lt;li&gt;HGN&lt;/li&gt;
+&lt;li&gt;ATST-LSTM&lt;/li&gt;
+&lt;li&gt;PLSPL&lt;/li&gt;
+&lt;li&gt;iMTL&lt;/li&gt;
+&lt;li&gt;DIN&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;　　针对迁移策略：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;No transfer&lt;/li&gt;
+&lt;li&gt;Pretrain and Fine-Tune(FT)&lt;/li&gt;
+&lt;li&gt;MAML&lt;/li&gt;
+&lt;li&gt;$s^2$Meta&lt;/li&gt;
+&lt;li&gt;HAML&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;贡献点&#34;&gt;贡献点
+&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;第一个探索城市迁移的下一个兴趣点推荐，并将元学习用于该问题。&lt;/li&gt;
+&lt;li&gt;提出CHAML框架，通过使用用户和城市级别的硬采样挖掘以及城市级别的课程学习（curriculum learning）增强元学习器，达到同时解决数据稀疏和冷启动城市的样本多样性的问题。&lt;/li&gt;
+&lt;li&gt;在两个真实世界地图查找数据集中性能超越SOTA方法。
+该框架已在百度地图上进行过A/B测试。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;代码&#34;&gt;代码
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/PaddlePaddle/Research/tree/master/ST_DM/KDD2021-CHAML&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/PaddlePaddle/Research/tree/master/ST_DM/KDD2021-CHAML&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/victorsoda/chaml&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/victorsoda/chaml&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>CF on 靖待</title>
+        <link>https://hubojing.github.io/tags/cf/</link>
+        <description>Recent content in CF on 靖待</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>靖待</copyright>
+        <lastBuildDate>Thu, 04 Feb 2021 10:19:03 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/tags/cf/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>【paper】AutoRec - Autoencoders Meet Collaborative Filtering</title>
+        <link>https://hubojing.github.io/dapymrcc/</link>
+        <pubDate>Thu, 04 Feb 2021 10:19:03 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/dapymrcc/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\Paper-AutoRec-Itembased.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;推荐系统 + 深度学习 1&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;WWW&#39;15&lt;br&gt;
+作者：Suvash  Sedhain, Aditya Krishna Menon, Scott Patrick Sanner, Lexing Xie&lt;/p&gt;
+&lt;p&gt;谷歌学术引用次数580（截至2021年2月4日）&lt;/p&gt;
+&lt;p&gt;关键词：Recommender Systems; Collaborative Filtering; Autoencoders&lt;/p&gt;
+&lt;h1 id=&#34;introduction-引言&#34;&gt;INTRODUCTION 引言
+&lt;/h1&gt;&lt;p&gt;本文提出一种新的基于自动编码器范例的CF模型，思路来自于针对视觉和语音任务的深度神经网络模型。 &lt;br&gt;
+和CF相比，具有表示和计算的优越性。&lt;/p&gt;
+&lt;h1 id=&#34;the-autorec-model-模型&#34;&gt;THE AUTOREC MODEL 模型
+&lt;/h1&gt;$$min_{\theta}\sum_{r∈S}||r - h(r;\theta)||^2_2$$$$h(r;\theta) = f(W · g(Vr + μ) + b)$$&lt;p&gt;
+f、g是激活函数。$\theta = {W, V, μ, b}$&lt;br&gt;
+$W∈\mathbb{R}^{d×k}$, $V∈\mathbb{R}^{k×d}$, $μ∈\mathbb{R}^k$, $b∈\mathbb{R}^d$
+该目标对应于具有单个k维隐藏层的自连接神经网络。使用反向传播来学习参数θ。&lt;/p&gt;
+&lt;p&gt;基于物品的AutoRec模型I-AutoRec&lt;br&gt;
+${r^{(i)}}^n_{i=1}$
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-AutoRec-Itembased.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;基于物品的AutoRec&#34;
+	
+	
+&gt;
+两点改变：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;每个$r^{(i)}$通过反向传播更新和输入有关的权重得到，这在矩阵分解和RBM策略中常用。&lt;/li&gt;
+&lt;li&gt;设计了学习参数正则化防止过拟合。&lt;/li&gt;
+&lt;/ol&gt;
+$$\hat{R}_{ui} = (h(r^{(i)};\hat{\theta}))_u$$$$min_{\theta}||r^{(i)}-h(r^{(i)};\theta)||^2_o + \frac{\lambda}{2}·(||W||^2_F + ||V||^2_F)$$&lt;p&gt;
+$||||^2_o$代表只考虑可观测评分的贡献。&lt;/p&gt;
+&lt;p&gt;基于用户的AutoRec模型U-AutoRec&lt;br&gt;
+${r^{(u)}}^m_{u=1}$&lt;/p&gt;
+&lt;p&gt;和CF策略的区别：&lt;br&gt;
+对比基于RBM的CF模型（RBM-CF）&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;RBM-CF是基于限制玻尔兹曼机的生成概率模型，AutoRec是一个基于自动编码器的判别模型。&lt;/li&gt;
+&lt;li&gt;RBM-CF通过最大化似然log函数估计参数，AutoRec直接最小化RMSE。&lt;/li&gt;
+&lt;li&gt;训练RBM-CF需要使用对比散度，训练AutoRec需要相对更快的基于梯度的反向传播。&lt;/li&gt;
+&lt;li&gt;RBM-CF只使用于离散评分，并对每个评分估计一个分散的参数集。对r个可能的评分，它使用了基于RBM的nkr或者mkr个参数用于用户（物品）。AutoRec与r无关，因此需要较少的参数。 较少的参数使AutoRec的内存占用量更少，更不容易过度拟合。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;对比矩阵分解（MF）&lt;br&gt;
+MF学习线性潜在表示，AutoRec可以通过激活函数学习非线性潜在表示。&lt;/p&gt;
+&lt;h1 id=&#34;experimental-evaluation-实验评估&#34;&gt;EXPERIMENTAL EVALUATION 实验评估
+&lt;/h1&gt;&lt;p&gt;基线：RBM-CF, BiasedMF, LLORMA.&lt;br&gt;
+数据集：Movielens 1M, 10M 和Nerflix数据集&lt;br&gt;
+没有训练数据的测试集默认评分为3。&lt;br&gt;
+训练集：测试集=9：1&lt;br&gt;
+将训练集10%作为验证集。&lt;br&gt;
+重复划分步骤5次并记录平均RMSE。&lt;br&gt;
+每次实验95%在RMSE偶然的间隔在±0.003之间。&lt;br&gt;
+正则化参数λ∈{0.001, 0.01, 0.1, 1, 100, 1000}&lt;br&gt;
+潜在维度k∈{10, 20, 40, 80, 100, 200, 300, 400, 500}&lt;/p&gt;
+&lt;p&gt;三种实验&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;和RBM对比&lt;/li&gt;
+&lt;li&gt;激活函数选取对比&lt;/li&gt;
+&lt;li&gt;隐藏单元k的数量
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-AutoRec-k.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;k&#34;
+	
+	
+&gt;&lt;/li&gt;
+&lt;li&gt;基线性能对比
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-AutoRec-baselines.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;基线&#34;
+	
+	
+&gt;&lt;/li&gt;
+&lt;li&gt;深度扩展对Auto的帮助&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;代码&#34;&gt;代码
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/mesuvash/NNRec&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/mesuvash/NNRec&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;总结&#34;&gt;总结
+&lt;/h1&gt;&lt;p&gt;AutoRec是最简单的深度学习推荐系统。&lt;br&gt;
+它是一种单隐层神经网络推荐模型，将自动编码器与协同过滤相结合。&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>【Paper】Amazon.com Recommendations Item-to-Item Collaborative Filtering</title>
+        <link>https://hubojing.github.io/h5bkenqv/</link>
+        <pubDate>Wed, 02 Dec 2020 14:40:23 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/h5bkenqv/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\假装有图片.jpg&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;ItemCF原文。&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;　　22 January 2003&lt;br&gt;
+　　谷歌学术被引用次数：6769（截至2020年12月2日）&lt;br&gt;
+　　期刊：IEEE Internet Computing&lt;br&gt;
+　　DOI: 10.1109/MIC.2003.1167344&lt;br&gt;
+　　作者：Greg Linden,Brent Smith,and Jeremy York • Amazon.com&lt;br&gt;
+　　&lt;a class=&#34;link&#34; href=&#34;https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;amp;arnumber=1167344&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;引言&#34;&gt;引言
+&lt;/h1&gt;&lt;p&gt;　　电子商务推荐算法面临的挑战：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一家大型零售商可能拥有大量数据、数千万客户和数百万不同的物品&lt;/li&gt;
+&lt;li&gt;要求在不超过半秒钟的时间内实时返回结果集，同时能产生高质量的推荐&lt;/li&gt;
+&lt;li&gt;新客户通常只有非常有限的信息，仅有少量购买信息和产品评分&lt;/li&gt;
+&lt;li&gt;基于成千上万次的购买和评分，老用户可能拥有大量信息&lt;/li&gt;
+&lt;li&gt;客户数据是不稳定的：每次交互都提供有价值的客户数据，算法必须对新信息立即做出响应&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;recommendation-algorithms-推荐算法&#34;&gt;Recommendation Algorithms 推荐算法
+&lt;/h1&gt;&lt;p&gt;　　三种常规方法：&lt;br&gt;
+　　传统协同过滤、聚类模型和基于搜索的策略&lt;br&gt;
+　　traditional collaborative filtering, cluster models, and search-based methods&lt;/p&gt;
+&lt;h2 id=&#34;traditional-collaborative-filtering-传统协同过滤&#34;&gt;Traditional Collaborative Filtering 传统协同过滤
+&lt;/h2&gt;&lt;p&gt;　　传统协同过滤，这里指基于用户的协同过滤方法。&lt;br&gt;
+　　相似度计算：&lt;br&gt;
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-Amazon-similarity.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;similarity&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;　　使用该方法时间复杂度最差为O(MN)，由于用户向量稀疏，时间复杂度更接近于O(M + N)。（大部分用户只涉及很少的物品，每个用户是O(M)，但一小部分用户买了很多物品，需要O(N)时间。）&lt;br&gt;
+　　M为用户数，N为物品数&lt;/p&gt;
+&lt;p&gt;　　解决方法是降低数据规模。&lt;br&gt;
+　　通过随机采样用户或者忽视只有少数购买记录的用户，来减少M。&lt;br&gt;
+　　通过忽视非常流行或不流行的物品，来减少N。&lt;br&gt;
+　　还可以通过产品类别或或客观分类来分割物品成为小向量来减少物品数量。&lt;br&gt;
+　　维度减少，比如聚类或主成分分析可以减少M或N的大量因素。&lt;/p&gt;
+&lt;p&gt;　　但是上述方法会降低推荐质量。&lt;/p&gt;
+&lt;h2 id=&#34;cluster-models-聚类模型&#34;&gt;Cluster Models 聚类模型
+&lt;/h2&gt;&lt;p&gt;　　该算法的目标是将用户分配到包含最相似用户的簇。然后，它使用该簇中用户的购买和评级信息来推荐。&lt;br&gt;
+　　一旦该算法生成了簇，它就计算用户与每个簇的向量的相似性，然后选择具有最大相似性的簇，并相应地对用户进行分类。一些算法将用户分为多个簇，并描述每个关系的强度。&lt;br&gt;
+　　优点：比上述协同过滤具有更好的在线可扩展性和性能，复杂且昂贵的聚类计算是离线运行的。&lt;br&gt;
+　　缺点：推荐效果差。通过使用大量细粒度的聚类来提高质量是可能的，但是线上用户细分聚类变得几乎和使用协同过滤寻找相似客户一样昂贵。&lt;/p&gt;
+&lt;h2 id=&#34;search-based-methods-基于搜索的策略&#34;&gt;Search-Based Methods 基于搜索的策略
+&lt;/h2&gt;&lt;p&gt;　　基于搜索或基于内容的方法将推荐问题视为对相关项目的搜索。对于给定用户购买和评级信息的物品，该算法构建搜索查询来查找由相同作者、艺术家或导演或具有相似关键字或主题的其他流行项目。例如，如果一位顾客购买了《教父》系列影碟，系统可能会推荐其他犯罪题材的电影、其他由影星马龙·白兰度主演的电影或其他由弗朗西斯·福特·科波拉执导的电影。&lt;/p&gt;
+&lt;p&gt;　　优点：用户购买和评分记录少时，性能不错。&lt;br&gt;
+　　缺点：推荐质量低，推荐的物品太一般（general)或太狭窄（narrow）。&lt;/p&gt;
+&lt;h1 id=&#34;item-to-item-collaborative-filtering-基于物品的协同过滤&#34;&gt;Item-to-Item Collaborative Filtering 基于物品的协同过滤
+&lt;/h1&gt;&lt;h2 id=&#34;how-it-works-如何工作&#34;&gt;How It Works 如何工作
+&lt;/h2&gt;&lt;p&gt;　Item-to-item collaborative filtering matches each of the user’s purchased and rated items to similar items, then combines those similar items into a recommendation list.&lt;/p&gt;
+&lt;p&gt;　　基于物品的协同过滤将用户购买的和评分的每个物品与相似的物品进行匹配，然后将这些相似的物品组合成推荐列表。&lt;/p&gt;
+&lt;p&gt;　　为了确定给定物品的最相似匹配，该算法通过查找用户倾向于一起购买的物品来构建相似物品表。可通过遍历所有物品并为每一对计算相似性来构建物品矩阵。然而，许多产品对没有共同的用户，因此这种方法在处理时间和内存使用方面效率低下。以下迭代算法通过计算单个物品和所有相关物品之间的相似性提供了更好的措施：&lt;br&gt;
+　　伪代码&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;For each item in product catalog, I1
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    For each customer C who purchased I1
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        For each item I2 purchased by customer C
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            Record that a customer purchased I1 and I2
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    For each item I2
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        Compute the similarity between I1 and I2
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;　　计算两个物品之间的相似性有多种方法，一种常见的方法是使用前面描述的余弦度量，其中每个向量对应于一个物品而不是一个客户，并且向量的多维度对应于已经购买该物品的用户。相似物品表的这种离线计算非常耗时，最糟糕的情况是O($N^2M$)。然而，在实践中，它更接近于零，因为大多数客户只有很少的购买记录。对购买畅销物品的用户进行采样会进一步减少运行时间，而质量几乎没有下降。&lt;br&gt;
+　　给定相似物品表，该算法找到与每个用户的购买和评分相似的物品，汇总这些物品，然后推荐最受欢迎或相关的物品。这种计算非常快速，仅取决于用户购买或评分的物品数量。&lt;/p&gt;
+&lt;h2 id=&#34;scalability-a-comparison-可扩展性&#34;&gt;Scalability: A Comparison 可扩展性
+&lt;/h2&gt;&lt;p&gt;　　Amazon.com有超过2900万的顾客和数百万的商品目录。对于非常大的数据集，可扩展的推荐算法必须离线执行最昂贵的计算。&lt;br&gt;
+　　现有算法的缺点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;传统的协同过滤很少或没有离线计算，其在线计算随着用户和物品目录的数量而变化。该算法在大数据集上是不切实际的，除非它使用降维、采样或分区——所有这些都会降低推荐质量。&lt;/li&gt;
+&lt;li&gt;聚类模型可以离线执行大部分计算，但是推荐质量相对较差。为了改善这一点，可以增加细分簇的数量，但这使得在线用户细分分类变得昂贵。&lt;/li&gt;
+&lt;li&gt;基于搜索的模型离线构建关键字、类别和作者索引，但无法提供有趣的、有针对性的主题推荐。对于有大量购买和评分的用户来说，它们的可扩展性也很小。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;　　可扩展性和性能的关键是它离线创建昂贵的相似物品表。该算法的在线组件——为用户的购买和评分物品查找相似的物品——独立于物品目录大小或客户总数，它只取决于用户购买或评分物品。因此，即使对于非常大的数据集，该算法也是快速的。因为该算法推荐高度相关的相似物品，所以推荐质量很好。与传统的协作过滤不同，该算法在有限的用户数据下也表现良好，仅基于两三个物品就能产生高质量的推荐。&lt;/p&gt;
+&lt;h1 id=&#34;conclusion-总结&#34;&gt;Conclusion 总结
+&lt;/h1&gt;&lt;p&gt;　　主要是介绍了基于物品的协同过滤思想。&lt;br&gt;
+　　耗时昂贵的操作放在线下离线进行，使线上达到实时要求。&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>【Paper】Using Collaborative Filtering to Weave an Information Tapestry</title>
+        <link>https://hubojing.github.io/jaxyksgz/</link>
+        <pubDate>Wed, 15 Jul 2020 16:44:25 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/jaxyksgz/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\假装有图片.jpg&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;“协同过滤”词汇来源。&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文情况&#34;&gt;论文情况
+&lt;/h1&gt;&lt;p&gt;　　COMMUN ACM, 1992.
+　　David Goldberg, David Nichols, Brian M.Oki, and Douglas Terry
+　　10页&lt;/p&gt;
+&lt;p&gt;　　题目直译：使用协同过滤去构造一个信息tapestry&lt;/p&gt;
+&lt;p&gt;　　截至2020年11月15日，该论文在谷歌学术上被引用次数为5239次。&lt;/p&gt;
+&lt;h1 id=&#34;论文内容&#34;&gt;论文内容
+&lt;/h1&gt;&lt;p&gt;　　文章提出了协同过滤（Collaborative filtering）这个词，最早是用于邮件系统Tapestry。&lt;br&gt;
+　　文章对协同过滤的定义是：Collaborative filtering simply means that people collaborate to help one another perform filtering by recording their reactions to documents they read.&lt;/p&gt;
+&lt;p&gt;　　协同过滤的亮点在于，它不仅仅是一个过滤邮件的机制，还是过去发送邮件的存储库。Tapestry将对这个存储库的临时查询与对传入数据的过滤统一起来。文章提到不仅可以处理邮件，也可以处理类似流数据，比如新闻。&lt;/p&gt;
+&lt;p&gt;　　不过该文重点还是在邮件系统本身上，用户可以对邮件进行注解，这些注解可以用来进行协同过滤。本文设计了两种类型的阅读器。一种eager readers可以获取全部文件，另一种casual readers会进行注解，并且阅读基于此的文件。文章用了大量篇幅介绍了邮件系统本身的各个部件和查询语言（TQL），和推荐系统相关的不太多，因此本文属于浏览，未细致阅读。但毕竟是协同过滤鼻祖，所以记录一下。&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

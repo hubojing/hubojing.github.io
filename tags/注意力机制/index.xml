@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>注意力机制 on 靖待</title>
+        <link>https://hubojing.github.io/tags/%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6/</link>
+        <description>Recent content in 注意力机制 on 靖待</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>靖待</copyright>
+        <lastBuildDate>Sat, 29 Jan 2022 14:27:42 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/tags/%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>ASGNN</title>
+        <link>https://hubojing.github.io/gwmprssu/</link>
+        <pubDate>Sat, 29 Jan 2022 14:27:42 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/gwmprssu/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;https://hubojing.github.io/images/ASGNN-1.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;Attentive sequential model based on graph neuralnetwork for next poi recommendation&lt;/strong&gt;
+　　基于图神经网络的注意力序列模型用于下一个兴趣点推荐&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;　　Attentive sequential model based on graph neuralnetwork for next poi recommendation
+　　基于图神经网络的注意力序列模型用于下一个兴趣点推荐
+　　WWW21
+&lt;a class=&#34;link&#34; href=&#34;https://link.springer.com/content/pdf/10.1007/s11280-021-00961-9.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;
+　　关键词：推荐系统、序列推荐、兴趣点推荐、图神经网络、注意力机制&lt;/p&gt;
+&lt;h1 id=&#34;现有问题&#34;&gt;现有问题
+&lt;/h1&gt;&lt;p&gt;　　传统推荐方法忽略了用户短时偏好的动态变化。另外，许多现有方法不能完全探索兴趣点签到序列中复杂的联系和转变形式。&lt;/p&gt;
+&lt;h1 id=&#34;架构&#34;&gt;架构
+&lt;/h1&gt;&lt;p&gt;　　提出ASGNN。
+&lt;img src=&#34;https://hubojing.github.io/images/ASGNN-1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;架构&#34;
+	
+	
+&gt;
+　　ASGNN包括四部分：兴趣点签到序列图构建、特征表示学习、长短时偏好获取、兴趣点推荐&lt;/p&gt;
+&lt;h2 id=&#34;兴趣点签到序列图构建&#34;&gt;兴趣点签到序列图构建
+&lt;/h2&gt;&lt;p&gt;　　G(V, E), V = (U, L)，U是用户集，L是兴趣点集。E包括用户-兴趣点边和兴趣点-兴趣点边。
+　　图中边的权重代表用户在兴趣点的签到次数。&lt;/p&gt;
+&lt;h2 id=&#34;特征表示学习&#34;&gt;特征表示学习
+&lt;/h2&gt;&lt;p&gt;　　图构建好后，使用GNN学习到用户和兴趣点的低维表示。这避免了马尔科夫决策过程需要的大量状态。
+　　为了提高效率更新节点，使用了GGNN。
+&lt;img src=&#34;https://hubojing.github.io/images/ASGNN-3.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;矩阵表示&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;长短时偏好获取&#34;&gt;长短时偏好获取
+&lt;/h2&gt;&lt;p&gt;　　设计了两层注意力机制分别捕获长短时用户偏好。&lt;/p&gt;
+&lt;h2 id=&#34;兴趣点推荐&#34;&gt;兴趣点推荐
+&lt;/h2&gt;&lt;p&gt;　　上一步得到的个性化用户偏好参数和兴趣点特征点乘，得到每个兴趣点分数，通过softmax标准化输出概率值。
+　　训练的损失函数为交叉熵函数。&lt;/p&gt;
+&lt;h1 id=&#34;实验&#34;&gt;实验
+&lt;/h1&gt;&lt;p&gt;　　围绕下列问题展开：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ASGNN在序列兴趣点推荐任务上性能如何（基线对比）&lt;/li&gt;
+&lt;li&gt;ASGNN的关键组件效果如何（组件实验）&lt;/li&gt;
+&lt;li&gt;ASGNN的嵌入维度对推荐的影响（维度分析）&lt;/li&gt;
+&lt;li&gt;ASGNN和基线在不同稀疏性的数据集上的性能如何（数据稀疏性影响）&lt;/li&gt;
+&lt;li&gt;ASGNN学习兴趣点嵌入是否有效（可视化说明）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;数据集&#34;&gt;数据集
+&lt;/h2&gt;&lt;p&gt;　　Gowalla, FourSquare, Brightkite
+&lt;a class=&#34;link&#34; href=&#34;https://snap.stanford.edu/data/loc-gowalla.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://snap.stanford.edu/data/loc-gowalla.html&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://sites.google.com/site/yangdingqi/home/foursquare-dataset&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://sites.google.com/site/yangdingqi/home/foursquare-dataset&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://snap.stanford.edu/data/loc-brightkite.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://snap.stanford.edu/data/loc-brightkite.html&lt;/a&gt;
+&lt;img src=&#34;https://hubojing.github.io/images/ASGNN-2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;数据集&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;基线&#34;&gt;基线
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;POP&lt;/li&gt;
+&lt;li&gt;BPR&lt;/li&gt;
+&lt;li&gt;FPMC&lt;/li&gt;
+&lt;li&gt;HRM&lt;/li&gt;
+&lt;li&gt;CPAM&lt;/li&gt;
+&lt;li&gt;SHAN&lt;/li&gt;
+&lt;li&gt;SRGNN&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;评测指标&#34;&gt;评测指标
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;召回率Recall&lt;/li&gt;
+&lt;li&gt;MRR&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;基线对比&#34;&gt;基线对比
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/images/ASGNN-RQ1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;性能&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;组件实验&#34;&gt;组件实验
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/images/ASGNN-RQ2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;组件分析&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;维度分析&#34;&gt;维度分析
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/images/ASGNN-RQ3.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;维度分析&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;数据稀疏性影响&#34;&gt;数据稀疏性影响
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/images/ASGNN-RQ4.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;不同数据集&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;可视化说明&#34;&gt;可视化说明
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/images/ASGNN-RQ5.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;可视化&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;贡献点&#34;&gt;贡献点
+&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;提出ASGNN，它将用户签到行为视为图，并使用GNN局部方式学习用户行为模式和他们的偏好用于下一个兴趣点推荐。&lt;/li&gt;
+&lt;li&gt;设计了一个个性化层级注意力机制捕捉用户长短时偏好，并将它们适应于序列推荐。&lt;/li&gt;
+&lt;li&gt;实验结果显示ASGNN超过基线和部分SOTA模型。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;代码&#34;&gt;代码
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/HduDBSI/ASGNN&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/HduDBSI/ASGNN&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>注意力机制</title>
+        <link>https://hubojing.github.io/ytpny8ez/</link>
+        <pubDate>Tue, 26 Nov 2019 14:08:38 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/ytpny8ez/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;http://img0.imgtn.bdimg.com/it/u=2317694558,3959665778&amp;fm=26&amp;gp=0.jpg&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;没写完&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;概念&#34;&gt;概念
+&lt;/h1&gt;&lt;p&gt;从众多信息中选择出对当前任务目标更关键的信息。&lt;/p&gt;
+&lt;h1 id=&#34;起源&#34;&gt;起源
+&lt;/h1&gt;&lt;p&gt;图像领域到自然语言处理领域&lt;/p&gt;
+&lt;h1 id=&#34;encoder-decoder框架&#34;&gt;Encoder-Decoder框架
+&lt;/h1&gt;&lt;p&gt;目前大多数注意力模型附着于Encoder-Decoder框架。
+一般而言，文本处理和语音识别的Encoder部分通常采用RNN模型，图像处理的Encoder一般采用CNN模型。
+对比：分心模型
+Attention函数的本质可以被描述为一个查询（query）到一系列（键key-值value）对的映射。
+在计算attention时主要分为三步，第一步是将query和每个key进行相似度计算得到权重，常用的相似度函数有点积，拼接，感知机等；然后第二步一般是使用一个softmax函数对这些权重进行归一化；最后将权重和相应的键值value进行加权求和得到最后的attention。目前在NLP研究中，key和value常常都是同一个，即key=value。&lt;/p&gt;
+&lt;h1 id=&#34;参考资料&#34;&gt;参考资料
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/hpulfc/article/details/80448570&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://blog.csdn.net/hpulfc/article/details/80448570&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://www.cnblogs.com/robert-dlut/p/8638283.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.cnblogs.com/robert-dlut/p/8638283.html&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

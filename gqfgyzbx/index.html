@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="\r数据安全挺重要的 2022-05-22更新 解决评论模块无法访问的问题-CDN更换\n">
+<title>博客更换为Waline评论系统</title>
+
+<link rel='canonical' href='https://hubojing.github.io/gqfgyzbx/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="博客更换为Waline评论系统">
+<meta property='og:description' content="\r数据安全挺重要的 2022-05-22更新 解决评论模块无法访问的问题-CDN更换\n">
+<meta property='og:url' content='https://hubojing.github.io/gqfgyzbx/'>
+<meta property='og:site_name' content='靖待'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='Waline' /><meta property='article:tag' content='Valine' /><meta property='article:tag' content='评论' /><meta property='article:published_time' content='2022-01-14T21:18:13&#43;00:00'/><meta property='article:modified_time' content='2022-01-14T21:18:13&#43;00:00'/>
+<meta name="twitter:title" content="博客更换为Waline评论系统">
+<meta name="twitter:description" content="\r数据安全挺重要的 2022-05-22更新 解决评论模块无法访问的问题-CDN更换\n">
+    <link rel="shortcut icon" href="/avatar.jpg" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_999351c94d8e06aa.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">靖待</a></h1>
+            <h2 class="site-description">创造是人生乐趣</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://blog.csdn.net/hubojing/'
+                        target="_blank"
+                        title="csdn"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:hubojing@outlook.com'
+                        target="_blank"
+                        title="mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://music.163.com/#/user/home?id=92203594'
+                        target="_blank"
+                        title="netease"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='/atom.xml'
+                        target="_blank"
+                        title="rss"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                <span>存档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friends/' >
+                
+                
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#vercel-部署服务端">Vercel 部署（服务端）</a>
+      <ol>
+        <li><a href="#环境变量配置">环境变量配置</a>
+          <ol>
+            <li><a href="#必备">必备</a></li>
+            <li><a href="#邮件提醒">邮件提醒</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+    <li><a href="#html-引入-客户端">HTML 引入 (客户端)</a></li>
+    <li><a href="#评论管理管理端">评论管理（管理端）</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#查找问题">查找问题</a></li>
+    <li><a href="#解决方法">解决方法</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%8D%9A%E5%AE%A2/" >
+                博客
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/gqfgyzbx/">博客更换为Waline评论系统</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jan 14, 2022</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <div align="left">
+<img src="\images\waline.png" width="300" height="180" style="float:right;"/>
+<p>　　<strong>数据安全挺重要的</strong>
+　　<strong>2022-05-22更新 解决评论模块无法访问的问题-CDN更换</strong></p>
+ </div>
+<h1 id="更换缘由">更换缘由
+</h1><p>　　博客诞生以来，折腾最多的板块就是评论系统，多说&ndash;&gt;网易云跟帖&ndash;&gt;Disqus&ndash;&gt;Valine，一路换换换，经历了一些数据丢失，直到2018年3月更换到Valine评论系统后，至今平稳运行了快四年时间，除了偶尔有些广告以外，没有出过大问题。
+　　但是从安装Valine起，我明了作为一款无后端的评论系统的安全性是很难保证的。由于那段时间折腾到心累，加上Valine是当时颜值最高且简洁的评论系统，同时觉得应该没有谁会去费精力黑一个没多少人看的小博客，所以就默默躺平了。中间也看到过有博主被攻击，不过总觉得自己应该不会这么倒霉吧，懒得管。没想到能撑四年也是不容易~~（从侧面说明我的博客确实没人看，叹气.jpg）~~。</p>
+<p>　　今天更新博客时间线的时候看到博客上次大调整还是19年，究竟是我变懒了还是indigo主题确实满足了我大部分需求呢，肯定是后者哈哈。</p>
+<p>　　为什么现在突然要换呢？主要是上次这篇博文<a class="link" href="https://hubojing.github.io/2021/12/07/%E8%A7%A3%E5%86%B3Valine%E8%AF%84%E8%AE%BA%E4%B8%8D%E6%98%BE%E7%A4%BA%E7%9A%84%E9%97%AE%E9%A2%98/"  target="_blank" rel="noopener"
+    >解决Valine评论不显示的问题</a>下面的评论让我再次想起Valine系统的这个隐患。</p>
+<p>　　秉持着最小化修改的精神，我很快决定换成Waline系统。看这个名字吧，Valine和Waline，感觉上就相差肯定不多。Waline其实就是一个带后端的Valine，可以进行一些反垃圾和校验操作。其实早就看好了Waline，只是一直没有动力换它。现在是时候把它换了。也希望各位黑客大佬们手下留情，不要难为我这小小博客。</p>
+<h1 id="更换步骤">更换步骤
+</h1><p>　　以下步骤基于原有系统为Valine系统的简单迁移方法。</p>
+<h2 id="vercel-部署服务端">Vercel 部署（服务端）
+</h2><p>　　免费的就是最好的！（本穷狗如是说）
+<a class="link" href="https://vercel.com/import/project?template=https://github.com/walinejs/waline/tree/main/example"  target="_blank" rel="noopener"
+    >deploy</a></p>
+<ul>
+<li>点击上方跳转至Vercel部署。</li>
+<li>未登录需要注册或登录，使用Github快捷登录。</li>
+<li>输入名称创建项目，Vercel会根据Waline模板新建并初始化仓库。</li>
+<li>几分钟后，满屏烟花部署成功。</li>
+</ul>
+<p>　　转到<code>Dashboard</code>-<code>Setting</code>-<code>Environment Variables</code>，进行环境变量配置。</p>
+<h3 id="环境变量配置">环境变量配置
+</h3><h4 id="必备">必备
+</h4><p>　　新增/对应于</p>
+<ul>
+<li><code>LEAN_ID</code> —— LeanCloud中获得的<code>APP ID</code></li>
+<li><code>LEAN_KEY</code> —— LeanCloud中获得的<code>APP KEY</code></li>
+<li><code>LEAN_MASTER_KEY</code> —— LeanCloud中获得的<code>Master Key</code>
+　　以上默认LeanCloud国际版，如果是LeanCloud国内版，还要配置<code>LEAN_SERVER</code>环境变量，值为绑定好的域名。</li>
+</ul>
+<p>　　点击<code>Deployments</code>-<code>Redeploy</code>重新部署。当<code>STATUS</code>变为<code>Ready</code>后，点击<code>Visit</code>跳转的地址即为服务端地址。</p>
+<h4 id="邮件提醒">邮件提醒
+</h4><ul>
+<li>
+<p><code>SMTP_SERVICE</code>: SMTP 邮件发送服务提供商。
+<a class="link" href="https://github.com/nodemailer/nodemailer/blob/master/lib/well-known/services.json"  target="_blank" rel="noopener"
+    >支持的服务提供商列表</a>
+(如果运营商不受支持，必须填写 <code>SMTP_HOST</code> 和 <code>SMTP_PORT</code>。
+<code>SMTP_HOST</code>: SMTP 服务器地址，一般可以在邮箱的设置中找到。
+<code>SMTP_PORT</code>: SMTP 服务器端口，一般可以在邮箱的设置中找到。)</p>
+</li>
+<li>
+<p><code>SMTP_USER</code>: SMTP 邮件发送服务的用户名，一般为登录邮箱。</p>
+</li>
+<li>
+<p><code>SMTP_PASS</code>: SMTP 邮件发送服务的密码，一般为邮箱登录密码，部分邮箱(例如 163)是单独的 SMTP 密码。</p>
+</li>
+<li>
+<p><code>SITE_NAME</code>: 网站名称，用于在消息中显示。</p>
+</li>
+<li>
+<p><code>SITE_URL</code>: 网站地址，用于在消息中显示。</p>
+</li>
+<li>
+<p><code>AUTHOR_EMAIL</code>: 博主邮箱，用来接收新评论通知。如果是博主发布的评论则不进行提醒通知。</p>
+</li>
+</ul>
+<p>选填:</p>
+<ul>
+<li><code>SENDER_NAME</code>: 自定义发送邮件的发件人</li>
+<li><code>SENDER_EMAIL</code>: 自定义发送邮件的发件地址</li>
+<li><code>MAIL_SUBJECT</code>: 自定义评论回复邮件标题</li>
+<li><code>MAIL_TEMPLATE</code>: 自定义评论回复邮件内容</li>
+<li><code>MAIL_SUBJECT_ADMIN</code>: 自定义新评论通知邮件标题</li>
+<li><code>MAIL_TEMPLATE_ADMIN</code>: 自定义新评论通知邮件内容</li>
+</ul>
+<h2 id="html-引入-客户端">HTML 引入 (客户端)
+</h2><p>在indigo主题中，需要修改\hexo\themes\indigo\layout_partial\plugins\valine.ejs文件。
+去掉</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl">    <span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&#34;//code.bdstatic.com/npm/leancloud-storage@4.12.0/dist/av-min.js&#34;</span><span class="o">&gt;&lt;</span><span class="err">/script&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&#34;//unpkg.com/valine@latest/dist/Valine.min.js&#34;</span><span class="o">&gt;&lt;</span><span class="err">/script&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>加上</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl">    <span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&#34;//cdn.jsdelivr.net/npm/@waline/client&#34;</span><span class="o">&gt;&lt;</span><span class="err">/script&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>去掉</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="k">new</span> <span class="nx">Valine</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#comments&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">notify</span><span class="o">:</span> <span class="s1">&#39;&lt;%= theme.valine.notify %&gt;&#39;</span> <span class="o">==</span> <span class="s1">&#39;true&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">verify</span><span class="o">:</span> <span class="s1">&#39;&lt;%= theme.valine.verify %&gt;&#39;</span> <span class="o">==</span> <span class="s1">&#39;true&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">appId</span><span class="o">:</span> <span class="s2">&#34;&lt;%= theme.valine.appId %&gt;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">appKey</span><span class="o">:</span> <span class="s2">&#34;&lt;%= theme.valine.appKey %&gt;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">avatar</span><span class="o">:</span> <span class="s2">&#34;&lt;%= theme.valine.avatar %&gt;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">placeholder</span><span class="o">:</span> <span class="s2">&#34;&lt;%= theme.valine.placeholder %&gt;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">guest_info</span><span class="o">:</span> <span class="nx">guest_info</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">?</span> <span class="nx">GUEST_INFO</span> <span class="o">:</span> <span class="nx">guest_info</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">pageSize</span><span class="o">:</span> <span class="s2">&#34;&lt;%= theme.valine.pageSize %&gt;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">serverURLs</span><span class="o">:</span> <span class="s1">&#39;&lt;%= theme.valine.serverURLs %&gt;&#39;</span>  <span class="c1">// 增加这一行！！！
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">})</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>更换为</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">Waline</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#comments&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">serverURL</span><span class="o">:</span> <span class="s1">&#39;此处为你的服务端地址&#39;</span><span class="c1">//注意此处是serverURL，Valine里的是serverURLs
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">});</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>　　此时评论服务已能在博客成功运行。</p>
+<h2 id="评论管理管理端">评论管理（管理端）
+</h2><ul>
+<li>部署完成后，在<code>&lt;serverURL&gt;/ui/register</code>进行注册。第一个注册的人被设定为管理员。</li>
+<li>管理员可管理评论。</li>
+<li>用户可通过评论框注册账号，登录后可跳转至自己的评论页。</li>
+</ul>
+<h1 id="其它">其它
+</h1><ul>
+<li>如果无法发布评论，比如报错说格式不对（要求Number结果是String）之类的，建议查看LeanCloud数据中的单元格式是否正确。</li>
+</ul>
+<h1 id="参考资料">参考资料
+</h1><p><a class="link" href="https://waline.js.org/"  target="_blank" rel="noopener"
+    >Waline官网</a></p>
+<h1 id="2022-05-22更新-解决评论模块无法访问的问题-cdn更换">2022-05-22更新 解决评论模块无法访问的问题-CDN更换
+</h1><h2 id="查找问题">查找问题
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">GET https://cdn.jsde1ivr.net/npm/@waline/client
+</span></span><span class="line"><span class="cl">net::ERR_CONNECTION_TIMED_OUT
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>该CDN链接超时，需要更换。</p>
+<h2 id="解决方法">解决方法
+</h2><p>将</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&#34;//cdn.jsdelivr.net/npm/@waline/client&#34;</span><span class="o">&gt;&lt;</span><span class="err">/script&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>更换为</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl">  <span class="o">&lt;</span><span class="nx">script</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&#34;https://unpkg.com/@waline/client@v2/dist/waline.js&#34;</span><span class="o">&gt;&lt;</span><span class="err">/script&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">&lt;</span><span class="nx">link</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">rel</span><span class="o">=</span><span class="s2">&#34;stylesheet&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">href</span><span class="o">=</span><span class="s2">&#34;https://unpkg.com/@waline/client@v2/dist/waline.css&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">/&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>另外，waline版本更新后更改了方法入口，需要将</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">Waline</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#comments&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">serverURL</span><span class="o">:</span> <span class="s1">&#39;https://your-domain.vercel.app&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">});</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>更改为</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">Waline</span><span class="p">.</span><span class="nx">init</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">el</span><span class="o">:</span> <span class="s1">&#39;#comments&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">serverURL</span><span class="o">:</span> <span class="s1">&#39;https://your-domain.vercel.app&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>问题解决。</p>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/waline/">Waline</a>
+        
+            <a href="/tags/valine/">Valine</a>
+        
+            <a href="/tags/%E8%AF%84%E8%AE%BA/">评论</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/qqcurtcr/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">解决Valine评论不显示的问题</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/optrka3p/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Waline评论服务端转移至Deta</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/siv7ubjs/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">从Hexo迁移到Hugo</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/dhygztfl/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Hexo根据更新时间修改文章排序机制</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/qzy8uvvh/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">博客永久链接与计数</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":"评论一句，好运+1！"},"requiredMeta":["name"],"serverURL":"https://zippy-halva-8e20f0.netlify.app/.netlify/functions/comment"});
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2015 - 
+        
+        2025 靖待
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

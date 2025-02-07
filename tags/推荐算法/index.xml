@@ -1,0 +1,1635 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>推荐算法 on 靖待</title>
+        <link>https://hubojing.github.io/tags/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/</link>
+        <description>Recent content in 推荐算法 on 靖待</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>靖待</copyright>
+        <lastBuildDate>Sun, 03 Jul 2022 13:03:28 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/tags/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>TEMN</title>
+        <link>https://hubojing.github.io/wpzth4rk/</link>
+        <pubDate>Sun, 03 Jul 2022 13:03:28 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/wpzth4rk/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;https://hubojing.github.io/images/TEMN架构图.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;陆续上架前几个月写的库存&lt;/strong&gt;
+　　&lt;strong&gt;主题增强记忆网络个性化兴趣点推荐&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;　　Topic-Enhanced Memory Networks for Personalised Point-of-Interest Recommendation
+　　主题增强记忆网络个性化兴趣点推荐
+　　KDD 2019
+&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/pdf/1905.13127.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/XiaoZHOUCAM/TEMN&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CODE&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;　　关键词：推荐系统；神经网络；主题建模&lt;/p&gt;
+&lt;h1 id=&#34;问题提出&#34;&gt;问题提出
+&lt;/h1&gt;&lt;p&gt;　　现有问题：数据稀疏；现有算法使用一个单一向量刻画用户偏好限制了表达和可解释性。&lt;/p&gt;
+&lt;h1 id=&#34;架构&#34;&gt;架构
+&lt;/h1&gt;&lt;p&gt;　　Topic-Enhanced Memory Network (TEMN)
+　　TEMN是一个统一的混合模型，利用TLDA和外部记忆网络以及神经注意机制来捕捉用户的全局和细粒度偏好。
+&lt;img src=&#34;https://hubojing.github.io/images/TEMN%e6%9e%b6%e6%9e%84%e5%9b%be.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;TEMN&#34;
+	
+	
+&gt;
+　　三部分组成：记忆网络，TLDA和地理建模部分。
+　　前两部分相互联系，用于建模从基于领域的记忆网络中学到的非线性交互（通过历史记录）以及从主题模型中学到的全局偏好。&lt;/p&gt;
+&lt;p&gt;　　每一部分分别对应不同的损失函数，进行联合训练。&lt;/p&gt;
+&lt;h1 id=&#34;实验&#34;&gt;实验
+&lt;/h1&gt;&lt;h2 id=&#34;数据集&#34;&gt;数据集
+&lt;/h2&gt;&lt;p&gt;　　微信朋友圈签到数据集（未开源）
+&lt;img src=&#34;https://hubojing.github.io/images/TEMN%e6%95%b0%e6%8d%ae%e9%9b%86.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;数据集&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;基线&#34;&gt;基线
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;MF&lt;/li&gt;
+&lt;li&gt;BPR&lt;/li&gt;
+&lt;li&gt;LDA&lt;/li&gt;
+&lt;li&gt;CML&lt;/li&gt;
+&lt;li&gt;LRML&lt;/li&gt;
+&lt;li&gt;TEMN(GPR) 保留了记忆模块，将TLDA替换为LDA，去掉了地理模块。&lt;/li&gt;
+&lt;li&gt;LORE&lt;/li&gt;
+&lt;li&gt;ST-RNN&lt;/li&gt;
+&lt;li&gt;TEMN(SPR) 完整TEMN模型使用微信（SPR）数据&lt;/li&gt;
+&lt;li&gt;GeoMF&lt;/li&gt;
+&lt;li&gt;TLDA&lt;/li&gt;
+&lt;li&gt;TEMN(CPR) 完整TEMN模型使用微信（GPR）数据&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;性能&#34;&gt;性能
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/images/TEMN%e6%80%a7%e8%83%bd.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;性能&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;贡献点&#34;&gt;贡献点
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;提出一种融合基于领域和全局的用户偏好的端到端深度学习框架。&lt;/li&gt;
+&lt;li&gt;在兴趣点推荐中设计了能融合多种上下文信息的灵活架构，并使之能在多种推荐场景应用。&lt;/li&gt;
+&lt;li&gt;提出一种结合监督和非监督学习的混合模型，并利用了记忆网络和主题模型。通过相互学习机制，模型还能得出用户在受记忆网络影响的主题上的概率分布。&lt;/li&gt;
+&lt;li&gt;在微信数据集上进行模型验证，超过基线模型。&lt;/li&gt;
+&lt;li&gt;通过在TEMN中引入神经注意机制和主题模型，POI推荐的可解释性得到了显著提高。&lt;/li&gt;
+&lt;/ul&gt;</description>
+        </item>
+        <item>
+        <title>《推荐系统：原理与实践》笔记</title>
+        <link>https://hubojing.github.io/bxjrrhxn/</link>
+        <pubDate>Wed, 15 Jun 2022 10:41:55 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/bxjrrhxn/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\假装有图片.jpg&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;砖头书笔记（自用）&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;前言&#34;&gt;前言
+&lt;/h1&gt;&lt;p&gt;　　有几本砖头书在图书馆里我不断续借，网上又没有PDF，现在要毕业了，只有勉强把它看完了&amp;hellip;&amp;hellip;&lt;/p&gt;
+&lt;h1 id=&#34;高级论问题和应用&#34;&gt;高级论问题和应用
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;推荐系统中的冷启动问题
+太常见不说了。&lt;/li&gt;
+&lt;li&gt;抗攻击推荐系统
+只要指恶意评论。&lt;/li&gt;
+&lt;li&gt;组推荐系统
+针对一组用户推荐，而不是单一用户。&lt;/li&gt;
+&lt;li&gt;多标准推荐系统
+如，用户可以给予情节、音乐、特效等对电影进行评分。在多标准推荐系统中，用户可能根本没有给出整体评分。&lt;/li&gt;
+&lt;li&gt;推荐系统中的主动学习
+鼓励用户输入评分以完善系统的机制。例如，用户可能会为某些物品评分获得奖励。因此，必须明智地选择由特定用户进行评分的物品。如，某用户已评价大量动作片，那么要求该用户去评价另一部动作电影对预测其他的动作电影评分帮助不大，并且对预测属于无关种类的电影评分的帮助甚至更少。另一方面，要求用户评价不太热门种类的电影将对预测这种类型的电影评分有显著帮助。当然，如果用户被要求评价无关的电影，他不一定能够提供反馈，因为他可能根本没有看过那部电影。**（此处举例我存疑）**因此，在推荐系统的主动学习问题中有许多在其他问题领域（如分类问题）没有遇到的有趣权衡问题。&lt;/li&gt;
+&lt;li&gt;推荐系统中的隐私问题&lt;/li&gt;
+&lt;li&gt;保护隐私的推荐算法。&lt;/li&gt;
+&lt;li&gt;应用领域&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;推荐系统评估&#34;&gt;推荐系统评估
+&lt;/h1&gt;&lt;h2 id=&#34;评估设计的总体目标&#34;&gt;评估设计的总体目标
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;精确性&lt;/li&gt;
+&lt;li&gt;覆盖率&lt;/li&gt;
+&lt;li&gt;置信度和信任度&lt;/li&gt;
+&lt;li&gt;新颖度&lt;/li&gt;
+&lt;li&gt;惊喜度&lt;/li&gt;
+&lt;li&gt;多样性&lt;/li&gt;
+&lt;li&gt;健壮性和稳定性&lt;/li&gt;
+&lt;li&gt;可扩展性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;离线评估的精确性指标&#34;&gt;离线评估的精确性指标
+&lt;/h2&gt;&lt;h3 id=&#34;独立预测评分的精确性&#34;&gt;独立预测评分的精确性
+&lt;/h3&gt;&lt;p&gt;　　RMSE, MAE
+　　RMSE计算时用的是误差的平方，所以它更加显著地被大的误差值或者异常值所影响。一些被预测失败的评分会显著地破坏RMSE方法。在各种评分的预测健壮性非常重要的应用中，RMSE可能是一个更加合适的方法。另一方面，当评估的异常值有限时，MAE能更好地反映精确性。RMSE主要的问题是它不是平均误差的真实反映，而且它又是会导致有误导的结果。&lt;/p&gt;
+&lt;h3 id=&#34;通过相关性评估排名&#34;&gt;通过相关性评估排名
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Spearman等级相关系数&lt;/li&gt;
+&lt;li&gt;肯德尔等级相关系数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;通过效用评估排名&#34;&gt;通过效用评估排名
+&lt;/h3&gt;&lt;p&gt;　　基于效用方法的总体目标就是给出用户可能找到推荐系统排名的有用程度的简单量化。这种方法下隐含的一个重要准则就是相对于物品的总量而言，推荐列表是简短的。因此一个具体评分的效用大部分情况下应该基于在推荐列表中相关性高的物品。这种情况下，RMSE指标有一个缺点，因为它对低排名物品和那些高排名物品赋予了同样的权重。&lt;/p&gt;
+&lt;p&gt;　　NDCG, ARHR（平均逆命中率）
+　　ARHR也被称作是平均倒数排名（MRR）&lt;/p&gt;
+&lt;h3 id=&#34;通过roc曲线评估排名&#34;&gt;通过ROC曲线评估排名
+&lt;/h3&gt;&lt;h1 id=&#34;抵抗攻击的推荐系统&#34;&gt;抵抗攻击的推荐系统
+&lt;/h1&gt;&lt;h2 id=&#34;攻击类型&#34;&gt;攻击类型
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;随机攻击&lt;/li&gt;
+&lt;li&gt;均值攻击&lt;/li&gt;
+&lt;li&gt;bandwagon攻击&lt;/li&gt;
+&lt;li&gt;流行攻击&lt;/li&gt;
+&lt;li&gt;爱/憎攻击&lt;/li&gt;
+&lt;li&gt;反向bandwagon攻击&lt;/li&gt;
+&lt;li&gt;探测攻击&lt;/li&gt;
+&lt;li&gt;分段攻击&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;健壮推荐设计策略&#34;&gt;健壮推荐设计策略
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;用CAPTCHA防止自动攻击&lt;/li&gt;
+&lt;li&gt;使用社会信任&lt;/li&gt;
+&lt;li&gt;设计健壮的推荐算法&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;排名学习&#34;&gt;排名学习
+&lt;/h1&gt;&lt;p&gt;　　pointwise
+　　pairwise: BPR, Eigen Rank, pLPA, CR
+　　listwise: NDCG, MRR&lt;/p&gt;
+&lt;h1 id=&#34;多臂赌博机算法&#34;&gt;多臂赌博机算法
+&lt;/h1&gt;&lt;h1 id=&#34;组推荐系统&#34;&gt;组推荐系统
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;协同和基于内容的系统&lt;/li&gt;
+&lt;li&gt;基于知识的系统&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;多标准推荐系统&#34;&gt;多标准推荐系统
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;基于近邻的方法&lt;/li&gt;
+&lt;li&gt;基于集成的方法&lt;/li&gt;
+&lt;li&gt;无整体评分的多标准系统&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;推荐系统中的主动学习&#34;&gt;推荐系统中的主动学习
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;基于异质性的模型&lt;/li&gt;
+&lt;li&gt;基于性能的模型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;推荐系统中的隐私&#34;&gt;推荐系统中的隐私
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;基于冷凝的隐私&lt;/li&gt;
+&lt;li&gt;高维数据的挑战&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;应用领域&#34;&gt;应用领域
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;门户内容个性化&lt;/li&gt;
+&lt;li&gt;计算广告与推荐系统&lt;/li&gt;
+&lt;li&gt;互惠推荐系统
+　　基本思想是当考虑多个具有不对称兴趣的利益相关人的推荐的效用时，推荐的任务会发生改变。如在线约会的互惠推荐系统。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;用户意识到交易的成功取决于另一方的许可。另一方是互惠环境中的“物品”。&lt;/li&gt;
+&lt;li&gt;用户和物品在系统中可能只出现一次，在一次成功的事物后它们可能永远不会重现。冷启动问题在互惠场景中更加显著。
+　　方法：&lt;/li&gt;
+&lt;li&gt;利用混合方法
+在这些方法中，两个传统的推荐方法被构造出来，分别对应着两个互惠方的喜好。然后，这两个互惠方的预测被组合起来。&lt;/li&gt;
+&lt;li&gt;利用链路预测方法
+当冷启动问题不是很严重或者可以用来自类似用户和物品的数据来增加评分数据时，可以在系统中采用链路预测方法。&lt;/li&gt;
+&lt;/ol&gt;</description>
+        </item>
+        <item>
+        <title>ASGNN</title>
+        <link>https://hubojing.github.io/gwmprssu/</link>
+        <pubDate>Sat, 29 Jan 2022 14:27:42 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/gwmprssu/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;https://hubojing.github.io/images/ASGNN-1.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;Attentive sequential model based on graph neuralnetwork for next poi recommendation&lt;/strong&gt;
+　　基于图神经网络的注意力序列模型用于下一个兴趣点推荐&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;　　Attentive sequential model based on graph neuralnetwork for next poi recommendation
+　　基于图神经网络的注意力序列模型用于下一个兴趣点推荐
+　　WWW21
+&lt;a class=&#34;link&#34; href=&#34;https://link.springer.com/content/pdf/10.1007/s11280-021-00961-9.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;
+　　关键词：推荐系统、序列推荐、兴趣点推荐、图神经网络、注意力机制&lt;/p&gt;
+&lt;h1 id=&#34;现有问题&#34;&gt;现有问题
+&lt;/h1&gt;&lt;p&gt;　　传统推荐方法忽略了用户短时偏好的动态变化。另外，许多现有方法不能完全探索兴趣点签到序列中复杂的联系和转变形式。&lt;/p&gt;
+&lt;h1 id=&#34;架构&#34;&gt;架构
+&lt;/h1&gt;&lt;p&gt;　　提出ASGNN。
+&lt;img src=&#34;https://hubojing.github.io/images/ASGNN-1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;架构&#34;
+	
+	
+&gt;
+　　ASGNN包括四部分：兴趣点签到序列图构建、特征表示学习、长短时偏好获取、兴趣点推荐&lt;/p&gt;
+&lt;h2 id=&#34;兴趣点签到序列图构建&#34;&gt;兴趣点签到序列图构建
+&lt;/h2&gt;&lt;p&gt;　　G(V, E), V = (U, L)，U是用户集，L是兴趣点集。E包括用户-兴趣点边和兴趣点-兴趣点边。
+　　图中边的权重代表用户在兴趣点的签到次数。&lt;/p&gt;
+&lt;h2 id=&#34;特征表示学习&#34;&gt;特征表示学习
+&lt;/h2&gt;&lt;p&gt;　　图构建好后，使用GNN学习到用户和兴趣点的低维表示。这避免了马尔科夫决策过程需要的大量状态。
+　　为了提高效率更新节点，使用了GGNN。
+&lt;img src=&#34;https://hubojing.github.io/images/ASGNN-3.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;矩阵表示&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;长短时偏好获取&#34;&gt;长短时偏好获取
+&lt;/h2&gt;&lt;p&gt;　　设计了两层注意力机制分别捕获长短时用户偏好。&lt;/p&gt;
+&lt;h2 id=&#34;兴趣点推荐&#34;&gt;兴趣点推荐
+&lt;/h2&gt;&lt;p&gt;　　上一步得到的个性化用户偏好参数和兴趣点特征点乘，得到每个兴趣点分数，通过softmax标准化输出概率值。
+　　训练的损失函数为交叉熵函数。&lt;/p&gt;
+&lt;h1 id=&#34;实验&#34;&gt;实验
+&lt;/h1&gt;&lt;p&gt;　　围绕下列问题展开：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ASGNN在序列兴趣点推荐任务上性能如何（基线对比）&lt;/li&gt;
+&lt;li&gt;ASGNN的关键组件效果如何（组件实验）&lt;/li&gt;
+&lt;li&gt;ASGNN的嵌入维度对推荐的影响（维度分析）&lt;/li&gt;
+&lt;li&gt;ASGNN和基线在不同稀疏性的数据集上的性能如何（数据稀疏性影响）&lt;/li&gt;
+&lt;li&gt;ASGNN学习兴趣点嵌入是否有效（可视化说明）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;数据集&#34;&gt;数据集
+&lt;/h2&gt;&lt;p&gt;　　Gowalla, FourSquare, Brightkite
+&lt;a class=&#34;link&#34; href=&#34;https://snap.stanford.edu/data/loc-gowalla.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://snap.stanford.edu/data/loc-gowalla.html&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://sites.google.com/site/yangdingqi/home/foursquare-dataset&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://sites.google.com/site/yangdingqi/home/foursquare-dataset&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://snap.stanford.edu/data/loc-brightkite.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://snap.stanford.edu/data/loc-brightkite.html&lt;/a&gt;
+&lt;img src=&#34;https://hubojing.github.io/images/ASGNN-2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;数据集&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;基线&#34;&gt;基线
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;POP&lt;/li&gt;
+&lt;li&gt;BPR&lt;/li&gt;
+&lt;li&gt;FPMC&lt;/li&gt;
+&lt;li&gt;HRM&lt;/li&gt;
+&lt;li&gt;CPAM&lt;/li&gt;
+&lt;li&gt;SHAN&lt;/li&gt;
+&lt;li&gt;SRGNN&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;评测指标&#34;&gt;评测指标
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;召回率Recall&lt;/li&gt;
+&lt;li&gt;MRR&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;基线对比&#34;&gt;基线对比
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/images/ASGNN-RQ1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;性能&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;组件实验&#34;&gt;组件实验
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/images/ASGNN-RQ2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;组件分析&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;维度分析&#34;&gt;维度分析
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/images/ASGNN-RQ3.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;维度分析&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;数据稀疏性影响&#34;&gt;数据稀疏性影响
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/images/ASGNN-RQ4.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;不同数据集&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;可视化说明&#34;&gt;可视化说明
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/images/ASGNN-RQ5.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;可视化&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;贡献点&#34;&gt;贡献点
+&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;提出ASGNN，它将用户签到行为视为图，并使用GNN局部方式学习用户行为模式和他们的偏好用于下一个兴趣点推荐。&lt;/li&gt;
+&lt;li&gt;设计了一个个性化层级注意力机制捕捉用户长短时偏好，并将它们适应于序列推荐。&lt;/li&gt;
+&lt;li&gt;实验结果显示ASGNN超过基线和部分SOTA模型。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;代码&#34;&gt;代码
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/HduDBSI/ASGNN&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/HduDBSI/ASGNN&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>STAN</title>
+        <link>https://hubojing.github.io/fhfxfwzp/</link>
+        <pubDate>Mon, 24 Jan 2022 11:20:37 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/fhfxfwzp/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\STAN-2.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;STAN: Spatio-Temporal Attention Network for Next Location Recommendation&lt;/strong&gt;
+　　STAN：基于时空注意力网络的下一个兴趣点推荐&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;　　STAN: Spatio-Temporal Attention Network for Next Location Recommendation
+　　STAN：基于时空注意力网络的下一个兴趣点推荐
+　　WWW 21
+　　&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/pdf/2102.04095.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;现有问题&#34;&gt;现有问题
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cSTAN-1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;引入&#34;
+	
+	
+&gt;
+　　0、1、2分别代表家、工作地、商场，3、4、5、6分别代表餐馆。虽然3、4、5、6时间和空间都不连续，但它们是有关联的。现有文献很少关注这种非相邻位置和非连续签到的情况。&lt;/p&gt;
+&lt;h1 id=&#34;说明和定义&#34;&gt;说明和定义
+&lt;/h1&gt;&lt;p&gt;　　用户U=${u_1, u_2, &amp;hellip;, u_U}$
+　　兴趣点L=${l_1, l_2, &amp;hellip;, l_L}$
+　　时间T=${t_1, t_2, &amp;hellip;, t_T}$&lt;/p&gt;
+&lt;p&gt;　　用户轨迹$tra(u_i) = (r_1, r_2, &amp;hellip;, r_{m_i})$&lt;/p&gt;
+&lt;h1 id=&#34;架构&#34;&gt;架构
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cSTAN-2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;架构&#34;
+	
+	
+&gt;
+　　STAN包括多模态嵌入模块、一个自注意力聚合层、一个注意力匹配层、一个平衡采样器。&lt;/p&gt;
+&lt;h2 id=&#34;多模态嵌入模块&#34;&gt;多模态嵌入模块
+&lt;/h2&gt;&lt;p&gt;　　该模块分为两部分：轨迹嵌入层和时空嵌入层。&lt;/p&gt;
+&lt;h3 id=&#34;用户轨迹嵌入层&#34;&gt;用户轨迹嵌入层
+&lt;/h3&gt;&lt;p&gt;　　使用了用户、地理位置、时间，嵌入向量记为$e^u$、$e^l$、$e^t$。时间戳被分为7*24=168个维度。所以，$e^u$、$e^l$、$e^t$的维度是U，L和168。
+　　输出$e^r = e^u + e^l + e^t$&lt;/p&gt;
+&lt;h3 id=&#34;时空嵌入层&#34;&gt;时空嵌入层
+&lt;/h3&gt;&lt;p&gt;　　创造了两种矩阵，轨迹时空关系矩阵$△^{t, s}$和候选关系矩阵$N^{t, s}$。前者将两个轨迹间的时间差和地理距离作为关联信息，后者将轨迹中的兴趣点与候选集中可能的预测兴趣点采用同样的信息关联起来。使用线性插值方法。
+　　这一层将这两种矩阵进行映射和求和，得到最终的嵌入表示E(△)和E(N)。&lt;/p&gt;
+&lt;h2 id=&#34;自注意力聚合层&#34;&gt;自注意力聚合层
+&lt;/h2&gt;&lt;p&gt;　　这一层是用来考虑轨迹中有不同距离和时间间隔的两次兴趣点签到的关联程度的。自注意力层可以捕捉长时依赖并为轨迹中的兴趣点分配不同的权重。将轨迹E(u)和时空关系矩阵E(△)通过自注意力聚合层，计算得到新的序列S表示。&lt;/p&gt;
+&lt;h2 id=&#34;注意力匹配层&#34;&gt;注意力匹配层
+&lt;/h2&gt;&lt;p&gt;　　这一层的作用是根据用户轨迹的最新表示在L中召回最合适的兴趣点候选。
+　　A(u) = Matching(E(l), S(u), E(N))，得到的是概率。
+　　$Matching(Q, K, N) = Sum(softmax(\frac{QK^T+N}{\sqrt{d}}))$
+　　这个公式减少了其它自注意力模型中的PIF信息。&lt;/p&gt;
+&lt;h2 id=&#34;平衡采样器&#34;&gt;平衡采样器
+&lt;/h2&gt;&lt;p&gt;　　因为正负样本不均衡，优化交叉熵损失不再有用。本文修改了交叉熵损失公式中负样本数量，对于每个正样本$a_k$，需要同时计算L-1个负样本，这称为作为平衡采样器。&lt;/p&gt;
+&lt;h1 id=&#34;实验&#34;&gt;实验
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cSTAN-3.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;数据&#34;
+	
+	
+&gt;
+　　数据集：Gowalla, SIN, TKY, NYC.
+　　输入：$(u_i, l_k, t_k)$, $(l_k, lon_k, lat_k)$
+　　输出：候选兴趣点概率值&lt;/p&gt;
+&lt;h2 id=&#34;基线&#34;&gt;基线
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;STRNN&lt;/li&gt;
+&lt;li&gt;DeepMove&lt;/li&gt;
+&lt;li&gt;STGN&lt;/li&gt;
+&lt;li&gt;ARNN&lt;/li&gt;
+&lt;li&gt;LSTPM&lt;/li&gt;
+&lt;li&gt;TiSARec&lt;/li&gt;
+&lt;li&gt;GeoSAN&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;性能&#34;&gt;性能
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cSTAN-4.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;性能&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;贡献点&#34;&gt;贡献点
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;提出STAN，一种时空双向注意力模型，全面考虑了聚合相关联位置的时空效应。第一个将非相邻位置和非相邻签到时间的兴趣点的时空联系应用在兴趣点推荐中。&lt;/li&gt;
+&lt;li&gt;使用简单的线性插值技术替代GPS网格进行空间离散化，它能恢复空间距离和反映时空偏好，而不仅仅是聚合邻居。&lt;/li&gt;
+&lt;li&gt;提出了一种双向注意力架构用于PIF（personalized item frequency），第一层聚合了轨迹信息中相关的兴趣点用于更新表示，那么第二层就可以给全部的签到信息匹配目标。&lt;/li&gt;
+&lt;li&gt;在四个真实世界数据集上性能比SOTA模型超过10%。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;代码&#34;&gt;代码
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/yingtaoluo/Spatial-Temporal-Attention-Network-for-POI-Recommendation&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/yingtaoluo/Spatial-Temporal-Attention-Network-for-POI-Recommendation&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>CHAML</title>
+        <link>https://hubojing.github.io/pd2tgrcn/</link>
+        <pubDate>Sat, 22 Jan 2022 18:02:37 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/pd2tgrcn/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\CHAML-2.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;Curriculum Meta-Learning for Next POI Recommendation&lt;/strong&gt;
+　　基于课程元学习的下一个兴趣点推荐&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;　　Curriculum Meta-Learning for Next POI Recommendation
+　　基于课程元学习的下一个兴趣点推荐
+　　KDD 21
+　　&lt;a class=&#34;link&#34; href=&#34;https://dl.acm.org/doi/abs/10.1145/3447548.3467132&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;现有问题&#34;&gt;现有问题
+&lt;/h1&gt;&lt;p&gt;　　在下一个兴趣点推荐的研究中，在有限的用户-兴趣点交互数据下，在冷启动城市中提供满意的推荐是重要问题，这需要许多其它城市丰富数据下隐含的知识进行迁移。现有文献没有考虑到城市转移的问题或者不能同时处理数据稀疏和用户在多个城市的模式多样性的问题。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cCHAML-1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;问题描述&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;　　问题描述如图所示。
+　　该问题关键是提出一个合适的迁移算法，但难点有二：
+　　1. 不同城市的数据太少
+　　2. 用户在不同城市下有不同的多样性表达
+　　现有算法不能同时解决这两个问题。传统的预训练和微调技术不能解决问题2，跨域推荐不能解决问题1。&lt;/p&gt;
+&lt;h1 id=&#34;架构&#34;&gt;架构
+&lt;/h1&gt;&lt;p&gt;　　提出 Curriculum Hardness Aware Meta-Learning (CHAML) 框架。
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cCHAML-2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;架构&#34;
+	
+	
+&gt;
+　　架构分为两部分，一部分是基础推荐器，另一部分是MAML扩展。后者用于将元学习引入到POI推荐中。
+　　两种采用策略组件，一种是硬意识元学习(hardness aware meta-learning)，另一种是城市级别采样课程(city-level sampling curriculum)。这用于细致思考采样多样性问题。
+　　一些概念：
+　　Curriculum Learning，主张让模型先从容易的样本开始学习，并逐渐进阶到复杂的样本和知识。
+　　meta-learning，又叫learning to learn，即学习如何学习，元学习围绕任务（task）展开。元学习是要去学习任务中的特征表示，从而在新的任务上泛化。&lt;/p&gt;
+&lt;h2 id=&#34;基础推荐器&#34;&gt;基础推荐器
+&lt;/h2&gt;&lt;p&gt;　　使用DIN作为基础推荐器，由三部分组成，嵌入模块（Embedding module）、注意力模块（Attention module）和输出模块（Output module）。&lt;/p&gt;
+&lt;h2 id=&#34;元学习&#34;&gt;元学习
+&lt;/h2&gt;&lt;p&gt;　　使用MAML策略。
+　　MAML论文：Model-agnostic meta-learning for fast adaptation of deep networks&lt;/p&gt;
+&lt;p&gt;　　每轮MAML包括两步骤：局部更新和全局更新。见图中左上部分。
+　　每一次元学习任务都有支持训练集$D^{spt}$用于训练，query训练集$D^{qry}$用于测试。
+　　元学习目标就是学习一个选学习器F，F可以预测推荐器f中的参数$\theta$，使损失函数最小化。&lt;/p&gt;
+&lt;h2 id=&#34;硬意识元学习-hardness-aware-meta-learning&#34;&gt;硬意识元学习 Hardness Aware Meta-Learning
+&lt;/h2&gt;&lt;p&gt;　　这里的&amp;quot;hardness&amp;quot;是模型在query样本上的现有性能自判的。
+　　分为两个阶段，hard_city阶段和hard_user阶段。两个任务交替循环。对应图右上。&lt;/p&gt;
+&lt;h2 id=&#34;城市级别采样课程-city-level-sampling-curriculum&#34;&gt;城市级别采样课程 City-level Sampling Curriculum
+&lt;/h2&gt;&lt;p&gt;　　见图下方。
+　　分为两阶段，一是困难度测量，使用诸如AUC指标来衡量。二是调度器用于城市pool，定义了一个函数g。课程学习使模型有更大的概率在优化过程中选择容易的梯度步骤。&lt;/p&gt;
+&lt;h1 id=&#34;实验&#34;&gt;实验
+&lt;/h1&gt;&lt;p&gt;　　数据集：百度地图MapSmall、MapLarge（未开源）
+　　输入：POI ID, POI category, time, user-POI dist
+　　输出：POI预测分数$y^{hat}_i$&lt;/p&gt;
+&lt;h2 id=&#34;基线&#34;&gt;基线
+&lt;/h2&gt;&lt;p&gt;　　针对POI推荐：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;NeuMF&lt;/li&gt;
+&lt;li&gt;HGN&lt;/li&gt;
+&lt;li&gt;ATST-LSTM&lt;/li&gt;
+&lt;li&gt;PLSPL&lt;/li&gt;
+&lt;li&gt;iMTL&lt;/li&gt;
+&lt;li&gt;DIN&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;　　针对迁移策略：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;No transfer&lt;/li&gt;
+&lt;li&gt;Pretrain and Fine-Tune(FT)&lt;/li&gt;
+&lt;li&gt;MAML&lt;/li&gt;
+&lt;li&gt;$s^2$Meta&lt;/li&gt;
+&lt;li&gt;HAML&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;贡献点&#34;&gt;贡献点
+&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;第一个探索城市迁移的下一个兴趣点推荐，并将元学习用于该问题。&lt;/li&gt;
+&lt;li&gt;提出CHAML框架，通过使用用户和城市级别的硬采样挖掘以及城市级别的课程学习（curriculum learning）增强元学习器，达到同时解决数据稀疏和冷启动城市的样本多样性的问题。&lt;/li&gt;
+&lt;li&gt;在两个真实世界地图查找数据集中性能超越SOTA方法。
+该框架已在百度地图上进行过A/B测试。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;代码&#34;&gt;代码
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/PaddlePaddle/Research/tree/master/ST_DM/KDD2021-CHAML&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/PaddlePaddle/Research/tree/master/ST_DM/KDD2021-CHAML&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/victorsoda/chaml&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/victorsoda/chaml&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>【Paper】DIN模型</title>
+        <link>https://hubojing.github.io/rup2htsf/</link>
+        <pubDate>Thu, 06 May 2021 10:55:35 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/rup2htsf/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\DIN架构.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;阿里DIN模型&lt;/strong&gt;
+　　&lt;strong&gt;10.21总算写完了&amp;hellip;&amp;hellip;&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;论文：Deep Interesting Network for Click-Through Rate Prediction
+&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1706.06978&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;下载地址&lt;/a&gt;
+2018年 阿里&lt;/p&gt;
+&lt;h1 id=&#34;现有问题&#34;&gt;现有问题
+&lt;/h1&gt;&lt;p&gt;　　目前的深度学习模型都是先将稀疏输入特征映射为低维嵌入向量，再转换为固定长度的向量，最后联结起来送入MLP。这个固定长度的向量会成为瓶颈，无法从历史行为中捕获用户不同的兴趣。因此，本文提出深度兴趣网络Deep Interest Network（DIN）。它设计了一个局部激活单元从用户历史行为中自适应学习用户兴趣。另外，本文提出了两大技术：小批量感知正则化（mini-batch aware regularization）和数据自适应激活函数（data adaptive activation function）。&lt;/p&gt;
+&lt;h1 id=&#34;关键词&#34;&gt;关键词
+&lt;/h1&gt;&lt;p&gt;点击率预测（Click-Through Rate Prediction）、展示广告（Display Advertising），线上贸易（E-commerce）&lt;/p&gt;
+&lt;h1 id=&#34;引言-introduction&#34;&gt;引言 INTRODUCTION
+&lt;/h1&gt;&lt;p&gt;　　Embedding &amp;amp; MLP方法通过将用户行为嵌入向量转换为一个固定长度的向量来学习用户所有兴趣的表示，所有的表示向量是欧式空间。换言之，将用户不同的兴趣压缩到一个固定长度的向量，限制了表达能力。为了更好地表达用户不同兴趣，就要扩展向量长度。这会增多学习参数，并且增加过拟合的风险。也加重了计算和存储的压力，对于工业线上系统来说很困难。
+　　另一方面，没有必要把用户全部兴趣压缩到同一个向量里，因为只有部分兴趣会影响用户下一个动作（点击或不点击）。&lt;/p&gt;
+&lt;p&gt;　　训练的问题：
+　　基于SGD的优化方法只更新出现在每个小批量中的稀疏特征的参数。然而，加上传统的ℓ2正则化，计算变得不可接受，这需要为每个小批量计算整个参数的L2范数(在阿里的场景，大小按比例增加到数十亿)。本文提出了一种新的小批量正则化方法，在L2范数的计算中，每个小批量正则化中只出现非零特征参数，使得计算是可接受的。另外，设计了一个数据自适应激活函数，推广到常用的PReLU，它通过自适应地调整输入的校正点，也就是输入的分布，并被证明有助于训练具有稀疏特征的工业网络。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;贡献点&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;指出了使用固定长度向量来表达用户不同兴趣的局限性，并设计了一种新的深度兴趣网络(DIN)，它引入了一个局部激活单元来自适应地从给定广告的历史行为中学习用户兴趣的表示。DIN可以大大提高模型的表达能力，更好地捕捉用户兴趣的多样性特征。&lt;/li&gt;
+&lt;li&gt;开发了两种新的技术来帮助训练工业深度网络:I)一种小批量感知正则化器，这种正则化器在具有大量参数的深度网络上节省了大量的正则化计算，并且有助于避免过拟合；ii)一种数据自适应激活函数，这种函数通过考虑输入的分布来推广PReLU，并且表现出良好的性能。&lt;/li&gt;
+&lt;li&gt;在公共数据集和AI-ibaba数据集上进行了大量实验。结果验证了所提出的DIN和训练技术的有效性。所提出的方法已经在全球最大的广告平台之一阿里巴巴的商业展示广告系统中得到了应用，为业务的发展做出了重大贡献。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;代码：https://github.com/zhougr1993/DeepInterestNetwork&lt;/p&gt;
+&lt;h1 id=&#34;背景-background&#34;&gt;背景 BACKGROUND
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cDIN-1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;图1 - 阿里广告系统&#34;
+	
+	
+&gt;
+预测每个给定广告的点击率，然后选择排名最高的广告。&lt;/p&gt;
+&lt;h1 id=&#34;深度兴趣网络-deep-interest-network&#34;&gt;深度兴趣网络 DEEP INTEREST NETWORK
+&lt;/h1&gt;&lt;h2 id=&#34;特征表示-feature-representation&#34;&gt;特征表示 Feature Representation
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cDIN-2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;表1 - 特征处理&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cDIN-%e7%89%b9%e5%be%81%e8%a1%a8%e7%a4%ba.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;特征表示&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;　　表中描述了我们系统中使用的全部特征集，它由四类组成，其中用户行为特征是典型的多热点编码向量，包含丰富的用户兴趣信息。注意，在我们的设置中，没有组合特性。我们利用深度神经网络捕获特征的交互作用。&lt;/p&gt;
+&lt;h2 id=&#34;基线模型-base-modelembeddingmlp&#34;&gt;基线模型 Base Model(Embedding&amp;amp;MLP)
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cDIN%e6%9e%b6%e6%9e%84.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;基础架构 vs DIN架构&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;嵌入层（Embedding layer)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;池化层和连接层（Pooling layer and Concat layer）&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;　　得到定长向量：$e_i = pooling(e_{i_1}, e_{i_2}, &amp;hellip;, e_{i_k})$&lt;/p&gt;
+&lt;p&gt;　　最常用的是sum pooling和average pooling。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;MLP&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Loss&lt;/strong&gt;&lt;/p&gt;
+$$L = - \frac{1}{N}\sum_{(x,y)∈S}(ylogp(x) + (1 - y)log(1 - p(x)))$$&lt;p&gt;　　S是尺寸为N的训练集，x是输入，y是标签。p(x)是经过softmax层后的输出，代表样本x被点击的概率。&lt;/p&gt;
+&lt;h2 id=&#34;din架构-the-structure-of-deep-interest-network&#34;&gt;DIN架构 The structure of Deep Interest Network
+&lt;/h2&gt;&lt;p&gt;　　基线模型对一个用户使用定长向量表示，无论候选广告是什么。&lt;/p&gt;
+&lt;p&gt;　　为了表示用户兴趣多样化，一种简单的方法是扩展嵌入维度，但这会增加学习参数规模。有过拟合的风险，并且增加了计算和存储的负担。&lt;/p&gt;
+&lt;p&gt;　　DIN模拟了关于给定广告的用户局部激活兴趣。&lt;/p&gt;
+&lt;p&gt;　　DIN引入了一个用于用户行为特征的局部激活单元，使用了加权求和池化（weighted sum pooling）来自适应计算当给定一个候选广告A时，用户的表示$V_U$。&lt;/p&gt;
+$$v_U = f(v_A, e_1, e_2, ..., e_H) = \sum_{j=1}^{H}a(e_j, v_A)e_j = \sum_{j = 1}^{H}w_je_j$$&lt;p&gt;
+　　其中，${e_1, e_2, &amp;hellip;, e_H}$是用户U的行为嵌入向量（长度为H），$v_U(A)$是广告A的嵌入向量。
+　　在这种方式下，$v_U(A)$在不同的广告下，a(·)是一个带有激活权重输入的前向反馈网络。除了这两部分输入嵌入向量，a(·)将它们的外积喂入后续网络。
+a(·)softmax输出后的标准化被舍弃。&lt;/p&gt;
+&lt;h1 id=&#34;训练方法-training-techniques&#34;&gt;训练方法 TRAINING TECHNIQUES
+&lt;/h1&gt;&lt;h2 id=&#34;小批量感知正则化-mini-batch-aware-regularization&#34;&gt;小批量感知正则化 Mini-batch Aware Regularization
+&lt;/h2&gt;&lt;p&gt;　　工业训练网络面临过拟合的问题。模型训练在第一轮训练后（不加正则化）性能迅速下降。传统的正则策略在面对稀疏输入和成千上万的参数时并不适用（比如l2和l1正则化)。
+　　为此，提出小批量感知正则化，即只在每次小批量中对稀疏特征的参数计算$L_2-norm$。&lt;/p&gt;
+$$L_2(W)=||W||_{2}^{2}$$$$= \sum_{j = 1}^{K}||w_j||_{2}^{2}$$$$= \sum_{(x,y)∈S}\sum_{j = 1}^{K}\frac{I(x_j≠0)}{n_j}||w_j||_2^2$$&lt;p&gt;　　$I(x_j≠0)$表示x有特征j，$n_j$表示特征id j出现的数量。上述公式可以被转换为下面的小批量感知形式：&lt;/p&gt;
+$$L_2(W) =  \sum_{j = 1}^{K}\sum_{m = 1}^{B}\sum_{(x,y)∈B_m}\frac{I(x_j≠0)}{n_j}||w_j||_2^2$$&lt;p&gt;　　其中，B表示小批量的数量，$B_m$表示第m次小批量。定义$α_{mj} = max_{(x,y)∈B_m}I(x_j ≠ 0)$为小批量$B_m$中至少有一次有特征id j。
+　　上述近似为&lt;/p&gt;
+$$L_2(W) ≈ \sum_{j = 1}^{K}\sum_{m = 1}^{B}\frac{α_{mj}}{n_j}||w_j||_2^2$$&lt;p&gt;
+　　
+通过这种方式，推导出了一种$l_2$正则化的近似小批量感知形式。
+　　对于第m次小批量，关于特征j的嵌入权重的梯度为&lt;/p&gt;
+$$w_j\leftarrow w_j - \eta[\frac{1}{|B_m|}\sum_{(x,y)∈B_m}\frac{\partial L(p(x), y)}{\partial w_j} + \lambda \frac{α_{mj}}{n_j}w_j]$$&lt;p&gt;
+　　
+　　在这里只有出现在第m次小批量的特征参数才会参与正则计算。&lt;/p&gt;
+&lt;h2 id=&#34;数据自适应激活函数-data-adaptive-activation-function&#34;&gt;数据自适应激活函数 Data Adaptive Activation Function
+&lt;/h2&gt;$$f(s) = p(s)·s + (1-p(s))·αs, p(s) = \frac{1}{1 + e^{-\frac{s-E[s]}{\sqrt{Var[s] + \epsilon}}}}$$&lt;p&gt;
+　　E[s]和Var[s]代表每次小批量输入的均值和方差。$\epsilon$是一个常量，此处设为$10^{-8}$。
+　　Dice的主要思想是根据输入数据分布自适应调整转折点，值设置为输入的平均值。另外，Dice在两个函数间切换很顺滑。当E(s) = 0且Var[s] = 0时，Dice退化到PReLU。&lt;/p&gt;
+&lt;h1 id=&#34;实验-experiments&#34;&gt;实验 EXPERIMENTS
+&lt;/h1&gt;&lt;h2 id=&#34;数据集和实验步骤-datasets-and-experimental-setup&#34;&gt;数据集和实验步骤 Datasets and Experimental Setup
+&lt;/h2&gt;&lt;p&gt;　　数据集三个：Amazon Dataset， MovieLens Dataset和Alibaba Dataset。
+　　Amazon Dataset：http://jmcauley.ucsd.edu/data/amazon/
+　　MovieLens Dataset：https://grouplens.org/datasets/movielens/20m/
+　　数据集情况如图。
+&lt;img src=&#34;https://hubojing.github.io/images/DIN-data.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;数据&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;基线实验&#34;&gt;基线实验
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;LR&lt;/li&gt;
+&lt;li&gt;BaseModel&lt;/li&gt;
+&lt;li&gt;Wide&amp;amp;Deep&lt;/li&gt;
+&lt;li&gt;PNN&lt;/li&gt;
+&lt;li&gt;DeepFM&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;策略&#34;&gt;策略
+&lt;/h2&gt;$$AUC = \frac{\sum_{i = 1}^{n}impression_i \times AUC_i}{\sum_{i = 1}^{n}impression_i}$$$$RelaImpr = (\frac{AUC(measured model) - 0.5}{AUC(base model) - 0.5} - 1) \times 100\%$$&lt;p&gt;
+　　RelaImpr用来衡量模型间的相对提升。&lt;/p&gt;
+&lt;h2 id=&#34;亚马逊数据集和movielens数据集模型对比结果-result-from-model-comparison-on-amazon-dataset-and-movielens-dataset&#34;&gt;亚马逊数据集和MovieLens数据集模型对比结果 Result from model comparison on Amazon Dataset and MovieLens Dataset
+&lt;/h2&gt;&lt;p&gt;　　如图所示。
+&lt;img src=&#34;https://hubojing.github.io/images/DIN-F4.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;图4&#34;
+	
+	
+&gt;
+&lt;img src=&#34;https://hubojing.github.io/images/DIN-T3.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;表3&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;正则化性能-performance-of-regularization&#34;&gt;正则化性能 Performance of regularization
+&lt;/h2&gt;&lt;p&gt;　　对比试验：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Dropout&lt;/li&gt;
+&lt;li&gt;Filter&lt;/li&gt;
+&lt;li&gt;Regularization in DiFacto&lt;/li&gt;
+&lt;li&gt;MBA
+&lt;img src=&#34;https://hubojing.github.io/images/DIN-T4.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;表4&#34;
+	
+	
+&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;阿里巴巴数据集模型对比结果-result-from-model-comparison-on-alibaba-dataset&#34;&gt;阿里巴巴数据集模型对比结果 Result from model comparison on Alibaba Dataset
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/images/DIN-T5.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;表5&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;din可视化-visualization-of-din&#34;&gt;DIN可视化 Visualization of DIN
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/images/DIN-F5.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;图5&#34;
+	
+	
+&gt;
+&lt;img src=&#34;https://hubojing.github.io/images/DIN-F6.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;图6&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;总结-conclusions&#34;&gt;总结 CONCLUSIONS
+&lt;/h1&gt;&lt;p&gt;　　传统CTR模型适用定长向量代表用户兴趣是有缺陷的。为了提高用户兴趣多样性，提出DIN模型来激活相关的用户行为，并且针对不同的广告有一个自适应用户兴趣表示向量。另外，提出两种技术帮助训练工业深度网络，并提升了DIN性能。DIN已被部署到阿里巴巴的在线广告展示系统。&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>【Paper】Entire Space Multi-Task Model-An Effective Approach for Estimating Post-Click Conversion Rate</title>
+        <link>https://hubojing.github.io/hpxssgui/</link>
+        <pubDate>Tue, 27 Apr 2021 10:23:10 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/hpxssgui/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\ESMM-f2.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;多任务学习之ESMM&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;2018年 阿里巴巴&lt;/p&gt;
+&lt;h1 id=&#34;摘要-abstract&#34;&gt;摘要 ABSTRACT
+&lt;/h1&gt;&lt;p&gt;传统的CVR建模应用流行的深度学习方法，并实现最先进的性能。遇到的问题：传统的CVR模型用点击曝光的样本进行训练，同时用所有曝光的样本对整个空间进行推断。这导致样本选择偏差（sample selection bias）问题。另外还有数据稀疏的问题。本文提出ESMM(Entire Space Multi-task Model)，通过用户行为序列模式对CVR建模，比如，曝光(impression)&amp;ndash;&amp;gt;点击(click)&amp;ndash;&amp;gt;转换(conversion)。该模型直接在整个空间建模CVR，并使用了一种特征表示转移学习策略。数据集采用淘宝推荐系统，显示ESMM效果显著。本文还发布了第一个包含点击和转化标签用于CVR建模的时序样本数据集。&lt;/p&gt;
+&lt;p&gt;关键词：CVR(post-click conversion rate), 多任务学习(multi-task learning), 样本选择偏差(sample selection bias), 数据稀疏(data sparsity), 全空间建模(entire-space modeling)&lt;/p&gt;
+&lt;h1 id=&#34;介绍-introduction&#34;&gt;介绍 INTRODUCTION
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cESMM-f1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ESMM&#34;
+	
+	
+&gt;
+1）传统的CVR模型在由impression组成的数据集上训练，同时利用所有impression的样本在整个空间上进行推断。该问题（SSB）会影响训练模型的泛化性能。
+2）数据稀疏问题。在实践中，为训练CVR模型而收集的数据通常比CTR任务少得多。训练数据的稀疏性使得CVR模型拟合相当困难。&lt;/p&gt;
+&lt;p&gt;以前的研究试图解决这些问题。在[5]中，建立了不同特征的分层估计量，并结合逻辑回归模型来解决直接序列问题。然而，它依赖于先验知识来构建层次结构，这在拥有数千万用户和项目的推荐系统中很难应用。过采样方法[11]复制了罕见的类别样本，这有助于减轻数据的稀疏性，但对采样率敏感。全部缺失为阴性(AMAN)应用随机抽样策略选择未点击的impression作为负样本[6]。通过引入未观察到的例子，它可以在一定程度上消除SSB问题，但会导致始终被低估的预测。无偏方法[10]通过剔除抽样从观测值中拟合真实的潜在分布，解决了CTR建模中的SSB问题。然而，当用拒绝概率划分来加权样本时，可能会遇到数值不稳定性。总之，无论是SSB还是DS问题都没有在CVR建模的场景中得到了很好的解决，上述方法都没有利用序列动作信息。&lt;/p&gt;
+&lt;p&gt;pCVR = p(conversion|click, impression)&lt;/p&gt;
+&lt;p&gt;ESMM可以同时解决SSB和DS问题。它引入了CTR和CTCVR的两个辅助任务。ESMM没有直接用曝光的样本来训练CVR模型，而是把pCVR作为一个中间变量，乘以pCTR等于pCTCVR。PCTCVR和pCTR都是在整个空间上用所有曝光的样本来估计的，因此导出的pCVR也适用于整个空间。这表明SSB问题已经消除。此外，CVR网络特征表示的参数与CTR网络共享。后者是用更丰富的样本训练的。这种参数迁移学习有助于显著缓解DS问题。&lt;/p&gt;
+&lt;p&gt;对于这项工作，我们从淘宝的推荐系统中收集流量日志。整个数据集由89亿个样本组成，并带有点击和转换的序列标签。ESMM的表现始终优于其它模型，这证明了所提出方法的有效性。&lt;/p&gt;
+&lt;p&gt;数据集开源：https://tianchi.aliyun.com/datalab/dataSet.html?dataId=408&lt;/p&gt;
+&lt;h1 id=&#34;提出的方法-the-proposed-approach&#34;&gt;提出的方法 THE PROPOSED APPROACH
+&lt;/h1&gt;&lt;h2 id=&#34;注释-notation&#34;&gt;注释 Notation
+&lt;/h2&gt;&lt;p&gt;$S = {(x_i, y_i -&amp;gt; z_i)}|^N_{i=1}$，x代表已观察曝光的特征向量，它通常是一个有多域(field)的高维稀疏向量，比如用户域，物品域等。y和z是二分标签，y = 1或者z = 1代表各自被点击或转化事件发生。y-&amp;gt;z代表点击和转化标签的序列依赖，即转化事件发生时总会有前序点击。
+pCVR = p(z = 1|y = 1, x)
+pCTR = p(y = 1|x)
+pCTCVR = p(y = 1, z = 1|x)
+p(y = 1, z = 1|x) = p(y = 1|x) × p(z = 1|y = 1, x)
+&amp;mdash;&amp;ndash;pCTCVR&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;pCTR&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash;pCVR&amp;mdash;&amp;mdash;&amp;ndash;&lt;/p&gt;
+&lt;h2 id=&#34;cvr建模和挑战-cvr-modeling-and-challenges&#34;&gt;CVR建模和挑战 CVR Modeling and Challenges
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cESMM-f2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;ESMM架构&#34;
+	
+	
+&gt;
+图2左边的DNN CVR建模作为基线模型，传统的CVR模型直接建模p(z = 1|y = 1, x)，使用点击的曝光样本训练模型。比如，$S_c = {(x_j, z_j)|y_j = 1}|^M_{j=1}$，M是所有曝光样本数。$S_c$是S的子集。在$S_c$中，被点击但没有被转化的样本作为负样本，被转化也被点击的样本作为正样本。
+&lt;strong&gt;Sample selection bias(SSB)&lt;/strong&gt;
+通过引入一个辅助特征向量$x_c$，传统CVR做了一个近似：$p(z = 1|y = 1, x) ≈ q(z = 1|x_c)$。
+推理阶段，p(z = 1|y = 1, x)在整个X空间将近似为q(z = 1|x)。
+传统的CVR训练数据是曝光和点击的数据，然而预测时又要在整个样本空间。点击事件只是整个曝光样本空间的一个子集，在子集中提取的特征在完整集中使用是有偏的，且数据分布也不一致，违背了机器学习算法有效训练的前提（iid），减弱模型的泛化能力。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Data sparsity (DS)&lt;/strong&gt;
+一般CVR比关联的CTR任务少1-3个数量级，CTR任务是在全印象的S的数据集上训练的。表1显示了我们的实验数据集的统计数据，其中CVR任务的样本数量仅为CTR任务的4%。
+值得一提的是，CVR建模还存在其他挑战，例如延迟反馈。本文不涉及。&lt;/p&gt;
+&lt;h2 id=&#34;多任务全空间模型-entire-space-multi-task-model&#34;&gt;多任务全空间模型 Entire Space Multi-Task Model
+&lt;/h2&gt;&lt;p&gt;在整个空间建模。&lt;br&gt;
+$p(z = 1|y = 1, x) = \frac{p(y = 1, z = 1|x)}{p(y = 1|x)}$&lt;/p&gt;
+&lt;p&gt;这里p(y = 1，z = 1|x)和p(y = 1|x)是在具有所有曝光的S的数据集上建模的。&lt;/p&gt;
+&lt;p&gt;损失函数：$L(θ_{cvr}, θ_{ctr}) = \sum_{i=1}^N{l(y_i,f(x_i; θ_{ctr}))} + \sum_{i=1}^N{l(y_i &amp;amp; z_i,f(x_i; θ_{ctr}) × f(x_i;θ_{cvr}))}$
+l(·)是交叉熵损失函数。&lt;/p&gt;
+&lt;p&gt;特征表征转移。&lt;br&gt;
+嵌入层将大规模稀疏输入映射到低维表示向量中。它贡献了深层网络的大部分参数，而深层网络的学习需要大量的训练样本。在ESMM，CVR网络的嵌入式词典与CTR的嵌入式词典是共享的。它遵循特征表征迁移学习范式。CTR任务的全曝光训练样本相对比CVR任务丰富得多。这种参数共享机制使ESMM的CVR网络能够借鉴未点击的曝光，为缓解数据稀疏问题提供了很大的帮助。
+请注意，ESMM的子网络可以用一些最近开发的模型来代替，这可能会获得更好的性能。由于篇幅有限，我们省略了它，而把重点放在解决CVR建模在实际实践中遇到的挑战上。&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>【Paper】Wide &amp; Deep Learning for Recommender Systems</title>
+        <link>https://hubojing.github.io/ux6wmeer/</link>
+        <pubDate>Tue, 02 Mar 2021 09:20:00 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/ux6wmeer/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\Paper-wide&amp;deep-models.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;推荐系统 + 深度学习 2&lt;/strong&gt;
+　　&lt;strong&gt;谷歌著名的Wide &amp;amp; Deep模型&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;　　题目：Wide &amp;amp; Deep Learning for Recommender Systems
+　　作者：Heng-Tze Cheng, Levent Koc, Jeremiah Harmsen, Tal Shaked, Tushar Chandra,
+　　Hrishi Aradhye, Glen Anderson, Greg Corrado, Wei Chai, Mustafa Ispir, Rohan Anil, Zakaria Haque, Lichan Hong, Vihan Jain, Xiaobing Liu, Hemal Shah, Google Inc.
+　　会议信息：DLRS ’16 September 15-15, 2016, Boston, MA, USA&lt;/p&gt;
+&lt;p&gt;　　谷歌引用数量：1324（截至2021年3月2日）&lt;/p&gt;
+&lt;h1 id=&#34;引言-introduction&#34;&gt;引言 INTRODUCTION
+&lt;/h1&gt;&lt;p&gt;　　推荐系统可视为搜索排序系统，输入是用户和上下文信息的查询，输出是物品列表。类似于一般的搜索排序问题，推荐系统中的一大挑战是同时实现记忆（memorization）和泛化（generalization）。
+　　Memorization可以宽泛地定义为学习物品或特征的共现频率并探索历史数据的相关关系。
+　　Generalization是基于相关性的传递性并探索过去从未出现过的新的特征组合。
+　　基于memorization的推荐系统通常更局限于和直接与用户曾有过行为的物品相关。
+　　基于generalization的推荐系统试图增强推荐物品的多样性。&lt;/p&gt;
+&lt;p&gt;　　例子：如果用户安装了netflix，特征&amp;quot;user_installed_app=netflix&amp;quot;的值为1。
+　　Memorization：通过使用稀疏特征的跨物品转换实现，例如AND(user_installed_app=netflix, impression_app=pandora&amp;quot;)，如果用户安装了netflix，然后显示pandora, AND的值为1。
+　　Generalization：可以通过使用粒度更小的特性来添加，例如AND(user_installed_category=video，impression_category=music)，但是通常需要手动的特征工程。
+　　叉积变换（cross-product transformations）的一个限制是它们不能推广到没有出现在训练数据中的查询项特征对。基于嵌入的模型，例如FM或者DNN跨域解决这个问题。但是当底层的查询项矩阵是稀疏且高阶的（例如用户具有特定的偏好或小范围的吸引力）时，很难学习查询和项的有效低维表示。在这种情况下，大多数查询项对之间应该没有交互，但密集嵌入将导致所有查询项对的预测非零，因此导致过拟合而产生不相干的推荐。具有叉积特征转换的线性模型可以用更少的参数记住这些“例外规则”。&lt;/p&gt;
+&lt;p&gt;　　在本文中提出了Wide&amp;amp;Deep模型，通过联合训练一个线性模型组件和一个神经网络组件，实现在一个模型中记忆和泛化。
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-wide&amp;amp;deep-models.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Wide&amp;Deep模型&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;贡献点&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;带有嵌入和带有特征转换的线性模型的前馈神经网络联合训练的Wide&amp;amp;Deep学习框架，用于具有稀疏输入的通用推荐系统。&lt;/li&gt;
+&lt;li&gt;在谷歌Play上实施和评估，谷歌Play是一个拥有超过10亿活跃用户和超过百万应用的移动应用商店。&lt;/li&gt;
+&lt;li&gt;在TensorFlow中有开源代码。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;推荐系统概述-recommender-system-overview&#34;&gt;推荐系统概述 RECOMMENDER SYSTEM OVERVIEW
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/images/Paper-wide&amp;amp;deep-models-overview.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;概述&#34;
+	
+	
+&gt;
+　　推荐系统一般分为召回（Retrieval）层，排序（Ranking）层。本文在排序层使用Wide &amp;amp; Deep学习框架。&lt;/p&gt;
+&lt;h1 id=&#34;宽--深度学习框架-wide--deep-learning&#34;&gt;宽 &amp;amp; 深度学习框架 WIDE &amp;amp; DEEP LEARNING
+&lt;/h1&gt;&lt;h2 id=&#34;宽度组件-the-wide-component&#34;&gt;宽度组件 The Wide Component
+&lt;/h2&gt;$$\phi_k(x) = \prod_{i=1}^d{x_i}^{c_{ki}}, c_{ki}∈{0,1}$$&lt;p&gt;
+　　其中，$c_{ki}$是一个布尔变量，如果第i个特征是第k个变换$\phi_k$的一部分，则为1，否则为0。
+　　对于二进制特征，一个叉积变换“AND(gender=female, language=en)，只有当(“gender=female” and “language=en”)时才为1。
+　　这捕获了二元特征之间的相互作用，并为广义线性模型增加了非线性。&lt;/p&gt;
+&lt;h2 id=&#34;深度组件-the-deep-component&#34;&gt;深度组件 The Deep Component
+&lt;/h2&gt;$$\alpha^{l+1} = f(W^{(l)}a^{(l)}) + b^{(l)})$$&lt;h2 id=&#34;模型联合训练-joint-training-of-wide--deep-model&#34;&gt;模型联合训练 Joint Training of Wide &amp;amp; Deep Model
+&lt;/h2&gt;$$P(Y=1|x) = \sigma(w^T_{wide}[x,\phi(x)]+w^T_{deep}a^{(l_f)}+b)$$&lt;p&gt;
+　　其中Y是二分类标签，$\sigma(·)$是sigmoid函数，$\phi(x)$是原始特征x的叉积变换，b是偏置项。$w_{wide}$是所有宽度模型权重的向量，$w_{deep}$是应用在最终激活$a^{(l_f)}$的权重。&lt;/p&gt;
+&lt;h1 id=&#34;系统实现-system-implementation&#34;&gt;系统实现 SYSTEM IMPLEMENTATION
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-wide&amp;amp;deep-models-%e7%b3%bb%e7%bb%9f%e5%ae%9e%e7%8e%b0.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;系统实现&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;数据产生-data-generation&#34;&gt;数据产生 Data Generation
+&lt;/h2&gt;&lt;p&gt;　　通过将一个特征值x映射到其累积分布函数P(X≤x)，将连续实值特征归一化为[0,1]，并分成$n_q$分位数。对于第i个分位数的值，规范化值为$\frac{i-1}{n_q-1}$。分位数边界i−1在数据生成时计算。&lt;/p&gt;
+&lt;h2 id=&#34;模型训练-model-training&#34;&gt;模型训练 Model Training
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-wide&amp;amp;deep-models-%e6%a8%a1%e5%9e%8b%e8%ae%ad%e7%bb%83.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;模型训练&#34;
+	
+	
+&gt;
+　　在训练过程中，输入层接收训练数据和词汇，并生成稀疏和密集特征以及标签。宽度组件包括用户安装应用和印象应用的叉积。对于模型的深层部分，每个分类特征学习一个32维的嵌入向量。将所有的嵌入与密集特征连接在一起，得到一个大约1200维的密集向量。然后将连接的矢量送入3个ReLU层，最后送入logistic输出单元。
+　　Wide &amp;amp; Deep模型训练了超过5000亿个例子。每当一组新的训练数据到达时，模型就需要重新训练。然而，每次重新训练在计算上都是昂贵的，并且延迟了服务时间。为了解决这一挑战，本文实现了一个暖启动系统，该系统使用先前模型的嵌入和线性模型权值来初始化一个新的模型。
+在将模型加载到模型服务器之前，需要对模型进行一次演练，以确保在服务实时流量时不会出现问题。本文根据经验来验证模型的质量，作为一个完整的检查。&lt;/p&gt;
+&lt;h2 id=&#34;模型服务-model-serving&#34;&gt;模型服务 Model Serving
+&lt;/h2&gt;&lt;p&gt;　　一旦模型经过训练和验证，就把它加载到模型服务器中。对于每个请求，服务器都会从应用程序检索系统和用户特性中接收一组应用程序候选项来为每个应用程序评分。然后，应用程序从最高分到最低分进行排名，并按照这个顺序向用户展示这些应用程序。分数是通过运行一个采用Wide &amp;amp; Deep模型的正向推理来计算的。
+　　为了为每个请求提供10毫秒量级的服务，使用多线程并行来优化性能，通过并行运行较小的批处理，来代替在单个批处理推理步骤中对所有候选应用程序进行评分。&lt;/p&gt;
+&lt;h1 id=&#34;实验-experiment-results&#34;&gt;实验 EXPERIMENT RESULTS
+&lt;/h1&gt;&lt;h2 id=&#34;app-acquisitions&#34;&gt;App Acquisitions
+&lt;/h2&gt;&lt;p&gt;　　本文在A/B测试框架下进行了为期3周的在线实时实验。对于对照组，随机选择1%的用户，并向他们展示由上一个版本的排名模型生成的推荐，该模型是一个高度优化的广泛性logistic回归模型，具有丰富的叉积特征转换。在实验组中，1%的用户使用了由相同的一组特征进行训练的Wide &amp;amp; Deep模型生成的推荐。
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-wide&amp;amp;deep-models-t1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;性能对比&#34;
+	
+	
+&gt;
+　　Wide &amp;amp; Deep模式使app store主登陆页面的应用获取率比对照组提高了+3.9%。结果还与另1%组仅使用具有相同特征和神经网络结构的模型的深度部分进行了比较，Wide &amp;amp; deep模式比deep-only模型有+1%的增益。
+　　除了在线实验，还展示了AUC。Wide &amp;amp; Deep的线下AUC略高，但对线上流量的影响更显著。一个可能的原因是离线数据集中的印象和标签是固定的，而在线系统可以通过混合归纳和记忆生成新的探索性推荐，并从新的用户反应中学习。&lt;/p&gt;
+&lt;h2 id=&#34;服务性能-serving-performance&#34;&gt;服务性能 Serving Performance
+&lt;/h2&gt;&lt;p&gt;　　面对我们的商业移动应用商店所面临的高流量，高吞吐量和低延迟的服务具有挑战性。在高峰流量时，我们的推荐服务器每秒可以获得超过1000万个应用。使用单个线程，在一次批处理中为所有候选人打分需要31毫秒。我们实现了多线程，并将每个批处理分成更小的部分，这显著地将客户端延迟减少到14毫秒（包括服务开销），如表所示。
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-wide&amp;amp;deep-models-t2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;服务性能&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;相关工作-related-work&#34;&gt;相关工作 RELATED WORK
+&lt;/h1&gt;&lt;p&gt;　　结合带叉积转换的广义线性模型与深层神经网络嵌入的灵感来自以前的工作，比如FM，通过在两个低维嵌入向量之间使用点积分解两个变量间的相互作用，将线性模型了进行推广。在本文中，通过神经网络代替点积来学习嵌入之间高度非线性的相互作用，从而扩展了模型容量。
+　　在语言模型中，通过学习输入和输出之间的直接权值，提出了使用n元特征的递归神经网络(RNNs)和最大熵模型联合训练，以显著降低RNN的复杂性(例如，隐藏层大小)。在计算机视觉中，深度残差学习已被用于降低训练更深层次模型的难度，并通过跳过一个或多个层次的捷径连接提高准确性。
+　　神经网络与图形模型的联合训练还被应用于基于图像的人体姿态估计。在这项工作中，探讨了前馈神经网络和线性模型的联合训练，在稀疏特征和输出单元之间直接连接，用于输入数据稀疏的通用推荐和排序问题。
+　　在推荐系统文献中，将内容信息的深度学习与评分矩阵的协同过滤(CF)相结合来探索协同深度学习。以前的工作也曾致力于手机应用推荐系统，如AppJoy在用户的应用使用记录上使用CF。不同于之前工作中基于cf或基于内容的方法，我们在app推荐系统中，基于用户和印象数据使用Wide &amp;amp; Deep模型联合训练。&lt;/p&gt;
+&lt;h1 id=&#34;总结-conclusion&#34;&gt;总结 CONCLUSION
+&lt;/h1&gt;&lt;p&gt;　　宽度线性模型可以通过叉积特征变换有效地记忆稀疏特征交互，而深度神经网络可以通过低维嵌入来泛化之前未见过的特征交互。在线实验结果表明，与Wide-only和Deep-only模型相比，Wide &amp;amp; Deep模型有显著提高。&lt;/p&gt;
+&lt;h1 id=&#34;代码&#34;&gt;代码
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/python/estimator/canned/dnn_linear_combined.py&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/python/estimator/canned/dnn_linear_combined.py&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>【paper】AutoRec - Autoencoders Meet Collaborative Filtering</title>
+        <link>https://hubojing.github.io/dapymrcc/</link>
+        <pubDate>Thu, 04 Feb 2021 10:19:03 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/dapymrcc/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\Paper-AutoRec-Itembased.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;推荐系统 + 深度学习 1&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;WWW&#39;15&lt;br&gt;
+作者：Suvash  Sedhain, Aditya Krishna Menon, Scott Patrick Sanner, Lexing Xie&lt;/p&gt;
+&lt;p&gt;谷歌学术引用次数580（截至2021年2月4日）&lt;/p&gt;
+&lt;p&gt;关键词：Recommender Systems; Collaborative Filtering; Autoencoders&lt;/p&gt;
+&lt;h1 id=&#34;introduction-引言&#34;&gt;INTRODUCTION 引言
+&lt;/h1&gt;&lt;p&gt;本文提出一种新的基于自动编码器范例的CF模型，思路来自于针对视觉和语音任务的深度神经网络模型。 &lt;br&gt;
+和CF相比，具有表示和计算的优越性。&lt;/p&gt;
+&lt;h1 id=&#34;the-autorec-model-模型&#34;&gt;THE AUTOREC MODEL 模型
+&lt;/h1&gt;$$min_{\theta}\sum_{r∈S}||r - h(r;\theta)||^2_2$$$$h(r;\theta) = f(W · g(Vr + μ) + b)$$&lt;p&gt;
+f、g是激活函数。$\theta = {W, V, μ, b}$&lt;br&gt;
+$W∈\mathbb{R}^{d×k}$, $V∈\mathbb{R}^{k×d}$, $μ∈\mathbb{R}^k$, $b∈\mathbb{R}^d$
+该目标对应于具有单个k维隐藏层的自连接神经网络。使用反向传播来学习参数θ。&lt;/p&gt;
+&lt;p&gt;基于物品的AutoRec模型I-AutoRec&lt;br&gt;
+${r^{(i)}}^n_{i=1}$
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-AutoRec-Itembased.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;基于物品的AutoRec&#34;
+	
+	
+&gt;
+两点改变：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;每个$r^{(i)}$通过反向传播更新和输入有关的权重得到，这在矩阵分解和RBM策略中常用。&lt;/li&gt;
+&lt;li&gt;设计了学习参数正则化防止过拟合。&lt;/li&gt;
+&lt;/ol&gt;
+$$\hat{R}_{ui} = (h(r^{(i)};\hat{\theta}))_u$$$$min_{\theta}||r^{(i)}-h(r^{(i)};\theta)||^2_o + \frac{\lambda}{2}·(||W||^2_F + ||V||^2_F)$$&lt;p&gt;
+$||||^2_o$代表只考虑可观测评分的贡献。&lt;/p&gt;
+&lt;p&gt;基于用户的AutoRec模型U-AutoRec&lt;br&gt;
+${r^{(u)}}^m_{u=1}$&lt;/p&gt;
+&lt;p&gt;和CF策略的区别：&lt;br&gt;
+对比基于RBM的CF模型（RBM-CF）&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;RBM-CF是基于限制玻尔兹曼机的生成概率模型，AutoRec是一个基于自动编码器的判别模型。&lt;/li&gt;
+&lt;li&gt;RBM-CF通过最大化似然log函数估计参数，AutoRec直接最小化RMSE。&lt;/li&gt;
+&lt;li&gt;训练RBM-CF需要使用对比散度，训练AutoRec需要相对更快的基于梯度的反向传播。&lt;/li&gt;
+&lt;li&gt;RBM-CF只使用于离散评分，并对每个评分估计一个分散的参数集。对r个可能的评分，它使用了基于RBM的nkr或者mkr个参数用于用户（物品）。AutoRec与r无关，因此需要较少的参数。 较少的参数使AutoRec的内存占用量更少，更不容易过度拟合。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;对比矩阵分解（MF）&lt;br&gt;
+MF学习线性潜在表示，AutoRec可以通过激活函数学习非线性潜在表示。&lt;/p&gt;
+&lt;h1 id=&#34;experimental-evaluation-实验评估&#34;&gt;EXPERIMENTAL EVALUATION 实验评估
+&lt;/h1&gt;&lt;p&gt;基线：RBM-CF, BiasedMF, LLORMA.&lt;br&gt;
+数据集：Movielens 1M, 10M 和Nerflix数据集&lt;br&gt;
+没有训练数据的测试集默认评分为3。&lt;br&gt;
+训练集：测试集=9：1&lt;br&gt;
+将训练集10%作为验证集。&lt;br&gt;
+重复划分步骤5次并记录平均RMSE。&lt;br&gt;
+每次实验95%在RMSE偶然的间隔在±0.003之间。&lt;br&gt;
+正则化参数λ∈{0.001, 0.01, 0.1, 1, 100, 1000}&lt;br&gt;
+潜在维度k∈{10, 20, 40, 80, 100, 200, 300, 400, 500}&lt;/p&gt;
+&lt;p&gt;三种实验&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;和RBM对比&lt;/li&gt;
+&lt;li&gt;激活函数选取对比&lt;/li&gt;
+&lt;li&gt;隐藏单元k的数量
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-AutoRec-k.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;k&#34;
+	
+	
+&gt;&lt;/li&gt;
+&lt;li&gt;基线性能对比
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-AutoRec-baselines.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;基线&#34;
+	
+	
+&gt;&lt;/li&gt;
+&lt;li&gt;深度扩展对Auto的帮助&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;代码&#34;&gt;代码
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/mesuvash/NNRec&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/mesuvash/NNRec&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;总结&#34;&gt;总结
+&lt;/h1&gt;&lt;p&gt;AutoRec是最简单的深度学习推荐系统。&lt;br&gt;
+它是一种单隐层神经网络推荐模型，将自动编码器与协同过滤相结合。&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>【Paper】Deep Neural Networks for YouTube Recommendations</title>
+        <link>https://hubojing.github.io/fqywpuls/</link>
+        <pubDate>Tue, 15 Dec 2020 14:24:54 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/fqywpuls/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\Paper-YouTube-整体架构.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;YouTube经典推荐论文。&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;　　RecSys&#39;16
+　　谷歌学术引用次数为1201（截至2020年12月15日）&lt;/p&gt;
+&lt;p&gt;　　作者：Paul Covington, Jay Adams, Emre Sargin
+　　Google
+　　Mountain View, CA&lt;/p&gt;
+&lt;p&gt;　　关键词：recommender system; deep learning; scalability
+　　&lt;a class=&#34;link&#34; href=&#34;https://dl.acm.org/doi/pdf/10.1145/2959100.2959190&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;introduction-引言&#34;&gt;Introduction 引言
+&lt;/h1&gt;&lt;p&gt;YouTube推荐系统的三大挑战：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Scale 大规模&lt;/li&gt;
+&lt;li&gt;Freshness 新鲜度&lt;/li&gt;
+&lt;li&gt;Noise 噪声-数据往往是隐式反馈&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;system-overview-系统概述&#34;&gt;System Overview 系统概述
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-YouTube-%e6%95%b4%e4%bd%93%e6%9e%b6%e6%9e%84.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;系统架构&#34;
+	
+	
+&gt;
+　　系统由两部分组成：候选生成部分和排序部分。
+　　候选生成部分输入是用户历史活动事件，使用协同过滤从大数据集中输出小子集。
+　　排序部分根据目标函数对每个视频精排打分，最高分视频推荐给用户。&lt;/p&gt;
+&lt;p&gt;　　优点：从大数据集中选出的小数据集依然具有个性化特征，并且候选生成部分可以添加别的数据源。&lt;/p&gt;
+&lt;p&gt;　　评价指标：精确率、召回率、排序损失等
+　　最后通过A/B测试在线实验（A/B测试结果不总是和离线实验结果相一致）。&lt;/p&gt;
+&lt;h1 id=&#34;candidate-generation-候选生成&#34;&gt;Candidate Generation 候选生成
+&lt;/h1&gt;&lt;p&gt;　　这种方法可以看作矩阵分解的非线性推广，它早期的神经网络迭代只嵌入用户过去观看记录来模拟这种因子分解行为。&lt;/p&gt;
+&lt;h2 id=&#34;recommendation-as-classification-作为分类推荐&#34;&gt;Recommendation as Classification 作为分类推荐
+&lt;/h2&gt;$$P(w_t = i|U,C) = \frac{e^{v_iu}}{\sum_{j∈V}e^{v_ju}}$$&lt;p&gt;
+　　其中$u∈\mathbb{R}^N$代表了用户高维嵌入（embedding），上下文数据对和$V_j∈\mathbb{R}^N$代表了每个候选视频的嵌入（embedding）。
+　　在这样的设定中，一个嵌入就从稀疏实体转为了稠密向量（$\mathbb{R}^N$）。&lt;/p&gt;
+&lt;p&gt;　　深度神经网络的任务是学习用户嵌入u，作为用户历史记录和上下文的函数，这有助于使用softmax分类器从海量视频中进行识别。&lt;/p&gt;
+&lt;h3 id=&#34;effcient-extreme-multiclass-高效极端多分类&#34;&gt;Effcient Extreme Multiclass 高效极端多分类
+&lt;/h3&gt;&lt;p&gt;　　为了有效地训练这样一个拥有数百万分类的模型，需要依赖于一种技术，从背景分布(“候选抽样”)中抽取负类，然后通过重要性加权对该抽样进行修正。对于每一个实例，真标签和抽样的负样本的交叉熵损失都最小。
+　　在严格的服务延迟为几十毫秒的情况下为百万个物品打分需要一个近似亚线性的方案。以前的YouTube系统依赖于hashing，分类采用相似方法。
+　　由于服务时不需要softmax输出层校准可能性（？有些不解），评分问题简化为在点积空间的最近邻搜索，在这个空间中，通用库可以使用。A/B结果对最近邻搜索算法的选择不是特别敏感。&lt;/p&gt;
+&lt;h2 id=&#34;model-architecture-模型架构&#34;&gt;Model Architecture 模型架构
+&lt;/h2&gt;&lt;p&gt;　　学习每个视频的高维嵌入到固定词汇中，并将这些嵌入输入到前馈神经网络中。用户的观看历史记录由稀疏视频id的可变长度序列表示，该序列通过嵌入映射到稠密向量表示。该网络需要固定规模的密集输入，并简单地平均在不同策略中表现最好的嵌入。通过梯度下降反向传播更新，嵌入与所有其他模型参数联合学习。特征被连接成一个宽的第一层，然后是几层全连接的线性单元(ReLU)。如下图所示。
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-YouTube-%e5%80%99%e9%80%89%e7%94%9f%e6%88%90%e6%9e%b6%e6%9e%84.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;候选生成架构&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;heterogeneous-signals-混合信号&#34;&gt;Heterogeneous Signals 混合信号
+&lt;/h2&gt;&lt;p&gt;　　使用深度神经网络作为矩阵分解的推广的一个关键优点是任意连续和分类特征可以很容易地添加到模型中。&lt;/p&gt;
+&lt;h3 id=&#34;example-age-feature-示例年龄特征&#34;&gt;“Example Age” Feature “示例年龄”特征
+&lt;/h3&gt;&lt;p&gt;　　用户往往喜欢新鲜的内容。除了简单地推荐用户想看的新视频的一级效应，还有一个重要的二级现象，即引导和传播病毒式内容。视频受欢迎程度是会变化的，但推荐系统反映的是几周内的平均观看可能性。为了纠正这一点，在训练期间将训练示例的年龄作为一个特征输入。在服务时间，这个特征被设置为零(或者稍微负一点)，以反映模型正在训练窗口的最后进行预测。
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-YouTube-with_example_age.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;With Example Age&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;label-and-context-selection-标签和上下文选择&#34;&gt;Label and Context Selection 标签和上下文选择
+&lt;/h2&gt;&lt;p&gt;　　替代学习问题的选择对A/B测试的性能有很大的影响，但很难用离线实验来衡量。
+　　训练示例是从所有YouTube视频中生成的而不是仅仅依靠推荐。否则新内容的出现将会非常困难，而且推荐器会有过度偏向。如果用户是通过推荐以外的方式发现视频，希望能够通过协同过滤快速传播这个发现给其他人。改进实时指标的另一个关键见解是，为每个用户生成固定数量的训练样例，有效平等地在损失函数中权衡我们的用户。这避免了一小部分高活跃用户主导损失。
+　　必须非常小心地对分类器隐瞒信息，以防止模型利用站点的结构和过度拟合代理问题。
+　　预测用户下一个观看的性能要比预测随机留出的观看好得多。许多协同过滤系统隐式地选择标签和上下文，方法是取出一个随机的物品，并从用户历史记录中的其他物品中预测它。这泄露了未来信息并忽视了非对称消费模式。相反，本文“回滚”用户的历史记录，通过选择一个随机的观看记录，并且只输入用户留出的有标签的观看记录之前采取的动作。
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-YouTube-predict_future_watch.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Predicting future watch&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;experiments-with-features-and-depth-特征和深度实验&#34;&gt;Experiments with Features and Depth 特征和深度实验
+&lt;/h2&gt;&lt;p&gt;　　添加特征和深度可以显著改善保持数据的精度，如图6所示。在这些实验中，一个包含100万个视频和100万个搜索令牌的词汇表中嵌入了256个浮点数，每个浮点数的最大包尺寸为50个最近的观看和50个最近的搜索。softmax层在相同的1M视频类上输出多项分布，维数为256(可以认为是单独的输出视频嵌入)。网络结构遵循一个常见的“塔”模式，其中网络的底部是最宽的，每个后续隐藏层的单位数量减半。&lt;/p&gt;
+&lt;h1 id=&#34;ranking-排序&#34;&gt;Ranking 排序
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-YouTube-%e6%8e%92%e5%ba%8f%e6%9e%b6%e6%9e%84.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;排序架构&#34;
+	
+	
+&gt;
+　　使用与候选生成结构相似的深度神经网络，使用逻辑回归为每个视频印象分配一个独立的分数。如图所示。然后，视频列表将根据这个分数进行排序并返回给用户。最终排名目标是根据实时A/B测试结果不断调整，但通常是每个印象的预期观看时间的简单函数。通过点击率排名通常会促进欺骗性视频，用户没有完成(“点击诱饵”)，而观看时间能够更好地捕捉用户粘性。&lt;/p&gt;
+&lt;h2 id=&#34;feature-representation-特征表示&#34;&gt;Feature Representation 特征表示
+&lt;/h2&gt;&lt;p&gt;　　用的类别或特征在基数上差别很大——有些是二进制的（例如用户是否登录），而其他有数百万个可能的值（例如用户的最后一次搜索查询）。根据功能是仅贡献单个值(&amp;ldquo;univalent&amp;rdquo;)还是一组值(&amp;ldquo;multivalent&amp;rdquo;)，进一步划分功能。　　
+univalent例子：被评分的视频ID，multivalent例子：用户最近观看的N个视频ID的bag。还根据特性是描述物品的属性（&amp;ldquo;impression&amp;rdquo;）还是描述用户/上下文的属性（&amp;ldquo;query&amp;rdquo;）对特性进行分类。查询特征为每个请求计算一次，而印象特征为每个物品项计算一次。&lt;/p&gt;
+&lt;h3 id=&#34;feature-engineering-特征工程&#34;&gt;Feature Engineering 特征工程
+&lt;/h3&gt;&lt;p&gt;　　描述过去视频输入频率的特性对于在推荐中引入“churn”(连续的请求不返回相同的列表)也是至关重要的。如果一个用户最近被推荐了一个视频，但没有看过它，那么模型自然会在下一次加载页面时降低这种印象。&lt;/p&gt;
+&lt;h3 id=&#34;embedding-categorical-features-嵌入分类特征&#34;&gt;Embedding Categorical Features 嵌入分类特征
+&lt;/h3&gt;&lt;p&gt;　　类似于候选生成，使用嵌入将稀疏分类特征映射到适合于神经网络的稠密表示。
+　　同一ID空间中的分类特性也共享底层的嵌入。共享嵌入对于提高泛化性能、加快训练速度和减少内存需求具有重要意义。&lt;/p&gt;
+&lt;h3 id=&#34;normalizing-continuous-features-归一化连续特征&#34;&gt;Normalizing Continuous Features 归一化连续特征
+&lt;/h3&gt;&lt;p&gt;　　神经网络对其输入的尺度和分布非常敏感，而其他方法，如决策树的集合，对单个特征的尺度是不变的。
+　　对于连续特征x，其分布为f，使用公式$\tilde{x} = \int_{-\infty}^xdf$进行归一化操作到[0,1)。除了该方法，也使用了$\tilde{x}^2$和$\sqrt{\tilde{x}}$。&lt;/p&gt;
+&lt;h2 id=&#34;modeling-expected-watch-time-预期观看时间建模&#34;&gt;Modeling Expected Watch Time 预期观看时间建模
+&lt;/h2&gt;&lt;p&gt;　　预期观看时间使用加权逻辑回归方法。
+　　模型在交叉熵损失下用逻辑回归进行训练。积极的（点击）印象是由视频上观察的观看时间加权的。负面（未点击的）印象全部获得单位权重。
+　　逻辑回归学到的概率为$\frac{\sum{T_i}}{N-k}$，N是训练集数量，k是正例数量，$T_i$是第i个印象的观看时间。
+　　最终本文使用指数函数$e^x$作为最后激活函数来产生预估概率。&lt;/p&gt;
+&lt;h2 id=&#34;experiments-with-hidden-layers隐藏层实验&#34;&gt;Experiments with Hidden Layers隐藏层实验
+&lt;/h2&gt;&lt;p&gt;　　这些结果表明，增加隐藏层的宽度可以改善结果，同时也可以增加它们的深度。但是，需要权衡的是推荐所需的服务器CPU时间。&lt;/p&gt;
+&lt;h1 id=&#34;conclusions-总结&#34;&gt;Conclusions 总结
+&lt;/h1&gt;&lt;p&gt;　　将YouTube推荐问题划分为两个部分：候选生成部分和排序部分。
+　　通过捕捉不对称的协同观看行为和防止未来信息泄漏，对未来观看进行分类，可以很好地执行实时指标。从分类器中截取不同信号对于取得良好的结果也是至关重要的——否则模型会过度拟合代理问题而不能很好地转移到主页。
+　　使用训练样例的年龄作为输入特征，消除了对过去的固有偏见，并允许模型表示流行视频的时间依赖性行为。这提高了离线保持精度结果，并在A/B测试中显著增加了观看最近上传的视频的时间。
+　　排序是一个比较经典的机器学习问题，然而本文深度学习方法在观看时间预测方面优于以往的线性和基于树的方法。推荐系统尤其受益于描述用户关于物品的历史行为的特定特征。深度神经网络需要分类特征和连续特征的特殊表示，分别用嵌入和分位数规范化进行变换。层的深度显示有效地模拟了非线性交互之间的数百个特征。
+　　逻辑回归通过加权训练样例修正了正例，统一了负例，使之能学习预期观看时间的概率。与直接预测点击率相比，该方法在观看时间加权排序评价指标上表现得更好。&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>【Paper】Factorization Machines</title>
+        <link>https://hubojing.github.io/ucapbpue/</link>
+        <pubDate>Wed, 09 Dec 2020 11:18:31 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/ucapbpue/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\Paper-FM-feature_x.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;FM算法原文。&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;　　2010 IEEE International Conference on Data Mining
+　　Steffen Rendle
+　　Department of Reasoning for Intelligence
+　　The Institute of Scientific and Industrial Research Osaka University, Japan
+谷歌学术被引用次数1396（截至2020年12月14日）
+　　论文关键词：factorization machine; sparse data; tensor factorization; support vector machine
+　　&lt;a class=&#34;link&#34; href=&#34;https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;amp;arnumber=5694074&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;introduction-引言&#34;&gt;Introduction 引言
+&lt;/h1&gt;&lt;p&gt;　　FM优点：
+　1. FM能在很稀疏的数据上进行参数估计，但SVM不行。
+　2. FM是线性复杂度，不需要类似于SVM中的支持向量。
+　3. FM是通用预测方法，适用于任何特征向量。其它的因子分解方法都受限于特定的输入。（对比biased MF, SVD++, PITF和FPMC）&lt;/p&gt;
+&lt;h1 id=&#34;prediction-under-sparsity-稀疏情况下的预测&#34;&gt;Prediction under sparsity 稀疏情况下的预测
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-FM-feature_x.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;feature x&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;factorization-machinesfm-因子分解机&#34;&gt;Factorization machines(FM) 因子分解机
+&lt;/h1&gt;&lt;h2 id=&#34;factorization-machine-model-因子分解机模型&#34;&gt;Factorization machine model 因子分解机模型
+&lt;/h2&gt;$$\hat{y}(x):=w_0 + \sum_{i=1}^nw_ix_i + \sum_{i=1}^n\sum_{j=i+1}^n&lt;v_i,v_j&gt;x_ix_j$$$$&lt;v_i,v_j&gt;:=\sum_{f=1}^kv_{i,f}·v_{j,f}$$&lt;p&gt;
+　　V中的$v_i$描述k个因素中的第i个变量。$Ks∈N_0^+$是定义因子分解的维度的超参数。
+　　2-way FM捕捉所有变量的单个和成对交互：
+　　$w_0$是全局偏置，$w_i$模拟了第i个变量的程度。
+　　$\hat{w}_{i,j}:=&amp;lt;v_i, v_j&amp;gt;$模拟了第i和第j个变量间的交互。这个在高阶交互时（d &amp;gt; 2）高质量估计的关键。
+　　时间复杂度O($kn^2$)，因为所有的交互对都要被计算。但可以变形使之化为O(kn)。&lt;/p&gt;
+&lt;h2 id=&#34;factorization-machines-as-predictors-fm作为预测器&#34;&gt;Factorization machines as predictors FM作为预测器
+&lt;/h2&gt;&lt;p&gt;　　可用于回归、二分类和排序问题。&lt;/p&gt;
+&lt;h2 id=&#34;learning-factorization-machines-fm学习策略&#34;&gt;Learning factorization machines FM学习策略
+&lt;/h2&gt;&lt;p&gt;　　使用随机梯度下降（SGD）来学习。&lt;/p&gt;
+&lt;h2 id=&#34;d-way-factorization-machine-多维fm&#34;&gt;d-way factorization machine 多维FM
+&lt;/h2&gt;&lt;p&gt;　　同时2-way FM可以拓展为d-way。&lt;/p&gt;
+&lt;h2 id=&#34;summary-总结&#34;&gt;Summary 总结
+&lt;/h2&gt;&lt;p&gt;　　FM优点：
+　　1. 在高稀疏下可估计特征交互，尤其是不可观测的交互。
+　　2. 预测和学习的时间复杂度是线性的。使SGD优化可行，并允许多种损失函数优化。&lt;/p&gt;
+&lt;h1 id=&#34;fms-vs-svms-因子分解机对比支持向量机&#34;&gt;FMs vs. SVMs 因子分解机对比支持向量机
+&lt;/h1&gt;&lt;h2 id=&#34;svm-model-支持向量机模型&#34;&gt;SVM model 支持向量机模型
+&lt;/h2&gt;$$\hat{y}(x) = &lt;\Phi(x), w&gt;$$$$K:R^n × R^n → R, K(x, z) = &lt;\Phi(x), \Phi(z)&gt;$$&lt;ol&gt;
+&lt;li&gt;
+$$\hat{y}(x) = w_0 + \sum^n_{i=1}w_ix_i, w_0∈R, w∈R^n$$&lt;p&gt;
+　　这等价于FM中d = 1的情况。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+$$\hat{y}(x) = w_0 + \sqrt{2}\sum^n_{i=1}w_ix_i + \sum^n_{i = 1}w_{i,i}^{(2)}x_i^2 + \sqrt{2}\sum^n_{i=1}\sum^n_{j=i+1}w_{i,j}^{(2)}x_ix_j$$&lt;p&gt;
+　　其中$w_0∈R, w∈R^n, w^(2)∈R^{n×n}$。
+　　d = 2时，FM和SVM的区别在于SVM中$w_{i,j}$是完全独立的，而FM中参数是因子分解的，所以$&amp;lt;v_i, v_j&amp;gt;$依赖于彼此。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;parameter-estimation-under-sparsity-在稀疏情况下的参数估计&#34;&gt;Parameter Estimation Under Sparsity 在稀疏情况下的参数估计
+&lt;/h2&gt;&lt;p&gt;　　举例：使用协同过滤（上图中蓝色和红色部分数据）。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;线性SVM
+$$\hat{y}(x) = w_0 + w_u + w_i$$
+　　只有j = u 或 j = i时$x_j$ = 1，即只有用户和物品偏好被选中时才有用。由于模型简单，在稀疏情况也能进不错的参数估计，但预测质量低。&lt;/li&gt;
+&lt;li&gt;多项式SVM
+$$\hat{y}(x) = w_0 + \sqrt{2}(w_u + w_i) + w_{u,u}^{(2)} +  w_{i,i}^{(2)} + \sqrt{2}w_{u,i}^{(2)}$$
+　　$w_u$和$w_{u,u}^{(2)}$是一样的。该等式除了一个额外的$w_{u,i}$，等价于线性SVM。在训练集中，对于每一个$w_{u,i}$最多只有一条记录，在测试集中通常没有。因此，2-way的SVM效果也不比线性SVM好。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;summary-总结-1&#34;&gt;Summary 总结
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;SVM需要直接观测交互数据，但稀疏数据集经常没有。FM参数可以在系数情况下进行不错的参数估计。&lt;/li&gt;
+&lt;li&gt;FM可以一开始就直接学习，但非线性SVM需要成对学习。&lt;/li&gt;
+&lt;li&gt;FM是独立于训练集的，SVM的预测是基于部分训练数据的。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;fms-vs-other-factorization-models-其它因子分解方法对比&#34;&gt;FMs VS. Other Factorization Models 其它因子分解方法对比
+&lt;/h1&gt;&lt;p&gt;　　改写FM公式形式，分别与Matrix and Tensor Factorization矩阵和张量分解、SVD++、PITF for Tag Recommendation、Factorized Personalized Markov Chains(FPMC)方法对比，FM改写后性能与这些方法实现效果类似。&lt;/p&gt;
+&lt;h2 id=&#34;summary-总结-2&#34;&gt;Summary 总结
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;标准因子分解模型（比如PARAFAC或者MF）不像FM一样是通用预测模型。&lt;/li&gt;
+&lt;li&gt;修改特征提取部分，FM可以模拟在特定任务下的成功模型（比如MF,PARAFAC,SVD++,PITF,FPMC)。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;conclusion-and-future-work-总结和展望&#34;&gt;Conclusion and Future Work 总结和展望
+&lt;/h1&gt;&lt;p&gt;　　与SVM对比，&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在数据稀疏情况下，FM可以进行参数估计。&lt;/li&gt;
+&lt;li&gt;模型时间复杂度是线性的，并且只依赖于模型参数。&lt;/li&gt;
+&lt;li&gt;从最开始就能直接优化。&lt;/li&gt;
+&lt;/ol&gt;</description>
+        </item>
+        <item>
+        <title>【Paper】Matrix Factorization Techniques for Recommender Systems</title>
+        <link>https://hubojing.github.io/dvbvavgt/</link>
+        <pubDate>Mon, 07 Dec 2020 15:12:57 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/dvbvavgt/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\Paper-MF-LFM.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;矩阵分解算法原文。&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;　　2009年发表于IEEE旗下的Computer期刊。
+　　谷歌学术引用数为7954（截至2020年12月7日）。&lt;br&gt;
+　　作者：Yehuda Koren, Yahoo Research
+　　Robert Bell and Chris Volinsky, AT&amp;amp;T Labs—Research&lt;br&gt;
+　　DOI: 10.1109/MC.2009.263&lt;br&gt;
+　　&lt;a class=&#34;link&#34; href=&#34;https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;amp;arnumber=5197422&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;recommender-system-stratrgies-推荐系统策略&#34;&gt;Recommender System Stratrgies 推荐系统策略
+&lt;/h1&gt;&lt;p&gt;　　两种策略：content filtering approach和collaborative filtering&lt;br&gt;
+　　前者需要收集外部信息，但这不容易得到。后者聚焦于用户过去的行为，相比前者精确度更高，但它有冷启动问题。相反，在冷启动问题方面，前者更优越。&lt;/p&gt;
+&lt;p&gt;　　协同过滤又分为neighborhood methods和latent factor models。&lt;br&gt;
+　　基于领域的策略又可分为基于用户和基于物品。&lt;br&gt;
+　　基于物品的策略基于同一个用户对相邻物品的评分对用户偏好进行评估。同一个用户给一件物品的相邻物品会打相似的评分。&lt;br&gt;
+　　基于用户的方法鉴定相似的用户，他们可以互相补充对方的评分信息。&lt;/p&gt;
+&lt;p&gt;　　LFM隐语义模型&lt;br&gt;
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-MF-LFM.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;LFM&#34;
+	
+	
+&gt;&lt;br&gt;
+　　意思是把特征刻画分为k个维度。如图，将刻画特征设为性别和题材类别（serious/escapist），形成一个坐标空间，每个用户和物品都在这个空间中，如果在坐标系中距离越近则说明越相似。&lt;/p&gt;
+&lt;h1 id=&#34;matrix-factorization-methods-矩阵分解策略&#34;&gt;Matrix Factorization Methods 矩阵分解策略
+&lt;/h1&gt;&lt;p&gt;　　一些最成功的隐语义模型是基于矩阵分解实现的。&lt;br&gt;
+　　矩阵分解通过从评分矩阵推断出的因子向量来刻画物品和用户。&lt;br&gt;
+　　优势：当显式反馈无法得到时，可以添加其它信息（比如使用隐式反馈推断用户偏好）。&lt;/p&gt;
+&lt;h1 id=&#34;a-basic-matrix-factorization-model-基本矩阵分解模型&#34;&gt;A Basic Matrix Factorization Model 基本矩阵分解模型
+&lt;/h1&gt;$$\hat{r}_{ui} = {q_i}^T{p_u}$$$$min_{q\*,p\*}\sum_{(u,i)∈k}({r_ui} - {p_u}^Tq_i)^2 + \lambda(||p_u||^2 + ||q_i||^2)$$&lt;p&gt;
+　　其中，k是(u,i)对的集合。${r_{ui}}$是未知的（训练集）。&lt;/p&gt;
+&lt;h1 id=&#34;learning-algorithms-学习算法&#34;&gt;Learning Algorithms 学习算法
+&lt;/h1&gt;&lt;p&gt;　　使上述式子最小化的两种方法是随机梯度下降和交替最小二乘法。&lt;/p&gt;
+&lt;h2 id=&#34;stochastic-gradient-descent-随机梯度下降&#34;&gt;Stochastic gradient descent 随机梯度下降
+&lt;/h2&gt;$$\begin{equation}{e_{ui}}\overset{def}{=} {r_{ui}} - {q_i}^T{p_u}\end{equation}$$$${q_i} \leftarrow q_i + \gamma·({e_ui}·{p_u} - \lambda · {q_i})$$$${p_u} \leftarrow p_u + \gamma·({e_ui}·{q_i} - \lambda · {p_u})$$&lt;p&gt;　　该方法运行速度较快。不过在有些场景下，使用ALS优化更好。&lt;/p&gt;
+&lt;h2 id=&#34;alternating-least-squares-交替最小二乘法&#34;&gt;Alternating least squares 交替最小二乘法
+&lt;/h2&gt;&lt;p&gt;　　一般随机梯度下降比ALS简单且快。但ALS适用于两个场景，一是系统可以并行化。ALS可独立计算${q_i}$和${p_u}$。二是隐式数据情况下使用。&lt;/p&gt;
+&lt;h1 id=&#34;adding-biases&#34;&gt;Adding Biases
+&lt;/h1&gt;$${b_{ui}} = μ + {b_i} + {b_u}$$$$\hat{r}_{ui} = μ + {b_i} + {b_u} + {q_i}^T{p_u}$$$$min_{p\*,q\*,b\*}\sum_{(u,i)∈k}({r_ui} - μ - {b_u}- {b_i}-{p_u}^Tq_i)^2 + \lambda(||p_u||^2 + ||q_i||^2 + b_u^2 + b_i^2)$$&lt;h1 id=&#34;additional-input-sources-额外输入资源&#34;&gt;Additional Input Sources 额外输入资源
+&lt;/h1&gt;$$\hat{r}_{ui} = μ + {b_i} + {b_u} + {q_i}^T[{p_u} + |N(u)|^{-0.5} \sum_{i∈N(u)}{x_i} + \sum_{a∈A(u)}{y_a}]$$&lt;p&gt;
+　　N(u)指用户u有过隐式反馈的若干个item集合。x是和item i相关的因素。$\sum_{i∈N(u)}{x_i}$表示一个用户对N(u)中的若干item的偏好刻画向量。系数代表规范化。&lt;br&gt;
+　　用户属性用A(u)表示，每一个用户的每一个属性对应的因素向量用$y_a$表示。$\sum_{a∈A(u)}{y_a}表示每个用户的属性集。&lt;/p&gt;
+&lt;h1 id=&#34;temporal-dynamics-时空动态&#34;&gt;Temporal dynamics 时空动态
+&lt;/h1&gt;$$\hat{r}_{ui}(t) = μ + b_i(t) + b_u(t) + q_i^Tp_u(t)$$&lt;p&gt;
+　　$b_i(t)$表示物品随时间变化的流行程度，$b_u(t)$表示用户评分随时间变化的严格程度，$p_u(t)$表示用户偏好随时间变化的改变程度。物品是静态的，所以$q_i$也是静态的。&lt;/p&gt;
+&lt;h1 id=&#34;inputs-with-varying-confidence-levels-各种信任级别的输入&#34;&gt;Inputs with varying confidence levels 各种信任级别的输入
+&lt;/h1&gt;$$min_{p\*,q\*,b\*}\sum_{(u,i)∈k}c_{ui}({r_ui} - μ - {b_u}- {b_i}-{p_u}^Tq_i)^2 + \lambda(||p_u||^2 + ||q_i||^2 + b_u^2 + b_i^2)$$&lt;p&gt;
+　　$c_{ui}$为评分的信任程度。&lt;/p&gt;
+&lt;h1 id=&#34;netflix-prize-competition--netflix大奖竞赛&#34;&gt;Netflix prize competition  Netflix大奖竞赛
+&lt;/h1&gt;&lt;p&gt;　　使用矩阵分解的方法取得了第一名的成绩。
+&lt;img src=&#34;https://hubojing.github.io/images/Paper-MF-accuracy.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;精确度&#34;
+	
+	
+&gt;
+　　加的因素越多，精确度越高。&lt;/p&gt;
+&lt;h1 id=&#34;阅后总结&#34;&gt;阅后总结
+&lt;/h1&gt;&lt;p&gt;　　本文主要介绍了矩阵分解的具体算法。&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>【Paper】Amazon.com Recommendations Item-to-Item Collaborative Filtering</title>
+        <link>https://hubojing.github.io/h5bkenqv/</link>
+        <pubDate>Wed, 02 Dec 2020 14:40:23 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/h5bkenqv/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\假装有图片.jpg&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;ItemCF原文。&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;　　22 January 2003&lt;br&gt;
+　　谷歌学术被引用次数：6769（截至2020年12月2日）&lt;br&gt;
+　　期刊：IEEE Internet Computing&lt;br&gt;
+　　DOI: 10.1109/MIC.2003.1167344&lt;br&gt;
+　　作者：Greg Linden,Brent Smith,and Jeremy York • Amazon.com&lt;br&gt;
+　　&lt;a class=&#34;link&#34; href=&#34;https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;amp;arnumber=1167344&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;引言&#34;&gt;引言
+&lt;/h1&gt;&lt;p&gt;　　电子商务推荐算法面临的挑战：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一家大型零售商可能拥有大量数据、数千万客户和数百万不同的物品&lt;/li&gt;
+&lt;li&gt;要求在不超过半秒钟的时间内实时返回结果集，同时能产生高质量的推荐&lt;/li&gt;
+&lt;li&gt;新客户通常只有非常有限的信息，仅有少量购买信息和产品评分&lt;/li&gt;
+&lt;li&gt;基于成千上万次的购买和评分，老用户可能拥有大量信息&lt;/li&gt;
+&lt;li&gt;客户数据是不稳定的：每次交互都提供有价值的客户数据，算法必须对新信息立即做出响应&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;recommendation-algorithms-推荐算法&#34;&gt;Recommendation Algorithms 推荐算法
+&lt;/h1&gt;&lt;p&gt;　　三种常规方法：&lt;br&gt;
+　　传统协同过滤、聚类模型和基于搜索的策略&lt;br&gt;
+　　traditional collaborative filtering, cluster models, and search-based methods&lt;/p&gt;
+&lt;h2 id=&#34;traditional-collaborative-filtering-传统协同过滤&#34;&gt;Traditional Collaborative Filtering 传统协同过滤
+&lt;/h2&gt;&lt;p&gt;　　传统协同过滤，这里指基于用户的协同过滤方法。&lt;br&gt;
+　　相似度计算：&lt;br&gt;
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-Amazon-similarity.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;similarity&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;　　使用该方法时间复杂度最差为O(MN)，由于用户向量稀疏，时间复杂度更接近于O(M + N)。（大部分用户只涉及很少的物品，每个用户是O(M)，但一小部分用户买了很多物品，需要O(N)时间。）&lt;br&gt;
+　　M为用户数，N为物品数&lt;/p&gt;
+&lt;p&gt;　　解决方法是降低数据规模。&lt;br&gt;
+　　通过随机采样用户或者忽视只有少数购买记录的用户，来减少M。&lt;br&gt;
+　　通过忽视非常流行或不流行的物品，来减少N。&lt;br&gt;
+　　还可以通过产品类别或或客观分类来分割物品成为小向量来减少物品数量。&lt;br&gt;
+　　维度减少，比如聚类或主成分分析可以减少M或N的大量因素。&lt;/p&gt;
+&lt;p&gt;　　但是上述方法会降低推荐质量。&lt;/p&gt;
+&lt;h2 id=&#34;cluster-models-聚类模型&#34;&gt;Cluster Models 聚类模型
+&lt;/h2&gt;&lt;p&gt;　　该算法的目标是将用户分配到包含最相似用户的簇。然后，它使用该簇中用户的购买和评级信息来推荐。&lt;br&gt;
+　　一旦该算法生成了簇，它就计算用户与每个簇的向量的相似性，然后选择具有最大相似性的簇，并相应地对用户进行分类。一些算法将用户分为多个簇，并描述每个关系的强度。&lt;br&gt;
+　　优点：比上述协同过滤具有更好的在线可扩展性和性能，复杂且昂贵的聚类计算是离线运行的。&lt;br&gt;
+　　缺点：推荐效果差。通过使用大量细粒度的聚类来提高质量是可能的，但是线上用户细分聚类变得几乎和使用协同过滤寻找相似客户一样昂贵。&lt;/p&gt;
+&lt;h2 id=&#34;search-based-methods-基于搜索的策略&#34;&gt;Search-Based Methods 基于搜索的策略
+&lt;/h2&gt;&lt;p&gt;　　基于搜索或基于内容的方法将推荐问题视为对相关项目的搜索。对于给定用户购买和评级信息的物品，该算法构建搜索查询来查找由相同作者、艺术家或导演或具有相似关键字或主题的其他流行项目。例如，如果一位顾客购买了《教父》系列影碟，系统可能会推荐其他犯罪题材的电影、其他由影星马龙·白兰度主演的电影或其他由弗朗西斯·福特·科波拉执导的电影。&lt;/p&gt;
+&lt;p&gt;　　优点：用户购买和评分记录少时，性能不错。&lt;br&gt;
+　　缺点：推荐质量低，推荐的物品太一般（general)或太狭窄（narrow）。&lt;/p&gt;
+&lt;h1 id=&#34;item-to-item-collaborative-filtering-基于物品的协同过滤&#34;&gt;Item-to-Item Collaborative Filtering 基于物品的协同过滤
+&lt;/h1&gt;&lt;h2 id=&#34;how-it-works-如何工作&#34;&gt;How It Works 如何工作
+&lt;/h2&gt;&lt;p&gt;　Item-to-item collaborative filtering matches each of the user’s purchased and rated items to similar items, then combines those similar items into a recommendation list.&lt;/p&gt;
+&lt;p&gt;　　基于物品的协同过滤将用户购买的和评分的每个物品与相似的物品进行匹配，然后将这些相似的物品组合成推荐列表。&lt;/p&gt;
+&lt;p&gt;　　为了确定给定物品的最相似匹配，该算法通过查找用户倾向于一起购买的物品来构建相似物品表。可通过遍历所有物品并为每一对计算相似性来构建物品矩阵。然而，许多产品对没有共同的用户，因此这种方法在处理时间和内存使用方面效率低下。以下迭代算法通过计算单个物品和所有相关物品之间的相似性提供了更好的措施：&lt;br&gt;
+　　伪代码&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;For each item in product catalog, I1
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    For each customer C who purchased I1
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        For each item I2 purchased by customer C
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;            Record that a customer purchased I1 and I2
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    For each item I2
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        Compute the similarity between I1 and I2
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;　　计算两个物品之间的相似性有多种方法，一种常见的方法是使用前面描述的余弦度量，其中每个向量对应于一个物品而不是一个客户，并且向量的多维度对应于已经购买该物品的用户。相似物品表的这种离线计算非常耗时，最糟糕的情况是O($N^2M$)。然而，在实践中，它更接近于零，因为大多数客户只有很少的购买记录。对购买畅销物品的用户进行采样会进一步减少运行时间，而质量几乎没有下降。&lt;br&gt;
+　　给定相似物品表，该算法找到与每个用户的购买和评分相似的物品，汇总这些物品，然后推荐最受欢迎或相关的物品。这种计算非常快速，仅取决于用户购买或评分的物品数量。&lt;/p&gt;
+&lt;h2 id=&#34;scalability-a-comparison-可扩展性&#34;&gt;Scalability: A Comparison 可扩展性
+&lt;/h2&gt;&lt;p&gt;　　Amazon.com有超过2900万的顾客和数百万的商品目录。对于非常大的数据集，可扩展的推荐算法必须离线执行最昂贵的计算。&lt;br&gt;
+　　现有算法的缺点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;传统的协同过滤很少或没有离线计算，其在线计算随着用户和物品目录的数量而变化。该算法在大数据集上是不切实际的，除非它使用降维、采样或分区——所有这些都会降低推荐质量。&lt;/li&gt;
+&lt;li&gt;聚类模型可以离线执行大部分计算，但是推荐质量相对较差。为了改善这一点，可以增加细分簇的数量，但这使得在线用户细分分类变得昂贵。&lt;/li&gt;
+&lt;li&gt;基于搜索的模型离线构建关键字、类别和作者索引，但无法提供有趣的、有针对性的主题推荐。对于有大量购买和评分的用户来说，它们的可扩展性也很小。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;　　可扩展性和性能的关键是它离线创建昂贵的相似物品表。该算法的在线组件——为用户的购买和评分物品查找相似的物品——独立于物品目录大小或客户总数，它只取决于用户购买或评分物品。因此，即使对于非常大的数据集，该算法也是快速的。因为该算法推荐高度相关的相似物品，所以推荐质量很好。与传统的协作过滤不同，该算法在有限的用户数据下也表现良好，仅基于两三个物品就能产生高质量的推荐。&lt;/p&gt;
+&lt;h1 id=&#34;conclusion-总结&#34;&gt;Conclusion 总结
+&lt;/h1&gt;&lt;p&gt;　　主要是介绍了基于物品的协同过滤思想。&lt;br&gt;
+　　耗时昂贵的操作放在线下离线进行，使线上达到实时要求。&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>Hulu AI Class Quiz</title>
+        <link>https://hubojing.github.io/gqeubb8v/</link>
+        <pubDate>Thu, 23 Jul 2020 16:00:29 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/gqeubb8v/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\Hulu AI Class Quiz1-cover.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;Quiz for traditional recommendation models.&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;quiz1&#34;&gt;Quiz1
+&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;从基于用户的协同过滤和基于物品的协同过滤的原理思考，下列场景中使用哪种协同过滤算法更加合适？为什么？
+(1)新闻资讯推荐
+(2)电商网站推荐&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;参考答案&lt;/strong&gt;
+（1）在新闻推荐的场景中，我们更推荐使用基于用户的协同过滤。
+　　主要原因在于：
+　　1.新闻推荐通常具有一定的社交属性，通过User-based CF，用户能够通过朋友的浏览行为更新自己的推荐列表。
+　　2.新闻推荐的实时性和热点性往往比较重要，使用User-based CF能够快速发现热点，跟踪热点趋势。&lt;/p&gt;
+&lt;p&gt;（2）在电商推荐的场景中，我们更推荐使用基于物品的协同过滤，主要原因在于:
+　　1.用户在短时间内的兴趣点往往比较稳定，利用Item-CF推荐相似商品比较符合用户的动机，也方便用户进行物品之间的比较。
+　　2.电商网站的物品列表相对来讲比较稳定，通过积累大量的历史数据更容易准确地反映物品之间的相似性。
+　　3.电商网站中通常用户数量远远大于商品的数量，进行Item-based CF的计算量更小。&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;为什么逻辑回归模型在工业界受到的了广泛应用？LR相对于其他的模型，尤其是GBOT模型，突出的优点是什么？&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;参考答案&lt;/strong&gt;
+　　逻辑回归模型形式比较简单，可解释性强，模型训练的速度快，适合线上学习。相对于GBDT模型，其突出的优点在于可以支持并行化训练以及线上学习。
+　　
+　　点评:
+　　设计这个问题的目的是复习课程中所讲的逻辑回归算法，强化逻辑回归可以用于线上学习的概念。所谓“天下武功，无坚不破，唯快不破”，希望大家能够意识到模型实时性的重要性。&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;为什么说提升树模型(GBOT)难以并行化？从Boosting方法的原理上给出简单的解释。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;参考答案&lt;/strong&gt;
+　　Boosting方法的本质上是构建一系列的弱学习器去不断逼近目标，每个弱学习器的训练目标是修正之前学习器的错误，需要依赖于前面学习器的结果，是一个串行训练过程。
+　　
+　　点评：
+　　设计这个问题的目的是复习课程中所讲的提升算法原理，并加深大家对于Boosting串行训练的理解与思考。&lt;/p&gt;
+&lt;h1 id=&#34;quiz2&#34;&gt;Quiz2
+&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;在一个机器学习项目中，特征工程是否对模型效果起到决定性作用？
+A.是 B.否&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;参考答案&lt;/strong&gt;
+　　B数据决定算法的上限，特征工程帮助算法逼近上限。&lt;/p&gt;
+&lt;p&gt;2.一个算法工程师面对一个分类问题，打算将花10天时间来清洗数据，花10天时间来做特征工程，最后花1天的时间简单的训练出一个逻辑回归模型，请问他的时间安排是否合理？
+A.合理
+B.不合理，他应该花10天时间来调优模型&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考答案&lt;/strong&gt;
+　　A 不必纠结于具体的天数，本题着重强调数据的重要性，在实践中可以发现，同样的数据，交替不同的模型(例如lr或者gbdt) , 在效果上提升和下降有限。相反，数据和特征的不同对预测的结果有巨大的意义。&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;深度学习模型具备了自动特征工程的能力，算法工程师只需将数据输入模型，模型会自动寻找最优特征工程，请问是否还有必要做特征工程？请给出理由。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;参考答案&lt;/strong&gt;
+　　有必要:
+　　1)更好的特征工程可以减弱噪声的影响，提高数据表达能力，提升效果;
+　　2) 如果特征工程足够好，可使用更简单的模型，快速训练快速部署，这对实际生产具有重要的意义
+　　3)特征工程往往具有很强的业务意义，可以提高模型解释性。&lt;/p&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;芒果台最新综艺《乘风破浪的姐姐》吸粉无数，作为一名学过hulu AI Class 的优秀学员，请你思考一个利用人工智能来更好的帮助节目的方案。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;参考答案&lt;/strong&gt;
+　　本题为开放问题，强调算法工程师需要有将业务需求抽象成算法问题的能力。下面是示例答案。
+　　1) 以不同的姐姐分cluster, 筛选用户特征
+　　2)对微博的相关的话题做文本挖掘，舆情分析，以便更好提前制作爆点。
+　　3)第一个点是本节目的修音有点过于失真了，可以引入一个基于GAN的声音修正技术提高现场的真实感；第二在广告投放上，可以利用look-alike等技术对潜在的节目目标人群进行筛选，提高广告投放的效率，减少对用户的打扰，提升用户体验。&lt;/p&gt;
+&lt;h1 id=&#34;quiz3&#34;&gt;Quiz3
+&lt;/h1&gt;&lt;p&gt;1.对于-系列电影，如果有以下几种类型的数据，想要为每个电影生成嵌入(Embdding)表示，你会选用何种算法/模型，为什么？
+(1)每个电影的标题、描述文本、风格类型(提示:如何建模纯文本信息？)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考答案&lt;/strong&gt;
+　　这道题涉及的知识点是如何对文本类信息进行嵌入表示。我们拥有三个数据源:标题、描述文本和风格类型，其中前两个数据源是纯文本，最后一个数据源可以理解为纯文本，也可以解读为类别信息，因为电影的风格类型是共享且有限的。
+　　对于建模标题和描述文本这类纯文本信息，最简单的方法是使用Word2Vec或者其它预训练的词向量模型对文本中每个词查到一个嵌入表示（词向量），再通过一些聚合方法聚合得到标题和描述文本的整体嵌入表示。最简单且容易想到的聚合方法就是把句子中所有单词的词向量计算其平均向量作为句子的嵌入表示，更复杂的聚合方法也可考虑如Word mover embedding等等。在得到电影的标题/描述文本的嵌入表示之后，我们就可以选择加权或者拼接加PCA降维的方式得到最后的电影的嵌入表示。
+　　相对于以上通过词向量聚合得到句子嵌入表示的方法，我们也可以选择利用文本序列建模方法端到端地生成标题/描述文本的句子表示，进而得到电影的嵌入表示。此类方法有本课中提到的BERT，也包含Seq2Seq等经典方法。值得一提的是，这类方法为句子生成表示时往往需要一些标签信息如句子和词的类别（当然BERT这类模型我们可以使用一一些无监督的伪任务），这时我们就可以利用第三个数据源:电影的风格类型，来作为训练句子嵌入表示的标签。使用这类方法，我们既可以得到电影的标题和描述文本的单独的表示，也可以将它们串联成一一个句子得到一个整体表示，最后就可以使用这个表示作为电影的嵌入表示啦。&lt;/p&gt;
+&lt;p&gt;(2)电影和电影间的相关度矩阵，大小为M * M, M为电影的数目，矩阵值为-1.0到1.0间的浮点数&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考答案&lt;/strong&gt;
+　　这道题的数据源是电影间的相关度矩阵，不难理解矩阵分解是最直观的方法:我们为每个电影初始化一一个嵌入表示，然后进一步学习和调整这些表示，使不同电影间嵌入表示的相关度(如余弦相关度)能和给定的相关度矩阵保持一致。&lt;/p&gt;
+&lt;p&gt;(3)用户一周内的观影历史，一共有N个用户， 每个用户的观影历史为一长度不定的向量，向量值为0到M-1范围内的整数，表示电影的ID。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;参考答案&lt;/strong&gt;
+　　首先，这道题的数据源是序列信息，每个用户的观影序列可以理解为一个一个的句子，句子中的单词(Word)就是电影，因此首先想到的方法应该是使用Word2Vec直接学习每个电影的嵌入表示。另一方面，既然有用户的观影序列，我们就可以进一步统计以上信息得到用户-电影的交互矩阵，这样就可以参照(2)中的方法就行矩阵分解得到电影的嵌入表示。
+　　
+　　点评:
+　　这道题的目的是考察大家对不同的嵌入表示生成方法对数据的要求的理解。在算法研发过程中，除了目标指标，影响算法选型的另外一个重要因素往往是我们有什么类型、多大体量以及多高质量的数据，了解这些算法的适用条件是在工作中正确应用它们的重要前提。&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;基于深度神经网络的排序模型相对于传统的逻辑回归模型(LR)有什么优劣，试从模型准确度、推断效率和工程代价进行分析。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;参考答案&lt;/strong&gt;
+　　模型准确度上，深度神经网络由于模型复杂、自由度大，从而拥有更强的理论建模能力，其准确度往往优于逻辑回归。但是由于用户的个体差异性，其准确度领先幅度并不特别显著，在近年的学术论文上看，目标数据集上，基于深度神经网络的排序模型在离线AUC这个指标上领先逻辑回归通常不超过1%-2%。
+　　推断效率上，深度神经网络明显劣于逻辑回归模型。深度神经网络的理论计算量巨大，比逻辑回归高几个量级，且网络内部各层计算量均一性差，因此单次推断的并行效率也劣于逻辑回归，最终体现在模型推断时延较高且对计算资源需求较大。
+　　工程代价上，深度神经网络更大的计算复杂度会在多个环节带来问题，如如何及时地完成模型的离线训练和高效地进行在线推断等。这对推荐系统框架在部署、任务和资源调度、运行效率优化等多个方面都会带来额外复杂度。一个例子是，有的深度神经网络模型由于计算复杂度大，无法直接在线部署，而需要将部分计算离线/近线(Nearline)化以减轻线上的计算压力，以空间换时间，同时还需付出更多额外的努力对在线推断部分进行效率优化，这就是典型的模型复杂度升高对工程框架的挑战。
+　　
+　　点评：
+　　这道题的目的是考察大家对深度神经网络的优劣的整体认识，在工程实践中，模型准确度只是决定选型的部分因素，计算量和实现框架的约束，以及复杂度的增加和准确度提升间的取舍也是非常重要的。&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;在推荐模型中，为什么有的连续的特征，如年龄，要按范围被离散化(把用户年龄分成互不交叉的几组)？这样做的好处是什么？&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;参考答案&lt;/strong&gt;
+　　简单而言，是为了平滑特征。用户之间存在个体差异，像年龄值这样的涉及用户属性的连续特征有时会过于“精确”， 从而不利于提升模型的泛化能力。
+　　具体来说，首先在推荐的场景下，年龄一定是影响用户兴趣的重要因素，但是这种影响通常是来自于“年龄段&amp;quot;而非具体的“年龄值”。在“年轻人比老年人更喜欢看恐怖片”的假设下，“18-26岁的用户比大于56岁的用户更喜欢看恐怖片”往往比“X岁的用户A比(X+1)岁的用户B更喜欢看恐怖片”这样的推论更加准确和鲁棒。
+　　更进一步而言，年龄值和兴趣之间的关联性存在个体差异，这种差异远比年龄段和兴趣的关联的个体差异大的多。如用户A可能在18-26岁间爱看恐怖片，但是用户B可能在30岁才发展出看恐怖片的兴趣。这种关联的强个体差异意味着模型的学习没有统一且有效的ground truth，从而导致训练过程的震荡和推断能力的退化。&lt;/p&gt;
+&lt;p&gt;　　点评：
+　　这道题的目的是考察对推荐模型输入特征的一个细节理解，也是检验同学们是否有仔细听课。模型的准确度不仅仅取决于模型结构数据，输入特征的属性和表示方式也是非常重要的。&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>【Paper】Using Collaborative Filtering to Weave an Information Tapestry</title>
+        <link>https://hubojing.github.io/jaxyksgz/</link>
+        <pubDate>Wed, 15 Jul 2020 16:44:25 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/jaxyksgz/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\假装有图片.jpg&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;“协同过滤”词汇来源。&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文情况&#34;&gt;论文情况
+&lt;/h1&gt;&lt;p&gt;　　COMMUN ACM, 1992.
+　　David Goldberg, David Nichols, Brian M.Oki, and Douglas Terry
+　　10页&lt;/p&gt;
+&lt;p&gt;　　题目直译：使用协同过滤去构造一个信息tapestry&lt;/p&gt;
+&lt;p&gt;　　截至2020年11月15日，该论文在谷歌学术上被引用次数为5239次。&lt;/p&gt;
+&lt;h1 id=&#34;论文内容&#34;&gt;论文内容
+&lt;/h1&gt;&lt;p&gt;　　文章提出了协同过滤（Collaborative filtering）这个词，最早是用于邮件系统Tapestry。&lt;br&gt;
+　　文章对协同过滤的定义是：Collaborative filtering simply means that people collaborate to help one another perform filtering by recording their reactions to documents they read.&lt;/p&gt;
+&lt;p&gt;　　协同过滤的亮点在于，它不仅仅是一个过滤邮件的机制，还是过去发送邮件的存储库。Tapestry将对这个存储库的临时查询与对传入数据的过滤统一起来。文章提到不仅可以处理邮件，也可以处理类似流数据，比如新闻。&lt;/p&gt;
+&lt;p&gt;　　不过该文重点还是在邮件系统本身上，用户可以对邮件进行注解，这些注解可以用来进行协同过滤。本文设计了两种类型的阅读器。一种eager readers可以获取全部文件，另一种casual readers会进行注解，并且阅读基于此的文件。文章用了大量篇幅介绍了邮件系统本身的各个部件和查询语言（TQL），和推荐系统相关的不太多，因此本文属于浏览，未细致阅读。但毕竟是协同过滤鼻祖，所以记录一下。&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

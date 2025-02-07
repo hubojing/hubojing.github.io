@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>论文 on 靖待</title>
+        <link>https://hubojing.github.io/tags/%E8%AE%BA%E6%96%87/</link>
+        <description>Recent content in 论文 on 靖待</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>靖待</copyright>
+        <lastBuildDate>Wed, 22 Nov 2023 22:20:55 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/tags/%E8%AE%BA%E6%96%87/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>大模型相关论文笔记</title>
+        <link>https://hubojing.github.io/9ocgomtj/</link>
+        <pubDate>Wed, 22 Nov 2023 22:20:55 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/9ocgomtj/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\paper.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+ 　　
+　　**大模型相关论文阅读笔记。 **
+　　**倒序排列论文，最新阅读的在最上面。**
+　　**2024年1月26日更新**
+ &lt;/div&gt;
+&lt;h1 id=&#34;retrieval-augmented-generation-for-knowledge-intensive-nlp-tasks&#34;&gt;Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks
+&lt;/h1&gt;&lt;p&gt;用于知识密集型NLP任务的检索增强生成
+Facebook 2020
+&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/pdf/2005.11401v4.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/huggingface/transformers/tree/main/examples/research_projects/rag&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CODE&lt;/a&gt;&lt;br&gt;
+（论文代码链接已失效，以上是最新链接）&lt;/p&gt;
+&lt;h2 id=&#34;引言&#34;&gt;引言
+&lt;/h2&gt;&lt;p&gt;大模型有幻觉问题（hallucinations），检索增强生成(retrieval-augmented generation, RAG)可以解决它。&lt;/p&gt;
+&lt;h2 id=&#34;方法&#34;&gt;方法
+&lt;/h2&gt;&lt;p&gt;输入为x，外部检索资源为z，生成目标序列y。
+模型有两块：一个检索器$p_\eta(z|x)$，$\eta$为参数，给定一个查询q，根据文本返回top-K个分布；一个生成器$p_\theta(y_i|x,z,y_{1:i-1})$，参数为$\theta$，它基于过去i-1个tokens $y_{1:i-1}$、原始输入x和检索器信息z，产生一个当前的token。
+为了端到端的训练检索器和生成器，我们将检索文档作为一个隐变量。我们提出了两个模型，他们以不同的方式边缘化隐变量，从而在文本上产生分布。在我们的方法里，第一步，RAG-Sequence，这个模型使用相同的文本预测每一个目标token；第二步，RAG-Token，基于不同的文件预测每一个目标token。&lt;/p&gt;
+&lt;h3 id=&#34;模型&#34;&gt;模型
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;RAG-Sequence模型
+$$p_{RAG-Sequence}(y|x)≈\sum_{z∈top-k(p(·|x))}p_\eta(z|x)p_\theta(y|x,z)=\sum_{z∈top-k(p(·|x))}p_\eta(z|x)\prod^N_ip_\theta(y_i|x,z,y_{1:i-1})$$&lt;/li&gt;
+&lt;li&gt;RAG-Token模型
+$$p_{RAG-Token}(y|x)≈\prod^N_i\sum_{z∈top-k(p(·|x))}p_\eta(z|x)p_\theta(y_i|x,z,y_{1:i-1})$$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;检索器dpr&#34;&gt;检索器：DPR
+&lt;/h3&gt;$$p_\eta(z|x)∝exp(d(z)^Tq(x)) ~~~ d(z)=BERT_d(z), q(x)=BERT_q(x)$$&lt;p&gt;
+其中，d(z)是使用BERT编码得到的密集表示，q(x)是问题通过BERT编码得到的表示。计算top-k($p_\eta(·|x)$)是一个MIPS(Maximum Inner Product Search)问题，可以在亚线性时间内解决。我们使用一个基于DPR的预训练双向编码器来初始化我们的检索器并建立索引，将其视为非参数记忆(non-parametric memory)。&lt;/p&gt;
+&lt;h3 id=&#34;生成器bart&#34;&gt;生成器：BART
+&lt;/h3&gt;&lt;p&gt;生成器可以使用任何编码器-解码器。我们使用的是BART-large。&lt;/p&gt;
+&lt;h3 id=&#34;训练&#34;&gt;训练
+&lt;/h3&gt;&lt;p&gt;求最小似然log-likelihood、Adam&lt;/p&gt;
+&lt;h3 id=&#34;解码&#34;&gt;解码
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;RAG-Toke&lt;br&gt;
+$$p^{&#39;}_\theta(y_i|x,y_{1:i-1})=\sum_{z∈top-k(p(·|x))}p_\eta(z_i|x)p_\theta(y_i|x,z_i,y_{1:i-1})$$
+将$p^{&amp;rsquo;}&lt;em&gt;\theta(y_i|x,y&lt;/em&gt;{1:i-1})$送入标准beam解码器中。&lt;/li&gt;
+&lt;li&gt;RAG-Sequence&lt;br&gt;
+Thorough Decoding
+Fast Decoding&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;flashattention-fast-and-memory-efficient-exact-attention-with-io-awareness&#34;&gt;FLASHATTENTION: Fast and Memory-Efficient Exact Attention with IO-Awareness
+&lt;/h1&gt;&lt;p&gt;FlashAttention: 具有IO感知的快速和有效存储精确注意力
+2022年6月24日
+&lt;a class=&#34;link&#34; href=&#34;https://proceedings.neurips.cc/paper_files/paper/2022/file/67d57c32e20fd0a7a302cb81d36e40d5-Paper-Conference.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/Dao-AILab/flash-attention&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CODE&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;摘要&#34;&gt;摘要
+&lt;/h2&gt;&lt;p&gt;　　自注意力的时间和空间复杂度在序列长度上是二次关系，近似注意力机制尝试在模型质量和复杂度计算中折中来解决该问题，但是经常不能实现wall-clock加速。本文认为，需要一种规范，可以根据GPU读写水平使注意力IO感知。为此，本文提出FLASHATTENTION，一种IO感知的精确注意力机制，它使用tiling技术来减少GPU HBM（high bandwidth memory）和GPU芯片内SRAM的存储读写次数。FLASHATTENTION相比标准注意力机制要减少这方面开销。&lt;/p&gt;
+&lt;h2 id=&#34;引言-1&#34;&gt;引言
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cFlashAttention.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;FlashAttention&#34;
+	
+	
+&gt;&lt;br&gt;
+　　现代GPU的计算速度比存储速度快，在Transformer里的许多操作都受限于存储接入。现在的公共Python接口，比如PyTorch和Tensorflow对于内存接入没有精细化管理。本文提出FLASHATTENTION，一种计算注意力时减少内存接入操作的新注意力算法。它的目标是减少在HBM中读写的注意力矩阵。这需要
+（1）在不访问整体输入的情况下计算softmax reduction；
+（2）反向传播时不存大量中间过程的注意力矩阵。
+　　本文提出两种方法解决上面的问题。
+（1）我们重新构建了注意力计算模块，将输入分块，在输入块中形成多个通道，因此递增地执行softmax reduction（也就是tiling)；
+（2）从前向传播到反向传播中快速重新计算片上注意力，我们存储了其中的softmax标准化因素，这比从HBM读取中间注意力矩阵的标准方法要快。
+　　在CUDA使用FLASHATTENTION去实现精细化存储控制以及在GPU内核中融合所有的注意力操作。即使因为重计算会增加FLOP（Floating Point Operations），相对于标准注意力而言，我们的算法依然更快、需要更少的内存，在序列长度上是线性的，这是因为HBM的接入大量减少。
+　　FLASHATTENTION在HBM上的复杂度是O(N^2d^2M^{-1})，其中d是头head的维度，M是SRAM的规模，标准注意力的复杂度是$Ω(Nd+N^2)$。
+　　本文贡献点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;更快的模型训练速度&lt;/li&gt;
+&lt;li&gt;更高的模型质量&lt;/li&gt;
+&lt;li&gt;比现有基线注意力都要快&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;背景&#34;&gt;背景
+&lt;/h2&gt;&lt;h3 id=&#34;硬件性能&#34;&gt;硬件性能
+&lt;/h3&gt;&lt;p&gt;　　重点描述GPU。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GPU存储等级
+　　HBM、SRAM&lt;/li&gt;
+&lt;li&gt;执行模型
+　　GPU有很多线程去执行一个操作（称为核）。每个核从HBM登记加载输入，SRAM计算，再将输出写入HBM。&lt;/li&gt;
+&lt;li&gt;性能特点&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;计算密集型Compute-bound&lt;/li&gt;
+&lt;li&gt;存储密集型Memory-bound&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;内核融合
+　　最常见的加速存储密集操作的就是内核融合。如果多个操作同时应用在相同的输入时，可以从HBM一次性加载输入。编译器会自动融合许多elementwise操作。然而，根据模型训练的上下文，中间过程的值为了反向传播仍然需要写入HBM，这降低了原生内核融合的效率。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;标准注意力&#34;&gt;标准注意力
+&lt;/h4&gt;$$S=QK^T∈\mathbb{R}^{N×N}, P=softmax(S)∈\mathbb{R}^{N×N}, O=PV∈\mathbb{R}^{N×d}$$&lt;p&gt;
+softmax按行(row-wise)使用。
+　　标准注意力将S和P扔给HBM，这花费了$O(N^2)$存储。一般来说，N&amp;raquo;d，比如GPT2里N=1024，d=64。大部分操作是存储密集型（比如softmax），大量的存储读写造成wall-clock时间变慢。
+　　其它操作更加加剧了这个问题，比如加在注意力矩阵的elementwise操作、加在S上的遮罩或者加在P上的dropout。为此，有很多融合几种elementwise操作的方法尝试，比如一些文献用softmax融合遮罩。
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cFlashAttention-StandardAttention%e4%bc%aa%e4%bb%a3%e7%a0%81.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;标准注意力伪代码&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;flashattention&#34;&gt;FLASHATTENTION
+&lt;/h2&gt;&lt;p&gt;　　两种方法：tiling和recomputation
+　　主要思路：将输入的Q、K、V分块，将它们从慢的HBM放到快的SRAM中，计算了注意力输出后再返回到各自块里。在每个快的输出相加之前，通过标准化进行缩放，最终得到结果。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Tiling&lt;/li&gt;
+&lt;li&gt;Recomputation
+　　我们的目标之一是不要存储反向传播中间过程值$O(N^2)$。反向传播需要矩阵$S,P∈\mathbb{R}^{N×N}$来计算Q、K、V的梯度。
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cFlashAttention%e4%bc%aa%e4%bb%a3%e7%a0%81.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;FlashAttention伪代码&#34;
+	
+	
+&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;lora-low-rank-adaptation-of-large-language-models&#34;&gt;LORA: LOW-RANK ADAPTATION OF LARGE LANGUAGE MODELS
+&lt;/h1&gt;&lt;p&gt;　　大模型的低秩适配器&lt;br&gt;
+　　微软 2021年&lt;br&gt;
+　　Low-Rank Adaptation, LORA&lt;br&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/pdf/2106.09685.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/microsoft/LoRA&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CODE&lt;/a&gt;
+　　冻结预训练模型的参数，在Transformer架构每一层注入一个可训练的低秩分解矩阵（rank decomposition matrices），大幅减少了下游任务的训练参数。&lt;br&gt;
+　　对比GPT-3 175B Adam微调，LoRA可以减少10000倍训练参数、3倍GPU存储。&lt;br&gt;
+　　对比RoBERTa, DeBERTa, GPT-2, GPT-3，训练参数虽少，模型微调质量更好，更高的训练吞吐量，而且不像适配器，没有额外的推理延迟。&lt;/p&gt;
+&lt;h2 id=&#34;引言-2&#34;&gt;引言
+&lt;/h2&gt;&lt;p&gt;　　微调会更新预训练模型的全部参数，下游任务的新模型和原模型参数一样多。许多研究者通过只更新部分参数或学习新任务的额外模块进行迁移，这样可以只保存和加载一小部分任务相关的参数即可，部署时提高了效率。但是现有方法通过延伸模型深度或者减少模型可用的序列长度会导致推理延迟。而且这些策略达不到微调的基线效果，在效率和模型质量上做了折中。&lt;br&gt;
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cLoRA.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;LoRA&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;问题陈述&#34;&gt;问题陈述
+&lt;/h2&gt;$$\underset{\Phi}{max}\sum_{(x,y)∈Z}\sum^{|y|}_{t=1}log(P_{\Phi}(y_t|x,y_{&lt;t}))$$$$\underset{\Theta}{max}\sum_{(x,y)∈Z}\sum^{|y|}_{t=1}log(P_{\Phi}(y_t|x,y&lt;t))$$&lt;p&gt;
+　　本文提出了一种低秩表示来编码$△\Phi$。对于GPT-3 175B，$|\Theta|$的训练参数量是$|\Phi_0|$的0.01%。&lt;/p&gt;
+&lt;h2 id=&#34;之前方法的缺点&#34;&gt;之前方法的缺点
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;适配器层引入了推理延迟&lt;/li&gt;
+&lt;li&gt;直接优化Prompt很难&lt;br&gt;
+　　比如prefix tuning&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;本文方法&#34;&gt;本文方法
+&lt;/h2&gt;&lt;h3 id=&#34;低秩参数更新矩阵&#34;&gt;低秩参数更新矩阵
+&lt;/h3&gt;$$h = W_0x+△Wx = W_0x + BAx$$&lt;p&gt;
+当遇到不用的下游任务时，只需要替换BA就行，所以没有推理延迟。&lt;/p&gt;
+&lt;h3 id=&#34;将lora应用到transformer&#34;&gt;将LoRA应用到Transformer
+&lt;/h3&gt;&lt;p&gt;在Transformer架构中，在自注意力模块有四个权重矩阵（$W_q$、$W_k$、$W_v$、$W_o$），在MLP模块有两个。本文将Transformer架构中的$W_q$（或者$W_k$，$W_v$）设为一个$d_{model}×d_{model}$的单矩阵。对于下游任务，只改变注意力权重，冻结MLP模块的。&lt;/p&gt;
+&lt;h1 id=&#34;llama-2-open-foundation-and-fine-tuned-chat-models&#34;&gt;Llama 2: Open Foundation and Fine-Tuned Chat Models
+&lt;/h1&gt;&lt;p&gt;2023年7月  77页
+GenAI, Meta
+&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/pdf/2307.09288.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/facebookresearch/llama&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CODE&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;引言-3&#34;&gt;引言
+&lt;/h2&gt;&lt;p&gt;　　本文发布了两个模型：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;LLAMA 2，它是LLAMA 1的升级版本，训练语料新增40%，模型上下文长度翻倍，采用了分组查询注意力。发布了7B, 13B, 70B，34B也训了但没发布&lt;/li&gt;
+&lt;li&gt;LLAMA 2-CHAT，它是LLAMA 2用于用户对话的微调版本。发布了7B，13B，70B参数模型
+　　提供了&lt;a class=&#34;link&#34; href=&#34;https://ai.meta.com/llama&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;用户手册&lt;/a&gt;和&lt;a class=&#34;link&#34; href=&#34;%e2%80%96https://github.com/facebookresearch/llama&#34; &gt;代码样例&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;预训练&#34;&gt;预训练
+&lt;/h2&gt;&lt;p&gt;　　预训练数据：2 trillion&lt;br&gt;
+　　训练，与LLAMA 1相同之处：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;标准transformer&lt;/li&gt;
+&lt;li&gt;RMSNorm预归一化&lt;/li&gt;
+&lt;li&gt;SwiGLU激活函数&lt;/li&gt;
+&lt;li&gt;旋转位置embedding RoPE
+　　不同之处：&lt;/li&gt;
+&lt;li&gt;增加上下文长度&lt;/li&gt;
+&lt;li&gt;分组查询注意力（GQA）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;　　优化器：AdamW&lt;br&gt;
+　　分词器：与LLAMA 1相同，此表规模32k tokens&lt;/p&gt;
+&lt;p&gt;　　它甚至还写了LLAMA 2的碳排放情况&amp;hellip;&lt;/p&gt;
+&lt;p&gt;　　评价指标方面，LLAMA 2 70B在MMLU和GSM8K上与GPT-3.5相近，但是在代码基线上有差距，在几乎所有的基线上都比PaLM(540B)强。与GPT-4和PaLM-2-L相比，还有很大差距。&lt;/p&gt;
+&lt;h2 id=&#34;微调&#34;&gt;微调
+&lt;/h2&gt;&lt;h3 id=&#34;sft监督微调&#34;&gt;SFT监督微调
+&lt;/h3&gt;&lt;p&gt;　　使用了公开的微调数据，自己标了一些，有27540这么多就不标了，因为数量少质量高效果也能好。 &lt;br&gt;
+　　对于微调过程，每一个样本包含一个提示prompt和一个答案。为了确保模型序列长度都被填充，训练集里将全部的prompt和答案相连。用了特殊token划分prompt和答案片段。使用了一种自回归目标函数，并将来自用户prompt的token计算loss归零，所以只在答案token上反向传播。模型微调轮数为2。&lt;/p&gt;
+&lt;h3 id=&#34;rlhf-人类反馈的增强学习&#34;&gt;RLHF 人类反馈的增强学习
+&lt;/h3&gt;&lt;p&gt;　　RLHF是一种将微调模型行为与人类偏好和指令对齐的一种模型训练过程。首先让标注员写一个提示（prompt），然后对两个样本模型的回答根据制定的标准选择更好的一个，这种数据用于训练奖励模型（reward model）。为了多样性最大化，两个模型参数和超参数不同。为了让参与者强制选择，每个回答会打标程度（很好，好，一般，不确定）。合适的标注从两个方面考虑，有用性和安全性。在其它答案是安全的情况下，不会选择不安全的回答为最佳，因为本文认为安全回答也是更好的。&lt;br&gt;
+　　收集了更多的偏好数据后，奖励模型进步了，LLAMA 2-CHAT就会训练地更好，而它更好又会改变模型数据分布。如果不用最新的样本分布，奖励模型的精确度就会很快降低。所以在微调新一轮LLAMA 2-CHAT前使用当前最新的LLAMA 2-CHAT收集数据很重要。这一步让奖励模型保持正确的分布，也能保持最新模型的准确奖励值。&lt;br&gt;
+　　本文收集了超过一百万（1 million）人工标注数据，称做Meta奖励模型数据。不同领域提示和回答的数量不同，总结和在线公式数据一般有较长的提示，然而对话型提示通常较短。平均来看，本文的数据比开源数据集有更多轮的对话，并且更长。&lt;br&gt;
+　　奖励模型将模型回复和对应的提示（包括之前的多轮上下文）作为输入，输出一个标量分数来衡量模型生成质量。将这些分数作为奖励，通过RLHF优化LLAMA 2-CHAT获得更好的效果，提升有用性和安全性。
+　　有用性和安全性往往需要折中，所以本文训练了两个分开的奖励模型，一个用来优化可用性（Helpfulness RM），一个用来优化安全性（Safety RM）。&lt;br&gt;
+　　本文使用预训练对话模型checkpoint来初始化奖励模型，这样可以确保所有的模型从预训练中得到知识。除了将下一个token预测分类头替换为一个标量奖励值的回归头输出以外，模型架构和超参数和预训练模型一致。&lt;/p&gt;
+$$L_{ranking}=-log(\sigma(r_\theta(x, y_c)-r_\theta(x,y_r)))$$$$L_{ranking}=-log(\sigma(r_\theta(x, y_c)-r_\theta(x,y_r) - m(r)))$$&lt;p&gt;
+　　其中，$m(r)$是评分的离散函数，两个回答越不同，这个边距越大，两个回答越相似，这个边距越近。这个边距可以提升有用性。&lt;/p&gt;
+&lt;p&gt;　　训练细节：训了一轮，本文发现训久了过拟合。&lt;/p&gt;
+&lt;p&gt;　　本文采用了两种主要的RLHF微调算法：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;PPO(Proximal Policy Optimization)算法&lt;/li&gt;
+&lt;li&gt;拒绝采用微调(Rejection Sampling fine-tuning)，只在70B上用了
+在K个模型输出中使用奖励模型选择最好的，将选择出来的做梯度更新。对于每个提示，包含最好奖励分数的样本作为新的标准。然后在新的样本中微调，加强奖励。
+两个算法主要在广度和深度上有区别。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;多轮对话一致性的系统信息&#34;&gt;多轮对话一致性的系统信息
+&lt;/h3&gt;&lt;p&gt;有些指令应该贯穿对话始终，比如“扮演xx”指令，但是原始的RLHF模型在几轮后会忘记初始指令。为此，提出Ghost注意力（GAtt）。&lt;/p&gt;
+&lt;h1 id=&#34;llama-open-and-efficient-foundation-language-models&#34;&gt;LLaMA: Open and Efficient Foundation Language Models
+&lt;/h1&gt;&lt;p&gt;Meta AI
+&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/pdf/2302.13971.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://github.com/facebookresearch/llama&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CODE&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;概述&#34;&gt;概述
+&lt;/h2&gt;&lt;p&gt;　　不像Chinchilla、PaLM或者GPT-3，只使用公开可用的数据训练。
+　　训练不是最快的，但是推理是最快的。
+　　本文目标是打造一系列用更多token训练的最佳推理性能的大模型。LLaMA：6.7B、13.0B、32.5B、65.2B
+　　LLaMA-13B超过GPT3。
+　　LLaMA-65B与Chinchilla或PaLM-540B相当。&lt;/p&gt;
+&lt;h2 id=&#34;方法-1&#34;&gt;方法
+&lt;/h2&gt;&lt;h3 id=&#34;预训练数据&#34;&gt;预训练数据
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;English CommonCrawl(67%)：使用fastText去掉非英语文本、使用一个n-gram语言模型去掉低质量内容、用一个线性模型对维基百科中用作参考文献的页面与随机抽样的页面以及未归类为参考文献的废弃页面进行分类&lt;/li&gt;
+&lt;li&gt;C4(15%)：与CCNet的主要区别是质量过滤，它主要依赖于启发式，如标点符号的存在或网页中的单词和句子的数量&lt;/li&gt;
+&lt;li&gt;Github(4.5%):基于行长度或字母数字字符比例的启发式法过滤低质量文件&lt;/li&gt;
+&lt;li&gt;Wikipedia(4.5%)&lt;/li&gt;
+&lt;li&gt;Gutenberg and Book3(4.5%)：去掉了有90%重复的书籍&lt;/li&gt;
+&lt;li&gt;ArXiv(2.5%):删除了第一部分之前的所有内容、参考书目、.tex文件中的评论、用户编写的内联扩展定义和宏&lt;/li&gt;
+&lt;li&gt;Stack Exchange(2%)：问答数据，删除了文本中的HTML标签，并根据分数对答案进行了排序(由高到低)&lt;br&gt;
+　　分词：BPE算法&lt;br&gt;
+　　整个训练集经分词后有1.4T个token(33B和65B)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;架构&#34;&gt;架构
+&lt;/h3&gt;&lt;p&gt;　　transformer架构基础上魔改。&lt;br&gt;
+　　魔改点（中括号内为灵感来源）：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;预归一化[GPT3]：使用RMSNorm&lt;/li&gt;
+&lt;li&gt;SwiGLU激活函数[PaLM]&lt;/li&gt;
+&lt;li&gt;旋转embedding[GPTNeo]：将绝对位置编码换成了旋转位置嵌入RoPE&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;　　优化器：AdamW&lt;/p&gt;
+&lt;p&gt;　　训练速度优化：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;随机多头注意力机制，不保存注意力权重，不计算key/query分数（masked）&lt;/li&gt;
+&lt;li&gt;减少了反向传播中重复计算的激活单元的数量，只保存最耗费计算的单元，比如线性层的输出；没有使用PyTorch autograd；使用了模型和序列并行化减少模型内存占用；尽量将激活单元的计算和GPU之间的网络通信通用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;　　训练时间：&lt;br&gt;
+　　65B参数模型：2048张A100 GPU，80GB内存，380 tokens/sec/GPU，1.4T tokens训练了21天&lt;/p&gt;
+&lt;p&gt;　　它甚至还写了LLAMA的碳排放情况&amp;hellip;&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>杂谈 on 靖待</title>
+        <link>https://hubojing.github.io/tags/%E6%9D%82%E8%B0%88/</link>
+        <description>Recent content in 杂谈 on 靖待</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>靖待</copyright>
+        <lastBuildDate>Sun, 26 Sep 2021 16:17:17 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/tags/%E6%9D%82%E8%B0%88/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>写在实习之后</title>
+        <link>https://hubojing.github.io/evjea2fg/</link>
+        <pubDate>Sun, 26 Sep 2021 16:17:17 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/evjea2fg/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\假装有图片.jpg&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;一些关于技术的小小思考。&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;前言&#34;&gt;前言
+&lt;/h1&gt;&lt;p&gt;　　实习返校已经有一个月啦，但是返校后实在是太忙了。最近也在调整状态中，顺手写一下技术的复盘（复盘 拉通 对齐 ~ 互联网黑话学废了（狗头保命））。&lt;/p&gt;
+&lt;p&gt;　　能够得到算法实习机会，还是我读研后一直在研究的推荐算法岗，我非常幸运。&lt;/p&gt;
+&lt;p&gt;　　回忆三个月的实习生活，短暂又充实。还记得拿到实习offer时发现竟是在全上海最繁华的地段工作，感觉捡到宝了哈哈哈哈。&lt;/p&gt;
+&lt;p&gt;　　感受了一把互联网企业的作息时间10-8-5（感谢mentor没有让我周六加班），了解了真正的算法工程师每天是怎么干活的，和开发岗还是有很多不一样的地方。&lt;/p&gt;
+&lt;p&gt;　　&lt;strong&gt;实习前幻想中的算法工程师的日常：&lt;/strong&gt;
+　　天天看顶会paper，复现模型，科研工程两手抓，Python代码玄学魔改，工程师个个头发茂密穿着最常见的格子衬衣带着眼镜研讨模型应该再加个什么类型的注意力机制（雾），IT精英的代表，算法人上人（滑稽）！&lt;/p&gt;
+&lt;p&gt;　　&lt;strong&gt;现实中的算法工程师的日常：&lt;/strong&gt;
+　　开会拉通对齐（雾），和产品经理沟通需求和指标（&lt;del&gt;吵架bushi&lt;/del&gt;），洗数据，特征选择，模型训练，玄学调参，分析badcase，分析离线上线各种指标，甚至还要标数据选数据等等。这样说来，写代码的时长似乎反而是最短的（知道真相的我不禁流下了我太年轻的泪水）。&lt;/p&gt;
+&lt;p&gt;　　数据——不想当优秀数据清洁工的算法工程师不是合格的程序员。&lt;/p&gt;
+&lt;p&gt;　　模型——先上简单的，能用再说。后期可以慢慢调。&lt;/p&gt;
+&lt;p&gt;　　指标——人工评估yyds。&lt;/p&gt;
+&lt;p&gt;　　以上多少带点开玩笑的语气，大佬们看了不要拍我呀（嘻嘻）&lt;/p&gt;
+&lt;p&gt;　　下面是正经地技术思考贴！&lt;/p&gt;
+&lt;h1 id=&#34;算法-vs-开发&#34;&gt;算法 vs 开发
+&lt;/h1&gt;&lt;p&gt;　　算法分为很多种的，比如通信算法、机械算法、人工智能向算法，我这里主要说的是人工智能向的算法。人工智能向的算法，粗略地说往往称为机器学习算法，里面又包括深度学习算法。按不同方向有两大类需求最多，一类是视觉CV算法，一类是NLP算法，这是根据要实现的任务进行分类。还有根据场景进行分类的，比如推荐算法、广告算法、搜索算法。我谈谈推荐算法岗。&lt;/p&gt;
+&lt;p&gt;　　搜广推在很多方面是有共通之处的，所以我们常常说搜广推是一家，当然，具体还是有业务差异的。推荐算法在几年是得到了飞速发展的，尤其是深度学习时代来临以后，各种在DNN上的魔改开始广泛出现在业务上，而不再是LR一把梭。&lt;/p&gt;
+&lt;p&gt;　　可能每个在学校做科研的学生都把模型视作解决问题的关键，毕竟顶会里介绍模型的彩色图片制作精美，结构复杂，高端大气上档次，让人看了都要感叹一声这就是前沿技术的魅力吗？我在实习前，也天天想着怎么魔改我论文里的模型，让它看上去再高级一点，跟得上AI时代一些，即使我导已经点出了模型的创新是比较难的，而我依然执着于此，妄想创造个如同bert一样惊世骇俗的模型出来。&lt;/p&gt;
+&lt;p&gt;　　实习中给我最大的收获是，算法工程师最核心的能力除了对各种模型的熟练以外，在数据侧的研究也要捻熟于心。&lt;/p&gt;
+&lt;p&gt;　　数据！数据！数据！&lt;/p&gt;
+&lt;p&gt;　　事实就是，想破脑袋去魔改模型或者玄学调参，很有可能不如认真检查数据问题对结果提升来得快。我现在可以理解，为什么很多人把算法工程师划分到数据科学里了。现在的机器学习工程师，狭隘地说，就是借工具来挖掘数据的规律，进而实现一定的预测能力。&lt;/p&gt;
+&lt;p&gt;　　开发则更偏向于具体实现。如果说开发是一个人的躯干，那么算法则是一个人的灵魂。灵魂不能脱离躯干，所以算法离不开开发。但是很多小公司不需要算法，正如只需要工具人干活就好了，工具人不需要灵魂。大厂想做有理想的产品，能改变世界的产品，就会需要灵魂去创新，也就需要算法。&lt;/p&gt;
+&lt;p&gt;　　开发和算法的成就感也截然不同。开发的成就感更多来自于模块或者系统编写成功，能够运行带来的快感。想着成千上万的用户正在使用我写的软件，这种存在感是成就感的来源。算法的成就感往往来自指标的提升，比如广告部门赚钱更多了，点击率更多了，转化率更多了，从而推测我们的算法起作用了。开发很多时候是在重复造轮子，而算法有时候是在寻找一个没有经验可循的新方法，这时脑洞和经验齐飞，创新不再是空谈。&lt;/p&gt;
+&lt;p&gt;　　这几年来，我对算法和开发都有了若干的尝试，这对于我曾经向往的全栈有了很好的打底，想必未来在分析一个问题的时候，从开发和算法不同的角度想方案，会有不一样的思索。&lt;/p&gt;
+&lt;h1 id=&#34;编程语言之争&#34;&gt;编程语言之争
+&lt;/h1&gt;&lt;p&gt;　　一直以来，关于到底学什么编程语言好的争论从未停止过。我自己从接触开发开始，也经历过很多次摇摆。本科时最早学习的Java，毕设做的安卓app，结果第一份工作阴差阳错做的C++软件开发。后来读研，又开始做算法科研，用的Python。为了接触大数据，又重新学习Java。&lt;/p&gt;
+&lt;p&gt;　　曾经我也不断问自己，到底选C++还是Java？C++偏底层，更适合于服务器开发、游戏开发、算法引擎等，Java更适合于Web、企业级应用等。我到底喜欢哪个？&lt;/p&gt;
+&lt;p&gt;　　直到在实习过程中，我发现即使我是算法工程师，写Python为主，可是要上线的时候，我还是要写Java的。&lt;/p&gt;
+&lt;p&gt;　　突然就真正地意识到，编程语言只是工具，面对什么场景，什么语言合适就用什么语言，而不是我喜欢什么语言写什么语言。我为什么不能既会Java又会C++还能写Python呢？&lt;/p&gt;
+&lt;p&gt;　　其实只要学会一种编译语言，再学会一种脚本语言，基本上要迁移到其它语言是不难的。甚至现在刷题的时候，看到一个问题，可能也不一定限制于用某一种语言写，而是会考虑哪一种语言最适合这道题，就用哪种语言做。&lt;/p&gt;
+&lt;p&gt;　　啊，我悟了。&lt;/p&gt;
+&lt;h1 id=&#34;总结&#34;&gt;总结
+&lt;/h1&gt;&lt;p&gt;　　最近一两年纠结的两大问题：选算法还是选开发，选C++还是选Java，在上面复盘了一遍，说了又好像没有完全说，哈哈哈哈哈。&lt;/p&gt;
+&lt;p&gt;　　总之，写代码的活就是最好的！&lt;/p&gt;
+&lt;p&gt;　　闭环了。&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>打脸现场——2020年终总结</title>
+        <link>https://hubojing.github.io/hcw7uuxx/</link>
+        <pubDate>Thu, 31 Dec 2020 15:51:31 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/hcw7uuxx/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\打脸现场——2020年终总结.jpg&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;2020年我到底在干嘛之年终总结。&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;前言&#34;&gt;前言
+&lt;/h1&gt;&lt;p&gt;　　技术博客只谈技术相关。今年年底新搭建了生活博客，所以非技术方面的总结将放在那边。不过由于前几年的年终总结关于学习方面都放在了技术博客上，因此今年依然还是把所有和学习有关的总结放在这边。&lt;/p&gt;
+&lt;p&gt;　　如果说今年我给自己在技术方面的评价打分的话，大概只能打个50分，反正不及格。&lt;/p&gt;
+&lt;p&gt;　　此为前言。&lt;/p&gt;
+&lt;h1 id=&#34;2020致自己完成情况&#34;&gt;2020致自己完成情况
+&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;自律使人自由  ——致自己2020&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;　　今年对自己的要求最核心的一条：自律&lt;/p&gt;
+&lt;p&gt;　　自己Flag立得飞起，2020年反而是自律最糟糕的一年&amp;hellip;&amp;hellip;&lt;/p&gt;
+&lt;p&gt;　　这两天突然有人给我以前在知乎上的匿名发言点了个赞，我点进去一看，好家伙，我直呼好家伙，这是曾经的我？ε=(´ο｀*)))唉，现在为什么做不到了呢？&lt;/p&gt;
+&lt;p&gt;　　今年年中时，我曾一度警觉到这个问题，为此写了篇&lt;a class=&#34;link&#34; href=&#34;https://hubojing.github.io/2020/06/30/%E6%96%B0%E7%9A%84%E8%BF%B7%E8%8C%AB/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;年中总结&lt;/a&gt;。可惜并没有取得好的效果，甚至感觉下半年自律做的更糟糕了。&lt;/p&gt;
+&lt;p&gt;　　为此我去知乎看看大神们是如何看待自律的。
+　　有一条我认为说得在理：
+　　自律是手段，而不是结果。&lt;/p&gt;
+&lt;p&gt;　　如果我把自律当做一个目标去实现它，那么可能永远做不到，就像今年这样。
+　　自律应该是在我追逐其它目标的过程中，不自觉形成的自动行为。
+　　可惜看到这条回答时，已经接近年终了。&lt;/p&gt;
+&lt;p&gt;　　所以2021年的致自己依然是&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;自律使人自由  ——致自己2021&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;　　但有些想法已发生改变。&lt;/p&gt;
+&lt;h1 id=&#34;突然穿插的总结&#34;&gt;突然穿插的总结
+&lt;/h1&gt;&lt;p&gt;　　一晃，研究生生涯已经走完一半了。
+　　真快呀。去年调剂的时候，从两年研究生变成三年研究生，一开始觉得亏，一年少挣几十万啊。
+　　刚开学时，时常期盼着早点毕业。结果现在突然就只剩一半的读研生活了，竟然开始留恋这美好的学生生活了。我想，我确实是渐渐喜欢这样的生活了吧。我甚至有了深深的感激。一是感谢爸爸的坚决。在那段时间里，我一直徘徊在再战考研和调剂中，差一点点我就选择放弃了。在做决定上，只要是我深思熟虑后，父母一直都是支持我的。但这件事上，爸爸表现得非常坚决，强烈反对我再战，坚持调剂上岸。事实证明他是对的，最近这些年，每过一年，考研大军就以50~100万的速度递增，考研也在内卷。考研这件事请，已经占用了我太多的时间，确实应该放手了。不过我一直欠考研一篇长文，每次提笔，却觉得还应该再等等。二是感谢收留我的学校。调剂那段时间太痛苦了，了解了全国所有大大小小985/211/研究所还有各种从前没听过的学校，每天收集各种调剂信息，到最后精神几近崩溃边缘。我甚至把简历都写好了，准备找工作去了。没想到就在我决定明天开始投简历的当天傍晚，收到了这所学校的复试通知。这就是缘分吧。三是感谢收留我的导师。被调剂的学生可能就和被抛弃的孩子一样，是有一种被抛弃感和无助感的，那时只希望有个人愿意收留我，而不用害怕自己又被丢掉了。幸运的是我导收留了我，并且支持我目前的研究方向。这也是缘分吧。&lt;/p&gt;
+&lt;p&gt;　　这一年半，大概只有两件成果还行：
+　　1. 数模美赛F奖
+　　2. 加权成绩班级第一&lt;/p&gt;
+&lt;p&gt;　　其它的都是一团浆糊……&lt;/p&gt;
+&lt;p&gt;　　研一上时，大部分时间被课程占据。那时很爽，毕竟我从通信跨考过来，终于成为了科班出身。坐在教室里听那些机器学习啊大数据啊什么的，身边都是计算机软工的同学，反正就是开心。那时我以为我的前途大概就是老老实实写代码刷题，看看开源项目，然后出去实习，最后能找份大厂开发的工作就很好了，所以整个研一定的目标是多参加比赛，争取拿奖。然后误打误撞入了数模的坑，真的是误打误撞，本来想多参加开发方面的比赛，但当时刚好有个数模比赛就随手参加了。之前我完全没有数模比赛经历，研究生才开始玩数模着实很晚。不过我比较幸运，第一次比赛得了一个亚太数模的三等奖，而后又得到了美赛数模的特等奖提名奖（F奖）。后来再参加数模更多关注的是自我全方位的锻炼（&lt;del&gt;后来就飘了，飘了就会被打脸&lt;/del&gt;）。数模三个人一般是一个建模，一个写代码，一个写论文。我想每个位置都试试，现在已经全部尝试了一遍，估计就到此为止吧。数模给我的思维锻炼还有写论文的速度和技巧锻炼可能是最有用的。（&lt;del&gt;如何在四天内快速地水一篇论文&lt;/del&gt;）&lt;/p&gt;
+&lt;p&gt;　　另一方面，读研后，万万没想到我竟然拥有了搞学术的机会，之前我是真的以为这辈子不可能有条件再沾和学术有关的东西了。搞学术啊……突然就让人想起一些曾经不切实际的梦。还想起刚开始工作时对部门领导说，“我喜欢那些高精尖的东西”，然后把领导和老大都给整笑了的经典场景……那学术是什么啊？那不就是研究高精尖的东西最好的渠道？
+　　所以从研一上的末尾我开始慢慢转换思路，我开始有了也许我可以试试学术的想法（危）。我开始在知乎上看有关学术的问题，装备学术资源，提高学术姿势，希望自己能科学的入门学术。然后也在那时渐渐把研究方向定了下来。（当初幸好没入CV的坑，看看现在CV就业卷成什么样……）&lt;/p&gt;
+&lt;p&gt;　　新想法不停地冲击我原有的规划。走学术几乎代表我就业应该选择算法岗。算法岗啊，我原来想都不会去想。但算法岗的竞争之激烈，我倒是从17年开始就有不断关注。什么一片红海啊，诸神黄昏啊，灰飞烟灭啊……内卷这个词我在知乎上已经看吐了。什么双985才过得了简历关，没有顶会顶刊、竞赛top就不要想了……&lt;/p&gt;
+&lt;p&gt;　　选择算法岗，仿佛就像换了一波竞争对手一样。大厂的开发似乎尚且能够一搏，但大厂的算法岗？似乎总有痴人说梦的味道。这样的纠结，持续了整个2020。&lt;/p&gt;
+&lt;p&gt;　　疫情在家，本来是一个弯道超车的好机会。
+　　确实是，我就是那辆被别人超过的车&amp;hellip;&amp;hellip;[苦涩]&lt;/p&gt;
+&lt;p&gt;　　本来年初的计划，我是真心认为自己可以完成的。可是有些事情真是无法预料……元月底朋友的一条朋友圈，直接把我情绪拉到崩溃边缘，我开始反思生命中的其它事情，足足失眠了四个月有余。扯远了，总之，当你专注在另一些事情时，总会搁置其它的事情。也让我明白了，所谓的平衡但平庸和专注但极致，永远只能选一个。&lt;/p&gt;
+&lt;p&gt;　　越努力越幸运是真的。相反，越不努力就会越不幸也是真的。&lt;/p&gt;
+&lt;p&gt;　　研一下在我漫长的失眠时光中稀里糊涂地过去了。终于回到了学校，研二上。怎么就研二了？我对校园的认知还停留在研一上的阶段啊。脑袋里想着，要把心思放到学习上。行动上却不是这么做的。然后一连串不幸就来了。&lt;/p&gt;
+&lt;p&gt;　　六级考出了历史最低分。虽然我总是美其名曰参加六级只是为了保持英语语感顺便检测下目前英语水平，每次都裸考去考试，完全不复习。看到分数后，我还能自我安慰一下说过了还行。但现实就是英语水平真的退步了，可我又做了什么提升措施呢？除了恢复了一阵子背单词以外，似乎就无计可施。&lt;/p&gt;
+&lt;p&gt;　　英语竞赛差2分得奖。其实做题时感觉还行，但这个结果还是让人失望。&lt;/p&gt;
+&lt;p&gt;　　数模国赛名落孙山。由于找队友只能找通过校内选拔的同学，我当时也比较随意，重心已不在数模比赛上，所以临时和两位不认识的校友组队。但可惜他们并非工科背景，选题时非常受限，整个比赛几乎是我数据处理，代码和论文全包，他们做一些辅助性工作。后来反思，我感觉论文本身还是可以的，但可能预测的结果与正确结果偏离较远吧。&lt;/p&gt;
+&lt;p&gt;　　国奖落选。和我一起拿F奖的队友，已经成功得到了国奖。评奖过程存在质疑，或许本来只有我是唯一有资格参评的人。可能我自己也觉得还不配，虽然本科已经得过，但国奖依然是我心中最神圣的存在。我还是希望，如果是我，是因为我百分百值得。但目前实力还没有到无可挑剔的地步。其实在我决定把时间分到其它方面时，我就有想到这个后果，但我还是低估了得到认可在我心中的重要性。我试图去降低学习占比，让我看起来平衡。我也高估了自己的调节能力，我以为我能潇洒地对这些评奖云淡风轻，但没想到带给我的后劲还是十足强烈。无论如何，我可能错过了读研阶段离国奖最近的一次机会。没想到有一天，我又想起这句鸡汤：最难过的事情是我本可以。&lt;/p&gt;
+&lt;p&gt;　　生活上的不幸，此处不展开。
+　　亲人离世，外婆走得是那么突然，让我至今有有些不敢相信这是真的。
+　　结束了短暂的感情。如果两个人不能相互促进，共同进步，那可能不是好的感情。&lt;/p&gt;
+&lt;p&gt;　　这些种种不幸一直持续到导师通知我坐飞机参加会议。我当时甚至觉得这阵子我实在是太惨了，以至于我真的认为我坐飞机都会掉下来。&lt;/p&gt;
+&lt;p&gt;　　我想，也许越努力越幸运是真的。越不努力也可能真的越不幸。
+　　我开始重新整理自己，把有些过多陷入感性的自己再次拉回来。“我试图去降低学习占比”，我为什么要降低学习占比？？？我才发现追求平衡这种事情多少有些可笑，读研不代表真正地上岸，如果读研了就降低学习占比，那是否对得起之前那些年舍弃那么多去考研？我想我已经受到了足够多的警示了，这些事情无一不在告诉我，学生不始终把学习放第一位，等于自我毁灭。&lt;/p&gt;
+&lt;p&gt;　　幸运的是，飞机没有掉下来。从那刻起，我感觉自己如获新生。我想，我可能要开始转运了。
+　　首先是教资成绩下来，预想能过一门就值了报名费，没想到三过二，超过预期。然后是软考，只复习几天竟然有惊无险地过了。爸爸身体抱恙，但医生说无大碍。&lt;/p&gt;
+&lt;p&gt;　　划水划到最后总会还的。当我重新整理我的代码，搜集的论文，我的博客，都无一不在说，你慢了。我终于开始为前途担忧，为进度焦虑，为找工作考虑，开始新一轮的失眠。&lt;/p&gt;
+&lt;h1 id=&#34;去年年初立下的flag完成度情况&#34;&gt;去年年初立下的Flag完成度情况
+&lt;/h1&gt;&lt;p&gt;点击下方跳转打脸现场
+&lt;a class=&#34;link&#34; href=&#34;https://hubojing.github.io/2020/01/02/2020%E2%80%94%E2%80%94%E6%96%B0%E7%9A%84%E5%90%AF%E8%88%AA/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;2020——新的启航&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;科研方面&#34;&gt;科研方面
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;多看论文，完成导师任务。&lt;/li&gt;
+&lt;li&gt;多了解工业届具体应用情况，了解就业市场需求。&lt;/li&gt;
+&lt;li&gt;对推荐系统，乃至NLP，以及相关传统机器学习、深度学习的代码实操，技术路线搭建。&lt;/li&gt;
+&lt;/ol&gt;&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;不达标。进度慢了。&lt;/li&gt;
+&lt;li&gt;基本达标。还行，经常有关注。&lt;/li&gt;
+&lt;li&gt;不达标。代码方面还是非常不够，需要加强。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;　　完成度：50%&lt;/p&gt;
+&lt;h2 id=&#34;技术方面&#34;&gt;技术方面
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;Leetcode一周三题，一年156题。&lt;/li&gt;
+&lt;li&gt;纸质书五本。&lt;/li&gt;
+&lt;li&gt;至少细致分析一个开源项目代码。&lt;/li&gt;
+&lt;li&gt;Java学习。&lt;/li&gt;
+&lt;/ol&gt;&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;不达标。远远不够，才做20题左右。&lt;/li&gt;
+&lt;li&gt;基本达标。勉强够吧，如果把应考的书也算上的话。&lt;/li&gt;
+&lt;li&gt;不达标。细致分析达不到。&lt;/li&gt;
+&lt;li&gt;不达标。后半年几乎停滞。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;　　完成度：10%&lt;/p&gt;
+&lt;h2 id=&#34;日常学习方面&#34;&gt;日常学习方面
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;微信读书一周2h，一年104h。（截止今日：73h11min）&lt;/li&gt;
+&lt;li&gt;纸质书（非技术类）两月一本，一年六本。今年读书重点依然在推理、历史类，可辅看经济入门书。&lt;/li&gt;
+&lt;li&gt;英语电台更新大于100期。&lt;/li&gt;
+&lt;/ol&gt;&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;达标。今年读了109h（来自官方报告）。（截至2020年12月31日：181h10min）&lt;/li&gt;
+&lt;li&gt;不达标。纸质书非技术类一本没读……&lt;/li&gt;
+&lt;li&gt;不达标。只更新了58期。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;　　完成度： 60%&lt;/p&gt;
+&lt;h2 id=&#34;健身方面&#34;&gt;健身方面
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;不熬夜。熬夜则自动领取加读论文一篇的奖励，需在博客上有记录。&lt;/li&gt;
+&lt;li&gt;Keep 3000min。一周至少三次Keep，运动量大于30min，一年需运动4680min（然而截止2019年底也才2530min），所以折中一下。&lt;/li&gt;
+&lt;/ol&gt;&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;不达标。今年熬夜是前二十几年最凶猛的，不仅熬夜，还失眠……补论文估算了一下至少得补100篇……&lt;/li&gt;
+&lt;li&gt;不达标。856min。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;　　完成度：0%&lt;/p&gt;
+&lt;p&gt;　　这样一看，给自己总评打50分似乎打高了……&lt;/p&gt;
+&lt;h1 id=&#34;2021年的目标&#34;&gt;2021年的目标
+&lt;/h1&gt;&lt;p&gt;　　今年突然意识到，这个年纪还能有人跟你说“要好好学习哦”，是多么幸福的事情。&lt;/p&gt;
+&lt;p&gt;　　立Flag一时爽，可是做不到的Flag就是打脸现场。比如现在，脸已经肿了……
+　　2021年不再立一大堆花里胡哨的目标了。
+　　2021年的目标，ONLY ONE：
+　　&lt;strong&gt;闭关学习，拿到大厂Offer！&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;　　少说话，多做事。Talk is cheap, show me the code.&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>关于RSS订阅</title>
+        <link>https://hubojing.github.io/uwzd2h6h/</link>
+        <pubDate>Wed, 02 Dec 2020 09:57:14 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/uwzd2h6h/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;https://hubojing.github.io/images/关于RSS订阅_cover.jpg&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;感谢订阅博客的各位&lt;/strong&gt;
+　　&lt;strong&gt;热爱可抵岁月漫长&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;p&gt;昨天有位朋友私信我说要RSS订阅我的博客，突然就想起这些年写博，遇到好些朋友都这样说。
+　　然而我自己却从来没有订阅过自己的博客（&lt;del&gt;滑稽表情：大概是太烂看不下去吧&lt;/del&gt;）&lt;/p&gt;
+&lt;p&gt;　　每次魔改博客后，文章tag什么的都改过好多次，甚至有的文章内容都更新过好多次。突然想看看RSS推送我的博客会是什么样子，是否会对关注我的朋友造成困扰。
+　　上次用RSS聚合软件还是好多年前了，那时用的什么我已经不太记得了，可能是深蓝阅读？
+　　在知乎成为我的搜索引擎后，我熟练地打开它就是一顿暴搜“2020年还有什么好用的RSS APP”？&lt;/p&gt;
+&lt;p&gt;　　答案是：没有。&lt;/p&gt;
+&lt;p&gt;　　这就离谱有木有？
+　　推荐系统把人都给控制得舒舒服服的，人们都不愿意自己主动订阅了？
+　　幸好……&lt;/p&gt;
+&lt;p&gt;　　幸好我就是研究推荐系统的（&lt;del&gt;再次滑稽&lt;/del&gt;）&lt;/p&gt;
+&lt;p&gt;　　那么这篇文章到底想说什么呢？
+　　就是……&lt;/p&gt;
+&lt;p&gt;　　我最后选择了轻芒杂志作为我的RSS阅读器。
+　　不过这个破软件还得要开会员才能订阅RSS。
+　　好在我去网上随便搜了个邀请码获得了会员权限。（免费的快乐）
+　　然后我也有了自己的邀请码。&lt;/p&gt;
+&lt;p&gt;　　你们需要的话，输入：&lt;strong&gt;靖待小太阳&lt;/strong&gt; 就可以获取永久会员啦~&lt;/p&gt;
+&lt;p&gt;　　……写的像软文一样，这公司应该给我打钱。&lt;/p&gt;
+&lt;p&gt;　　所以，有什么更好的RSS软件吗？
+　　主要是稳定，别用一阵子就垮了，资料白收藏了。然后是免费！穷人的字典里充满了免费二字。其它的功能，就随缘吧，2020年了，似乎都没人用RSS了，还要什么自行车。&lt;/p&gt;
+&lt;p&gt;　　最后，感谢订阅博客的朋友们，你们的点评和关注助我前行。博客会一直写下去，热爱可抵岁月漫长。&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>新的迷茫</title>
+        <link>https://hubojing.github.io/epfvuqhy/</link>
+        <pubDate>Tue, 30 Jun 2020 08:30:28 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/epfvuqhy/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\假装有图片.jpg&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;不算总结的年中总结。&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;p&gt;昨晚突然发现知乎关注的问题已经高达1800+了，决定清理一下。
+　　整理的过程正好回顾了我这几年来曾经关注过的领域：
+　　云计算、大数据、数据挖掘
+　　计算机视觉、图像处理、图像识别-OpenCV
+　　三维重建、计算机图形学、3D-WebGL
+　　人工智能、机器学习、深度学习
+　　边缘计算
+　　Web开发
+　　后端开发、服务器端开发
+　　游戏开发
+　　音视频解码
+　　Go语言
+　　Python系列-爬虫、Django
+　　Java编程
+　　网络编程
+　　C++编程
+　　安卓开发&lt;/p&gt;
+&lt;p&gt;　　可以看出来，我&lt;del&gt;见一个爱一个&lt;/del&gt;(不是)，应该说我对计算机领域爱的深沉！这些年写的博文涉猎的领域也很多，但同时暴露了问题，就是技术栈乱点，深度不够。&lt;/p&gt;
+&lt;p&gt;　　这半年由于疫情原因，从寒假一直宅家至今，有一些成长的感悟（此处不表）。
+　　今年致自己的话语中心词是&lt;code&gt;自律&lt;/code&gt;，正好在家科研着实是需要的。
+　　和去年刚接触时的新奇、兴奋不同，现在科研带给我的更多的是沉浸，在阅读论文时的静心、复现实验的耐心，思考idea的创新等等的考验。&lt;/p&gt;
+&lt;p&gt;　　回看年初立的Flag……截至目前完成度并不是很好。
+　　嗯，Flag这种东西还是在心里列比较好。&lt;del&gt;（毕竟打脸时就没人知道）&lt;/del&gt;&lt;/p&gt;
+&lt;p&gt;　　博客草稿里也堆积了一篇又一篇没写完或者刚开头甚至只写了个标题的文章。&lt;/p&gt;
+&lt;p&gt;　　下半年需要调整一下学习状态。&lt;/p&gt;
+&lt;p&gt;　　研究生生涯转眼就要过一年了，压力逐步增大。我对未来的规划也必须要开始明确一些。
+　　近来看2020年的算法岗校招一片红海，不得不说让我曾打足的气又给泄了。
+　　我一直在想，我应该选择什么。
+　　一般来说，喜欢什么就做什么。但我目前好像对开发与算法具有同等热情。
+　　如果说是想去一线互联网企业，似乎开发竞争相对小一些。
+　　但结合我目前所做的研究，又似乎推荐算法岗是最合适的。虽说毕业后的方向可能和读书期间不一致，但如若一致当然更佳吧。&lt;/p&gt;
+&lt;p&gt;　　其实两者也并不矛盾，本来也打算未来走算法 + 开发的复合型研发工程师路线。但时间有限，现在的学习还是得有先有后。&lt;/p&gt;
+&lt;p&gt;　　想来想去，选择Hard模式，可能比较有挑战性吧。
+　　一切的担忧，都是源于实力不够。&lt;/p&gt;
+&lt;p&gt;　　//TO DO&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>新闻杂谈</title>
+        <link>https://hubojing.github.io/g2qxcsgc/</link>
+        <pubDate>Thu, 29 Jun 2017 23:26:53 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/g2qxcsgc/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;http://n.sinaimg.cn/translate/20170628/njjU-fyhneam5185815.jpg&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;给Petya病毒差评，比永恒之蓝的用户体验差太多了，竟然没有简体中文版！！！
+　　&lt;/p&gt;
+ &lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;三条新闻&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;巴铁狗带
+今天看新闻巴铁终于被拆了……
+还记得当初第一回看到这个新概念视频时还觉得超酷的，然而仔细一想就漏洞百出。黑科技常有，但在众人提出质疑后却给不出解决方案的情况下一意孤行就很不地道。只能说是打着科研旗号骗国家钱的玩意儿……&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;categories-杂谈&#34;&gt;slug: g2qXCsgc
+aliases: [&amp;lsquo;2017/06/29/新闻杂谈/&amp;rsquo;]
+title: 新闻杂谈
+date: 2017-06-29 23:26:53
+updated: 2017-06-29 23:26:53
+tags: [杂谈]
+categories: 杂谈
+&lt;/h2&gt;&lt;p&gt;最近勒索病毒又升级了……吓得我又去看看自己win10升级没……&lt;/p&gt;
+&lt;p&gt;Petya病毒对勒索对象的加密，分为以下7个步骤：
+遍历所有驱动器，对每个驱动器创建一个线程并行加密 -&amp;gt; 生成AES-128密钥key -&amp;gt; 遍历磁盘文件，用key对其进行AES加密 -&amp;gt; 从程序中获取一个公钥pubkey（内置固定） -&amp;gt; 用pubkey加密key，得到ekey -&amp;gt; 将ekey写入README.TXT -&amp;gt; 释放key&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://yq.aliyun.com/articles/85783?spm=5176.100239.blogcont111587.33.CQn23O&amp;amp;utm_content=m_24432&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;WanaCrypt0r勒索蠕虫完全分析报告&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>折腾才是人生</title>
+        <link>https://hubojing.github.io/qnasaha4/</link>
+        <pubDate>Fri, 21 Apr 2017 00:02:54 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/qnasaha4/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1492716014892&amp;di=39eb7cb27e728bbbea6be20b6d2501c8&amp;imgtype=0&amp;src=http%3A%2F%2Fjrsh.hangzhou.com.cn%2Fsale%2Fcontent%2Fattachement%2Fjpg%2Fsite2%2F20151215%2F90b11c6dae5a17da23d850.jpg&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　其实是一篇吐槽贴和一个标准的Flag。
+　　&lt;/p&gt;
+ &lt;/div&gt;
+&lt;p&gt;虽然现在天色已深，哦，应该说是凌晨了，明天还要早起。但！我真的还是想吐槽……&lt;/p&gt;
+&lt;p&gt;　　一篇文章怎么可以没有目录？ 啊？啊？啊？ 要我一篇上万字的文章怎么翻…… （于是抛弃了yilia,hueman）
+（认真脸：我试过给hueman加目录的，一个toc函数，明明很简单的样子……然后就把主题玩崩了，其实要还原还是可以的，只是我对没目录的怨念很深呐）&lt;/p&gt;
+&lt;p&gt;　　为什么每一种主题评论的格式都不能统一一下……我终于找到每换一次主题就丢评论的解决方法了……（虽然数据量有点庞大，周末看有没有时间搞定）&lt;/p&gt;
+&lt;p&gt;　　为什么换个主题，不蒜子计数就从头开始！（尤其是近期更换频繁）现在都打算不显示点击数（网站点击和每篇文章浏览量）了（几千的点击噢，好气）……（百度统计什么的用过，然而还是直接显示出来方便（主要是显得网站有人气哈哈哈）其实到底有几个人看，无所谓啦~）&lt;/p&gt;
+&lt;p&gt;　　快五月了，好愁，多说到底用什么替换？？&lt;/p&gt;
+&lt;p&gt;　　另外，真的，图床贴图还没有CSDN博客上图来得方便。（比如刚才上传三十几张图，要是图床的话自己要不停复制外链，那效率可想而知。）&lt;/p&gt;
+&lt;p&gt;　　综上所述，
+　　&lt;strong&gt;这都是自己不会写主题的后果！！！&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;　　Flag: 　　
+　　现在不敢说完全独立写一个主题出来（主要是时间、精力、学习工作、学习方向的问题），毕竟博客以文章质量为主，但我希望今年能修改出自己满意的样子来……&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>多说关闭引发的麻烦</title>
+        <link>https://hubojing.github.io/3yyh9pab/</link>
+        <pubDate>Wed, 05 Apr 2017 16:44:21 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/3yyh9pab/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1550075130796&amp;di=5aaf4cf133100ae3c94fbe331f59606c&amp;imgtype=0&amp;src=http%3A%2F%2Fwww.jiancai163.cn%2FUploadFiles%2F2015-04%2Fliudanni%2F201504080935428156.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+ &lt;/div&gt;
+　　　
+　　**关于评论系统的折腾经。**
+　　
+　　
+&lt;h1 id=&#34;2018329-更新&#34;&gt;2018.3.29 更新
+&lt;/h1&gt;&lt;p&gt;最新，已更换到valine评论系统。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;categories-杂谈&#34;&gt;slug: 3yyh9pAb
+aliases: [&amp;lsquo;2017/04/05/多说关闭引发的麻烦/&amp;rsquo;]
+title: 多说关闭引发的麻烦
+date: 2017-04-05 16:44:21
+updated: 2018-03-29 20:51:07
+tags: [杂谈]
+categories: 杂谈
+&lt;/h2&gt;&lt;blockquote&gt;
+&lt;h1 id=&#34;2017527-已更换为disqus&#34;&gt;2017.5.27 已更换为Disqus
+&lt;/h1&gt;&lt;/blockquote&gt;
+&lt;p&gt;由于Disqus被墙，可能需要科学上网后才能看到评论。
+若墙内的朋友们需要评论，可以直接点击QQ图标（PC端在左边栏，移动端在页面上方），和我进行在线对话。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;categories-杂谈-1&#34;&gt;slug: 3yyh9pAb
+aliases: [&amp;lsquo;2017/04/05/多说关闭引发的麻烦/&amp;rsquo;]
+title: 多说关闭引发的麻烦
+date: 2017-04-05 16:44:21
+updated: 2018-03-29 20:51:07
+tags: [杂谈]
+categories: 杂谈
+&lt;/h2&gt;&lt;p&gt;多说八百年不发邮件通知我有评论，在我换为网易云跟帖后，竟然邮件通知我有评论了！&lt;/p&gt;
+&lt;p&gt;多说关闭带来的评论区何去何从让我颇为困扰。
+现在能用的大概只有这些：畅言（需备案）、网易云跟帖（github.io不支持）、友言（也有倒闭趋势）、来必力（韩国）。&lt;/p&gt;
+&lt;p&gt;没有一个像多说这样好用的！&lt;/p&gt;
+&lt;p&gt;虽然多说也有很多问题，但它至少解决了核心问题：
+1.评论显示正确的网友名称。
+来看看我换上网易云跟帖后的效果：
+&lt;img src=&#34;http://img.blog.csdn.net/20170405161942419?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;网易云跟帖&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;都是有态度网友…… 我压根分不清谁是谁！&lt;/p&gt;
+&lt;p&gt;2.点击头像可以回访人家的独立博客。
+这一点真的很重要，这往往是我们小众的独立博客人交朋友的主要途径啊！&lt;/p&gt;
+&lt;p&gt;3.可以自定义。
+头像旋转、评论框自定义，真的可以很好看。这些跟帖做不到。&lt;/p&gt;
+&lt;p&gt;4.盖楼模式多样。
+而跟帖只能一种，我不太喜欢，重复率太高，我还是喜欢多说的嵌套。&lt;/p&gt;
+&lt;p&gt;多说名字没起好啊！多说无益必自毙→_→
+先换回多说吧，再等一个月看看。&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>别做井底之蛙</title>
+        <link>https://hubojing.github.io/t8i4y2yp/</link>
+        <pubDate>Mon, 06 Mar 2017 00:11:48 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/t8i4y2yp/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1488743337927&amp;di=4273153cdba587ffa9e9dba1db8737fc&amp;imgtype=0&amp;src=http%3A%2F%2Fupload.admin5.com%2F2015%2F1121%2F1448071304470.jpg&#34; width=&#34;300&#34; height=&#34;180&#34;  style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;即将毕业了，谈谈最近我关于技术的思考。&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;最近总想给自己的四年打个分。
+给个70分吧。
+四年来，我一直认为，自己没有辜负这四年。这四年里，自己很多方面得到了成长。但直到最近，我发现了些什么。&lt;/p&gt;
+&lt;p&gt;这四年来，我一直是大家眼中的优秀学生，绩点高，学生工作也做得好。我时刻提醒自己，千万不要被眼前的赞誉迷了眼。我之所以显得优秀，是因为我所处的环境还不够好。
+这是我的技术博客，关于其他方面就不提了。尤谈技术。&lt;/p&gt;
+&lt;p&gt;大一大二沉浸在繁忙的学生工作中，忽略了自己是个十足的工科生，只注重课堂学习，忽视了动手实践。大二在实验室的半年，收获有，却不是很大。一方面是学校实验室的建设不完善，最重要的是实验室方向不是我所感兴趣的，再加上我当时过于急于求成，收效甚微就心烦意乱。
+大三卸任部分学生工作，时间多了出来。突然就意识到了自己的专业被自己落下了。于是就诞生了这个技术博客，记录我所学的知识。算是对自己学技术的一点弥补。后来表示不服，自己报名了计算机比赛，最后竟意外抱得国奖回，让自己开心了一阵。我就算没在实验室了，我还是能自己干出事情来！我是有些倔。
+再后来考研。过程不说了，和所有考研人一样平常。
+考完后让自己彻底放松了二个月，所有和学习的事情都放下了，包括这里。这也是为什么这段时间我的github绿的很少，以及博客长久未更的原因。&lt;/p&gt;
+&lt;p&gt;简历看似让人羡慕，可我近来愈发觉得，自己就是一只井底之蛙。
+没有实验室的帮助，没有老师的指导，没有志同道合的伙伴，全靠自己一个人，自己的学习时常走入歧途。不过这都不重要，重要的是我只要愿意不断学习，总会越懂越多。
+最近我看了大神和牛人甚至是认识的同学们的学习过程，自己的努力与之相比不值一提。之前即使我总是警告自己不要感动自己，可最终还是让自己浮在了表面。&lt;/p&gt;
+&lt;p&gt;我是通信工程专业的学生，却常“不务正业”地倒弄计算机专业的东西（不过这是我的兴趣所在，我也从不觉得是错误，通信和计算机本是一家），有时候我在想，我的本家知识还没学通学透呢？&lt;/p&gt;
+&lt;p&gt;寒假放松的两个月，有个网友隔几天就问我有没有敲代码。我都说没有。他当时批评我说，女生果然不适合干技术。我回复他，你可以指责我，但我不能代表整个女性群体。后来想想，他的批评是有理的，像我那样三天打鱼、两天晒网的学习，怎么会有效果？&lt;/p&gt;
+&lt;p&gt;最近我常常在想，我口口声声说爱技术，还有一个做学术做科研的愿望，到底是不是发自心底的？我在还没深入了解它的时候，有什么资格说爱它？&lt;/p&gt;
+&lt;p&gt;感觉自己被越甩越远，但自己不想在做井底之蛙了。虽然醒悟地有些晚，但好歹是想过来了。&lt;/p&gt;
+&lt;p&gt;即将毕业的我，让自己重新做回一个普通的学生，耐心的学习，安心做毕设，回归一个工科学生对技术所抱有的憧憬之心。&lt;/p&gt;
+&lt;p&gt;先给自己定一个小目标：让github重新绿起来。欢迎各位监督。&lt;/p&gt;
+&lt;p&gt;写于2017年3月6日凌晨1点&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>回归</title>
+        <link>https://hubojing.github.io/kh75awiz/</link>
+        <pubDate>Mon, 26 Dec 2016 21:16:07 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/kh75awiz/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;http://photocdn.sohu.com/20150910/mp31261103_1441838697557_1_th.jpeg&#34; width=&#34;300&#34; height=&#34;180&#34; alt=&#34;配图&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;&lt;strong&gt;考研大战初试昨日结束，我回来写文了！&lt;/strong&gt;
+考研不易，且行且珍惜！
+无论如何，人生开启新旅程！在技术的海洋里遨游吧！向成为一名优秀的工程师迈进！&lt;/p&gt;
+&lt;p&gt;　　&lt;/p&gt;
+ &lt;/div&gt; </description>
+        </item>
+        <item>
+        <title>上海决赛之旅 | the trip for contest in Shanghai</title>
+        <link>https://hubojing.github.io/kr52zn63/</link>
+        <pubDate>Sat, 27 Aug 2016 15:43:53 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/kr52zn63/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1550073621300&amp;di=6bac2140cd91bb374002219daa1f70f2&amp;imgtype=0&amp;src=http%3A%2F%2Fimg.gifhome.com%2Fgif%2Fs%2F2018%2F644d1119c7e04f89aa74d17f3ab6c47e.jpg&#34; width=&#34;300&#34; height=&#34;180&#34; alt=&#34;配图&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;&lt;strong&gt;上海决赛后的简单的感受，具体的技术方面探讨将在考研后详细更新。&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;从上海比赛回来，说说几点感受：&lt;br&gt;
+1.大神技术过硬。
+2.大神为作品倾注很多。
+3.创意和灵感的重要性。
+4.团队合作，找到志同道合的朋友。
+5.大神演讲能力极强，不怯场。
+6.自己的心态和学习程度都需要改正加强，差距是明显可见的。&lt;/p&gt;
+&lt;p&gt;衷心感谢学校的支持，能为学院和学校争取荣誉，同时实现自己初涉竞赛的心愿，找到自己和大神的距离，不虚此行。&lt;/p&gt;
+&lt;p&gt;I would like to spare my thoughts after my coming back from Shanghai for my competition.
+1.Superiors are excellent in technology.
+2.Superiors take times in their work.
+3.Idea and inspiration are insignificant.
+4.Team-work is needed,and we should find like-minded firends.
+5.Superiors have ability in giving a speech and never afraid of it.
+6.My attitude and learning need to be changed and improved,and the distance between superior and me is clearly to see.&lt;/p&gt;
+&lt;p&gt;Thank you for the support from my university,and I&amp;rsquo;m prond of doing credit to my school and university.In the meanwhile,I realise my dream for first involve in contest.
+附自拍上海美景 P.S.the view of Shanghai
+&lt;img src=&#34;https://hubojing.github.io/&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;上海&#34;
+	
+	
+&gt;&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>说明</title>
+        <link>https://hubojing.github.io/artks7zt/</link>
+        <pubDate>Sat, 16 Jul 2016 18:20:32 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/artks7zt/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;http://i2.w.yun.hjfile.cn/doc/201304/bc1b70e4e74d48c4ab99e3db21a052f0.png&#34; width=&#34;300&#34; height=&#34;180&#34; alt=&#34;配图&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;有朋友问我为何最近github和博客都没有较多的维护和更新，现作出&lt;code&gt;说明&lt;/code&gt;：&lt;/p&gt;
+&lt;p&gt;因本人自身发展问题，正积极备考研究生考试，直至考研结束，所以github和博客的维护和更新会延缓，但&lt;strong&gt;不会停止维护&lt;/strong&gt;。
+希望完全回归时，自己能收获理想！
+学习，永不止步。
+望各位朋友理解！谢谢大家！&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>HelloWorld</title>
+        <link>https://hubojing.github.io/fhkym7zi/</link>
+        <pubDate>Fri, 06 Nov 2015 13:23:40 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/fhkym7zi/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1522257782289&amp;di=6bbbe6823fd03e03cd600687648ad983&amp;imgtype=0&amp;src=http%3A%2F%2Fwww.ibeifeng.com%2Fimages%2Fupload%2FImage%2Fc5bbf603918fa0ec91b3bd73259759ee3c6ddbc0.jpg&#34; width=&#34;300&#34; height=&#34;180&#34; alt=&#34;配图&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;&lt;strong&gt;利用一周零零碎碎的时间搭建起来，使用hexo在github上的个人独立博客初见雏形。&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;p&gt;作为一名通信人，始终要记住科学技术是第一生产力！
+大三已至，也算入了互联网+通信领域的门。入门不难，深造不易。将把自己在学习中和实践中的技术经验以及点滴收获记录下来，作为自己在技术之路的见证和成长。
+读者可以随时在文章下方评论，以及与我联系，欢迎学术交流，难题沟通，批评指正，尤其是专业相关（比如数模电）、数学方面（数学虐我千百遍，我待数学如初恋[笑]）。自觉天资不高，但对于技术，心向往之，但愿各位指点一二。&lt;/p&gt;
+&lt;p&gt;I manage to find time to build this blog for a week,which used hexo static frame on the github,and it is finished preliminarily.
+As a Communication man,we should always keep in mind that science and technology are primary productive force!
+I&amp;rsquo;m already learn elementary courses since I&amp;rsquo;m a junior student today. To cross the threshold is not difficult, but mastery is another question.Therefore,I will take notes on the blog through the learning and practice process,to witness my growth on the way.
+Readers can commit on the bottom of the article,and contact with me.Welcome academic exchange and question communication.You can oblige me with your valuable comments about major related(digital electronic technology or analog electronic technology,for instance),especially math problem(^_^I am fond of mathematic).I&amp;rsquo;m not talent,but I&amp;rsquo;m adore of IT.I would appreciate it if you give me some guidance.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Talk is cheap,show me the code!&lt;/strong&gt;
+&lt;strong&gt;Just do IT！&lt;/strong&gt;&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

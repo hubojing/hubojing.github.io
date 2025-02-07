@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="\r人生苦短，Python当歌。\n">
+<title>Python开发简单爬虫</title>
+
+<link rel='canonical' href='https://hubojing.github.io/nty8gkpw/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="Python开发简单爬虫">
+<meta property='og:description' content="\r人生苦短，Python当歌。\n">
+<meta property='og:url' content='https://hubojing.github.io/nty8gkpw/'>
+<meta property='og:site_name' content='靖待'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='Python' /><meta property='article:tag' content='爬虫' /><meta property='article:published_time' content='2018-03-11T15:42:37&#43;00:00'/><meta property='article:modified_time' content='2018-03-11T15:42:37&#43;00:00'/>
+<meta name="twitter:title" content="Python开发简单爬虫">
+<meta name="twitter:description" content="\r人生苦短，Python当歌。\n">
+    <link rel="shortcut icon" href="/avatar.jpg" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_999351c94d8e06aa.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">靖待</a></h1>
+            <h2 class="site-description">创造是人生乐趣</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://blog.csdn.net/hubojing/'
+                        target="_blank"
+                        title="csdn"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:hubojing@outlook.com'
+                        target="_blank"
+                        title="mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://music.163.com/#/user/home?id=92203594'
+                        target="_blank"
+                        title="netease"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='/atom.xml'
+                        target="_blank"
+                        title="rss"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                <span>存档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friends/' >
+                
+                
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#urllib2下载网页的三种方法">urllib2下载网页的三种方法</a>
+      <ol>
+        <li><a href="#最简洁方法">最简洁方法</a>
+          <ol>
+            <li><a href="#代码">代码</a></li>
+          </ol>
+        </li>
+        <li><a href="#法2添加datahttp-header">法2：添加data、http header</a>
+          <ol>
+            <li><a href="#代码-1">代码</a></li>
+          </ol>
+        </li>
+        <li><a href="#法3添加特殊情景的处理器">法3：添加特殊情景的处理器</a>
+          <ol>
+            <li><a href="#代码-2">代码</a></li>
+          </ol>
+        </li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li><a href="#beautiful-soup安装">Beautiful Soup安装</a></li>
+    <li><a href="#beautiful-soup语法">Beautiful Soup语法</a></li>
+    <li><a href="#代码-3">代码</a>
+      <ol>
+        <li><a href="#创建beautifulsoup对象">创建BeautifulSoup对象</a></li>
+        <li><a href="#搜索节点find_allfind">搜索节点（find_all,find）</a></li>
+        <li><a href="#访问节点信息">访问节点信息</a></li>
+        <li><a href="#python3测试">Python3测试</a></li>
+      </ol>
+    </li>
+  </ol>
+
+  <ol>
+    <li><a href="#分析">分析</a></li>
+    <li><a href="#易错处及解决">易错处及解决</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/" >
+                软件开发
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/nty8gkpw/">Python开发简单爬虫</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 11, 2018</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <div align="left">
+<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1520877147729&di=7931c89b81b24de8d540c04e40c7228a&imgtype=0&src=http%3A%2F%2Fserver.zzidc.com%2Fuploads%2Fallimg%2F171210%2F1-1G210204413632.png" width="300" height="180" style="float:right;"/>
+<p>　　<strong>人生苦短，Python当歌。</strong></p>
+ </div>
+<h1 id="简单爬虫架构">简单爬虫架构
+</h1><p><img src="https://github.com/hubojing/BlogImages/blob/master/Python%E5%BC%80%E5%8F%91%E7%AE%80%E5%8D%95%E7%88%AC%E8%99%AB%E2%80%94%E2%80%94%E7%AE%80%E5%8D%95%E7%88%AC%E8%99%AB%E6%9E%B6%E6%9E%84.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="简单爬虫架构"
+	
+	
+></p>
+<p>简单爬虫架构——运行流程
+<img src="https://github.com/hubojing/BlogImages/blob/master/Python%E5%BC%80%E5%8F%91%E7%AE%80%E5%8D%95%E7%88%AC%E8%99%AB%E2%80%94%E2%80%94%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="运行流程"
+	
+	
+></p>
+<h1 id="url管理器和实现方法">URL管理器和实现方法
+</h1><ul>
+<li>URL管理器：管理待抓取URL集合和已抓取URL集合
+<img src="https://github.com/hubojing/BlogImages/blob/master/Python%E5%BC%80%E5%8F%91%E7%AE%80%E5%8D%95%E7%88%AC%E8%99%AB%E2%80%94%E2%80%94URL%E7%AE%A1%E7%90%86%E5%99%A8.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="URL管理器"
+	
+	
+></li>
+<li>实现方式
+<img src="https://github.com/hubojing/BlogImages/blob/master/Python%E5%BC%80%E5%8F%91%E7%AE%80%E5%8D%95%E7%88%AC%E8%99%AB%E2%80%94%E2%80%94URL%E7%AE%A1%E7%90%86%E5%99%A8%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="实现方式"
+	
+	
+></li>
+</ul>
+<h1 id="网页下载器和urllib2模块">网页下载器和urllib2模块
+</h1><ul>
+<li>
+<p>网页下载器：将互联网上URL对应的网页下载到本地的工具
+<img src="https://github.com/hubojing/BlogImages/blob/master/Python%E5%BC%80%E5%8F%91%E7%AE%80%E5%8D%95%E7%88%AC%E8%99%AB%E2%80%94%E2%80%94%E7%BD%91%E9%A1%B5%E4%B8%8B%E8%BD%BD%E5%99%A8.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="网页下载器"
+	
+	
+></p>
+</li>
+<li>
+<p>Python的几种网页下载器</p>
+</li>
+</ul>
+<ol>
+<li>urllib2——Python官方基础模块</li>
+<li>requests——第三方包更强大</li>
+</ol>
+<h2 id="urllib2下载网页的三种方法">urllib2下载网页的三种方法
+</h2><p>以下代码基于Python2。</p>
+<h3 id="最简洁方法">最简洁方法
+</h3><p>url&mdash;&gt;urllib2.urlopen(url)</p>
+<h4 id="代码">代码
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">urllib2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 直接请求</span>
+</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s1">&#39;http://www.baidu.com&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 获取状态码，如果是200表示获取成功</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span> <span class="n">response</span><span class="o">.</span><span class="n">getcode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 读取内容</span>
+</span></span><span class="line"><span class="cl"><span class="n">cont</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="法2添加datahttp-header">法2：添加data、http header
+</h3><p><img src="https://github.com/hubojing/BlogImages/blob/master/Python%E5%BC%80%E5%8F%91%E7%AE%80%E5%8D%95%E7%88%AC%E8%99%AB%E2%80%94%E2%80%94urllib2%E6%B3%952.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="urllib2法2"
+	
+	
+></p>
+<h4 id="代码-1">代码
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">urllib2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建Request对象</span>
+</span></span><span class="line"><span class="cl"><span class="n">request</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#添加数据</span>
+</span></span><span class="line"><span class="cl"><span class="n">request</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;1&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#添加http的header</span>
+</span></span><span class="line"><span class="cl"><span class="n">request</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s1">&#39;User-Agent&#39;</span><span class="p">,</span><span class="s1">&#39;Mozilla/5.0&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 发送请求获取结果</span>
+</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="法3添加特殊情景的处理器">法3：添加特殊情景的处理器
+</h3><p><img src="https://github.com/hubojing/BlogImages/blob/master/Python%E5%BC%80%E5%8F%91%E7%AE%80%E5%8D%95%E7%88%AC%E8%99%AB%E2%80%94%E2%80%94urllib2%E6%B3%953.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="urllib2法3"
+	
+	
+></p>
+<h4 id="代码-2">代码
+</h4><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">urllib2</span><span class="o">,</span> <span class="nn">cookielib</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#创建cookie容器</span>
+</span></span><span class="line"><span class="cl"><span class="n">cj</span> <span class="o">=</span> <span class="n">cookielib</span><span class="o">.</span><span class="n">CookieJar</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建1个opener</span>
+</span></span><span class="line"><span class="cl"><span class="n">opener</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">build_opener</span><span class="p">(</span><span class="n">urllib2</span><span class="o">.</span><span class="n">HTTPCookieProcessor</span><span class="p">(</span><span class="n">cj</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 给urllib2安装opener</span>
+</span></span><span class="line"><span class="cl"><span class="n">urllib2</span><span class="o">.</span><span class="n">install_opener</span><span class="p">(</span><span class="n">opener</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 使用带有cookie的urllib2访问网页</span>
+</span></span><span class="line"><span class="cl"><span class="n">response</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s2">&#34;http://www/baidu.com/&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h1 id="python3代码">Python3代码
+</h1><p>Python版本：3.7</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># coding:utf8</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">urllib</span> <span class="kn">import</span> <span class="n">request</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">http.cookiejar</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">url</span><span class="o">=</span><span class="s2">&#34;http://www.baidu.com&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;第一种方法&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">response1</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">response1</span><span class="o">.</span><span class="n">getcode</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">response1</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;第二种方法&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">req</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">req</span><span class="o">.</span><span class="n">add_header</span><span class="p">(</span><span class="s1">&#39;user-agent&#39;</span><span class="p">,</span><span class="s1">&#39;Mozilla/5.0&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">response2</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">response2</span><span class="o">.</span><span class="n">getcode</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">response2</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;第三种方法&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">cj</span><span class="o">=</span><span class="n">http</span><span class="o">.</span><span class="n">cookiejar</span><span class="o">.</span><span class="n">CookieJar</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">opener</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">build_opener</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">HTTPCookieProcessor</span><span class="p">(</span><span class="n">cj</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">request</span><span class="o">.</span><span class="n">install_opener</span><span class="p">(</span><span class="n">opener</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">response3</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">response3</span><span class="o">.</span><span class="n">getcode</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">cj</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">response3</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>注意：<strong>python3要使用urllib.request替换urllib2。</strong></p>
+<h1 id="网页解析器和beautifulsoup第三方模块">网页解析器和BeautifulSoup第三方模块
+</h1><ul>
+<li>
+<p>网页解析器：从网页中提取有价值数据的工具
+<img src="https://github.com/hubojing/BlogImages/blob/master/Python%E5%BC%80%E5%8F%91%E7%AE%80%E5%8D%95%E7%88%AC%E8%99%AB%E2%80%94%E2%80%94%E7%BD%91%E9%A1%B5%E8%A7%A3%E6%9E%90%E5%99%A8.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="网页解析器"
+	
+	
+></p>
+</li>
+<li>
+<p>Python的几种网页解析器
+<img src="https://github.com/hubojing/BlogImages/blob/master/Python%E5%BC%80%E5%8F%91%E7%AE%80%E5%8D%95%E7%88%AC%E8%99%AB%E2%80%94%E2%80%94%E5%87%A0%E7%A7%8D%E7%BD%91%E9%A1%B5%E8%A7%A3%E6%9E%90%E5%99%A8.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="几种网页解析器"
+	
+	
+></p>
+</li>
+<li>
+<p>结构化解析-DOM(Document Object Model)树
+<img src="https://github.com/hubojing/BlogImages/blob/master/Python%E5%BC%80%E5%8F%91%E7%AE%80%E5%8D%95%E7%88%AC%E8%99%AB%E2%80%94%E2%80%94DOM.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="DOM"
+	
+	
+></p>
+</li>
+</ul>
+<h2 id="beautiful-soup安装">Beautiful Soup安装
+</h2><p>官方文档：https://www.crummy.com/software/BeautifulSoup/bs4/doc/index.zh.html</p>
+<p>安装：pip install beautifulsoup4
+<img src="https://github.com/hubojing/BlogImages/blob/master/Python%E5%BC%80%E5%8F%91%E7%AE%80%E5%8D%95%E7%88%AC%E8%99%AB%E2%80%94%E2%80%94%E5%AE%89%E8%A3%85beautifulsoup.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="安装"
+	
+	
+></p>
+<p>pip install bs4
+<img src="https://github.com/hubojing/BlogImages/blob/master/Python%E5%BC%80%E5%8F%91%E7%AE%80%E5%8D%95%E7%88%AC%E8%99%AB%E2%80%94%E2%80%94%E5%AE%89%E8%A3%85bs4.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="安装bs4"
+	
+	
+></p>
+<h2 id="beautiful-soup语法">Beautiful Soup语法
+</h2><p><img src="https://github.com/hubojing/BlogImages/blob/master/Python%E5%BC%80%E5%8F%91%E7%AE%80%E5%8D%95%E7%88%AC%E8%99%AB%E2%80%94%E2%80%94BS%E8%AF%AD%E6%B3%95.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="BS语法"
+	
+	
+>
+eg.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;a href=&#39;123.html&#39; class=&#39;article_link&#39;&gt; Python &lt;/a&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>节点名称：a
+节点属性：href=&lsquo;123.html&rsquo;
+节点属性：class=&lsquo;article_link&rsquo;
+节点内容：Python</p>
+<h2 id="代码-3">代码
+</h2><h3 id="创建beautifulsoup对象">创建BeautifulSoup对象
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 根据HTML网页字符串创建BeautifulSoup对象</span>
+</span></span><span class="line"><span class="cl"><span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl"><span class="n">html_doc</span><span class="p">,</span><span class="c1"># HTML文档字符串</span>
+</span></span><span class="line"><span class="cl"><span class="s1">&#39;html.parser&#39;</span><span class="c1"># HTML解析器</span>
+</span></span><span class="line"><span class="cl"><span class="n">from_encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="c1"># HTML文档的编码</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="搜索节点find_allfind">搜索节点（find_all,find）
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 方法：find_all(name, attrs, string)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找所有标签为a的节点</span>
+</span></span><span class="line"><span class="cl"><span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找所有标签为a，链接符合/view/123.htm形式的节点</span>
+</span></span><span class="line"><span class="cl"><span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;/view/123.htm&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/view/\d+\.htm&#39;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查找所有标签为div，class为abc，文字为Python的节点</span>
+</span></span><span class="line"><span class="cl"><span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;abc&#39;</span><span class="p">,</span> <span class="n">string</span><span class="o">=</span><span class="s1">&#39;Python&#39;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="访问节点信息">访问节点信息
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 得到节点：&lt;a href=&#39;1.html&#39;&gt;Python&lt;/a&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#获取查找到的节点的标签名称</span>
+</span></span><span class="line"><span class="cl"><span class="n">node</span><span class="o">.</span><span class="n">name</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 获取查找到的a节点的href属性</span>
+</span></span><span class="line"><span class="cl"><span class="n">node</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 获取查找到的a节点的链接文字</span>
+</span></span><span class="line"><span class="cl"><span class="n">node</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="python3测试">Python3测试
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># coding:utf8</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">re</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">html_doc</span> <span class="o">=</span> <span class="s2">&#34;&#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">&lt;html&gt;&lt;head&gt;&lt;title&gt;The Dormouse&#39;s story&lt;/title&gt;&lt;/head&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">&lt;body&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">&lt;p class=&#34;title&#34;&gt;&lt;b&gt;The Dormouse&#39;s story&lt;/b&gt;&lt;/p&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">&lt;p class=&#34;story&#34;&gt;Once upon a time there were three little sisters; and their names were
+</span></span></span><span class="line"><span class="cl"><span class="s2">&lt;a href=&#34;http://example.com/elsie&#34; class=&#34;sister&#34; id=&#34;link1&#34;&gt;Elsie&lt;/a&gt;,
+</span></span></span><span class="line"><span class="cl"><span class="s2">&lt;a href=&#34;http://example.com/lacie&#34; class=&#34;sister&#34; id=&#34;link2&#34;&gt;Lacie&lt;/a&gt; and
+</span></span></span><span class="line"><span class="cl"><span class="s2">&lt;a href=&#34;http://example.com/tillie&#34; class=&#34;sister&#34; id=&#34;link3&#34;&gt;Tillie&lt;/a&gt;;
+</span></span></span><span class="line"><span class="cl"><span class="s2">and they lived at the bottom of a well.&lt;/p&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">&lt;p class=&#34;story&#34;&gt;...&lt;/p&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">soup</span><span class="o">=</span><span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">html_doc</span><span class="p">,</span> <span class="s1">&#39;html.parser&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;获取所有的链接&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">links</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">link</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">],</span> <span class="n">link</span><span class="o">.</span><span class="n">get_text</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;获取lacie的链接&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">link_node</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;http://example.com/lacie&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">link_node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">link_node</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">],</span> <span class="n">link_node</span><span class="o">.</span><span class="n">get_text</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;正则匹配&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">link_node</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">href</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&#34;ill&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">link_node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">link_node</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">],</span> <span class="n">link_node</span><span class="o">.</span><span class="n">get_text</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;获取p段落文字&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">p_node</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s2">&#34;title&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">p_node</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">p_node</span><span class="o">.</span><span class="n">get_text</span><span class="p">())</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>结果：
+<img src="https://github.com/hubojing/BlogImages/blob/master/Python%E5%BC%80%E5%8F%91%E7%AE%80%E5%8D%95%E7%88%AC%E8%99%AB%E2%80%94%E2%80%94%E7%BB%93%E6%9E%9C.png?raw=true"
+	
+	
+	
+	loading="lazy"
+	
+		alt="结果"
+	
+	
+></p>
+<h1 id="爬取百度百科1000个页面的数据">爬取百度百科1000个页面的数据
+</h1><h2 id="分析">分析
+</h2><p>确定目标&mdash;&gt;分析目标（URL格式、数据格式、网页编码）&mdash;&gt;编写代码&mdash;&gt;执行爬虫</p>
+<blockquote>
+<p>目标：百度百科Python词条相关词条网页——标题和简介</p></blockquote>
+<blockquote>
+<p>入口页：http://baike.baidu.com/item/Python/</p></blockquote>
+<blockquote>
+<p>URL格式：</p>
+<ul>
+<li>词条页面URL：/item/%E8%87%AA%E7%94%B1%E8%BD%AF%E4%BB%B6</li>
+</ul></blockquote>
+<blockquote>
+<p>数据格式：</p>
+<ul>
+<li>标题：
+```
+<dd class="lemmaWgt-lemmaTitle-title"></li>
+</ul></blockquote>
+<h1>***</h1>
+</dd>
+```
+> - 简介：
+	```
+    <div class="lemma-summary" label-module="lemmaSummary">***</div>
+```
+<blockquote>
+<p>页面编码：UTF-8</p></blockquote>
+<h2 id="易错处及解决">易错处及解决
+</h2><ul>
+<li>url易变，以后需结合最新url修改正则表达式或总入口url。</li>
+<li>若只能爬取到一条数据，注意有些url是没有summary的，需添加</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">summary_node</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">,</span> <span class="n">class_</span><span class="o">=</span><span class="s1">&#39;lemma-summary&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#添加判空判断</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">summary_node</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl"><span class="k">return</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>outputer.html为空时，检查代码outputer代码是否有误。这种情况通常是data为空，可以断点调试一下，定位问题。比如我的问题在html_parser中<code>_get_new_data</code>函数中将<code>lemma-summary</code>写为了<code>lemmasummary</code>。</li>
+<li>outputer.html乱码时，检查编码问题。Python3将编码写在open里。</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl">       <span class="n">fout</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;output.html&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&#34;&lt;html&gt;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&#34;&lt;body&gt;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&#34;&lt;table&gt;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">datas</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&#34;&lt;tr&gt;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&#34;&lt;td&gt;</span><span class="si">%s</span><span class="s2">&lt;/td&gt;&#34;</span> <span class="o">%</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">            <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&#34;&lt;td&gt;</span><span class="si">%s</span><span class="s2">&lt;/td&gt;&#34;</span> <span class="o">%</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">            <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&#34;&lt;td&gt;</span><span class="si">%s</span><span class="s2">&lt;/td&gt;&#34;</span> <span class="o">%</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;summary&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">            <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&#34;&lt;/tr&gt;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&#34;&lt;/table&gt;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&#34;&lt;/body&gt;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&#34;&lt;/html&gt;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fout</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="err">```</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 结果</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="n">经测试</span><span class="err">，</span><span class="n">爬1000个页面用时为12min</span><span class="err">（</span><span class="n">比较慢</span><span class="err">），</span><span class="n">全部爬取成功</span><span class="err">。</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="n">控制台</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="err">!</span><span class="p">[</span><span class="n">爬虫数据</span><span class="p">](</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">hubojing</span><span class="o">/</span><span class="n">BlogImages</span><span class="o">/</span><span class="n">blob</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">Python</span><span class="o">%</span><span class="n">E5</span><span class="o">%</span><span class="n">BC</span><span class="o">%</span><span class="mi">80</span><span class="o">%</span><span class="n">E5</span><span class="o">%</span><span class="mi">8</span><span class="n">F</span><span class="o">%</span><span class="mi">91</span><span class="o">%</span><span class="n">E7</span><span class="o">%</span><span class="n">AE</span><span class="o">%</span><span class="mi">80</span><span class="o">%</span><span class="n">E5</span><span class="o">%</span><span class="mi">8</span><span class="n">D</span><span class="o">%</span><span class="mi">95</span><span class="o">%</span><span class="n">E7</span><span class="o">%</span><span class="mi">88</span><span class="o">%</span><span class="n">AC</span><span class="o">%</span><span class="n">E8</span><span class="o">%</span><span class="mi">99</span><span class="o">%</span><span class="n">AB</span><span class="o">%</span><span class="n">E2</span><span class="o">%</span><span class="mi">80</span><span class="o">%</span><span class="mi">94</span><span class="o">%</span><span class="n">E2</span><span class="o">%</span><span class="mi">80</span><span class="o">%</span><span class="mi">94</span><span class="o">%</span><span class="n">E7</span><span class="o">%</span><span class="mi">88</span><span class="o">%</span><span class="n">AC</span><span class="o">%</span><span class="n">E8</span><span class="o">%</span><span class="mi">99</span><span class="o">%</span><span class="n">AB</span><span class="o">%</span><span class="n">E7</span><span class="o">%</span><span class="n">BB</span><span class="o">%</span><span class="mi">93</span><span class="o">%</span><span class="n">E6</span><span class="o">%</span><span class="mi">9</span><span class="n">E</span><span class="o">%</span><span class="mi">9</span><span class="n">C</span><span class="o">.</span><span class="n">png</span><span class="err">?</span><span class="n">raw</span><span class="o">=</span><span class="n">true</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="n">输出的html</span>
+</span></span><span class="line"><span class="cl"><span class="o">-</span> <span class="err">!</span><span class="p">[</span><span class="n">html</span><span class="p">](</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">hubojing</span><span class="o">/</span><span class="n">BlogImages</span><span class="o">/</span><span class="n">blob</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="n">Python</span><span class="o">%</span><span class="n">E5</span><span class="o">%</span><span class="n">BC</span><span class="o">%</span><span class="mi">80</span><span class="o">%</span><span class="n">E5</span><span class="o">%</span><span class="mi">8</span><span class="n">F</span><span class="o">%</span><span class="mi">91</span><span class="o">%</span><span class="n">E7</span><span class="o">%</span><span class="n">AE</span><span class="o">%</span><span class="mi">80</span><span class="o">%</span><span class="n">E5</span><span class="o">%</span><span class="mi">8</span><span class="n">D</span><span class="o">%</span><span class="mi">95</span><span class="o">%</span><span class="n">E7</span><span class="o">%</span><span class="mi">88</span><span class="o">%</span><span class="n">AC</span><span class="o">%</span><span class="n">E8</span><span class="o">%</span><span class="mi">99</span><span class="o">%</span><span class="n">AB</span><span class="o">%</span><span class="n">E2</span><span class="o">%</span><span class="mi">80</span><span class="o">%</span><span class="mi">94</span><span class="o">%</span><span class="n">E2</span><span class="o">%</span><span class="mi">80</span><span class="o">%</span><span class="mi">94</span><span class="n">html</span><span class="o">.</span><span class="n">png</span><span class="err">?</span><span class="n">raw</span><span class="o">=</span><span class="n">true</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 全部代码下载地址</span>
+</span></span><span class="line"><span class="cl"><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">hubojing</span><span class="o">/</span><span class="n">PythonSpider</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">---</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">感谢慕课平台</span><span class="err">。</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/python/">Python</a>
+        
+            <a href="/tags/%E7%88%AC%E8%99%AB/">爬虫</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/acuzxhyn/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Django博客demo</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/9a9iuxhr/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MFC网页分析程序</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/8ztt3yfv/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">向量检索技术</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/cuu2edep/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">JingSLink</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/tbre6qau/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">设计模式笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":"评论一句，好运+1！"},"requiredMeta":["name"],"serverURL":"https://zippy-halva-8e20f0.netlify.app/.netlify/functions/comment"});
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2015 - 
+        
+        2025 靖待
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

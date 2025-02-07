@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="\rItemCF原文。\n">
+<title>【Paper】Amazon.com Recommendations Item-to-Item Collaborative Filtering</title>
+
+<link rel='canonical' href='https://hubojing.github.io/h5bkenqv/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="【Paper】Amazon.com Recommendations Item-to-Item Collaborative Filtering">
+<meta property='og:description' content="\rItemCF原文。\n">
+<meta property='og:url' content='https://hubojing.github.io/h5bkenqv/'>
+<meta property='og:site_name' content='靖待'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='推荐算法' /><meta property='article:tag' content='CF' /><meta property='article:published_time' content='2020-12-02T14:40:23&#43;00:00'/><meta property='article:modified_time' content='2020-12-02T14:40:23&#43;00:00'/>
+<meta name="twitter:title" content="【Paper】Amazon.com Recommendations Item-to-Item Collaborative Filtering">
+<meta name="twitter:description" content="\rItemCF原文。\n">
+    <link rel="shortcut icon" href="/avatar.jpg" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_999351c94d8e06aa.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">靖待</a></h1>
+            <h2 class="site-description">创造是人生乐趣</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://blog.csdn.net/hubojing/'
+                        target="_blank"
+                        title="csdn"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:hubojing@outlook.com'
+                        target="_blank"
+                        title="mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://music.163.com/#/user/home?id=92203594'
+                        target="_blank"
+                        title="netease"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='/atom.xml'
+                        target="_blank"
+                        title="rss"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                <span>存档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friends/' >
+                
+                
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#traditional-collaborative-filtering-传统协同过滤">Traditional Collaborative Filtering 传统协同过滤</a></li>
+    <li><a href="#cluster-models-聚类模型">Cluster Models 聚类模型</a></li>
+    <li><a href="#search-based-methods-基于搜索的策略">Search-Based Methods 基于搜索的策略</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#how-it-works-如何工作">How It Works 如何工作</a></li>
+    <li><a href="#scalability-a-comparison-可扩展性">Scalability: A Comparison 可扩展性</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E8%AE%BA%E6%96%87/" >
+                论文
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/h5bkenqv/">【Paper】Amazon.com Recommendations Item-to-Item Collaborative Filtering</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 02, 2020</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <div align="left">
+<img src="\images\假装有图片.jpg" width="300" height="180" style="float:right;"/>
+<p>　　<strong>ItemCF原文。</strong></p>
+ </div>
+<h1 id="论文背景">论文背景
+</h1><p>　　22 January 2003<br>
+　　谷歌学术被引用次数：6769（截至2020年12月2日）<br>
+　　期刊：IEEE Internet Computing<br>
+　　DOI: 10.1109/MIC.2003.1167344<br>
+　　作者：Greg Linden,Brent Smith,and Jeremy York • Amazon.com<br>
+　　<a class="link" href="https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=1167344"  target="_blank" rel="noopener"
+    >PDF</a></p>
+<h1 id="引言">引言
+</h1><p>　　电子商务推荐算法面临的挑战：</p>
+<ul>
+<li>一家大型零售商可能拥有大量数据、数千万客户和数百万不同的物品</li>
+<li>要求在不超过半秒钟的时间内实时返回结果集，同时能产生高质量的推荐</li>
+<li>新客户通常只有非常有限的信息，仅有少量购买信息和产品评分</li>
+<li>基于成千上万次的购买和评分，老用户可能拥有大量信息</li>
+<li>客户数据是不稳定的：每次交互都提供有价值的客户数据，算法必须对新信息立即做出响应</li>
+</ul>
+<h1 id="recommendation-algorithms-推荐算法">Recommendation Algorithms 推荐算法
+</h1><p>　　三种常规方法：<br>
+　　传统协同过滤、聚类模型和基于搜索的策略<br>
+　　traditional collaborative filtering, cluster models, and search-based methods</p>
+<h2 id="traditional-collaborative-filtering-传统协同过滤">Traditional Collaborative Filtering 传统协同过滤
+</h2><p>　　传统协同过滤，这里指基于用户的协同过滤方法。<br>
+　　相似度计算：<br>
+<img src="/%5cimages%5cPaper-Amazon-similarity.jpg"
+	
+	
+	
+	loading="lazy"
+	
+		alt="similarity"
+	
+	
+></p>
+<p>　　使用该方法时间复杂度最差为O(MN)，由于用户向量稀疏，时间复杂度更接近于O(M + N)。（大部分用户只涉及很少的物品，每个用户是O(M)，但一小部分用户买了很多物品，需要O(N)时间。）<br>
+　　M为用户数，N为物品数</p>
+<p>　　解决方法是降低数据规模。<br>
+　　通过随机采样用户或者忽视只有少数购买记录的用户，来减少M。<br>
+　　通过忽视非常流行或不流行的物品，来减少N。<br>
+　　还可以通过产品类别或或客观分类来分割物品成为小向量来减少物品数量。<br>
+　　维度减少，比如聚类或主成分分析可以减少M或N的大量因素。</p>
+<p>　　但是上述方法会降低推荐质量。</p>
+<h2 id="cluster-models-聚类模型">Cluster Models 聚类模型
+</h2><p>　　该算法的目标是将用户分配到包含最相似用户的簇。然后，它使用该簇中用户的购买和评级信息来推荐。<br>
+　　一旦该算法生成了簇，它就计算用户与每个簇的向量的相似性，然后选择具有最大相似性的簇，并相应地对用户进行分类。一些算法将用户分为多个簇，并描述每个关系的强度。<br>
+　　优点：比上述协同过滤具有更好的在线可扩展性和性能，复杂且昂贵的聚类计算是离线运行的。<br>
+　　缺点：推荐效果差。通过使用大量细粒度的聚类来提高质量是可能的，但是线上用户细分聚类变得几乎和使用协同过滤寻找相似客户一样昂贵。</p>
+<h2 id="search-based-methods-基于搜索的策略">Search-Based Methods 基于搜索的策略
+</h2><p>　　基于搜索或基于内容的方法将推荐问题视为对相关项目的搜索。对于给定用户购买和评级信息的物品，该算法构建搜索查询来查找由相同作者、艺术家或导演或具有相似关键字或主题的其他流行项目。例如，如果一位顾客购买了《教父》系列影碟，系统可能会推荐其他犯罪题材的电影、其他由影星马龙·白兰度主演的电影或其他由弗朗西斯·福特·科波拉执导的电影。</p>
+<p>　　优点：用户购买和评分记录少时，性能不错。<br>
+　　缺点：推荐质量低，推荐的物品太一般（general)或太狭窄（narrow）。</p>
+<h1 id="item-to-item-collaborative-filtering-基于物品的协同过滤">Item-to-Item Collaborative Filtering 基于物品的协同过滤
+</h1><h2 id="how-it-works-如何工作">How It Works 如何工作
+</h2><p>　Item-to-item collaborative filtering matches each of the user’s purchased and rated items to similar items, then combines those similar items into a recommendation list.</p>
+<p>　　基于物品的协同过滤将用户购买的和评分的每个物品与相似的物品进行匹配，然后将这些相似的物品组合成推荐列表。</p>
+<p>　　为了确定给定物品的最相似匹配，该算法通过查找用户倾向于一起购买的物品来构建相似物品表。可通过遍历所有物品并为每一对计算相似性来构建物品矩阵。然而，许多产品对没有共同的用户，因此这种方法在处理时间和内存使用方面效率低下。以下迭代算法通过计算单个物品和所有相关物品之间的相似性提供了更好的措施：<br>
+　　伪代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">For each item in product catalog, I1
+</span></span><span class="line"><span class="cl">    For each customer C who purchased I1
+</span></span><span class="line"><span class="cl">        For each item I2 purchased by customer C
+</span></span><span class="line"><span class="cl">            Record that a customer purchased I1 and I2
+</span></span><span class="line"><span class="cl">    For each item I2
+</span></span><span class="line"><span class="cl">        Compute the similarity between I1 and I2
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>　　计算两个物品之间的相似性有多种方法，一种常见的方法是使用前面描述的余弦度量，其中每个向量对应于一个物品而不是一个客户，并且向量的多维度对应于已经购买该物品的用户。相似物品表的这种离线计算非常耗时，最糟糕的情况是O($N^2M$)。然而，在实践中，它更接近于零，因为大多数客户只有很少的购买记录。对购买畅销物品的用户进行采样会进一步减少运行时间，而质量几乎没有下降。<br>
+　　给定相似物品表，该算法找到与每个用户的购买和评分相似的物品，汇总这些物品，然后推荐最受欢迎或相关的物品。这种计算非常快速，仅取决于用户购买或评分的物品数量。</p>
+<h2 id="scalability-a-comparison-可扩展性">Scalability: A Comparison 可扩展性
+</h2><p>　　Amazon.com有超过2900万的顾客和数百万的商品目录。对于非常大的数据集，可扩展的推荐算法必须离线执行最昂贵的计算。<br>
+　　现有算法的缺点：</p>
+<ul>
+<li>传统的协同过滤很少或没有离线计算，其在线计算随着用户和物品目录的数量而变化。该算法在大数据集上是不切实际的，除非它使用降维、采样或分区——所有这些都会降低推荐质量。</li>
+<li>聚类模型可以离线执行大部分计算，但是推荐质量相对较差。为了改善这一点，可以增加细分簇的数量，但这使得在线用户细分分类变得昂贵。</li>
+<li>基于搜索的模型离线构建关键字、类别和作者索引，但无法提供有趣的、有针对性的主题推荐。对于有大量购买和评分的用户来说，它们的可扩展性也很小。</li>
+</ul>
+<p>　　可扩展性和性能的关键是它离线创建昂贵的相似物品表。该算法的在线组件——为用户的购买和评分物品查找相似的物品——独立于物品目录大小或客户总数，它只取决于用户购买或评分物品。因此，即使对于非常大的数据集，该算法也是快速的。因为该算法推荐高度相关的相似物品，所以推荐质量很好。与传统的协作过滤不同，该算法在有限的用户数据下也表现良好，仅基于两三个物品就能产生高质量的推荐。</p>
+<h1 id="conclusion-总结">Conclusion 总结
+</h1><p>　　主要是介绍了基于物品的协同过滤思想。<br>
+　　耗时昂贵的操作放在线下离线进行，使线上达到实时要求。</p>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/">推荐算法</a>
+        
+            <a href="/tags/cf/">CF</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/dapymrcc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【paper】AutoRec - Autoencoders Meet Collaborative Filtering</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/jaxyksgz/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【Paper】Using Collaborative Filtering to Weave an Information Tapestry</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/wpzth4rk/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">TEMN</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/gwmprssu/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">ASGNN</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/fhfxfwzp/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">STAN</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":"评论一句，好运+1！"},"requiredMeta":["name"],"serverURL":"https://zippy-halva-8e20f0.netlify.app/.netlify/functions/comment"});
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2015 - 
+        
+        2025 靖待
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

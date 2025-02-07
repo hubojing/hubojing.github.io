@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>NLP on 靖待</title>
+        <link>https://hubojing.github.io/tags/nlp/</link>
+        <description>Recent content in NLP on 靖待</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>靖待</copyright>
+        <lastBuildDate>Tue, 09 Aug 2022 20:59:07 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/tags/nlp/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>BERT</title>
+        <link>https://hubojing.github.io/nxk7vdtv/</link>
+        <pubDate>Tue, 09 Aug 2022 20:59:07 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/nxk7vdtv/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;https://hubojing.github.io/images/BERT架构图.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;笔记&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;2019年 谷歌 Jacob Devlin
+NAACL-HLT会议-NLP顶会
+&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1810.04805&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;
+[CODE](GitHub - google-research/bert: TensorFlow code and pre-trained models for BERT)&lt;/p&gt;
+&lt;h1 id=&#34;摘要重点&#34;&gt;摘要重点
+&lt;/h1&gt;&lt;p&gt;　　BERT(Bidirectional Encoder Rpresentation from Transformers)
+　　BERT 旨在通过联合调节所有层的左右上下文，从未标记的文本中预训练深度双向表示。因此，预训练的 BERT 模型可以通过一个额外的输出层进行微调，从而为各种任务（例如问答和语言推理）创建最先进的模型，而无需大量特定任务架构修改。&lt;/p&gt;
+&lt;h1 id=&#34;问题提出&#34;&gt;问题提出
+&lt;/h1&gt;&lt;p&gt;　　在下游任务中有两种方法使用预训练语言表示模型，一种是基于特征（feature-based）方法，一种是微调（fine-tuning）。本文认为现有技术限制了预训练表示的能力，尤其是微调方法。主要限制是标准语言模型是单向的，这限制了预训练可以使用的架构。例如，在 OpenAI GPT 中，作者使用从左到右的架构，其中每个标记只能关注Transformer的自注意力层中的先前标记。 这样的限制对于句子级任务来说是次优的，并且在将基于微调的方法应用于令牌级任务（例如问答）时可能非常有害，在这些任务中，从两个方向整合上下文至关重要。&lt;/p&gt;
+&lt;h1 id=&#34;贡献点&#34;&gt;贡献点
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;我们解释了语言表示中双向预训练的重要性。不像之前的模型在预训练中使用双向语言模型，BERT使用掩码语言模型（masked language model）来预训练深度双向表示。也和以前使用从左到右和从右到左LM独立训练再浅层连结的方法不同。&lt;/li&gt;
+&lt;li&gt;预训练表示减少了许多特定任务的繁重工程架构。BERT是第一个基于表示模型微调并在一系列句子级别和token级别任务中实现SOTA性能的。&lt;/li&gt;
+&lt;li&gt;BERT在11个NLP任务中实现SOTA性能，代码开源。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;相关工作&#34;&gt;相关工作
+&lt;/h1&gt;&lt;p&gt;基于特征的无监督方法（如ELMo）、微调无监督方法（如OpenAI GPT）&lt;/p&gt;
+&lt;h1 id=&#34;模型架构&#34;&gt;模型架构
+&lt;/h1&gt;&lt;p&gt;　　两阶段：预训练+微调。
+　　预训练阶段，模型在不同的预训练任务中使用未标注数据训练。
+　　微调阶段，首先使用预训练参数初始化，所有的参数使用下游任务中的标注数据进行微调。即使每一个下游任务使用相同的预训练参数初始化，它们还是有单独的微调模型。如图为一个问答示例。
+&lt;img src=&#34;https://hubojing.github.io/images/BERT%e6%9e%b6%e6%9e%84%e5%9b%be.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;BERT&#34;
+	
+	
+&gt;
+　　记层数（Transformer块）为L，隐藏层为H，自注意力头数量为A。实验有两种模型规模：一种是$BERT_{BASE}$（L=12，H=768，A=12，总参数为110M）；另一种是$BERT_{LARGE}$（L=24，H=1024，A=16，总参数为340M）。
+　　为压缩目的，$BERT_{BASE}$选择了和Open AI一样的模型规模。但是BERT Transformer使用了双向自注意力，GPT Transformer使用的是受限的自注意力，它的每个token只能获取它左边的上下文。
+　　每一个token都以[CLS]开头。句子对会一起打包到一个序列中，分割句子使用两种方式。一是使用token[SEP]，二是在每个token中加入一个学习过的embedding表示它属于句子A还是句子B。如图1所示，输入embedding记为E，最后隐藏向量的[CLS]记为C，第i个输入token的最后的隐藏向量记为$T_i$。
+对于给定的标记，其输入表示是通过对相应的标记、段和位置嵌入求和来构建的。这种结构的可视化可以在图2中看到。
+&lt;img src=&#34;https://hubojing.github.io/images/BERT%e8%be%93%e5%85%a5%e8%a1%a8%e7%a4%ba.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;BERT输入表示&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;预训练bert&#34;&gt;预训练BERT
+&lt;/h2&gt;&lt;h3 id=&#34;任务1masked-lm&#34;&gt;任务1：Masked LM
+&lt;/h3&gt;&lt;p&gt;　　随机掩盖掉部分输入的tokens，然后预测这些被掩盖的tokens。这个过程记为“masked LM”(MLM)，类似于文学里的完形填空。与掩码标记对应的最终隐藏向量被送到词汇表上的softmax输出，就像在标准 LM 中一样。本文选择15%的tokens进行掩盖。由于[MASK] token在微调阶段不存在，所以预训练阶段和微调阶段不匹配。为了减轻影响，当选中第i个token时，按三条规则进行掩码：
+（1） 80%时间使用[MASK] token
+（2）10%时间选择随机token
+（3）10%时间token不变
+然后，使用交叉熵损失和$T_i$预测原始token。&lt;/p&gt;
+&lt;h3 id=&#34;任务2下一个句子预测nsp&#34;&gt;任务2：下一个句子预测（NSP）
+&lt;/h3&gt;&lt;p&gt;　　问答QA和自然语言推理（NLI）都是基于对两个句子关系的理解做的，而语言模型不能直接捕捉它。为了训练一个能理解句子关系的模型，我们预先训练一个二值化的下一个句子预测任务，该任务可以从任何单语语料库中轻松生成。在之前的工作中，只有句子嵌入被转移到下游任务， BERT 转移所有参数来初始化最终任务模型参数。&lt;/p&gt;
+&lt;h2 id=&#34;微调bert&#34;&gt;微调BERT
+&lt;/h2&gt;&lt;p&gt;　　微调很简单，因为Transformer中的自注意力机制允许 BERT 通过交换适当的输入和输出来对许多下游任务进行建模——无论它们涉及单个文本还是文本对。对于涉及文本对的应用程序，一种常见的模式是在应用双向交叉注意力之前独立编码文本对。BERT使用自我注意力机制来统一这两个阶段，因为使用自我注意对连接的文本对进行编码有效地包括了两个句子之间的双向交叉注意力。
+　　对于每个任务，我们只需将任务特定的输入和输出插入BERT，端到端微调所有参数。&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>CRF&#43;&#43;</title>
+        <link>https://hubojing.github.io/bmnfc4tc/</link>
+        <pubDate>Wed, 16 Jun 2021 22:31:37 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/bmnfc4tc/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\CRF++_NLP流程.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;CRF++笔记。&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;nlp引入&#34;&gt;NLP引入
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cCRF&amp;#43;&amp;#43;_NLP%e6%b5%81%e7%a8%8b.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;NLP流程&#34;
+	
+	
+&gt;
+　　句法分析是NLP任务的核心，NER是句法分析的基础。NER任务用于识别文本中的人名（PER）、地名（LOC）等具有特定意义的实体。非实体用O来表示。&lt;/p&gt;
+&lt;h1 id=&#34;crf&#34;&gt;CRF
+&lt;/h1&gt;&lt;p&gt;　　Conditional Random Field，条件随机场，一种机器学习模型，广泛用于NLP文本标注领域。
+　　应用场景：分词、词性标注、命名实体识别（NER，Named Entity Recognition）等。
+　　命名实体识别的任务是识别出待处理文本中三大类（实体类、时间类和数字类）、七小类（人名、机构名、地名、时间、日期、货币和百分比）命名实体。&lt;/p&gt;
+&lt;p&gt;　　NER是个分类任务,具体称为序列标注任务，即文本中不同的实体对应不同的标签，人名-PER，地名-LOC，等等，相似的序列标注任务还有词性标注、语义角色标注。&lt;/p&gt;
+&lt;p&gt;　　传统解决方法：
+（1）基于规则
+（2）基于统计学
+　　隐马尔可夫（HMM）、条件随机场（CRF）模型和Viterbi算法
+（3）神经网络
+　　LSTM+CRF模型&lt;/p&gt;
+&lt;p&gt;　　CRF的基础是马尔科夫随机场（概率无向图）。
+　　CRF可以理解为在给定随机变量X的条件下，随机变量Y的马尔可夫随机场。其中，线性链CRF（一种特殊的CRF）可以用于序列标注问题。CRF模型在训练时，给定训练序列样本集(X,Y)，通过极大似然估计、梯度下降等方法确定CRF模型的参数；预测时，给定输入序列X，根据模型，求出P(Y|X)最大的序列y。&lt;/p&gt;
+&lt;h2 id=&#34;crf分词原理&#34;&gt;CRF分词原理
+&lt;/h2&gt;&lt;p&gt;　　CRF把分词当做字的词位分类问题，通常定义字的词位信息如下：
+　　词首，常用B表示
+　　词中，常用M表示
+　　词尾，常用E表示
+　　单子词，常用S表示&lt;/p&gt;
+&lt;p&gt;　　例：
+　　原始例句：他爱上海陆家嘴
+　　CRF标注后：他/S 爱/S 上/B 海/E 陆/B 家/M 嘴/E
+　　分词结果：他/爱/上海/陆家嘴&lt;/p&gt;
+&lt;p&gt;　　用CRF进行命名实体识别属于有监督学习。需要大批已标注的语料对模型参数进行训练。&lt;/p&gt;
+&lt;h1 id=&#34;crf-1&#34;&gt;CRF++
+&lt;/h1&gt;&lt;p&gt;　　目前常见的CRF工具包有pocket crf, flexcrf 和CRF++。
+　　CRF++是著名的条件随机场的开源工具，也是目前综合性能最佳的CRF工具。
+　　CRF++官网http://taku910.github.io/crfpp/&lt;/p&gt;
+&lt;h2 id=&#34;安装&#34;&gt;安装
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;解压&lt;/li&gt;
+&lt;li&gt;cd 进入解压后的目录，执行‘./configure’命令&lt;/li&gt;
+&lt;li&gt;make 编译&lt;/li&gt;
+&lt;li&gt;make install  （需先执行“su”获取root用户权限）&lt;/li&gt;
+&lt;li&gt;make clean 删除安装时产生的临时文件（可不执行）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;使用&#34;&gt;使用
+&lt;/h2&gt;&lt;p&gt;　　两个过程：训练、测试。&lt;/p&gt;
+&lt;h3 id=&#34;数据格式&#34;&gt;数据格式
+&lt;/h3&gt;&lt;p&gt;　　训练和测试文件必须包含多个tokens，每个token又包含多个列。token的定义可根据具体的任务，如词、词性等。每个token必须写在一行，且各列之间用空格或制表格间隔。一个token的序列可构成一个sentence，每个sentence之间用一个空行间隔。注意最后一列将是被CRF用来训练的最终标签。&lt;/p&gt;
+&lt;h3 id=&#34;特征模板&#34;&gt;特征模板
+&lt;/h3&gt;&lt;p&gt;　　CRF++训练的时候，要求我们自己提供特征模板。
+　　模板文件中的每一行是一个模板。每个模板都是由%x[row,col]来指定输入数据中的一个token。row指定到当前token的行偏移，col指定列位置。&lt;/p&gt;
+&lt;h1 id=&#34;参考文献&#34;&gt;参考文献
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.zybuluo.com/lianjizhe/note/1205311&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;用CRF做命名实体识别(三)&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/miner_zhu/article/details/83143487&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;NLP之CRF++安装及使用&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>词的向量表示方法</title>
+        <link>https://hubojing.github.io/h7qeqvnf/</link>
+        <pubDate>Wed, 15 Jan 2020 20:14:49 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/h7qeqvnf/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;https://github.com/hubojing/BlogImages/blob/master/词的向量表示方法——Word2Vec.png?raw=true&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;思想简记&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;p&gt;NLP中，离散符号化的词语不能包含语义信息，所以把词映射到向量空间。&lt;/p&gt;
+&lt;h1 id=&#34;独热编码one-hot-encoding&#34;&gt;独热编码（One-Hot Encoding）
+&lt;/h1&gt;&lt;p&gt;思想：将一个词表示成很长的向量，该向量的维度是整个词表的大小。对某一具体词，除了该词编号的维度为1，其余都为0。
+&lt;img src=&#34;https://github.com/hubojing/BlogImages/blob/master/%e8%af%8d%e7%9a%84%e5%90%91%e9%87%8f%e8%a1%a8%e7%a4%ba%e6%96%b9%e6%b3%95%e2%80%94%e2%80%94%e7%8b%ac%e7%83%ad%e7%bc%96%e7%a0%81.png?raw=true&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;独热编码&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;词袋模型bag-of-words-bow&#34;&gt;词袋模型（Bag-of-Words, BoW）
+&lt;/h1&gt;&lt;p&gt;思想：将文本视为装词的袋子，不考虑词的上下文关系和顺序，只记录每个词在该文本（词袋）中出现的次数。
+&lt;img src=&#34;https://github.com/hubojing/BlogImages/blob/master/%e8%af%8d%e7%9a%84%e5%90%91%e9%87%8f%e8%a1%a8%e7%a4%ba%e6%96%b9%e6%b3%95%e2%80%94%e2%80%94%e8%af%8d%e8%a2%8b%e6%a8%a1%e5%9e%8b.png?raw=true&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;词袋模型&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;词向量词嵌入word-embedding&#34;&gt;词向量/词嵌入（Word Embedding）
+&lt;/h1&gt;&lt;p&gt;上面对词的表示方法没有考虑语义层面信息。为表示词与词之间的语义相似程度，提出词的分布式表示，即基于上下文的稠密向量表示法，通常称为词向量或词嵌入（Word Embedding）。
+产生词向量的手段：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Count-based。基于计数的方法，即记录词的出现次数。&lt;/li&gt;
+&lt;li&gt;Predictive。基于预测的方法，即可通过上下文预测中心词，又可通过中心词预测上下文。&lt;/li&gt;
+&lt;li&gt;Task-based。基于任务的，即通过任务驱动的方法。通过对词向量在具体任务上的表现效果对词向量进行学习。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;下面是经典开源工具word2vec中的CBoW模型和Skip-gram模型。&lt;/p&gt;
+&lt;h2 id=&#34;连续词袋模型continuous-bag-of-words-cbow&#34;&gt;连续词袋模型（Continuous Bag-of-Words, CBoW）
+&lt;/h2&gt;&lt;p&gt;和BoW相同点：不考虑词的顺序。
+思想：将上下文词的独热表示与词向量矩阵相乘，提取相应的词向量并求和得到投影层，然后再经过一个Softmax层最终得到输出，输出的每一维表达的就是词表中每个词作为该上下文中心词的概率。整个模型训练时类似于一个窗口在训练语料上滑动，所以得名连续词袋模型。&lt;/p&gt;
+&lt;h2 id=&#34;skip-gram模型continuous-skip-gram-model&#34;&gt;Skip-gram模型（Continuous skip-gram Model）
+&lt;/h2&gt;&lt;p&gt;思想：与CBoW思想刚好相反，它用中心词来预测上下文词。先通过中心词的独热表示从词向量矩阵中得到中心词的词向量，得到投影层，再经过一层Softmax得到输出，输出的每一维中代表某个词作为输入中心词的上下文出现的概率。&lt;/p&gt;
+&lt;p&gt;这两种模型都包含三层，输入层、投影层、输出层：
+&lt;img src=&#34;https://github.com/hubojing/BlogImages/blob/master/%e8%af%8d%e7%9a%84%e5%90%91%e9%87%8f%e8%a1%a8%e7%a4%ba%e6%96%b9%e6%b3%95%e2%80%94%e2%80%94Word2Vec.png?raw=true&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Word2Vec&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;训练好的词向量中，具有一定的空间平移性。
+&lt;img src=&#34;https://github.com/hubojing/BlogImages/blob/master/%e8%af%8d%e7%9a%84%e5%90%91%e9%87%8f%e8%a1%a8%e7%a4%ba%e6%96%b9%e6%b3%95%e2%80%94%e2%80%94%e7%a9%ba%e9%97%b4%e5%b9%b3%e7%a7%bb%e6%80%a7.png?raw=true&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;空间平移性&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;如图，Rome和Italy之间存在is-capital-of关系，而Paris和France也同样存在。可以理解为知识图谱中的relation，即（Rome, is-capital-of, Italy）和（Paris, is-capital-of, France）。
+通过两对在语义上关系相同的词向量相减可得相似结果，这种连续向量可近似地平移到其它具有类似关系的两个词向量之间。
+如：
+vector(&amp;lsquo;Paris&amp;rsquo;) - Vector(&amp;lsquo;France&amp;rsquo;) + Vector(&amp;lsquo;Italy&amp;rsquo;) ≈ Vector(&amp;lsquo;Rome&amp;rsquo;)&lt;/p&gt;
+&lt;h1 id=&#34;论文&#34;&gt;论文
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1301.3781v3&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Efficient Estimation of Word Representations in Vector Space&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1405.4053&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Distributed Representations of Sentences and Documents&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1607.04606&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Enriching Word Vectors with Subword Information&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>软件开发 on 靖待</title>
+        <link>https://hubojing.github.io/tags/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/</link>
+        <description>Recent content in 软件开发 on 靖待</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>靖待</copyright>
+        <lastBuildDate>Sun, 03 Jul 2022 21:26:39 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/tags/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>JingSLink</title>
+        <link>https://hubojing.github.io/cuu2edep/</link>
+        <pubDate>Sun, 03 Jul 2022 21:26:39 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/cuu2edep/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;https://hubojing.github.io/images/假装有图片.jpg&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;简单开发一个截图保存并返回链接的小工具JingSLink&lt;/strong&gt;
+　　&lt;strong&gt;JingPic迎来重构版JingSLink&lt;/strong&gt;
+　　&lt;strong&gt;自用简陋小工具系列&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;前言&#34;&gt;前言
+&lt;/h1&gt;&lt;p&gt;　　写markdown文章时，贴图这件事儿真的很麻烦。我需要把图片手动保存到对应文件夹，再手动在文章里引入图片链接。所以很多时候我能不配图就不配图。多年前为了方便插入图床链接，用MFC做了个自用小工具&lt;a class=&#34;link&#34; href=&#34;https://github.com/hubojing/JingPic&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;JingPic&lt;/a&gt;。但是它是基于保存了的图片进行的操作，将图片转移到需要的位置。后期也没有维护，操作上依然不够简洁。比如我更喜欢直接截图能自动保存到指定位置，这样就减少一步自己保存的操作。&lt;/p&gt;
+&lt;p&gt;　　自己定制还是最爽的，我想要什么功能我自己开发好了。而且这个小工具开发起来也很简单，几十行很快就写完了。&lt;/p&gt;
+&lt;p&gt;　　首先，要起个名字，以前的叫JingPic，这个重构版就叫JingSLink（Jinger Screenshot for Link）吧。&lt;/p&gt;
+&lt;h1 id=&#34;需求&#34;&gt;需求
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;能够截图&lt;/li&gt;
+&lt;li&gt;截图能保存到指定文件夹中&lt;/li&gt;
+&lt;li&gt;截图完成后，自动将图片相对路径复制到剪贴板&lt;/li&gt;
+&lt;li&gt;有exe可执行文件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;技术&#34;&gt;技术
+&lt;/h1&gt;&lt;p&gt;　　语言：Python
+　　用到的库：tkinter, PIL, keyboard, pyperclip&lt;/p&gt;
+&lt;h1 id=&#34;实现&#34;&gt;实现
+&lt;/h1&gt;&lt;p&gt;　　一开始我是想自己实现截图操作的，后来一想，我平日用QQ截图最多，它功能齐全，那我直接调用它的截图不就好了。
+　　所以，大体实现思路如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;监听键盘，捕捉QQ截图快捷键ctrl+alt+a，并设置一个结束键ctrl。&lt;/li&gt;
+&lt;li&gt;使用PIL库的ImageGrab读取截图。&lt;/li&gt;
+&lt;li&gt;弹出一个输入框，输入图片名称。
+&lt;img src=&#34;https://hubojing.github.io/images/JingSLink.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;输入框&#34;
+	
+	
+&gt;&lt;/li&gt;
+&lt;li&gt;拼凑出图片完整链接，将图片保存到该地址。&lt;/li&gt;
+&lt;li&gt;拼凑出hexo博文中所需的图片插入相对地址，复制到剪贴板。
+　　当然，为了不每次都打开pycharm编译器，得导出一个exe文件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;　　打包exe：
+　　安装pyinstaller。
+　　在pycharm中，&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-py&#34; data-lang=&#34;py&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;pyinstaller&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;F&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;py&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;pyinstaller&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;F&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;w&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;py&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;#（-w是取消dos窗口）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;n&#34;&gt;pyinstaller&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;F&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;w&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;--&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;icon&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ico&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;main&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;py&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# (ico为图标的文件名，与dist目录为同目录)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;　　最后生成的exe文件在dist文件夹下。&lt;/p&gt;
+&lt;h1 id=&#34;代码&#34;&gt;代码
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/hubojing/JingSLink&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/hubojing/JingSLink&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;后期优化&#34;&gt;后期优化
+&lt;/h1&gt;&lt;p&gt;　　如有必要：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一些异常情况的提示&lt;/li&gt;
+&lt;li&gt;右下角有最小化托盘，右键有设置和退出菜单&lt;/li&gt;
+&lt;li&gt;可扩展性：可以更改文件夹路径&lt;/li&gt;
+&lt;li&gt;可扩展性：可以更改图片路径格式（绝对路径/相对路径）&lt;/li&gt;
+&lt;li&gt;换pyqt框架&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;参考资料&#34;&gt;参考资料
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;http://tkdocs.com/tutorial/index.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://tkdocs.com/tutorial/index.html&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

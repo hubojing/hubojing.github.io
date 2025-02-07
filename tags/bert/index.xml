@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>BERT on 靖待</title>
+        <link>https://hubojing.github.io/tags/bert/</link>
+        <description>Recent content in BERT on 靖待</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>靖待</copyright>
+        <lastBuildDate>Tue, 09 Aug 2022 20:59:07 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/tags/bert/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>BERT</title>
+        <link>https://hubojing.github.io/nxk7vdtv/</link>
+        <pubDate>Tue, 09 Aug 2022 20:59:07 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/nxk7vdtv/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;https://hubojing.github.io/images/BERT架构图.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;笔记&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;2019年 谷歌 Jacob Devlin
+NAACL-HLT会议-NLP顶会
+&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1810.04805&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;
+[CODE](GitHub - google-research/bert: TensorFlow code and pre-trained models for BERT)&lt;/p&gt;
+&lt;h1 id=&#34;摘要重点&#34;&gt;摘要重点
+&lt;/h1&gt;&lt;p&gt;　　BERT(Bidirectional Encoder Rpresentation from Transformers)
+　　BERT 旨在通过联合调节所有层的左右上下文，从未标记的文本中预训练深度双向表示。因此，预训练的 BERT 模型可以通过一个额外的输出层进行微调，从而为各种任务（例如问答和语言推理）创建最先进的模型，而无需大量特定任务架构修改。&lt;/p&gt;
+&lt;h1 id=&#34;问题提出&#34;&gt;问题提出
+&lt;/h1&gt;&lt;p&gt;　　在下游任务中有两种方法使用预训练语言表示模型，一种是基于特征（feature-based）方法，一种是微调（fine-tuning）。本文认为现有技术限制了预训练表示的能力，尤其是微调方法。主要限制是标准语言模型是单向的，这限制了预训练可以使用的架构。例如，在 OpenAI GPT 中，作者使用从左到右的架构，其中每个标记只能关注Transformer的自注意力层中的先前标记。 这样的限制对于句子级任务来说是次优的，并且在将基于微调的方法应用于令牌级任务（例如问答）时可能非常有害，在这些任务中，从两个方向整合上下文至关重要。&lt;/p&gt;
+&lt;h1 id=&#34;贡献点&#34;&gt;贡献点
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;我们解释了语言表示中双向预训练的重要性。不像之前的模型在预训练中使用双向语言模型，BERT使用掩码语言模型（masked language model）来预训练深度双向表示。也和以前使用从左到右和从右到左LM独立训练再浅层连结的方法不同。&lt;/li&gt;
+&lt;li&gt;预训练表示减少了许多特定任务的繁重工程架构。BERT是第一个基于表示模型微调并在一系列句子级别和token级别任务中实现SOTA性能的。&lt;/li&gt;
+&lt;li&gt;BERT在11个NLP任务中实现SOTA性能，代码开源。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;相关工作&#34;&gt;相关工作
+&lt;/h1&gt;&lt;p&gt;基于特征的无监督方法（如ELMo）、微调无监督方法（如OpenAI GPT）&lt;/p&gt;
+&lt;h1 id=&#34;模型架构&#34;&gt;模型架构
+&lt;/h1&gt;&lt;p&gt;　　两阶段：预训练+微调。
+　　预训练阶段，模型在不同的预训练任务中使用未标注数据训练。
+　　微调阶段，首先使用预训练参数初始化，所有的参数使用下游任务中的标注数据进行微调。即使每一个下游任务使用相同的预训练参数初始化，它们还是有单独的微调模型。如图为一个问答示例。
+&lt;img src=&#34;https://hubojing.github.io/images/BERT%e6%9e%b6%e6%9e%84%e5%9b%be.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;BERT&#34;
+	
+	
+&gt;
+　　记层数（Transformer块）为L，隐藏层为H，自注意力头数量为A。实验有两种模型规模：一种是$BERT_{BASE}$（L=12，H=768，A=12，总参数为110M）；另一种是$BERT_{LARGE}$（L=24，H=1024，A=16，总参数为340M）。
+　　为压缩目的，$BERT_{BASE}$选择了和Open AI一样的模型规模。但是BERT Transformer使用了双向自注意力，GPT Transformer使用的是受限的自注意力，它的每个token只能获取它左边的上下文。
+　　每一个token都以[CLS]开头。句子对会一起打包到一个序列中，分割句子使用两种方式。一是使用token[SEP]，二是在每个token中加入一个学习过的embedding表示它属于句子A还是句子B。如图1所示，输入embedding记为E，最后隐藏向量的[CLS]记为C，第i个输入token的最后的隐藏向量记为$T_i$。
+对于给定的标记，其输入表示是通过对相应的标记、段和位置嵌入求和来构建的。这种结构的可视化可以在图2中看到。
+&lt;img src=&#34;https://hubojing.github.io/images/BERT%e8%be%93%e5%85%a5%e8%a1%a8%e7%a4%ba.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;BERT输入表示&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;预训练bert&#34;&gt;预训练BERT
+&lt;/h2&gt;&lt;h3 id=&#34;任务1masked-lm&#34;&gt;任务1：Masked LM
+&lt;/h3&gt;&lt;p&gt;　　随机掩盖掉部分输入的tokens，然后预测这些被掩盖的tokens。这个过程记为“masked LM”(MLM)，类似于文学里的完形填空。与掩码标记对应的最终隐藏向量被送到词汇表上的softmax输出，就像在标准 LM 中一样。本文选择15%的tokens进行掩盖。由于[MASK] token在微调阶段不存在，所以预训练阶段和微调阶段不匹配。为了减轻影响，当选中第i个token时，按三条规则进行掩码：
+（1） 80%时间使用[MASK] token
+（2）10%时间选择随机token
+（3）10%时间token不变
+然后，使用交叉熵损失和$T_i$预测原始token。&lt;/p&gt;
+&lt;h3 id=&#34;任务2下一个句子预测nsp&#34;&gt;任务2：下一个句子预测（NSP）
+&lt;/h3&gt;&lt;p&gt;　　问答QA和自然语言推理（NLI）都是基于对两个句子关系的理解做的，而语言模型不能直接捕捉它。为了训练一个能理解句子关系的模型，我们预先训练一个二值化的下一个句子预测任务，该任务可以从任何单语语料库中轻松生成。在之前的工作中，只有句子嵌入被转移到下游任务， BERT 转移所有参数来初始化最终任务模型参数。&lt;/p&gt;
+&lt;h2 id=&#34;微调bert&#34;&gt;微调BERT
+&lt;/h2&gt;&lt;p&gt;　　微调很简单，因为Transformer中的自注意力机制允许 BERT 通过交换适当的输入和输出来对许多下游任务进行建模——无论它们涉及单个文本还是文本对。对于涉及文本对的应用程序，一种常见的模式是在应用双向交叉注意力之前独立编码文本对。BERT使用自我注意力机制来统一这两个阶段，因为使用自我注意对连接的文本对进行编码有效地包括了两个句子之间的双向交叉注意力。
+　　对于每个任务，我们只需将任务特定的输入和输出插入BERT，端到端微调所有参数。&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

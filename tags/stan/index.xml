@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>STAN on 靖待</title>
+        <link>https://hubojing.github.io/tags/stan/</link>
+        <description>Recent content in STAN on 靖待</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>靖待</copyright>
+        <lastBuildDate>Mon, 24 Jan 2022 11:20:37 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/tags/stan/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>STAN</title>
+        <link>https://hubojing.github.io/fhfxfwzp/</link>
+        <pubDate>Mon, 24 Jan 2022 11:20:37 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/fhfxfwzp/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\STAN-2.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;STAN: Spatio-Temporal Attention Network for Next Location Recommendation&lt;/strong&gt;
+　　STAN：基于时空注意力网络的下一个兴趣点推荐&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;　　STAN: Spatio-Temporal Attention Network for Next Location Recommendation
+　　STAN：基于时空注意力网络的下一个兴趣点推荐
+　　WWW 21
+　　&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/pdf/2102.04095.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;现有问题&#34;&gt;现有问题
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cSTAN-1.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;引入&#34;
+	
+	
+&gt;
+　　0、1、2分别代表家、工作地、商场，3、4、5、6分别代表餐馆。虽然3、4、5、6时间和空间都不连续，但它们是有关联的。现有文献很少关注这种非相邻位置和非连续签到的情况。&lt;/p&gt;
+&lt;h1 id=&#34;说明和定义&#34;&gt;说明和定义
+&lt;/h1&gt;&lt;p&gt;　　用户U=${u_1, u_2, &amp;hellip;, u_U}$
+　　兴趣点L=${l_1, l_2, &amp;hellip;, l_L}$
+　　时间T=${t_1, t_2, &amp;hellip;, t_T}$&lt;/p&gt;
+&lt;p&gt;　　用户轨迹$tra(u_i) = (r_1, r_2, &amp;hellip;, r_{m_i})$&lt;/p&gt;
+&lt;h1 id=&#34;架构&#34;&gt;架构
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cSTAN-2.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;架构&#34;
+	
+	
+&gt;
+　　STAN包括多模态嵌入模块、一个自注意力聚合层、一个注意力匹配层、一个平衡采样器。&lt;/p&gt;
+&lt;h2 id=&#34;多模态嵌入模块&#34;&gt;多模态嵌入模块
+&lt;/h2&gt;&lt;p&gt;　　该模块分为两部分：轨迹嵌入层和时空嵌入层。&lt;/p&gt;
+&lt;h3 id=&#34;用户轨迹嵌入层&#34;&gt;用户轨迹嵌入层
+&lt;/h3&gt;&lt;p&gt;　　使用了用户、地理位置、时间，嵌入向量记为$e^u$、$e^l$、$e^t$。时间戳被分为7*24=168个维度。所以，$e^u$、$e^l$、$e^t$的维度是U，L和168。
+　　输出$e^r = e^u + e^l + e^t$&lt;/p&gt;
+&lt;h3 id=&#34;时空嵌入层&#34;&gt;时空嵌入层
+&lt;/h3&gt;&lt;p&gt;　　创造了两种矩阵，轨迹时空关系矩阵$△^{t, s}$和候选关系矩阵$N^{t, s}$。前者将两个轨迹间的时间差和地理距离作为关联信息，后者将轨迹中的兴趣点与候选集中可能的预测兴趣点采用同样的信息关联起来。使用线性插值方法。
+　　这一层将这两种矩阵进行映射和求和，得到最终的嵌入表示E(△)和E(N)。&lt;/p&gt;
+&lt;h2 id=&#34;自注意力聚合层&#34;&gt;自注意力聚合层
+&lt;/h2&gt;&lt;p&gt;　　这一层是用来考虑轨迹中有不同距离和时间间隔的两次兴趣点签到的关联程度的。自注意力层可以捕捉长时依赖并为轨迹中的兴趣点分配不同的权重。将轨迹E(u)和时空关系矩阵E(△)通过自注意力聚合层，计算得到新的序列S表示。&lt;/p&gt;
+&lt;h2 id=&#34;注意力匹配层&#34;&gt;注意力匹配层
+&lt;/h2&gt;&lt;p&gt;　　这一层的作用是根据用户轨迹的最新表示在L中召回最合适的兴趣点候选。
+　　A(u) = Matching(E(l), S(u), E(N))，得到的是概率。
+　　$Matching(Q, K, N) = Sum(softmax(\frac{QK^T+N}{\sqrt{d}}))$
+　　这个公式减少了其它自注意力模型中的PIF信息。&lt;/p&gt;
+&lt;h2 id=&#34;平衡采样器&#34;&gt;平衡采样器
+&lt;/h2&gt;&lt;p&gt;　　因为正负样本不均衡，优化交叉熵损失不再有用。本文修改了交叉熵损失公式中负样本数量，对于每个正样本$a_k$，需要同时计算L-1个负样本，这称为作为平衡采样器。&lt;/p&gt;
+&lt;h1 id=&#34;实验&#34;&gt;实验
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cSTAN-3.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;数据&#34;
+	
+	
+&gt;
+　　数据集：Gowalla, SIN, TKY, NYC.
+　　输入：$(u_i, l_k, t_k)$, $(l_k, lon_k, lat_k)$
+　　输出：候选兴趣点概率值&lt;/p&gt;
+&lt;h2 id=&#34;基线&#34;&gt;基线
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;STRNN&lt;/li&gt;
+&lt;li&gt;DeepMove&lt;/li&gt;
+&lt;li&gt;STGN&lt;/li&gt;
+&lt;li&gt;ARNN&lt;/li&gt;
+&lt;li&gt;LSTPM&lt;/li&gt;
+&lt;li&gt;TiSARec&lt;/li&gt;
+&lt;li&gt;GeoSAN&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;性能&#34;&gt;性能
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cSTAN-4.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;性能&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;贡献点&#34;&gt;贡献点
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;提出STAN，一种时空双向注意力模型，全面考虑了聚合相关联位置的时空效应。第一个将非相邻位置和非相邻签到时间的兴趣点的时空联系应用在兴趣点推荐中。&lt;/li&gt;
+&lt;li&gt;使用简单的线性插值技术替代GPS网格进行空间离散化，它能恢复空间距离和反映时空偏好，而不仅仅是聚合邻居。&lt;/li&gt;
+&lt;li&gt;提出了一种双向注意力架构用于PIF（personalized item frequency），第一层聚合了轨迹信息中相关的兴趣点用于更新表示，那么第二层就可以给全部的签到信息匹配目标。&lt;/li&gt;
+&lt;li&gt;在四个真实世界数据集上性能比SOTA模型超过10%。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;代码&#34;&gt;代码
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/yingtaoluo/Spatial-Temporal-Attention-Network-for-POI-Recommendation&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/yingtaoluo/Spatial-Temporal-Attention-Network-for-POI-Recommendation&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

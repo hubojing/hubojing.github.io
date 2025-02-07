@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>MF on 靖待</title>
+        <link>https://hubojing.github.io/tags/mf/</link>
+        <description>Recent content in MF on 靖待</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>靖待</copyright>
+        <lastBuildDate>Mon, 07 Dec 2020 15:12:57 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/tags/mf/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>【Paper】Matrix Factorization Techniques for Recommender Systems</title>
+        <link>https://hubojing.github.io/dvbvavgt/</link>
+        <pubDate>Mon, 07 Dec 2020 15:12:57 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/dvbvavgt/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;\images\Paper-MF-LFM.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;矩阵分解算法原文。&lt;/strong&gt;&lt;/p&gt;
+ &lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;　　2009年发表于IEEE旗下的Computer期刊。
+　　谷歌学术引用数为7954（截至2020年12月7日）。&lt;br&gt;
+　　作者：Yehuda Koren, Yahoo Research
+　　Robert Bell and Chris Volinsky, AT&amp;amp;T Labs—Research&lt;br&gt;
+　　DOI: 10.1109/MC.2009.263&lt;br&gt;
+　　&lt;a class=&#34;link&#34; href=&#34;https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;amp;arnumber=5197422&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;recommender-system-stratrgies-推荐系统策略&#34;&gt;Recommender System Stratrgies 推荐系统策略
+&lt;/h1&gt;&lt;p&gt;　　两种策略：content filtering approach和collaborative filtering&lt;br&gt;
+　　前者需要收集外部信息，但这不容易得到。后者聚焦于用户过去的行为，相比前者精确度更高，但它有冷启动问题。相反，在冷启动问题方面，前者更优越。&lt;/p&gt;
+&lt;p&gt;　　协同过滤又分为neighborhood methods和latent factor models。&lt;br&gt;
+　　基于领域的策略又可分为基于用户和基于物品。&lt;br&gt;
+　　基于物品的策略基于同一个用户对相邻物品的评分对用户偏好进行评估。同一个用户给一件物品的相邻物品会打相似的评分。&lt;br&gt;
+　　基于用户的方法鉴定相似的用户，他们可以互相补充对方的评分信息。&lt;/p&gt;
+&lt;p&gt;　　LFM隐语义模型&lt;br&gt;
+&lt;img src=&#34;https://hubojing.github.io/%5cimages%5cPaper-MF-LFM.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;LFM&#34;
+	
+	
+&gt;&lt;br&gt;
+　　意思是把特征刻画分为k个维度。如图，将刻画特征设为性别和题材类别（serious/escapist），形成一个坐标空间，每个用户和物品都在这个空间中，如果在坐标系中距离越近则说明越相似。&lt;/p&gt;
+&lt;h1 id=&#34;matrix-factorization-methods-矩阵分解策略&#34;&gt;Matrix Factorization Methods 矩阵分解策略
+&lt;/h1&gt;&lt;p&gt;　　一些最成功的隐语义模型是基于矩阵分解实现的。&lt;br&gt;
+　　矩阵分解通过从评分矩阵推断出的因子向量来刻画物品和用户。&lt;br&gt;
+　　优势：当显式反馈无法得到时，可以添加其它信息（比如使用隐式反馈推断用户偏好）。&lt;/p&gt;
+&lt;h1 id=&#34;a-basic-matrix-factorization-model-基本矩阵分解模型&#34;&gt;A Basic Matrix Factorization Model 基本矩阵分解模型
+&lt;/h1&gt;$$\hat{r}_{ui} = {q_i}^T{p_u}$$$$min_{q\*,p\*}\sum_{(u,i)∈k}({r_ui} - {p_u}^Tq_i)^2 + \lambda(||p_u||^2 + ||q_i||^2)$$&lt;p&gt;
+　　其中，k是(u,i)对的集合。${r_{ui}}$是未知的（训练集）。&lt;/p&gt;
+&lt;h1 id=&#34;learning-algorithms-学习算法&#34;&gt;Learning Algorithms 学习算法
+&lt;/h1&gt;&lt;p&gt;　　使上述式子最小化的两种方法是随机梯度下降和交替最小二乘法。&lt;/p&gt;
+&lt;h2 id=&#34;stochastic-gradient-descent-随机梯度下降&#34;&gt;Stochastic gradient descent 随机梯度下降
+&lt;/h2&gt;$$\begin{equation}{e_{ui}}\overset{def}{=} {r_{ui}} - {q_i}^T{p_u}\end{equation}$$$${q_i} \leftarrow q_i + \gamma·({e_ui}·{p_u} - \lambda · {q_i})$$$${p_u} \leftarrow p_u + \gamma·({e_ui}·{q_i} - \lambda · {p_u})$$&lt;p&gt;　　该方法运行速度较快。不过在有些场景下，使用ALS优化更好。&lt;/p&gt;
+&lt;h2 id=&#34;alternating-least-squares-交替最小二乘法&#34;&gt;Alternating least squares 交替最小二乘法
+&lt;/h2&gt;&lt;p&gt;　　一般随机梯度下降比ALS简单且快。但ALS适用于两个场景，一是系统可以并行化。ALS可独立计算${q_i}$和${p_u}$。二是隐式数据情况下使用。&lt;/p&gt;
+&lt;h1 id=&#34;adding-biases&#34;&gt;Adding Biases
+&lt;/h1&gt;$${b_{ui}} = μ + {b_i} + {b_u}$$$$\hat{r}_{ui} = μ + {b_i} + {b_u} + {q_i}^T{p_u}$$$$min_{p\*,q\*,b\*}\sum_{(u,i)∈k}({r_ui} - μ - {b_u}- {b_i}-{p_u}^Tq_i)^2 + \lambda(||p_u||^2 + ||q_i||^2 + b_u^2 + b_i^2)$$&lt;h1 id=&#34;additional-input-sources-额外输入资源&#34;&gt;Additional Input Sources 额外输入资源
+&lt;/h1&gt;$$\hat{r}_{ui} = μ + {b_i} + {b_u} + {q_i}^T[{p_u} + |N(u)|^{-0.5} \sum_{i∈N(u)}{x_i} + \sum_{a∈A(u)}{y_a}]$$&lt;p&gt;
+　　N(u)指用户u有过隐式反馈的若干个item集合。x是和item i相关的因素。$\sum_{i∈N(u)}{x_i}$表示一个用户对N(u)中的若干item的偏好刻画向量。系数代表规范化。&lt;br&gt;
+　　用户属性用A(u)表示，每一个用户的每一个属性对应的因素向量用$y_a$表示。$\sum_{a∈A(u)}{y_a}表示每个用户的属性集。&lt;/p&gt;
+&lt;h1 id=&#34;temporal-dynamics-时空动态&#34;&gt;Temporal dynamics 时空动态
+&lt;/h1&gt;$$\hat{r}_{ui}(t) = μ + b_i(t) + b_u(t) + q_i^Tp_u(t)$$&lt;p&gt;
+　　$b_i(t)$表示物品随时间变化的流行程度，$b_u(t)$表示用户评分随时间变化的严格程度，$p_u(t)$表示用户偏好随时间变化的改变程度。物品是静态的，所以$q_i$也是静态的。&lt;/p&gt;
+&lt;h1 id=&#34;inputs-with-varying-confidence-levels-各种信任级别的输入&#34;&gt;Inputs with varying confidence levels 各种信任级别的输入
+&lt;/h1&gt;$$min_{p\*,q\*,b\*}\sum_{(u,i)∈k}c_{ui}({r_ui} - μ - {b_u}- {b_i}-{p_u}^Tq_i)^2 + \lambda(||p_u||^2 + ||q_i||^2 + b_u^2 + b_i^2)$$&lt;p&gt;
+　　$c_{ui}$为评分的信任程度。&lt;/p&gt;
+&lt;h1 id=&#34;netflix-prize-competition--netflix大奖竞赛&#34;&gt;Netflix prize competition  Netflix大奖竞赛
+&lt;/h1&gt;&lt;p&gt;　　使用矩阵分解的方法取得了第一名的成绩。
+&lt;img src=&#34;https://hubojing.github.io/images/Paper-MF-accuracy.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;精确度&#34;
+	
+	
+&gt;
+　　加的因素越多，精确度越高。&lt;/p&gt;
+&lt;h1 id=&#34;阅后总结&#34;&gt;阅后总结
+&lt;/h1&gt;&lt;p&gt;　　本文主要介绍了矩阵分解的具体算法。&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

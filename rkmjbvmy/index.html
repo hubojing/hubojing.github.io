@@ -1,0 +1,2483 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="\rMFC，多线程+进度条+复制文件（夹）小程序。\n">
+<title>MFC&#43;多线程&#43;进度条&#43;复制文件（夹）</title>
+
+<link rel='canonical' href='https://hubojing.github.io/rkmjbvmy/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="MFC+多线程+进度条+复制文件（夹）">
+<meta property='og:description' content="\rMFC，多线程+进度条+复制文件（夹）小程序。\n">
+<meta property='og:url' content='https://hubojing.github.io/rkmjbvmy/'>
+<meta property='og:site_name' content='靖待'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='MFC' /><meta property='article:tag' content='CPP' /><meta property='article:published_time' content='2017-06-15T18:00:17&#43;00:00'/><meta property='article:modified_time' content='2017-06-15T18:00:17&#43;00:00'/>
+<meta name="twitter:title" content="MFC+多线程+进度条+复制文件（夹）">
+<meta name="twitter:description" content="\rMFC，多线程+进度条+复制文件（夹）小程序。\n">
+    <link rel="shortcut icon" href="/avatar.jpg" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_999351c94d8e06aa.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">靖待</a></h1>
+            <h2 class="site-description">创造是人生乐趣</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://blog.csdn.net/hubojing/'
+                        target="_blank"
+                        title="csdn"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:hubojing@outlook.com'
+                        target="_blank"
+                        title="mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://music.163.com/#/user/home?id=92203594'
+                        target="_blank"
+                        title="netease"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='/atom.xml'
+                        target="_blank"
+                        title="rss"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                <span>存档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friends/' >
+                
+                
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/" >
+                软件开发
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/rkmjbvmy/">MFC&#43;多线程&#43;进度条&#43;复制文件（夹）</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jun 15, 2017</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 8 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <div align="left">
+<img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1049830277,1612840852&fm=26&gp=0.jpg" width="300" height="180" style="float:right;"/>
+<p>　　<strong>MFC，多线程+进度条+复制文件（夹）小程序。</strong></p>
+ </div>
+<p>多线程：</p>
+<ol>
+<li>做一个MFC对话框程序。</li>
+<li>点击开始按钮，程序启动一个工作线程，复制指定的文件夹到目标位置。</li>
+<li>同时在更新进度条，反映当前的复制进度（按文件数量计算进度）。</li>
+<li>点击停止按钮时终止，但需要保证当前正在复制的文件得以复制完成。</li>
+<li>工作线程访问主线程需要使用消息机制，不能直接访问。</li>
+<li>主界面不能锁死，停止按钮需要随时可以响应点击。</li>
+</ol>
+<p>整体思路：
+在开始按钮里的响应函数中创建一个线程，在线程里复制，通过消息机制更新进度条，在消息机制的函数中和复制过程关联显示进度。</p>
+<p>需要解决的问题：
+1.怎么创建线程
+2.怎么更新进度条
+3.怎么将编辑框中输入的路径被copyfile函数读取到
+4.怎么获取文件个数（遍历）
+5.怎么把进度条和复制文件进度关联
+（通过文件个数 进度条范围设置为0-文件数量长度	步长为1 完成一次复制加一次）
+6.点击取消怎么保证当前正在复制的文件得以复制完成</p>
+<p>获取个数：
+递归遍历整个文件夹，然后递归复制文件到目的文件夹。
+在递归遍历整个文件夹的时候，就可以拿到整个文件夹的大小以及文件数量。</p>
+<p>传递进度数据，用postmessage到该进度条的窗口，在进度条窗口获取该消息 设置SetPos，updatedata该控件。
+一个对话框里有个进度条控件，当线程接收到数据（文件的总大小和收到的大小）postmessage给对话框，对话框的PreTranslateMessage(MSG* pMsg)截取该消息设置进度条控件（范围和增量，setpos）。</p>
+<p>我的方案：
+关键代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="c1">//复制函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">CopyDirectory</span><span class="p">(</span><span class="n">CString</span> <span class="n">source</span><span class="p">,</span> <span class="n">CString</span> <span class="n">target</span><span class="p">,</span> <span class="n">CCopyFoldersDlg</span> <span class="o">*</span> <span class="n">pDlg</span><span class="p">)</span>    
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"> 	 
+</span></span><span class="line"><span class="cl">	<span class="n">CreateDirectory</span><span class="p">(</span><span class="n">target</span><span class="p">,</span><span class="nb">NULL</span><span class="p">);</span>   
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">    <span class="n">CFileFind</span> <span class="n">finder</span><span class="p">;</span>    
+</span></span><span class="line"><span class="cl">    <span class="n">CString</span> <span class="n">path</span><span class="p">;</span>    
+</span></span><span class="line"><span class="cl">    <span class="n">path</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="n">_T</span><span class="p">(</span><span class="s">&#34;%s</span><span class="se">\\</span><span class="s">*.*&#34;</span><span class="p">),</span><span class="n">source</span><span class="p">);</span>    
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">    <span class="n">BOOL</span> <span class="n">bWorking</span> <span class="o">=</span> <span class="n">finder</span><span class="p">.</span><span class="n">FindFile</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>    
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">bWorking</span><span class="p">)</span>  
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>   
+</span></span><span class="line"><span class="cl">        <span class="n">bWorking</span> <span class="o">=</span> <span class="n">finder</span><span class="p">.</span><span class="n">FindNextFile</span><span class="p">();</span>   
+</span></span><span class="line"><span class="cl">           
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">finder</span><span class="p">.</span><span class="n">IsDirectory</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">finder</span><span class="p">.</span><span class="n">IsDots</span><span class="p">())</span>  
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>   
+</span></span><span class="line"><span class="cl">            <span class="n">CopyDirectory</span><span class="p">(</span><span class="n">finder</span><span class="p">.</span><span class="n">GetFilePath</span><span class="p">(),</span> <span class="n">target</span><span class="o">+</span><span class="n">_T</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\\</span><span class="s">&#34;</span><span class="p">)</span><span class="o">+</span><span class="n">finder</span><span class="p">.</span><span class="n">GetFileName</span><span class="p">(),</span> <span class="n">pDlg</span><span class="p">);</span>  <span class="c1">//递归 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span>    
+</span></span><span class="line"><span class="cl">        <span class="k">else</span>  
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>      
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">			<span class="n">WaitForSingleObject</span><span class="p">(</span><span class="n">pDlg</span><span class="o">-&gt;</span><span class="n">hEvent</span><span class="p">,</span><span class="n">INFINITE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">CopyFile</span><span class="p">(</span><span class="n">finder</span><span class="p">.</span><span class="n">GetFilePath</span><span class="p">(),</span> <span class="n">target</span><span class="o">+</span><span class="n">_T</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\\</span><span class="s">&#34;</span><span class="p">)</span><span class="o">+</span><span class="n">finder</span><span class="p">.</span><span class="n">GetFileName</span><span class="p">(),</span> <span class="n">FALSE</span><span class="p">);</span>   
+</span></span><span class="line"><span class="cl">            <span class="n">count</span><span class="o">++</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">            <span class="n">pDlg</span><span class="o">-&gt;</span><span class="n">PostMessage</span><span class="p">(</span><span class="n">WM_USER_PROCESS</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl">          
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">             <span class="n">Sleep</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>   
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>   
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>    
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">VOID</span> <span class="nf">GetInfo</span><span class="p">(</span><span class="n">CString</span> <span class="n">csPath</span><span class="p">,</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">FoldersNum</span><span class="p">,</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">FilesNum</span><span class="p">)</span>  
+</span></span><span class="line"><span class="cl"><span class="p">{</span>     
+</span></span><span class="line"><span class="cl">    <span class="n">SetCurrentDirectory</span><span class="p">(</span><span class="n">csPath</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl">    <span class="n">CFileFind</span> <span class="n">finder</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">    <span class="n">BOOL</span> <span class="n">bWorking</span> <span class="o">=</span> <span class="n">finder</span><span class="p">.</span><span class="n">FindFile</span><span class="p">(</span><span class="n">_T</span><span class="p">(</span><span class="s">&#34;*.*&#34;</span><span class="p">));</span>  
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">bWorking</span><span class="p">)</span>  
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>  
+</span></span><span class="line"><span class="cl">        <span class="n">bWorking</span> <span class="o">=</span> <span class="n">finder</span><span class="p">.</span><span class="n">FindNextFile</span><span class="p">();</span>  
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">finder</span><span class="p">.</span><span class="n">IsDots</span><span class="p">())</span>   
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>  
+</span></span><span class="line"><span class="cl">            <span class="k">continue</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>  
+</span></span><span class="line"><span class="cl">        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">finder</span><span class="p">.</span><span class="n">IsDirectory</span><span class="p">())</span>  
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>  
+</span></span><span class="line"><span class="cl">            <span class="o">++</span><span class="n">FoldersNum</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">            <span class="n">GetInfo</span><span class="p">(</span><span class="n">finder</span><span class="p">.</span><span class="n">GetFilePath</span><span class="p">(),</span> <span class="n">FoldersNum</span><span class="p">,</span> <span class="n">FilesNum</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>  
+</span></span><span class="line"><span class="cl">        <span class="k">else</span>  
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>  
+</span></span><span class="line"><span class="cl">            <span class="o">++</span><span class="n">FilesNum</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>  
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>  
+</span></span><span class="line"><span class="cl">      
+</span></span><span class="line"><span class="cl"><span class="p">}</span>  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//复制线程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DWORD</span> <span class="n">WINAPI</span> <span class="n">CCopyFoldersDlg</span><span class="o">::</span><span class="n">CopyFolders</span><span class="p">(</span><span class="n">LPVOID</span> <span class="n">pParam</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>  
+</span></span><span class="line"><span class="cl">	<span class="n">CCopyFoldersDlg</span><span class="o">*</span> <span class="n">pDlg</span> <span class="o">=</span> <span class="p">(</span><span class="n">CCopyFoldersDlg</span><span class="o">*</span><span class="p">)</span><span class="n">pParam</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	 <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pDlg</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">	 <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		 <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">	 <span class="p">}</span>
+</span></span><span class="line"><span class="cl">	 <span class="n">ResetEvent</span><span class="p">(</span><span class="n">pDlg</span><span class="o">-&gt;</span><span class="n">hExit</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kt">long</span> <span class="n">FoldersNum</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                 
+</span></span><span class="line"><span class="cl">    <span class="kt">long</span> <span class="n">FilesNum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                  
+</span></span><span class="line"><span class="cl">    <span class="n">GetInfo</span><span class="p">(</span><span class="n">pDlg</span><span class="o">-&gt;</span><span class="n">m_SrcPath</span><span class="p">,</span><span class="n">FoldersNum</span><span class="p">,</span> <span class="n">FilesNum</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl">	<span class="n">pDlg</span><span class="o">-&gt;</span><span class="n">m_Progress</span><span class="p">.</span><span class="n">SetRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">FilesNum</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl">    <span class="n">pDlg</span><span class="o">-&gt;</span><span class="n">m_Progress</span><span class="p">.</span><span class="n">SetStep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">	<span class="n">CopyDirectory</span><span class="p">(</span><span class="n">pDlg</span><span class="o">-&gt;</span><span class="n">m_SrcPath</span><span class="p">,</span> <span class="n">pDlg</span><span class="o">-&gt;</span><span class="n">m_DesPath</span><span class="p">,</span> <span class="n">pDlg</span><span class="p">);</span>   
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">SetEvent</span><span class="p">(</span><span class="n">pDlg</span><span class="o">-&gt;</span><span class="n">hExit</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">LRESULT</span> <span class="n">CCopyFoldersDlg</span><span class="o">::</span><span class="n">Do_process</span><span class="p">(</span><span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>   
+</span></span><span class="line"><span class="cl"><span class="p">{</span>   
+</span></span><span class="line"><span class="cl">   <span class="n">wParam</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">   <span class="n">m_Progress</span><span class="p">.</span><span class="n">SetPos</span><span class="p">(</span><span class="n">wParam</span><span class="p">);</span>    
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl"><span class="p">}</span>         
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CCopyFoldersDlg</span><span class="o">::</span><span class="n">OnStart</span><span class="p">()</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">UpdateData</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">((</span><span class="n">m_SrcPath</span><span class="p">.</span><span class="n">IsEmpty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">m_DesPath</span><span class="p">.</span><span class="n">IsEmpty</span><span class="p">()))</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">MessageBox</span><span class="p">(</span><span class="s">&#34;路径不能为空！&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">//创建线程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">hThread</span> <span class="o">=</span> <span class="n">CreateThread</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">CopyFolders</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">hEvent</span> <span class="o">=</span> <span class="n">CreateEvent</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CloseHandle</span><span class="p">(</span><span class="n">hThread</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CCopyFoldersDlg</span><span class="o">::</span><span class="n">OnStop</span><span class="p">()</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">m_iStatus</span><span class="o">++</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">         
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">m_iStatus</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>  
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>    
+</span></span><span class="line"><span class="cl">         <span class="n">SetEvent</span><span class="p">(</span><span class="n">hEvent</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>   
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>  
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>  
+</span></span><span class="line"><span class="cl">        <span class="n">ResetEvent</span><span class="p">(</span><span class="n">hEvent</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>  
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CCopyFoldersDlg</span><span class="o">::</span><span class="n">OnTimer</span><span class="p">(</span><span class="n">UINT_PTR</span> <span class="n">nIDEvent</span><span class="p">)</span>  
+</span></span><span class="line"><span class="cl"><span class="p">{</span>  
+</span></span><span class="line"><span class="cl">    <span class="n">CDialog</span><span class="o">::</span><span class="n">OnTimer</span><span class="p">(</span><span class="n">nIDEvent</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl"><span class="p">}</span>  
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>完整代码：
+.cpp文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span><span class="lnt">204
+</span><span class="lnt">205
+</span><span class="lnt">206
+</span><span class="lnt">207
+</span><span class="lnt">208
+</span><span class="lnt">209
+</span><span class="lnt">210
+</span><span class="lnt">211
+</span><span class="lnt">212
+</span><span class="lnt">213
+</span><span class="lnt">214
+</span><span class="lnt">215
+</span><span class="lnt">216
+</span><span class="lnt">217
+</span><span class="lnt">218
+</span><span class="lnt">219
+</span><span class="lnt">220
+</span><span class="lnt">221
+</span><span class="lnt">222
+</span><span class="lnt">223
+</span><span class="lnt">224
+</span><span class="lnt">225
+</span><span class="lnt">226
+</span><span class="lnt">227
+</span><span class="lnt">228
+</span><span class="lnt">229
+</span><span class="lnt">230
+</span><span class="lnt">231
+</span><span class="lnt">232
+</span><span class="lnt">233
+</span><span class="lnt">234
+</span><span class="lnt">235
+</span><span class="lnt">236
+</span><span class="lnt">237
+</span><span class="lnt">238
+</span><span class="lnt">239
+</span><span class="lnt">240
+</span><span class="lnt">241
+</span><span class="lnt">242
+</span><span class="lnt">243
+</span><span class="lnt">244
+</span><span class="lnt">245
+</span><span class="lnt">246
+</span><span class="lnt">247
+</span><span class="lnt">248
+</span><span class="lnt">249
+</span><span class="lnt">250
+</span><span class="lnt">251
+</span><span class="lnt">252
+</span><span class="lnt">253
+</span><span class="lnt">254
+</span><span class="lnt">255
+</span><span class="lnt">256
+</span><span class="lnt">257
+</span><span class="lnt">258
+</span><span class="lnt">259
+</span><span class="lnt">260
+</span><span class="lnt">261
+</span><span class="lnt">262
+</span><span class="lnt">263
+</span><span class="lnt">264
+</span><span class="lnt">265
+</span><span class="lnt">266
+</span><span class="lnt">267
+</span><span class="lnt">268
+</span><span class="lnt">269
+</span><span class="lnt">270
+</span><span class="lnt">271
+</span><span class="lnt">272
+</span><span class="lnt">273
+</span><span class="lnt">274
+</span><span class="lnt">275
+</span><span class="lnt">276
+</span><span class="lnt">277
+</span><span class="lnt">278
+</span><span class="lnt">279
+</span><span class="lnt">280
+</span><span class="lnt">281
+</span><span class="lnt">282
+</span><span class="lnt">283
+</span><span class="lnt">284
+</span><span class="lnt">285
+</span><span class="lnt">286
+</span><span class="lnt">287
+</span><span class="lnt">288
+</span><span class="lnt">289
+</span><span class="lnt">290
+</span><span class="lnt">291
+</span><span class="lnt">292
+</span><span class="lnt">293
+</span><span class="lnt">294
+</span><span class="lnt">295
+</span><span class="lnt">296
+</span><span class="lnt">297
+</span><span class="lnt">298
+</span><span class="lnt">299
+</span><span class="lnt">300
+</span><span class="lnt">301
+</span><span class="lnt">302
+</span><span class="lnt">303
+</span><span class="lnt">304
+</span><span class="lnt">305
+</span><span class="lnt">306
+</span><span class="lnt">307
+</span><span class="lnt">308
+</span><span class="lnt">309
+</span><span class="lnt">310
+</span><span class="lnt">311
+</span><span class="lnt">312
+</span><span class="lnt">313
+</span><span class="lnt">314
+</span><span class="lnt">315
+</span><span class="lnt">316
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="c1">// CopyFoldersDlg.cpp : implementation file
+</span></span></span><span class="line"><span class="cl"><span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;stdafx.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;CopyFolders.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;CopyFoldersDlg.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;windows.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#ifdef _DEBUG
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define new DEBUG_NEW
+</span></span></span><span class="line"><span class="cl"><span class="cp">#undef THIS_FILE
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">static</span> <span class="kt">char</span> <span class="n">THIS_FILE</span><span class="p">[]</span> <span class="o">=</span> <span class="n">__FILE__</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">static</span> <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="cp">#define WM_USER_PROCESS (WM_USER+101)  
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">CopyDirectory</span><span class="p">(</span><span class="n">CString</span> <span class="n">source</span><span class="p">,</span> <span class="n">CString</span> <span class="n">target</span><span class="p">,</span><span class="n">CWnd</span> <span class="o">*</span> <span class="n">pWndMsg</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl"><span class="c1">/////////////////////////////////////////////////////////////////////////////
+</span></span></span><span class="line"><span class="cl"><span class="c1">// CAboutDlg dialog used for App About
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">CAboutDlg</span> <span class="o">:</span> <span class="k">public</span> <span class="n">CDialog</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CAboutDlg</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Dialog Data
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//{{AFX_DATA(CAboutDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">enum</span> <span class="p">{</span> <span class="n">IDD</span> <span class="o">=</span> <span class="n">IDD_ABOUTBOX</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//}}AFX_DATA
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// ClassWizard generated virtual function overrides
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//{{AFX_VIRTUAL(CAboutDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">protected</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">virtual</span> <span class="kt">void</span> <span class="n">DoDataExchange</span><span class="p">(</span><span class="n">CDataExchange</span><span class="o">*</span> <span class="n">pDX</span><span class="p">);</span>    <span class="c1">// DDX/DDV support
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//}}AFX_VIRTUAL
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Implementation
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">protected</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//{{AFX_MSG(CAboutDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//}}AFX_MSG
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">DECLARE_MESSAGE_MAP</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">CAboutDlg</span><span class="o">::</span><span class="n">CAboutDlg</span><span class="p">()</span> <span class="o">:</span> <span class="n">CDialog</span><span class="p">(</span><span class="n">CAboutDlg</span><span class="o">::</span><span class="n">IDD</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//{{AFX_DATA_INIT(CAboutDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//}}AFX_DATA_INIT
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CAboutDlg</span><span class="o">::</span><span class="n">DoDataExchange</span><span class="p">(</span><span class="n">CDataExchange</span><span class="o">*</span> <span class="n">pDX</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CDialog</span><span class="o">::</span><span class="n">DoDataExchange</span><span class="p">(</span><span class="n">pDX</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//{{AFX_DATA_MAP(CAboutDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//}}AFX_DATA_MAP
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">BEGIN_MESSAGE_MAP</span><span class="p">(</span><span class="n">CAboutDlg</span><span class="p">,</span> <span class="n">CDialog</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//{{AFX_MSG_MAP(CAboutDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="c1">// No message handlers
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//}}AFX_MSG_MAP
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">END_MESSAGE_MAP</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">/////////////////////////////////////////////////////////////////////////////
+</span></span></span><span class="line"><span class="cl"><span class="c1">// CCopyFoldersDlg dialog
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">CCopyFoldersDlg</span><span class="o">::</span><span class="n">CCopyFoldersDlg</span><span class="p">(</span><span class="n">CWnd</span><span class="o">*</span> <span class="n">pParent</span> <span class="cm">/*=NULL*/</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="o">:</span> <span class="n">CDialog</span><span class="p">(</span><span class="n">CCopyFoldersDlg</span><span class="o">::</span><span class="n">IDD</span><span class="p">,</span> <span class="n">pParent</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//{{AFX_DATA_INIT(CCopyFoldersDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">m_SrcPath</span> <span class="o">=</span> <span class="n">_T</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">m_DesPath</span> <span class="o">=</span> <span class="n">_T</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//}}AFX_DATA_INIT
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">m_hIcon</span> <span class="o">=</span> <span class="n">AfxGetApp</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">LoadIcon</span><span class="p">(</span><span class="n">IDR_MAINFRAME</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CCopyFoldersDlg</span><span class="o">::</span><span class="n">DoDataExchange</span><span class="p">(</span><span class="n">CDataExchange</span><span class="o">*</span> <span class="n">pDX</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CDialog</span><span class="o">::</span><span class="n">DoDataExchange</span><span class="p">(</span><span class="n">pDX</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//{{AFX_DATA_MAP(CCopyFoldersDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">DDX_Control</span><span class="p">(</span><span class="n">pDX</span><span class="p">,</span> <span class="n">IDC_PROGRESS</span><span class="p">,</span> <span class="n">m_Progress</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">DDX_Text</span><span class="p">(</span><span class="n">pDX</span><span class="p">,</span> <span class="n">IDC_EDIT1</span><span class="p">,</span> <span class="n">m_SrcPath</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">DDX_Text</span><span class="p">(</span><span class="n">pDX</span><span class="p">,</span> <span class="n">IDC_EDIT2</span><span class="p">,</span> <span class="n">m_DesPath</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//}}AFX_DATA_MAP
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">BEGIN_MESSAGE_MAP</span><span class="p">(</span><span class="n">CCopyFoldersDlg</span><span class="p">,</span> <span class="n">CDialog</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//{{AFX_MSG_MAP(CCopyFoldersDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">ON_WM_SYSCOMMAND</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ON_WM_PAINT</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ON_WM_QUERYDRAGICON</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ON_BN_CLICKED</span><span class="p">(</span><span class="n">IDC_START</span><span class="p">,</span> <span class="n">OnStart</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ON_BN_CLICKED</span><span class="p">(</span><span class="n">IDC_STOP</span><span class="p">,</span> <span class="n">OnStop</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ON_MESSAGE</span><span class="p">(</span><span class="n">WM_USER_PROCESS</span><span class="p">,</span> <span class="n">Do_process</span><span class="p">)</span>  
+</span></span><span class="line"><span class="cl">	<span class="n">ON_WM_TIMER</span><span class="p">()</span>  
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">	<span class="c1">//}}AFX_MSG_MAP
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">END_MESSAGE_MAP</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">/////////////////////////////////////////////////////////////////////////////
+</span></span></span><span class="line"><span class="cl"><span class="c1">// CCopyFoldersDlg message handlers
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">BOOL</span> <span class="n">CCopyFoldersDlg</span><span class="o">::</span><span class="n">OnInitDialog</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CDialog</span><span class="o">::</span><span class="n">OnInitDialog</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// Add &#34;About...&#34; menu item to system menu.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// IDM_ABOUTBOX must be in the system command range.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">ASSERT</span><span class="p">((</span><span class="n">IDM_ABOUTBOX</span> <span class="o">&amp;</span> <span class="mh">0xFFF0</span><span class="p">)</span> <span class="o">==</span> <span class="n">IDM_ABOUTBOX</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ASSERT</span><span class="p">(</span><span class="n">IDM_ABOUTBOX</span> <span class="o">&lt;</span> <span class="mh">0xF000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">CMenu</span><span class="o">*</span> <span class="n">pSysMenu</span> <span class="o">=</span> <span class="n">GetSystemMenu</span><span class="p">(</span><span class="n">FALSE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">pSysMenu</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CString</span> <span class="n">strAboutMenu</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">strAboutMenu</span><span class="p">.</span><span class="n">LoadString</span><span class="p">(</span><span class="n">IDS_ABOUTBOX</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">strAboutMenu</span><span class="p">.</span><span class="n">IsEmpty</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">pSysMenu</span><span class="o">-&gt;</span><span class="n">AppendMenu</span><span class="p">(</span><span class="n">MF_SEPARATOR</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="n">pSysMenu</span><span class="o">-&gt;</span><span class="n">AppendMenu</span><span class="p">(</span><span class="n">MF_STRING</span><span class="p">,</span> <span class="n">IDM_ABOUTBOX</span><span class="p">,</span> <span class="n">strAboutMenu</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// Set the icon for this dialog.  The framework does this automatically
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//  when the application&#39;s main window is not a dialog
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">SetIcon</span><span class="p">(</span><span class="n">m_hIcon</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">);</span>			<span class="c1">// Set big icon
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">SetIcon</span><span class="p">(</span><span class="n">m_hIcon</span><span class="p">,</span> <span class="n">FALSE</span><span class="p">);</span>		<span class="c1">// Set small icon
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	
+</span></span><span class="line"><span class="cl">	<span class="c1">// TODO: Add extra initialization here
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>  <span class="c1">// return TRUE  unless you set the focus to a control
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CCopyFoldersDlg</span><span class="o">::</span><span class="n">OnSysCommand</span><span class="p">(</span><span class="n">UINT</span> <span class="n">nID</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">((</span><span class="n">nID</span> <span class="o">&amp;</span> <span class="mh">0xFFF0</span><span class="p">)</span> <span class="o">==</span> <span class="n">IDM_ABOUTBOX</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CAboutDlg</span> <span class="n">dlgAbout</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">dlgAbout</span><span class="p">.</span><span class="n">DoModal</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CDialog</span><span class="o">::</span><span class="n">OnSysCommand</span><span class="p">(</span><span class="n">nID</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// If you add a minimize button to your dialog, you will need the code below
+</span></span></span><span class="line"><span class="cl"><span class="c1">//  to draw the icon.  For MFC applications using the document/view model,
+</span></span></span><span class="line"><span class="cl"><span class="c1">//  this is automatically done for you by the framework.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CCopyFoldersDlg</span><span class="o">::</span><span class="n">OnPaint</span><span class="p">()</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">IsIconic</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CPaintDC</span> <span class="nf">dc</span><span class="p">(</span><span class="k">this</span><span class="p">);</span> <span class="c1">// device context for painting
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">		<span class="n">SendMessage</span><span class="p">(</span><span class="n">WM_ICONERASEBKGND</span><span class="p">,</span> <span class="p">(</span><span class="n">WPARAM</span><span class="p">)</span> <span class="n">dc</span><span class="p">.</span><span class="n">GetSafeHdc</span><span class="p">(),</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="c1">// Center icon in client rectangle
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="kt">int</span> <span class="n">cxIcon</span> <span class="o">=</span> <span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CXICON</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="kt">int</span> <span class="n">cyIcon</span> <span class="o">=</span> <span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CYICON</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CRect</span> <span class="n">rect</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">GetClientRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">rect</span><span class="p">.</span><span class="n">Width</span><span class="p">()</span> <span class="o">-</span> <span class="n">cxIcon</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">rect</span><span class="p">.</span><span class="n">Height</span><span class="p">()</span> <span class="o">-</span> <span class="n">cyIcon</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="c1">// Draw the icon
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">dc</span><span class="p">.</span><span class="n">DrawIcon</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">m_hIcon</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CDialog</span><span class="o">::</span><span class="n">OnPaint</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// The system calls this to obtain the cursor to display while the user drags
+</span></span></span><span class="line"><span class="cl"><span class="c1">//  the minimized window.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">HCURSOR</span> <span class="n">CCopyFoldersDlg</span><span class="o">::</span><span class="n">OnQueryDragIcon</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="p">(</span><span class="n">HCURSOR</span><span class="p">)</span> <span class="n">m_hIcon</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//复制函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">CopyDirectory</span><span class="p">(</span><span class="n">CString</span> <span class="n">source</span><span class="p">,</span> <span class="n">CString</span> <span class="n">target</span><span class="p">,</span> <span class="n">CCopyFoldersDlg</span> <span class="o">*</span> <span class="n">pDlg</span><span class="p">)</span>    
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"> 	 
+</span></span><span class="line"><span class="cl">	<span class="n">CreateDirectory</span><span class="p">(</span><span class="n">target</span><span class="p">,</span><span class="nb">NULL</span><span class="p">);</span>   
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">    <span class="n">CFileFind</span> <span class="n">finder</span><span class="p">;</span>    
+</span></span><span class="line"><span class="cl">    <span class="n">CString</span> <span class="n">path</span><span class="p">;</span>    
+</span></span><span class="line"><span class="cl">    <span class="n">path</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="n">_T</span><span class="p">(</span><span class="s">&#34;%s</span><span class="se">\\</span><span class="s">*.*&#34;</span><span class="p">),</span><span class="n">source</span><span class="p">);</span>    
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">    <span class="n">BOOL</span> <span class="n">bWorking</span> <span class="o">=</span> <span class="n">finder</span><span class="p">.</span><span class="n">FindFile</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>    
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">(</span><span class="n">bWorking</span><span class="p">)</span>  
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>   
+</span></span><span class="line"><span class="cl">        <span class="n">bWorking</span> <span class="o">=</span> <span class="n">finder</span><span class="p">.</span><span class="n">FindNextFile</span><span class="p">();</span>   
+</span></span><span class="line"><span class="cl">           
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">finder</span><span class="p">.</span><span class="n">IsDirectory</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">finder</span><span class="p">.</span><span class="n">IsDots</span><span class="p">())</span>  
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>   
+</span></span><span class="line"><span class="cl">            <span class="n">CopyDirectory</span><span class="p">(</span><span class="n">finder</span><span class="p">.</span><span class="n">GetFilePath</span><span class="p">(),</span> <span class="n">target</span><span class="o">+</span><span class="n">_T</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\\</span><span class="s">&#34;</span><span class="p">)</span><span class="o">+</span><span class="n">finder</span><span class="p">.</span><span class="n">GetFileName</span><span class="p">(),</span> <span class="n">pDlg</span><span class="p">);</span>  <span class="c1">//递归 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="p">}</span>    
+</span></span><span class="line"><span class="cl">        <span class="k">else</span>  
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>      
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">			<span class="n">WaitForSingleObject</span><span class="p">(</span><span class="n">pDlg</span><span class="o">-&gt;</span><span class="n">hEvent</span><span class="p">,</span><span class="n">INFINITE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">CopyFile</span><span class="p">(</span><span class="n">finder</span><span class="p">.</span><span class="n">GetFilePath</span><span class="p">(),</span> <span class="n">target</span><span class="o">+</span><span class="n">_T</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\\</span><span class="s">&#34;</span><span class="p">)</span><span class="o">+</span><span class="n">finder</span><span class="p">.</span><span class="n">GetFileName</span><span class="p">(),</span> <span class="n">FALSE</span><span class="p">);</span>   
+</span></span><span class="line"><span class="cl">            <span class="n">count</span><span class="o">++</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">            <span class="n">pDlg</span><span class="o">-&gt;</span><span class="n">PostMessage</span><span class="p">(</span><span class="n">WM_USER_PROCESS</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl">          
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">             <span class="n">Sleep</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>   
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>   
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>    
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">VOID</span> <span class="nf">GetInfo</span><span class="p">(</span><span class="n">CString</span> <span class="n">csPath</span><span class="p">,</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">FoldersNum</span><span class="p">,</span> <span class="kt">long</span><span class="o">&amp;</span> <span class="n">FilesNum</span><span class="p">)</span>  
+</span></span><span class="line"><span class="cl"><span class="p">{</span>     
+</span></span><span class="line"><span class="cl">    <span class="n">SetCurrentDirectory</span><span class="p">(</span><span class="n">csPath</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl">    <span class="n">CFileFind</span> <span class="n">finder</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">    <span class="n">BOOL</span> <span class="n">bWorking</span> <span class="o">=</span> <span class="n">finder</span><span class="p">.</span><span class="n">FindFile</span><span class="p">(</span><span class="n">_T</span><span class="p">(</span><span class="s">&#34;*.*&#34;</span><span class="p">));</span>  
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">bWorking</span><span class="p">)</span>  
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>  
+</span></span><span class="line"><span class="cl">        <span class="n">bWorking</span> <span class="o">=</span> <span class="n">finder</span><span class="p">.</span><span class="n">FindNextFile</span><span class="p">();</span>  
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">finder</span><span class="p">.</span><span class="n">IsDots</span><span class="p">())</span>   
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>  
+</span></span><span class="line"><span class="cl">            <span class="k">continue</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>  
+</span></span><span class="line"><span class="cl">        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">finder</span><span class="p">.</span><span class="n">IsDirectory</span><span class="p">())</span>  
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>  
+</span></span><span class="line"><span class="cl">            <span class="o">++</span><span class="n">FoldersNum</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">            <span class="n">GetInfo</span><span class="p">(</span><span class="n">finder</span><span class="p">.</span><span class="n">GetFilePath</span><span class="p">(),</span> <span class="n">FoldersNum</span><span class="p">,</span> <span class="n">FilesNum</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>  
+</span></span><span class="line"><span class="cl">        <span class="k">else</span>  
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>  
+</span></span><span class="line"><span class="cl">            <span class="o">++</span><span class="n">FilesNum</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>  
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>  
+</span></span><span class="line"><span class="cl">      
+</span></span><span class="line"><span class="cl"><span class="p">}</span>  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//复制线程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">DWORD</span> <span class="n">WINAPI</span> <span class="n">CCopyFoldersDlg</span><span class="o">::</span><span class="n">CopyFolders</span><span class="p">(</span><span class="n">LPVOID</span> <span class="n">pParam</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>  
+</span></span><span class="line"><span class="cl">	<span class="n">CCopyFoldersDlg</span><span class="o">*</span> <span class="n">pDlg</span> <span class="o">=</span> <span class="p">(</span><span class="n">CCopyFoldersDlg</span><span class="o">*</span><span class="p">)</span><span class="n">pParam</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	 <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pDlg</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">	 <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		 <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">	 <span class="p">}</span>
+</span></span><span class="line"><span class="cl">	 <span class="n">ResetEvent</span><span class="p">(</span><span class="n">pDlg</span><span class="o">-&gt;</span><span class="n">hExit</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kt">long</span> <span class="n">FoldersNum</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                 
+</span></span><span class="line"><span class="cl">    <span class="kt">long</span> <span class="n">FilesNum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                  
+</span></span><span class="line"><span class="cl">    <span class="n">GetInfo</span><span class="p">(</span><span class="n">pDlg</span><span class="o">-&gt;</span><span class="n">m_SrcPath</span><span class="p">,</span><span class="n">FoldersNum</span><span class="p">,</span> <span class="n">FilesNum</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl">	<span class="n">pDlg</span><span class="o">-&gt;</span><span class="n">m_Progress</span><span class="p">.</span><span class="n">SetRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">FilesNum</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl">    <span class="n">pDlg</span><span class="o">-&gt;</span><span class="n">m_Progress</span><span class="p">.</span><span class="n">SetStep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">	<span class="n">CopyDirectory</span><span class="p">(</span><span class="n">pDlg</span><span class="o">-&gt;</span><span class="n">m_SrcPath</span><span class="p">,</span> <span class="n">pDlg</span><span class="o">-&gt;</span><span class="n">m_DesPath</span><span class="p">,</span> <span class="n">pDlg</span><span class="p">);</span>   
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">SetEvent</span><span class="p">(</span><span class="n">pDlg</span><span class="o">-&gt;</span><span class="n">hExit</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">LRESULT</span> <span class="n">CCopyFoldersDlg</span><span class="o">::</span><span class="n">Do_process</span><span class="p">(</span><span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>   
+</span></span><span class="line"><span class="cl"><span class="p">{</span>   
+</span></span><span class="line"><span class="cl">   <span class="n">wParam</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">   <span class="n">m_Progress</span><span class="p">.</span><span class="n">SetPos</span><span class="p">(</span><span class="n">wParam</span><span class="p">);</span>    
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl"><span class="p">}</span>         
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CCopyFoldersDlg</span><span class="o">::</span><span class="n">OnStart</span><span class="p">()</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">UpdateData</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">((</span><span class="n">m_SrcPath</span><span class="p">.</span><span class="n">IsEmpty</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">m_DesPath</span><span class="p">.</span><span class="n">IsEmpty</span><span class="p">()))</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">MessageBox</span><span class="p">(</span><span class="s">&#34;路径不能为空！&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="c1">//创建线程
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">hThread</span> <span class="o">=</span> <span class="n">CreateThread</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">CopyFolders</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">hEvent</span> <span class="o">=</span> <span class="n">CreateEvent</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CloseHandle</span><span class="p">(</span><span class="n">hThread</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CCopyFoldersDlg</span><span class="o">::</span><span class="n">OnStop</span><span class="p">()</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">m_iStatus</span><span class="o">++</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">         
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">m_iStatus</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>  
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>    
+</span></span><span class="line"><span class="cl">         <span class="n">SetEvent</span><span class="p">(</span><span class="n">hEvent</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>   
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>  
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>  
+</span></span><span class="line"><span class="cl">        <span class="n">ResetEvent</span><span class="p">(</span><span class="n">hEvent</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>  
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CCopyFoldersDlg</span><span class="o">::</span><span class="n">OnTimer</span><span class="p">(</span><span class="n">UINT_PTR</span> <span class="n">nIDEvent</span><span class="p">)</span>  
+</span></span><span class="line"><span class="cl"><span class="p">{</span>  
+</span></span><span class="line"><span class="cl">    <span class="n">CDialog</span><span class="o">::</span><span class="n">OnTimer</span><span class="p">(</span><span class="n">nIDEvent</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl"><span class="p">}</span>  
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>.h文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="c1">// CopyFoldersDlg.h : header file
+</span></span></span><span class="line"><span class="cl"><span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#if !defined(AFX_COPYFOLDERSDLG_H__BADF1BD0_296B_4FED_96F7_BCD2628D4B03__INCLUDED_)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define AFX_COPYFOLDERSDLG_H__BADF1BD0_296B_4FED_96F7_BCD2628D4B03__INCLUDED_
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#if _MSC_VER &gt; 1000
+</span></span></span><span class="line"><span class="cl"><span class="cp">#pragma once
+</span></span></span><span class="line"><span class="cl"><span class="cp">#endif </span><span class="c1">// _MSC_VER &gt; 1000
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">/////////////////////////////////////////////////////////////////////////////
+</span></span></span><span class="line"><span class="cl"><span class="c1">// CCopyFoldersDlg dialog
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">CCopyFoldersDlg</span> <span class="o">:</span> <span class="k">public</span> <span class="n">CDialog</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Construction
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CCopyFoldersDlg</span><span class="p">(</span><span class="n">CWnd</span><span class="o">*</span> <span class="n">pParent</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">);</span>	<span class="c1">// standard constructor
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>				
+</span></span><span class="line"><span class="cl">	<span class="n">HANDLE</span> <span class="n">hThread</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">HANDLE</span> <span class="n">hEvent</span><span class="p">;</span>     
+</span></span><span class="line"><span class="cl">	<span class="n">HANDLE</span> <span class="n">hExit</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">static</span> <span class="n">DWORD</span> <span class="n">WINAPI</span> <span class="nf">CopyFolders</span><span class="p">(</span><span class="n">LPVOID</span> <span class="n">pParam</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">m_iStatus</span><span class="p">;</span>  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Dialog Data
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//{{AFX_DATA(CCopyFoldersDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">enum</span> <span class="p">{</span> <span class="n">IDD</span> <span class="o">=</span> <span class="n">IDD_COPYFOLDERS_DIALOG</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CProgressCtrl</span>	<span class="n">m_Progress</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CString</span>	<span class="n">m_SrcPath</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CString</span>	<span class="n">m_DesPath</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//}}AFX_DATA
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// ClassWizard generated virtual function overrides
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//{{AFX_VIRTUAL(CCopyFoldersDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">protected</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">virtual</span> <span class="kt">void</span> <span class="n">DoDataExchange</span><span class="p">(</span><span class="n">CDataExchange</span><span class="o">*</span> <span class="n">pDX</span><span class="p">);</span>	<span class="c1">// DDX/DDV support
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//}}AFX_VIRTUAL
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Implementation
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">protected</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">HICON</span> <span class="n">m_hIcon</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// Generated message map functions
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//{{AFX_MSG(CCopyFoldersDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">virtual</span> <span class="n">BOOL</span> <span class="nf">OnInitDialog</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="n">afx_msg</span> <span class="kt">void</span> <span class="nf">OnSysCommand</span><span class="p">(</span><span class="n">UINT</span> <span class="n">nID</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">afx_msg</span> <span class="kt">void</span> <span class="nf">OnPaint</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="n">afx_msg</span> <span class="n">HCURSOR</span> <span class="nf">OnQueryDragIcon</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="n">afx_msg</span> <span class="kt">void</span> <span class="nf">OnStart</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="n">afx_msg</span> <span class="kt">void</span> <span class="nf">OnStop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="n">afx_msg</span> <span class="n">LRESULT</span> <span class="n">CCopyFoldersDlg</span><span class="o">::</span><span class="n">Do_process</span><span class="p">(</span><span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span><span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">afx_msg</span> <span class="kt">void</span> <span class="nf">OnTimer</span><span class="p">(</span><span class="n">UINT_PTR</span> <span class="n">nIDEvent</span><span class="p">);</span>  
+</span></span><span class="line"><span class="cl">	<span class="c1">//}}AFX_MSG
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">DECLARE_MESSAGE_MAP</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//{{AFX_INSERT_LOCATION}}
+</span></span></span><span class="line"><span class="cl"><span class="c1">// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#endif </span><span class="c1">// !defined(AFX_COPYFOLDERSDLG_H__BADF1BD0_296B_4FED_96F7_BCD2628D4B03__INCLUDED_)
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>界面：
+<img src="http://img.blog.csdn.net/20170615182222589?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"
+	
+	
+	
+	loading="lazy"
+	
+		alt="界面"
+	
+	
+></p>
+<p>另一种方案（大同小异）：
+.cpp文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span><span class="lnt">204
+</span><span class="lnt">205
+</span><span class="lnt">206
+</span><span class="lnt">207
+</span><span class="lnt">208
+</span><span class="lnt">209
+</span><span class="lnt">210
+</span><span class="lnt">211
+</span><span class="lnt">212
+</span><span class="lnt">213
+</span><span class="lnt">214
+</span><span class="lnt">215
+</span><span class="lnt">216
+</span><span class="lnt">217
+</span><span class="lnt">218
+</span><span class="lnt">219
+</span><span class="lnt">220
+</span><span class="lnt">221
+</span><span class="lnt">222
+</span><span class="lnt">223
+</span><span class="lnt">224
+</span><span class="lnt">225
+</span><span class="lnt">226
+</span><span class="lnt">227
+</span><span class="lnt">228
+</span><span class="lnt">229
+</span><span class="lnt">230
+</span><span class="lnt">231
+</span><span class="lnt">232
+</span><span class="lnt">233
+</span><span class="lnt">234
+</span><span class="lnt">235
+</span><span class="lnt">236
+</span><span class="lnt">237
+</span><span class="lnt">238
+</span><span class="lnt">239
+</span><span class="lnt">240
+</span><span class="lnt">241
+</span><span class="lnt">242
+</span><span class="lnt">243
+</span><span class="lnt">244
+</span><span class="lnt">245
+</span><span class="lnt">246
+</span><span class="lnt">247
+</span><span class="lnt">248
+</span><span class="lnt">249
+</span><span class="lnt">250
+</span><span class="lnt">251
+</span><span class="lnt">252
+</span><span class="lnt">253
+</span><span class="lnt">254
+</span><span class="lnt">255
+</span><span class="lnt">256
+</span><span class="lnt">257
+</span><span class="lnt">258
+</span><span class="lnt">259
+</span><span class="lnt">260
+</span><span class="lnt">261
+</span><span class="lnt">262
+</span><span class="lnt">263
+</span><span class="lnt">264
+</span><span class="lnt">265
+</span><span class="lnt">266
+</span><span class="lnt">267
+</span><span class="lnt">268
+</span><span class="lnt">269
+</span><span class="lnt">270
+</span><span class="lnt">271
+</span><span class="lnt">272
+</span><span class="lnt">273
+</span><span class="lnt">274
+</span><span class="lnt">275
+</span><span class="lnt">276
+</span><span class="lnt">277
+</span><span class="lnt">278
+</span><span class="lnt">279
+</span><span class="lnt">280
+</span><span class="lnt">281
+</span><span class="lnt">282
+</span><span class="lnt">283
+</span><span class="lnt">284
+</span><span class="lnt">285
+</span><span class="lnt">286
+</span><span class="lnt">287
+</span><span class="lnt">288
+</span><span class="lnt">289
+</span><span class="lnt">290
+</span><span class="lnt">291
+</span><span class="lnt">292
+</span><span class="lnt">293
+</span><span class="lnt">294
+</span><span class="lnt">295
+</span><span class="lnt">296
+</span><span class="lnt">297
+</span><span class="lnt">298
+</span><span class="lnt">299
+</span><span class="lnt">300
+</span><span class="lnt">301
+</span><span class="lnt">302
+</span><span class="lnt">303
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="c1">// FileCopyNumDlg.cpp : implementation file
+</span></span></span><span class="line"><span class="cl"><span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;stdafx.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;FileCopyNum.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;FileCopyNumDlg.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#define WM_COPYFILE_NOTIFY_NUM WM_USER+1
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define WM_COPYFILE_NOTIFY_SUM WM_USER+8
+</span></span></span><span class="line"><span class="cl"><span class="cp">#ifdef _DEBUG
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define new DEBUG_NEW
+</span></span></span><span class="line"><span class="cl"><span class="cp">#undef THIS_FILE
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="k">static</span> <span class="kt">char</span> <span class="n">THIS_FILE</span><span class="p">[]</span> <span class="o">=</span> <span class="n">__FILE__</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">/////////////////////////////////////////////////////////////////////////////
+</span></span></span><span class="line"><span class="cl"><span class="c1">// CAboutDlg dialog used for App About
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">CAboutDlg</span> <span class="o">:</span> <span class="k">public</span> <span class="n">CDialog</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CAboutDlg</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Dialog Data
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//{{AFX_DATA(CAboutDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">enum</span> <span class="p">{</span> <span class="n">IDD</span> <span class="o">=</span> <span class="n">IDD_ABOUTBOX</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//}}AFX_DATA
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// ClassWizard generated virtual function overrides
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//{{AFX_VIRTUAL(CAboutDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">protected</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">virtual</span> <span class="kt">void</span> <span class="n">DoDataExchange</span><span class="p">(</span><span class="n">CDataExchange</span><span class="o">*</span> <span class="n">pDX</span><span class="p">);</span>    <span class="c1">// DDX/DDV support
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//}}AFX_VIRTUAL
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Implementation
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">protected</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//{{AFX_MSG(CAboutDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//}}AFX_MSG
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">DECLARE_MESSAGE_MAP</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">CAboutDlg</span><span class="o">::</span><span class="n">CAboutDlg</span><span class="p">()</span> <span class="o">:</span> <span class="n">CDialog</span><span class="p">(</span><span class="n">CAboutDlg</span><span class="o">::</span><span class="n">IDD</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//{{AFX_DATA_INIT(CAboutDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//}}AFX_DATA_INIT
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CAboutDlg</span><span class="o">::</span><span class="n">DoDataExchange</span><span class="p">(</span><span class="n">CDataExchange</span><span class="o">*</span> <span class="n">pDX</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CDialog</span><span class="o">::</span><span class="n">DoDataExchange</span><span class="p">(</span><span class="n">pDX</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//{{AFX_DATA_MAP(CAboutDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//}}AFX_DATA_MAP
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">BEGIN_MESSAGE_MAP</span><span class="p">(</span><span class="n">CAboutDlg</span><span class="p">,</span> <span class="n">CDialog</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//{{AFX_MSG_MAP(CAboutDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="c1">// No message handlers
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//}}AFX_MSG_MAP
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">END_MESSAGE_MAP</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">/////////////////////////////////////////////////////////////////////////////
+</span></span></span><span class="line"><span class="cl"><span class="c1">// CFileCopyNumDlg dialog
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">CFileCopyNumDlg</span><span class="o">::</span><span class="n">CFileCopyNumDlg</span><span class="p">(</span><span class="n">CWnd</span><span class="o">*</span> <span class="n">pParent</span> <span class="cm">/*=NULL*/</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="o">:</span> <span class="n">CDialog</span><span class="p">(</span><span class="n">CFileCopyNumDlg</span><span class="o">::</span><span class="n">IDD</span><span class="p">,</span> <span class="n">pParent</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//{{AFX_DATA_INIT(CFileCopyNumDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">m_sourcePath</span> <span class="o">=</span> <span class="n">_T</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">m_desPath</span> <span class="o">=</span> <span class="n">_T</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//}}AFX_DATA_INIT
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">m_hIcon</span> <span class="o">=</span> <span class="n">AfxGetApp</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">LoadIcon</span><span class="p">(</span><span class="n">IDR_MAINFRAME</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CFileCopyNumDlg</span><span class="o">::</span><span class="n">DoDataExchange</span><span class="p">(</span><span class="n">CDataExchange</span><span class="o">*</span> <span class="n">pDX</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CDialog</span><span class="o">::</span><span class="n">DoDataExchange</span><span class="p">(</span><span class="n">pDX</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//{{AFX_DATA_MAP(CFileCopyNumDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">DDX_Control</span><span class="p">(</span><span class="n">pDX</span><span class="p">,</span> <span class="n">IDC_PROGRESS1</span><span class="p">,</span> <span class="n">m_progress</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">DDX_Text</span><span class="p">(</span><span class="n">pDX</span><span class="p">,</span> <span class="n">IDC_EDIT1</span><span class="p">,</span> <span class="n">m_sourcePath</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">DDX_Text</span><span class="p">(</span><span class="n">pDX</span><span class="p">,</span> <span class="n">IDC_EDIT2</span><span class="p">,</span> <span class="n">m_desPath</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//}}AFX_DATA_MAP
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">BEGIN_MESSAGE_MAP</span><span class="p">(</span><span class="n">CFileCopyNumDlg</span><span class="p">,</span> <span class="n">CDialog</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//{{AFX_MSG_MAP(CFileCopyNumDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">ON_WM_SYSCOMMAND</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ON_WM_PAINT</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ON_WM_QUERYDRAGICON</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ON_BN_CLICKED</span><span class="p">(</span><span class="n">IDC_BTN_CHOOSEFILE1</span><span class="p">,</span> <span class="n">OnBtnChoosefile1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ON_BN_CLICKED</span><span class="p">(</span><span class="n">IDC_BTN_CHOOSEFILE2</span><span class="p">,</span> <span class="n">OnBtnChoosefile2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ON_BN_CLICKED</span><span class="p">(</span><span class="n">IDC_BTN_PAUSE</span><span class="p">,</span> <span class="n">OnBtnPause</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ON_BN_CLICKED</span><span class="p">(</span><span class="n">IDC_BTN_RESUME</span><span class="p">,</span> <span class="n">OnBtnResume</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ON_WM_TIMER</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ON_BN_CLICKED</span><span class="p">(</span><span class="n">IDC_BTN_BEGIN</span><span class="p">,</span> <span class="n">OnBtnBegin</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">ON_MESSAGE</span><span class="p">(</span><span class="n">WM_COPYFILE_NOTIFY_NUM</span><span class="p">,</span> <span class="n">OnCopyFileNotifyNum</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ON_MESSAGE</span><span class="p">(</span><span class="n">WM_COPYFILE_NOTIFY_SUM</span><span class="p">,</span> <span class="n">OnCopyFileNotifySum</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//}}AFX_MSG_MAP
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">END_MESSAGE_MAP</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">/////////////////////////////////////////////////////////////////////////////
+</span></span></span><span class="line"><span class="cl"><span class="c1">// CFileCopyNumDlg message handlers
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">BOOL</span> <span class="n">CFileCopyNumDlg</span><span class="o">::</span><span class="n">OnInitDialog</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CDialog</span><span class="o">::</span><span class="n">OnInitDialog</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// Add &#34;About...&#34; menu item to system menu.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// IDM_ABOUTBOX must be in the system command range.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">ASSERT</span><span class="p">((</span><span class="n">IDM_ABOUTBOX</span> <span class="o">&amp;</span> <span class="mh">0xFFF0</span><span class="p">)</span> <span class="o">==</span> <span class="n">IDM_ABOUTBOX</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">ASSERT</span><span class="p">(</span><span class="n">IDM_ABOUTBOX</span> <span class="o">&lt;</span> <span class="mh">0xF000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">CMenu</span><span class="o">*</span> <span class="n">pSysMenu</span> <span class="o">=</span> <span class="n">GetSystemMenu</span><span class="p">(</span><span class="n">FALSE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">pSysMenu</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CString</span> <span class="n">strAboutMenu</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">strAboutMenu</span><span class="p">.</span><span class="n">LoadString</span><span class="p">(</span><span class="n">IDS_ABOUTBOX</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">strAboutMenu</span><span class="p">.</span><span class="n">IsEmpty</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="n">pSysMenu</span><span class="o">-&gt;</span><span class="n">AppendMenu</span><span class="p">(</span><span class="n">MF_SEPARATOR</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="n">pSysMenu</span><span class="o">-&gt;</span><span class="n">AppendMenu</span><span class="p">(</span><span class="n">MF_STRING</span><span class="p">,</span> <span class="n">IDM_ABOUTBOX</span><span class="p">,</span> <span class="n">strAboutMenu</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// Set the icon for this dialog.  The framework does this automatically
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//  when the application&#39;s main window is not a dialog
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">SetIcon</span><span class="p">(</span><span class="n">m_hIcon</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">);</span>			<span class="c1">// Set big icon
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">SetIcon</span><span class="p">(</span><span class="n">m_hIcon</span><span class="p">,</span> <span class="n">FALSE</span><span class="p">);</span>		<span class="c1">// Set small icon
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	
+</span></span><span class="line"><span class="cl">	<span class="c1">// TODO: Add extra initialization here
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">m_num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">m_sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">m_progress</span><span class="p">.</span><span class="n">SetRange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">m_progress</span><span class="p">.</span><span class="n">SetPos</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="n">TRUE</span><span class="p">;</span>  <span class="c1">// return TRUE  unless you set the focus to a control
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CFileCopyNumDlg</span><span class="o">::</span><span class="n">OnSysCommand</span><span class="p">(</span><span class="n">UINT</span> <span class="n">nID</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">((</span><span class="n">nID</span> <span class="o">&amp;</span> <span class="mh">0xFFF0</span><span class="p">)</span> <span class="o">==</span> <span class="n">IDM_ABOUTBOX</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CAboutDlg</span> <span class="n">dlgAbout</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">dlgAbout</span><span class="p">.</span><span class="n">DoModal</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CDialog</span><span class="o">::</span><span class="n">OnSysCommand</span><span class="p">(</span><span class="n">nID</span><span class="p">,</span> <span class="n">lParam</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// If you add a minimize button to your dialog, you will need the code below
+</span></span></span><span class="line"><span class="cl"><span class="c1">//  to draw the icon.  For MFC applications using the document/view model,
+</span></span></span><span class="line"><span class="cl"><span class="c1">//  this is automatically done for you by the framework.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CFileCopyNumDlg</span><span class="o">::</span><span class="n">OnPaint</span><span class="p">()</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">IsIconic</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CPaintDC</span> <span class="nf">dc</span><span class="p">(</span><span class="k">this</span><span class="p">);</span> <span class="c1">// device context for painting
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">		<span class="n">SendMessage</span><span class="p">(</span><span class="n">WM_ICONERASEBKGND</span><span class="p">,</span> <span class="p">(</span><span class="n">WPARAM</span><span class="p">)</span> <span class="n">dc</span><span class="p">.</span><span class="n">GetSafeHdc</span><span class="p">(),</span> <span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="c1">// Center icon in client rectangle
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="kt">int</span> <span class="n">cxIcon</span> <span class="o">=</span> <span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CXICON</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="kt">int</span> <span class="n">cyIcon</span> <span class="o">=</span> <span class="n">GetSystemMetrics</span><span class="p">(</span><span class="n">SM_CYICON</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CRect</span> <span class="n">rect</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="n">GetClientRect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rect</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="n">rect</span><span class="p">.</span><span class="n">Width</span><span class="p">()</span> <span class="o">-</span> <span class="n">cxIcon</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">rect</span><span class="p">.</span><span class="n">Height</span><span class="p">()</span> <span class="o">-</span> <span class="n">cyIcon</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		<span class="c1">// Draw the icon
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="n">dc</span><span class="p">.</span><span class="n">DrawIcon</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">m_hIcon</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="k">else</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">CDialog</span><span class="o">::</span><span class="n">OnPaint</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// The system calls this to obtain the cursor to display while the user drags
+</span></span></span><span class="line"><span class="cl"><span class="c1">//  the minimized window.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">HCURSOR</span> <span class="n">CFileCopyNumDlg</span><span class="o">::</span><span class="n">OnQueryDragIcon</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="p">(</span><span class="n">HCURSOR</span><span class="p">)</span> <span class="n">m_hIcon</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CFileCopyNumDlg</span><span class="o">::</span><span class="n">OnBtnChoosefile1</span><span class="p">()</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">CFileDialog</span> <span class="nf">dlg</span><span class="p">(</span><span class="n">TRUE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">(</span><span class="n">IDOK</span><span class="o">==</span><span class="n">dlg</span><span class="p">.</span><span class="n">DoModal</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">strSourceFile</span><span class="o">=</span><span class="n">dlg</span><span class="p">.</span><span class="n">GetPathName</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">SetDlgItemText</span><span class="p">(</span><span class="n">IDC_EDIT1</span><span class="p">,</span><span class="n">strSourceFile</span><span class="p">);</span>	
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CFileCopyNumDlg</span><span class="o">::</span><span class="n">OnBtnChoosefile2</span><span class="p">()</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">CFileDialog</span> <span class="nf">dlg</span><span class="p">(</span><span class="n">TRUE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">(</span><span class="n">IDOK</span><span class="o">==</span><span class="n">dlg</span><span class="p">.</span><span class="n">DoModal</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">strNewFile</span><span class="o">=</span><span class="n">dlg</span><span class="p">.</span><span class="n">GetPathName</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">SetDlgItemText</span><span class="p">(</span><span class="n">IDC_EDIT2</span><span class="p">,</span><span class="n">strSourceFile</span><span class="p">);</span>	
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CFileCopyNumDlg</span><span class="o">::</span><span class="n">OnBtnBegin</span><span class="p">()</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">UpdateData</span><span class="p">(</span><span class="n">TRUE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">hThread</span> <span class="o">=</span> <span class="n">CreateThread</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ThreadProc_Copy</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">hEvent</span> <span class="o">=</span> <span class="n">CreateEvent</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">,</span> <span class="n">TRUE</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">DWORD</span> <span class="n">WINAPI</span> <span class="n">CFileCopyNumDlg</span><span class="o">::</span><span class="n">ThreadProc_Copy</span><span class="p">(</span><span class="n">LPVOID</span> <span class="n">lpParam</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">double</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">double</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">CString</span> <span class="n">SourcePath</span> <span class="o">=</span> <span class="p">((</span><span class="n">CFileCopyNumDlg</span><span class="o">*</span><span class="p">)</span><span class="n">lpParam</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">m_sourcePath</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CString</span> <span class="n">DesPath</span> <span class="o">=</span> <span class="p">((</span><span class="n">CFileCopyNumDlg</span><span class="o">*</span><span class="p">)</span><span class="n">lpParam</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">m_desPath</span> <span class="o">+</span> <span class="sa">L</span><span class="s">&#34;</span><span class="se">\\</span><span class="s">&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">	<span class="n">CFileFind</span> <span class="n">findcount</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">BOOL</span> <span class="n">bRet</span> <span class="o">=</span> <span class="n">findcount</span><span class="p">.</span><span class="n">FindFile</span><span class="p">(((</span><span class="n">CFileCopyNumDlg</span><span class="o">*</span><span class="p">)</span><span class="n">lpParam</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">m_sourcePath</span> <span class="o">+</span> <span class="n">CString</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\\</span><span class="s">*.*&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">while</span> <span class="p">(</span><span class="n">bRet</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">bRet</span> <span class="o">=</span> <span class="n">findcount</span><span class="p">.</span><span class="n">FindNextFile</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">findcount</span><span class="p">.</span><span class="n">IsDirectory</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="k">else</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="p">((</span><span class="n">CFileCopyNumDlg</span><span class="o">*</span><span class="p">)</span><span class="n">lpParam</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">PostMessage</span><span class="p">(</span><span class="n">WM_COPYFILE_NOTIFY_SUM</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="n">findcount</span><span class="p">.</span><span class="n">Close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">CFileFind</span> <span class="n">find</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">bRet</span> <span class="o">=</span>  <span class="n">find</span><span class="p">.</span><span class="n">FindFile</span><span class="p">(((</span><span class="n">CFileCopyNumDlg</span><span class="o">*</span><span class="p">)</span><span class="n">lpParam</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">m_sourcePath</span> <span class="o">+</span> <span class="n">CString</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\\</span><span class="s">*.*&#34;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="k">while</span> <span class="p">(</span><span class="n">bRet</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">	<span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">bRet</span> <span class="o">=</span> <span class="n">find</span><span class="p">.</span><span class="n">FindNextFile</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">		<span class="k">if</span> <span class="p">(</span><span class="n">find</span><span class="p">.</span><span class="n">IsDirectory</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">		<span class="k">else</span>
+</span></span><span class="line"><span class="cl">		<span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="p">((</span><span class="n">CFileCopyNumDlg</span><span class="o">*</span><span class="p">)</span><span class="n">lpParam</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">m_sourcePath</span> <span class="o">=</span> <span class="n">find</span><span class="p">.</span><span class="n">GetFilePath</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">			<span class="p">((</span><span class="n">CFileCopyNumDlg</span><span class="o">*</span><span class="p">)</span><span class="n">lpParam</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">m_desPath</span> <span class="o">=</span> <span class="n">DesPath</span> <span class="o">+</span> <span class="n">find</span><span class="p">.</span><span class="n">GetFileName</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">			
+</span></span><span class="line"><span class="cl">			<span class="n">WaitForSingleObject</span><span class="p">(((</span><span class="n">CFileCopyNumDlg</span><span class="o">*</span><span class="p">)</span><span class="n">lpParam</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">hEvent</span><span class="p">,</span><span class="n">INFINITE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">			<span class="n">CopyFile</span><span class="p">(((</span><span class="n">CFileCopyNumDlg</span><span class="o">*</span><span class="p">)</span><span class="n">lpParam</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">m_sourcePath</span><span class="p">,</span> <span class="p">((</span><span class="n">CFileCopyNumDlg</span><span class="o">*</span><span class="p">)</span><span class="n">lpParam</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">m_desPath</span><span class="p">,</span> <span class="n">FALSE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			<span class="p">((</span><span class="n">CFileCopyNumDlg</span><span class="o">*</span><span class="p">)</span><span class="n">lpParam</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">PostMessage</span><span class="p">(</span><span class="n">WM_COPYFILE_NOTIFY_NUM</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">			
+</span></span><span class="line"><span class="cl">		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">    <span class="n">AfxMessageBox</span><span class="p">(</span><span class="s">&#34;复制成功!&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span> <span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CFileCopyNumDlg</span><span class="o">::</span><span class="n">OnBtnPause</span><span class="p">()</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">     <span class="n">ResetEvent</span><span class="p">(</span><span class="n">hEvent</span><span class="p">);</span>	
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CFileCopyNumDlg</span><span class="o">::</span><span class="n">OnBtnResume</span><span class="p">()</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">     <span class="n">SetEvent</span><span class="p">(</span><span class="n">hEvent</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CFileCopyNumDlg</span><span class="o">::</span><span class="n">OnTimer</span><span class="p">(</span><span class="n">UINT</span> <span class="n">nIDEvent</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// TODO: Add your message handler code here and/or call default
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	
+</span></span><span class="line"><span class="cl">	<span class="n">CDialog</span><span class="o">::</span><span class="n">OnTimer</span><span class="p">(</span><span class="n">nIDEvent</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">afx_msg</span> <span class="n">LRESULT</span> <span class="n">CFileCopyNumDlg</span><span class="o">::</span><span class="n">OnCopyFileNotifyNum</span><span class="p">(</span><span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">m_num</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">m_progress</span><span class="p">.</span><span class="n">SetPos</span><span class="p">(</span><span class="kt">int</span><span class="p">(</span><span class="n">m_num</span> <span class="o">/</span> <span class="n">m_sum</span> <span class="o">*</span> <span class="mi">100</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">afx_msg</span> <span class="n">LRESULT</span> <span class="n">CFileCopyNumDlg</span><span class="o">::</span><span class="n">OnCopyFileNotifySum</span><span class="p">(</span><span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">m_sum</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>.h文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="c1">// FileCopyNumDlg.h : header file
+</span></span></span><span class="line"><span class="cl"><span class="c1">//
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#if !defined(AFX_FILECOPYNUMDLG_H__02EF2204_005C_4A21_A048_ED73C9CD1F34__INCLUDED_)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define AFX_FILECOPYNUMDLG_H__02EF2204_005C_4A21_A048_ED73C9CD1F34__INCLUDED_
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#if _MSC_VER &gt; 1000
+</span></span></span><span class="line"><span class="cl"><span class="cp">#pragma once
+</span></span></span><span class="line"><span class="cl"><span class="cp">#endif </span><span class="c1">// _MSC_VER &gt; 1000
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">/////////////////////////////////////////////////////////////////////////////
+</span></span></span><span class="line"><span class="cl"><span class="c1">// CFileCopyNumDlg dialog
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">CFileCopyNumDlg</span> <span class="o">:</span> <span class="k">public</span> <span class="n">CDialog</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Construction
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CFileCopyNumDlg</span><span class="p">(</span><span class="n">CWnd</span><span class="o">*</span> <span class="n">pParent</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">);</span>	<span class="c1">// standard constructor
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Dialog Data
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//{{AFX_DATA(CFileCopyNumDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">enum</span> <span class="p">{</span> <span class="n">IDD</span> <span class="o">=</span> <span class="n">IDD_FILECOPYNUM_DIALOG</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CProgressCtrl</span>	<span class="n">m_progress</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CString</span>	<span class="n">m_sourcePath</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CString</span>	<span class="n">m_desPath</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//}}AFX_DATA
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// ClassWizard generated virtual function overrides
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//{{AFX_VIRTUAL(CFileCopyNumDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">protected</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="k">virtual</span> <span class="kt">void</span> <span class="n">DoDataExchange</span><span class="p">(</span><span class="n">CDataExchange</span><span class="o">*</span> <span class="n">pDX</span><span class="p">);</span>	<span class="c1">// DDX/DDV support
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//}}AFX_VIRTUAL
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Implementation
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">protected</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	<span class="n">HICON</span> <span class="n">m_hIcon</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="c1">// Generated message map functions
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="c1">//{{AFX_MSG(CFileCopyNumDlg)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="k">virtual</span> <span class="n">BOOL</span> <span class="nf">OnInitDialog</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="n">afx_msg</span> <span class="kt">void</span> <span class="nf">OnSysCommand</span><span class="p">(</span><span class="n">UINT</span> <span class="n">nID</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">afx_msg</span> <span class="kt">void</span> <span class="nf">OnPaint</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="n">afx_msg</span> <span class="n">HCURSOR</span> <span class="nf">OnQueryDragIcon</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="n">afx_msg</span> <span class="kt">void</span> <span class="nf">OnBtnChoosefile1</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="n">afx_msg</span> <span class="kt">void</span> <span class="nf">OnBtnChoosefile2</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="n">afx_msg</span> <span class="kt">void</span> <span class="nf">OnBtnPause</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="n">afx_msg</span> <span class="kt">void</span> <span class="nf">OnBtnResume</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">	<span class="n">afx_msg</span> <span class="kt">void</span> <span class="nf">OnTimer</span><span class="p">(</span><span class="n">UINT</span> <span class="n">nIDEvent</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">afx_msg</span> <span class="kt">void</span> <span class="nf">OnBtnBegin</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="n">afx_msg</span> <span class="n">LRESULT</span> <span class="nf">OnCopyFileNotifyNum</span><span class="p">(</span><span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="n">afx_msg</span> <span class="n">LRESULT</span> <span class="nf">OnCopyFileNotifySum</span><span class="p">(</span><span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">//}}AFX_MSG
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">DECLARE_MESSAGE_MAP</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">   <span class="c1">// LPCTSTR lpExistingPathName;			//源文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="c1">//LPCTSTR lpNewPathName;	            //目标文件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">HANDLE</span> <span class="n">hThread</span><span class="p">;</span>                     <span class="c1">//线程句柄
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="n">HANDLE</span> <span class="n">hEvent</span><span class="p">;</span>                      <span class="c1">//复制暂停事件
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="n">CString</span> <span class="n">strSourceFile</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="n">CString</span> <span class="n">strNewFile</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">	<span class="kt">double</span> <span class="n">m_num</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">double</span> <span class="n">m_sum</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="k">static</span> <span class="n">DWORD</span> <span class="n">WINAPI</span> <span class="nf">ThreadProc_Copy</span><span class="p">(</span><span class="n">LPVOID</span> <span class="n">lpParam</span><span class="p">);</span><span class="c1">//线程函数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//{{AFX_INSERT_LOCATION}}
+</span></span></span><span class="line"><span class="cl"><span class="c1">// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#endif </span><span class="c1">// !defined(AFX_FILECOPYNUMDLG_H__02EF2204_005C_4A21_A048_ED73C9CD1F34__INCLUDED_)
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="http://img.blog.csdn.net/20170710233959983?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaHVib2ppbmc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"
+	
+	
+	
+	loading="lazy"
+	
+		alt="这里写图片描述"
+	
+	
+></p>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/mfc/">MFC</a>
+        
+            <a href="/tags/cpp/">CPP</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/gtexwcbw/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">JingPic——github图床外链小工具</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/75qsjbvh/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">古风自动造句器</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/9a9iuxhr/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MFC网页分析程序</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/5gg34isc/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Socket点对点聊天&#43;文件传输</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/nmcsqtsh/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MFC绘制时钟</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":"评论一句，好运+1！"},"requiredMeta":["name"],"serverURL":"https://zippy-halva-8e20f0.netlify.app/.netlify/functions/comment"});
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2015 - 
+        
+        2025 靖待
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

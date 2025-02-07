@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="\r大模型系列之指令微调笔记。\n">
+<title>【大模型系列】指令微调</title>
+
+<link rel='canonical' href='https://hubojing.github.io/na527pxe/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="【大模型系列】指令微调">
+<meta property='og:description' content="\r大模型系列之指令微调笔记。\n">
+<meta property='og:url' content='https://hubojing.github.io/na527pxe/'>
+<meta property='og:site_name' content='靖待'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='大模型' /><meta property='article:tag' content='指令微调' /><meta property='article:published_time' content='2024-04-24T00:15:21&#43;00:00'/><meta property='article:modified_time' content='2024-04-24T00:15:21&#43;00:00'/>
+<meta name="twitter:title" content="【大模型系列】指令微调">
+<meta name="twitter:description" content="\r大模型系列之指令微调笔记。\n">
+    <link rel="shortcut icon" href="/avatar.jpg" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_999351c94d8e06aa.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">靖待</a></h1>
+            <h2 class="site-description">创造是人生乐趣</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://blog.csdn.net/hubojing/'
+                        target="_blank"
+                        title="csdn"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:hubojing@outlook.com'
+                        target="_blank"
+                        title="mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://music.163.com/#/user/home?id=92203594'
+                        target="_blank"
+                        title="netease"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='/atom.xml'
+                        target="_blank"
+                        title="rss"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                <span>存档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friends/' >
+                
+                
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#self-instruct">Self-Instruct</a></li>
+    <li><a href="#evol-instruct">Evol-Instruct</a></li>
+    <li><a href="#指令数据构建的提升方法">指令数据构建的提升方法</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#优化设置">优化设置</a></li>
+    <li><a href="#数据组织策略">数据组织策略</a></li>
+    <li><a href="#参数高效的模型微调">参数高效的模型微调</a>
+      <ol>
+        <li><a href="#lora">LoRA</a></li>
+        <li><a href="#lora变种">LoRA变种</a></li>
+        <li><a href="#其它高效微调方法">其它高效微调方法</a>
+          <ol>
+            <li><a href="#适配器微调">适配器微调</a></li>
+          </ol>
+        </li>
+        <li><a href="#前缀微调">前缀微调</a></li>
+        <li><a href="#提示微调">提示微调</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" >
+                大模型
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/na527pxe/">【大模型系列】指令微调</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Apr 24, 2024</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 11 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <div align="left">
+<img src="\images\大模型.jpg" width="300" height="180" style="float:right;"/>
+<p>　　<strong>大模型系列之指令微调笔记。</strong></p>
+ </div>
+<h1 id="概述">概述
+</h1><p>　　指令微调（Instruction Tuning）是指使用自然语言形式的数据对预训练后的大语言模型进行参数微调，22年谷歌ICLR论文中提出这个概念。在其它文献中，指令微调也被称为有监督微调（Supervised Fine-tuning）或多任务提示训练（Multitask Prompted Training）。指令微调过程需要首先收集或构建指令化的实例，然后通过有监督的方式对大语言模型的参数进行微调。经过指令微调后，大语言模型能够展现出较强的指令遵循能力，可以通过零样本学习的方式解决多种下游任务。经过 NLP 指令数据微调后，大语言模型可以学习到指令遵循（Instruction Following）的能力，进而能够解决其他未见过的 NLP 任务。</p>
+<h1 id="指令数据构建">指令数据构建
+</h1><ul>
+<li>基于现有NLP任务数据集构建</li>
+<li>基于日常对话数据构建</li>
+<li>基于合成数据构建
+　　以下是几种合成数据构建的方法。</li>
+</ul>
+<h2 id="self-instruct">Self-Instruct
+</h2><p>　　代表性工作Self-Instruct：借助大语言模型（例如 ChatGPT）所具备的数据合成能力，通过迭代的方法高效地生成大量的指令微调数据。作为初始任务池，该方法首先构建了 175 条高质量且多样的指令数据，之后经由两个主要步骤生成指令微调数据。
+　　（1）指令数据生成：从任务池中随机选取少量指令数据作为示例，并针对 ChatGPT 设计精细指令来提示模型生成新的微调数据。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">你被要求提供 10 个多样化的任务指令。这些任务指令将被提供给 GPT 模型。
+</span></span><span class="line"><span class="cl">以下是你提供指令需要满足的要求：
+</span></span><span class="line"><span class="cl">1. 尽量不要在每个指令中重复动词，要最大化指令的多样性。
+</span></span><span class="line"><span class="cl">2. 使用指令的语气也应该多样化。例如，将问题与祈使句结合起来。
+</span></span><span class="line"><span class="cl">……（省略后续要求）
+</span></span><span class="line"><span class="cl">下面是 10 个任务指令的列表：
+</span></span><span class="line"><span class="cl">### 指令：将 85 华氏度转换为摄氏度。
+</span></span><span class="line"><span class="cl">### 输出：85 华氏度等于 29.44 摄氏度。
+</span></span><span class="line"><span class="cl">### 指令：是否有科学无法解释的事情？
+</span></span><span class="line"><span class="cl">### 输出：有很多科学无法解释的事情，比如生命的起源、意识的存在……
+</span></span><span class="line"><span class="cl">……（省略上下文示例）
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>　　（2）过滤与后处理：剔除低质量或者重复的生成实例，从而保证指令数据的多样性与有效性。常见的过滤方法包括：去除与任务池中指令相似度过高的指令、语言模型难以生成回复的指令、过长或过短的指令以及输入或输出存在重复的实例。</p>
+<h2 id="evol-instruct">Evol-Instruct
+</h2><p>　　Self-Instruct 生成的实例可能过于简单或缺乏多样性，提出一种改进的指令数据合成方法 Evol-Instruct。该方法通过基于深度和广度的演化来提高实例的复杂性和多样性。
+　　（1）指令演化：分为深度演化和广度演化。深度演化通过五种特定类型的提示（添加约束、深化、具体化、增加推理步骤以及使输入复杂化）使得指令变得更加复杂与困难；而广度演化旨在扩充指令主题范围、指令涉及的能力范围以及整体数据集的多样性。
+　　深度演化（添加约束）指令：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">我希望您充当指令重写器。
+</span></span><span class="line"><span class="cl">您的目标是将给定的提示重写为更复杂的版本，使得著名的 AI 系统（例如 ChatGPT 和 GPT-4）更难处理。
+</span></span><span class="line"><span class="cl">但重写的提示必须是合理的，且必须是人类能够理解和响应的。
+</span></span><span class="line"><span class="cl">您的重写不能省略 # 给定提示 # 中表格和代码等非文本部分。
+</span></span><span class="line"><span class="cl">您应该使用以下方法使给定的提示复杂化：
+</span></span><span class="line"><span class="cl">请在 # 给定提示 # 中添加一项约束或要求。
+</span></span><span class="line"><span class="cl">你应该尽量不要让 # 重写提示 # 变得冗长，# 重写提示 # 只能在 # 给定提示 # 中
+</span></span><span class="line"><span class="cl">添加 10 到 20 个单词。
+</span></span><span class="line"><span class="cl"># 重写提示 # 中不允许出现“# 给定提示 #”、“# 重写提示 #”字段。
+</span></span><span class="line"><span class="cl"># 给定提示 #: {需要重写的指令}
+</span></span><span class="line"><span class="cl"># 重写提示 #
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>　　广度演化指令：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">我希望你充当指令创造器。
+</span></span><span class="line"><span class="cl">您的目标是从 # 给定提示 # 中汲取灵感来创建全新的提示。
+</span></span><span class="line"><span class="cl">此新提示应与 # 给定提示 # 属于同一领域，但更为少见。
+</span></span><span class="line"><span class="cl"># 创造提示 # 的长度和复杂性应与 # 给定提示 # 类似。
+</span></span><span class="line"><span class="cl"># 创造提示 # 必须合理，并且必须能够被人类理解和响应。
+</span></span><span class="line"><span class="cl"># 创造提示 # 中不允许出现“# 给定提示 #”、“# 创造提示 #”字段。
+</span></span><span class="line"><span class="cl"># 给定提示 #: {需要重写的指令}
+</span></span><span class="line"><span class="cl"># 创造提示 #:
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>　　（2）数据后处理：主要使用了如下的规则进行处理：使用 ChatGPT 比较演化前后的指令，移除 ChatGPT 认为差异很小的指令；移除大模型难以响应的指令，如响应中包含“sorry”或响应长度过短；移除仅包含标点符号和连词的指令或回复。</p>
+<p>　　其它方法：
+　　Self-Align设计了多种基于人类对齐原则的合成数据过滤技术，该方法通过上下文提示让 ChatGPT 能够筛选出高质量的实例数据来训练新的模型，并进一步让新训练的模型产生更多与人类对齐的指令微调数据。
+　　指令回译技术：直接使用现有的文本（例如维基网页数据）作为输出，然后利用上下文学习来逆向合成相应的输入指令。由于输出内容都是人工撰写的，该方法能够让模型学习生成准确且流畅的文本。</p>
+<h2 id="指令数据构建的提升方法">指令数据构建的提升方法
+</h2><ul>
+<li>指令格式设计
+　　训练过程中同时使用了带示例的指令数据（即少样本）和不带示例的指令数据（即零样本）、在指令微调数据集中引入思维链数据、在指令微调时同时引入了包含 CoT 和不包含 CoT 的实例，使用混合指令数据
+指令数据并不是包含信息越多越好，添加某些看似有用的信息（例如需要避免的事项、原因或建议）到指令中，可能不会带来明显的效果提升，甚至可能产生不利影响</li>
+<li>扩展指令数量
+　　对于NLP任务，FLAN-T5通过逐步将指令数量扩展至 0.18M、5.55M、7.2M 以及17.26M，模型性能呈持续上升的趋势。然而，当指令数量达到 7.2M后，模型性能的提升变得非常缓慢。FLAN-T5 中采用的指令可能仅对传统 NLP 任务适用，而对于日常对话这一至关重要的能力并未带来明显的提升。
+　　对于一个较好的预训练基座模型，越来越多的研究工作表明一定数
+量的高质量指令就可以激活大语言模型的对话能力。Alpaca [42] 使用了 52K 条合成数据来指令微调 LLaMA (7B)，在 179 条日常对话数据的评测中到达了接近text-davinci-003 的效果。进一步，LIMA [203] 仅使用了一千条人工标注的高质量指令数据来微调 LLaMA (65B)，就在 300 条日常对话测试中取得了较好的模型表现。
+但是，仅依靠少量指令数据难以兼顾 NLP 任务和对话场景任务。</li>
+<li>指令重写与筛选
+　　YuLan-Chat-3提出了“主题多样性”增强方法，预先从知乎收集了 293 种常见主题标签（例如，“教育”，“体育”），然后随机选择一种并使用 ChatGPT 对指令进行重写来适配到相应的主题（例如使用提示：“请帮我把以下指令重写为教育主题”），最后进行质量筛选来获取高质量的多样性指令数据。它提出了“平衡指令难度”策略，其用大模型的困
+惑度分数来估算指令数据的难度水平，删除过于简单或过于困难的指令数据，从而缓解大模型训练不稳定或者过拟合的现象。</li>
+</ul>
+<h1 id="指令微调的训练策略">指令微调的训练策略
+</h1><p>　　在训练方式上，指令微调与预训练较为相似，很多设置包括数据组织形式都可以预训练阶段所采用的技术。指令微调中的优化器设置（AdamW 或 Adafactor）、稳定训练技巧（权重衰减
+和梯度裁剪）和训练技术（3D 并行、ZeRO 和混合精度训练）都与预训练保持阶段一致，可以完全沿用。以下是指令微调与预训练的不同之处。</p>
+<h2 id="优化设置">优化设置
+</h2><ul>
+<li>目标函数。预训练阶段通常采用语言建模损失（详见第 6.1.1 节），优化模型在每一个词元上的损失。而指令微调可以被视为一个有监督的训练过程，通常采用的目标函数为序列到序列损失，仅在输出部分计算损失，而不计算输入部分的损失。</li>
+<li>批次大小和学习率。指令微调阶段通常只需要使用较小的批次大小和学习率对模型进行小幅度的调整。</li>
+<li>　　多轮对话数据的高效训练。对于一个多轮对话数据，通常的训练算法是将其拆分成多个不同的对话数据进行单独训练。为了提升训练效率，可以采用特殊的掩码机制来实现多轮对话数据的高效训练。在因果解码器架构中，由于输入输出没有明显的分界，可以将所有一个对话的多轮内容一次性输入模型，通过设计损失掩码来实现仅针对每轮对话的模型输出部分进行损失计算，从而显著减少重复前缀计算的开销。多轮对话涉及多次用户输入和模型的输出，但是训练中仅需要在模型的输出上计算损失。</li>
+</ul>
+<h2 id="数据组织策略">数据组织策略
+</h2><ul>
+<li>平衡数据分布
+　　混合使用现有的多个指令数据集，以此来实现模型能力的综合改进。最常用方法：样本比例混合策略，即把所有数据集进行合并，然后从混合数据集中等概率采样每个实例。研究者建议混合使用 NLP 任务数据（如 FLAN v2）、对话数据（如ShareGPT）和合成数据（如 GPT4-Alpaca），来进行大模型的指令微调。</li>
+<li>多阶段指令数据微调
+YuLan-Chat-3 采用了“多阶段指令微调”策略：首先使用大规模 NLP 任务指令数据对模型进行微调，然后再使用相对多样的日常对话指令和合成指令进一步微调。为了避免能力遗忘问题，可以在第二阶段中添加一些 NLP 指令数据。这种多阶段的微调策略也可以应用于其他训练设置。例如，对于不同的微调阶段，训练中可以逐渐增加指令的难度和复杂性，从而逐渐提高大模型遵循复杂指令的能力。</li>
+<li>结合预训练数据与指令微调数据
+为了使得微调过程更加有效和稳定，可以在指令微调期间引入了预训练数据和任务，这可以看作是对于指令微调的正则化。OPT-IML在指令微调阶段引入了 5% 的预训练数据，在分类和生成任务上都能取得增益；然而，进一步增加预训练数据会对生成任务有利，但有可能损失分类任务的表现。
+另一方面，将指令数据引入到预训练阶段也成为了一种常见的训练技术。通过提前使用指令微调数据，有可能会帮助模型在预训练阶段更好地感知下游任务，从而更为针对性地从预训练数据中学习知识与能力。如，GLM-130B的预训练过程由 95% 的传统自监督预训练和 5% 的指令微调任务混合组成。MiniCPM提出在预训练阶段和指令微调阶段之间添加一个“退火阶段”，该阶段混合使用高质量的预训练数据和指令微调数据，其实验结果表明该策略优于先预训练再指令微调的两阶段策略。</li>
+</ul>
+<h2 id="参数高效的模型微调">参数高效的模型微调
+</h2><p>　　参数高效微调（Parameter-efficient Fine-tuning），也称为轻量化微调（Lightweight Fine-tuning）。</p>
+<h3 id="lora">LoRA
+</h3><p>低秩适配（Low-Rank Adaptation, LoRA）
+模型在针对特定任务进行适配时，参数矩阵往往是过参数化（Over-parametrized）的，其存在一个较低的内在秩。
+假设 LoRA 需要训练的参数量为$P_{LoRA}$，模型原始参数为P。$P_{LoRA}$ ≪ P，LoRA 微调需要的显存大小从全量微调的16P大幅减少为$2P+16P_{LoRA}$。</p>
+<h3 id="lora变种">LoRA变种
+</h3><p>在原始的 LoRA 实现中，每个低秩矩阵的低秩参数 𝑅 都被设置为固定且相同的数值，并且在训练过程中无法进行调整，这种设定忽略了不同的秩在微调任务中可能产生的差异化影响。因此，通过这种方式训练得到的低秩矩阵往往并非最优解。</p>
+<ul>
+<li>AdaLoRA。它讨论了如何更好地进行秩的设置。它引入了一种动态低秩适应技术，在训练过程中动态调整每个参数矩阵需要训练的秩同时控制训练的参数总量。具体来说，模型在微调过程中通过损失来衡量每个参数矩阵对训练结果的重要性，重要性较高的参数矩阵被赋予比较高的秩，进而能够更好地学习到有助于任务的信息。相对而言，不太重要的参数矩阵被赋予比较低的秩，来防止过拟合并节省计算资源。尽管 LoRA 能够有效地节省显存，但对于参数规模达到上百亿级别的模型而言，其微调所需的成本仍然相当高昂。</li>
+<li>QLoRA。它将原始的参数矩阵量化为 4 比特，而低秩参数部分仍使用 16 比特进行训练，在保持微调效果的同时进一步节省了显存开销。根据上一小节的分析，对于给定参数量为 𝑃 的模型，QLoRA 微调所需要的显存由 LoRA 微调所需要的2𝑃 进一步下降为 0.5𝑃。</li>
+</ul>
+<h3 id="其它高效微调方法">其它高效微调方法
+</h3><p>适配器微调、前缀微调、提示微调。这三种方法在预训练语言模型中被广泛使用，但是在大语言模型中的应用相对较少。</p>
+<h4 id="适配器微调">适配器微调
+</h4><p>适配器微调（Adapter Tuning）在 Transformer 模型中引入了小型神经网络模块（称为适配器）。为了实现适配器模块，研究者提出使用瓶颈网络架构：它首先将原始的特征向量压缩到较低维度，然后使用激活函数进行非线性变换，最后再将其恢复到原始维度。通常来说，适配器模块将会被集成到Transformer 架构的每一层中，使用串行的方式分别插入在多头注意力层和前馈网络层之后、层归一化之前。在微调过程中，适配器模块将根据特定的任务目标进行优化，而原始的语言模型参数在这个过程中保持不变。通过这种方式，可以在微调过程中有效减少需要训练参数的数量。
+<img src="https://img-blog.csdnimg.cn/direct/7bc64be5e98c4908818be832041c1bd2.png#pic_center"
+	
+	
+	
+	loading="lazy"
+	
+		alt="适配器微调"
+	
+	
+></p>
+<h3 id="前缀微调">前缀微调
+</h3><p>前缀微调（Prefix Tuning）在语言模型的每个多头注意力层中都添加了一组前缀参数。这些前缀参数组成了一个可训练的连续矩阵，可以视为若干虚拟词元的嵌入向量，它们会根据特定任务进行学习。在前缀微调过程中，整个模型中只有前缀参数会被训练，因此可以实现参数高效的模型优化。
+<img src="https://img-blog.csdnimg.cn/direct/3fa7cafb4f2641ae8843580df3ba4ecf.png#pic_center"
+	
+	
+	
+	loading="lazy"
+	
+		alt="前缀微调"
+	
+	
+></p>
+<h3 id="提示微调">提示微调
+</h3><p>提示微调仅在输入嵌入层中加入可训练的提示向量。在离散提示方法的基础上（可查阅系列文章<a class="link" href="https://blog.csdn.net/hubojing/article/details/138040305"  target="_blank" rel="noopener"
+    >提示学习</a>），提示微调首先在输入文本端插入一组连续嵌入数值的提示词元，这些提示词元可以以自由形式或前缀形式来增强输入文本，用于解决特定的下游任务。在具体实现中，只需要将可学习的特定任务提示向量与输入文本向量结合起来一起输入到语言模型中。
+<img src="https://img-blog.csdnimg.cn/direct/08584e7b84004a18a9e768059cdf238c.png#pic_center"
+	
+	
+	
+	loading="lazy"
+	
+		alt="提示微调"
+	
+	
+>
+P-tuning提出了使用自由形式来组合输入文本和提示向量，通过双向 LSTM来学习软提示词元的表示，它可以同时适用于自然语言理解和生成任务。
+Prompt Tuning以前缀形式添加提示，直接在输入前拼接连续型向量。
+在提示微调的训练过程中，只有提示的嵌入向量会根据特定任务进行监督学习，然而由于只在输入层中包含了极少量的可训练参数，有研究工作表明该方法的性能高度依赖底层语言模型的能力。</p>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">大模型</a>
+        
+            <a href="/tags/%E6%8C%87%E4%BB%A4%E5%BE%AE%E8%B0%83/">指令微调</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/s3h6op3z/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【大模型系列】提示学习</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":"评论一句，好运+1！"},"requiredMeta":["name"],"serverURL":"https://zippy-halva-8e20f0.netlify.app/.netlify/functions/comment"});
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2015 - 
+        
+        2025 靖待
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="\r23种设计模式总结\n">
+<title>设计模式笔记</title>
+
+<link rel='canonical' href='https://hubojing.github.io/tbre6qau/'>
+
+<link rel="stylesheet" href="/scss/style.min.b9c8156d464c343bdacaf14a871581fb94cbbdb9dd5cbce4ba017361187cc930.css"><meta property='og:title' content="设计模式笔记">
+<meta property='og:description' content="\r23种设计模式总结\n">
+<meta property='og:url' content='https://hubojing.github.io/tbre6qau/'>
+<meta property='og:site_name' content='靖待'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='设计模式' /><meta property='article:tag' content='软件架构' /><meta property='article:published_time' content='2021-11-02T09:18:50&#43;00:00'/><meta property='article:modified_time' content='2021-11-02T09:18:50&#43;00:00'/>
+<meta name="twitter:title" content="设计模式笔记">
+<meta name="twitter:description" content="\r23种设计模式总结\n">
+    <link rel="shortcut icon" href="/avatar.jpg" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_999351c94d8e06aa.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">靖待</a></h1>
+            <h2 class="site-description">创造是人生乐趣</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://blog.csdn.net/hubojing/'
+                        target="_blank"
+                        title="csdn"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://github.com/CaiJimmy/hugo-theme-stack'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:hubojing@outlook.com'
+                        target="_blank"
+                        title="mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://music.163.com/#/user/home?id=92203594'
+                        target="_blank"
+                        title="netease"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='/atom.xml'
+                        target="_blank"
+                        title="rss"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                <span>存档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friends/' >
+                
+                
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#抽象工厂模式-abstract-factory">抽象工厂模式 Abstract Factory</a></li>
+    <li><a href="#构建器模式-builder">构建器模式 Builder</a></li>
+    <li><a href="#工厂方法模式-factory-method">工厂方法模式 Factory Method</a></li>
+    <li><a href="#原型模式-prototype">原型模式 Prototype</a></li>
+    <li><a href="#单例模式-singleton">单例模式 Singleton</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#适配器模式-adapter">适配器模式 Adapter</a></li>
+    <li><a href="#桥接模式-bridge">桥接模式 Bridge</a></li>
+    <li><a href="#组合模式-composite">组合模式 Composite</a></li>
+    <li><a href="#装饰模式-decorator">装饰模式 Decorator</a></li>
+    <li><a href="#外观模式-facade">外观模式 Facade</a></li>
+    <li><a href="#享元模式-flyweight">享元模式 Flyweight</a></li>
+    <li><a href="#代理模式-proxy">代理模式 Proxy</a></li>
+  </ol>
+
+  <ol>
+    <li><a href="#责任链模式-chain-of-responsibility">责任链模式 Chain of Responsibility</a></li>
+    <li><a href="#命令模式-command">命令模式 Command</a></li>
+    <li><a href="#解释器模式-interpreter">解释器模式 Interpreter</a></li>
+    <li><a href="#迭代器模式-iterator">迭代器模式 Iterator</a></li>
+    <li><a href="#备忘录模式-memento">备忘录模式 Memento</a></li>
+    <li><a href="#观察者模式-observer">观察者模式 Observer</a></li>
+    <li><a href="#状态模式-state">状态模式 State</a></li>
+    <li><a href="#策略模式-strategy">策略模式 Strategy</a></li>
+    <li><a href="#模板方法模式-template-method">模板方法模式 Template Method</a></li>
+    <li><a href="#访问者模式-visitor">访问者模式 Visitor</a></li>
+    <li><a href="#中介者模式-mediater">中介者模式 Mediater</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91/" >
+                软件开发
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/tbre6qau/">设计模式笔记</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Nov 02, 2021</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 10 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <div align="left">
+<img src="\images\假装有图片.jpg" width="300" height="180" style="float:right;"/>
+<p>　　<strong>23种设计模式总结</strong></p>
+ </div>
+<p>刚好最近在看一本技术书，随手记录。</p>
+<h1 id="总览">总览
+</h1><p>设计模式可分为创建型模式、结构型模式和行为型模式。</p>
+<p>创建型模式：抽象工厂模式（Abstract Factory），构建器模式（Builder)，工厂方法模式（Factory Method），原型模式（Prototype），单例模式（Singleton）</p>
+<p>结构型模式：适配器模式（Adapter），桥接模式（Bridge），组合模式（Composite），装饰模式（Decorator），外观模式（Facade），享元模式（Flyweight），代理模式（Proxy）。</p>
+<p>行为型模式：责任链模式（Chain of Responsibility），命令模式（Command），迭代器模式（Iterator），解释器模式（Interpreter），中介者模式（Mediator），备忘录模式（Memento），观察者模式（Observer），状态模式（State），策略模式（Strategy），模板方法模式（Template Method），访问者模式（Visitor）</p>
+<h1 id="设计模式的六大原则">设计模式的六大原则
+</h1><ul>
+<li>单一职责原则</li>
+<li>里氏代换原则</li>
+<li>依赖倒置原则</li>
+<li>接口隔离原则</li>
+<li>迪米特原则</li>
+<li>开闭原则</li>
+</ul>
+<h1 id="创建型模式">创建型模式
+</h1><p>创建型模式：对对象实例化过程的抽象，通过采用抽象类所定义的接口，封装了系统中对象如何创建、组合等信息。</p>
+<h2 id="抽象工厂模式-abstract-factory">抽象工厂模式 Abstract Factory
+</h2><p>提供创建一组或者一系列相关的或相互依赖对象的接口。
+优点：</p>
+<ul>
+<li>分离了具体类</li>
+<li>更容易在产品系列中进行转换</li>
+<li>提高了产品间一致性
+缺点：</li>
+<li>难以支持新的产品等级结构，支持新的产品等级结构就要扩展抽象工厂接口
+适用场景：</li>
+<li>系统独立于产品的创建、组成以及表示</li>
+<li>系统配置成具有多个产品的系列</li>
+<li>当要强调一系列相关的产品对象的设计以便于进行联合使用时</li>
+<li>当提供一个产品类库，而只想显示它们的接口而不是实现时
+应用举例：
+在很多软件系统中需要更换界面主题，要求界面中的按钮、文本框、背景色等一起发生改变时，可以使用抽象工厂模式进行设计。</li>
+</ul>
+<h2 id="构建器模式-builder">构建器模式 Builder
+</h2><p>将复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。
+优点：</p>
+<ul>
+<li>产品的内部表象可以独立地变化</li>
+<li>将构造代码与表示代码相分离，可以使客户端不必知道产品内部组成的细节
+缺点：</li>
+<li>构建器模式所创建的产品一般具有较多的共同点，其组成部分相似，如果产品之间的差异性很大，则不适合使用构造器模式</li>
+<li>如果产品的内部变化复杂，可能会导致需要定义很多具体建造者类来实现这种变化，导致系统变得很庞大
+适用场景：</li>
+<li>创建复杂对象的算法独立于组成对象的部分以及这些部分的集合方式</li>
+<li>构造过程必须允许已构造对象有不同表示
+应用举例：
+在很多游戏软件中，地图包括天空、地面、背景等组成部分，人物角色包括人体、服装、装备等组成部分，可以使用建造者模式对其进行设计，通过不同的具体建造者创建不同类型的地图或人物。</li>
+</ul>
+<h2 id="工厂方法模式-factory-method">工厂方法模式 Factory Method
+</h2><p>定义一个用于创建对象（产品）的接口，由子类决定实例化哪个类的对象（产品）。
+优点：</p>
+<ul>
+<li>没有了将应用程序类绑定到代码中的要求，代码只处理接口，因此可以使用任何实现了接口的类</li>
+<li>允许子类提供对象的扩展版本</li>
+<li>
+<ul>
+<li>符合迪米特法则、依赖倒置原则、里式替换原则
+缺点：</li>
+</ul>
+</li>
+<li>需要Creator和相应的子类作为工厂方法的载体，如果应用模式确实需要creator和子类存在，则很好；否则，需要增加一个类层次。
+适用场景：</li>
+<li>当一个类不知道它所创建的产品的具体是哪个子类时</li>
+<li>当创建的对象的过程希望延缓到子类中进行时</li>
+<li>类希望子类指定它要创建的对象
+应用举例：
+Windows的COM组件与MFC。</li>
+</ul>
+<h2 id="原型模式-prototype">原型模式 Prototype
+</h2><p>指定创建对象的种类，并且通过拷贝这些原型创建新的对象。以一个已有的对象作为原型，通过它来创建新的对象。
+优点：</p>
+<ul>
+<li>可以在运行时添加或删除产品</li>
+<li>原型模式提供简化的创建结构</li>
+<li>具有给一个应用软件加载新功能的能力</li>
+<li>产品类不需要非得有任何事先确定的等级结构
+缺点：</li>
+<li>每一个类必须配备一个克隆方法
+适用场景：</li>
+<li>在运行时，指定需要例化的类，例如动态载入</li>
+<li>避免构建与产品的类层次结构相似的工厂类层次结构</li>
+<li>当类的实例是仅有的一些不同状态组合</li>
+</ul>
+<h2 id="单例模式-singleton">单例模式 Singleton
+</h2><p>一个类只有一个实例。
+优点：</p>
+<ul>
+<li>对单个实例的受控制访问</li>
+<li>名称空间减少</li>
+<li>允许改进操作和表示</li>
+<li>允许可变数目的实例</li>
+<li>比类操作更灵活
+缺点：</li>
+<li>单例类的扩展有很大的困难，且职责过重，在一定程度上违背了“单一职责原则”
+适用场景：
+只有一个类实例。
+应用举例：
+主键生成器。</li>
+</ul>
+<h1 id="结构型模式">结构型模式
+</h1><p>结构型模式：主要用于如何组合已有的类和对象以获得更大的结构，它采用继承机制赖组合接口或实现，以提供统一的外部视图或新的功能。</p>
+<h2 id="适配器模式-adapter">适配器模式 Adapter
+</h2><p>将一个类的接口转换成客户希望的另外一个接口，Adapter模式使得原本由于接口不兼容而不能一起工作的那些类可以一起工作。
+优点：</p>
+<ul>
+<li>允许两个或多个不兼容的对象进行交互和通信</li>
+<li>提高已有功能的重复使用性</li>
+<li>增加了类的透明度</li>
+<li>灵活性好
+缺点：</li>
+<li>过多地使用适配器会让系统非常零乱，不易整体进行把握
+适用场景：</li>
+<li>要使用已有的类，而该类接口与所需的接口并不匹配</li>
+<li>要创建可重复的类，该类可以与不相干或未知类进行协助，即类之间不需要兼容接口</li>
+<li>要在一个不同于已知对象接口的接口环境中使用对象</li>
+<li>必须要进行多个源之间的接口转换的时候
+应用举例：
+在.NET中有一个类库已经实现的、非常重要的适配器——Data Adapter。</li>
+</ul>
+<h2 id="桥接模式-bridge">桥接模式 Bridge
+</h2><p>将一个辅助的组件分成两个独立的但又相关的继承层次结构：功能性的抽象和内部实现。
+优点：</p>
+<ul>
+<li>可以将接口与实现相分离</li>
+<li>提高可扩展性</li>
+<li>对客户端隐藏了实现的细节
+缺点：</li>
+<li>增加了系统的理解和设计难度</li>
+<li>要求正确识别出系统中两个独立变化的维度，因此其使用范围有一定的局限性
+适用场景：</li>
+<li>想避免在抽象及其实现之间存在永久的绑定</li>
+<li>抽象及其实现可以使用子类进行扩展</li>
+<li>抽象的实现被改动应该对客户端没有影响</li>
+</ul>
+<h2 id="组合模式-composite">组合模式 Composite
+</h2><p>将对象组合成树型结构以表示“部分-整体”的层次结构。
+优点：</p>
+<ul>
+<li>清楚地定义分层次的复杂对象，表示对象的全部或部分层次</li>
+<li>使得增加新构件更容易</li>
+<li>提高了结构的灵活性和可管理的接口
+缺点：</li>
+<li>使设计变得更加抽象，如果对象的业务规则很复杂，则实现组合模式具有很大的挑战性，而且不是所有的方法都与叶子对象子类有关联。
+适用场景：</li>
+<li>想表示对象的部分-整体层次结构</li>
+<li>希望用户忽略组合对象与单个对象的不同，用户将统一地使用组合结构中的所有对象</li>
+<li>结构可以具有任何级别的复杂性，而且是动态的
+应用举例：
+部分、整体场景，如树形菜单，文件、文件夹的管理。</li>
+</ul>
+<h2 id="装饰模式-decorator">装饰模式 Decorator
+</h2><p>动态的给对象添加一些额外的责任，就增加功能来说，装饰比生成子类更为灵活。
+优点：</p>
+<ul>
+<li>比静态继承具有更大的灵活性</li>
+<li>简化代码</li>
+<li>改进对象扩展性，用户可以通过编写新的类来作出改变</li>
+<li>装饰类和被装饰类可以独立发展，不会相互耦合
+缺点：</li>
+<li>多层装饰比较复杂
+适用场景：</li>
+<li>想要在单个对象中动态并且透明地添加责任，而这样不会影响其他对象</li>
+<li>想要在以后可能要修改的对象中添加责任</li>
+<li>当无法通过静态子类化实现扩展时</li>
+</ul>
+<h2 id="外观模式-facade">外观模式 Facade
+</h2><p>为子系统中的一组接口提供一个统一的接口，外观模式通过提供一个高层接口，隔离了外部系统与子系统间复杂的交互过程，使得复杂系统的子系统更易使用。
+优点：</p>
+<ul>
+<li>在不减少系统所提供的选项的情况下，为复杂系统提供了简单的接口</li>
+<li>对客户端屏蔽了子系统组件</li>
+<li>提高了子系统与其客户端之间的弱耦合度</li>
+<li>将客户端请求转换后发送给能够处理这些请求的子系统
+缺点：</li>
+<li>不能很好地限制客户使用子系统类，如果对客户访问子系统类做太多的限制，则减少了可变性和灵活性</li>
+<li>在不引入抽象外观类的情况下，增加新的子系统可能需要修改外观类或客户端的源代码，违背了“开闭原则”
+适用场景：</li>
+<li>为一个复杂子系统提供一个简单接口时</li>
+<li>客户程序与抽象类的实现部分之间存在着很大的依赖性</li>
+<li>构建一个层次结构的子系统时，使用Facade模式定义子系统中每层的入口点，如果子系统之间是相互依赖的，则可以让它们仅通过Facede进行通信，从而简化了它们之间的依赖关系。</li>
+</ul>
+<h2 id="享元模式-flyweight">享元模式 Flyweight
+</h2><p>通过共享对象减少系统中低等级的、详细的对象数目。
+优点：</p>
+<ul>
+<li>减少了要处理的对象数目</li>
+<li>如果对象能够持续，可以减少内存和存储设备
+缺点：</li>
+<li>使得应用程序在某种程度上来说更加复杂化了</li>
+<li>为了使对象可以共享，享元模式需要将享元对象的状态外部化，而读取外部状态使得运行时间变长
+适用场景：</li>
+<li>应用程序使用大量的对象</li>
+<li>由于对象数目巨大，导致很高的存储开销</li>
+<li>应用程序不依赖于对象的身份</li>
+</ul>
+<h2 id="代理模式-proxy">代理模式 Proxy
+</h2><p>为控制对初始对象的访问，提供了一个代理或者占位符对象。
+优点：</p>
+<ul>
+<li>远程代理可以隐藏对象位于不同的地址空间的事实</li>
+<li>虚拟代理可以执行优化操作
+缺点：</li>
+<li>请求的处理速度变慢</li>
+<li>实现代理模式需要额外的工作，从而增加了系统实现的复杂度
+适用场景：</li>
+<li>当需要为一个对象在不同的地址空间提供局部的代表时</li>
+<li>当需要创建开销非常大的对象时
+应用举例：
+防火墙代理——保护目标不让恶意用户靠近。</li>
+</ul>
+<h1 id="行为型模式">行为型模式
+</h1><p>行为型模式：从大量实际行动中概括处理作为行为的理论抽象、基本框架和标准。该类模式主要用于对象之间的职责及其提供的服务的分配，它不仅描述对象或类的模式，还描述它们之间的通信模式。</p>
+<h2 id="责任链模式-chain-of-responsibility">责任链模式 Chain of Responsibility
+</h2><p>在系统中建立一个链，消息可以首先被接收到它的级别处理，或者定位到可以处理它的对象。
+优点：</p>
+<ul>
+<li>降低耦合度</li>
+<li>增加向对象指定责任的灵活性
+适用场景：</li>
+<li>多个对象可以处理一个请求，而其处理器却是未知的</li>
+<li>可以动态指定能够处理请求的对象集</li>
+</ul>
+<h2 id="命令模式-command">命令模式 Command
+</h2><p>在对象中封装请求，保存命令并传递给方法以及像任何其他对象一样返回该命令。
+优点：</p>
+<ul>
+<li>添加新命令不用修改已有类</li>
+<li>将操作对象与知道如何完成操作的对象相分离
+适用场景：</li>
+<li>想要通过要执行的动作来参数化对象</li>
+<li>在不同的时间指定、排序以及执行请求</li>
+</ul>
+<h2 id="解释器模式-interpreter">解释器模式 Interpreter
+</h2><p>解释定义其语法表示的语言。
+优点：</p>
+<ul>
+<li>容易修改并扩展语法</li>
+<li>容易实现语法
+适用场景：</li>
+<li>语言的语法比较简单</li>
+<li>效率并不是最主要的问题</li>
+</ul>
+<h2 id="迭代器模式-iterator">迭代器模式 Iterator
+</h2><p>提供一方法顺序地访问一个聚合对象中的各个元素，而又不暴露该对象的内部表示。
+优点：</p>
+<ul>
+<li>支持集合的不同遍历</li>
+<li>简化集合接口
+适用场景：</li>
+<li>在不开放集合对象内部表示的前提下，访问集合对象内容</li>
+<li>支持集合对象的多重遍历</li>
+<li>为遍历集合中的不同结构提供了统一的接口</li>
+</ul>
+<h2 id="备忘录模式-memento">备忘录模式 Memento
+</h2><p>保持对象状态的“快照”，在不向外界公开其内容的情况下返回到它的最初状态。
+优点：</p>
+<ul>
+<li>保持封装完整</li>
+<li>简化了返回到初始状态所需的操作
+适用场景：</li>
+<li>必须保存对象的快照</li>
+<li>使用直接接口来获得状态可能会公开对象的实现细节，从而破坏对象的封装性</li>
+</ul>
+<h2 id="观察者模式-observer">观察者模式 Observer
+</h2><p>为组件向相关接受方广播消息提供了灵活的方法。
+优点：</p>
+<ul>
+<li>抽象了主体与Observer之间的耦合关系</li>
+<li>支持广播方式的通信
+适用场景：</li>
+<li>对一个对象修改涉及其他对象修改，而不知道有多少对象需进行修改</li>
+<li>对象应该能够在不用假设对象标识的前提下通知其他对象</li>
+</ul>
+<h2 id="状态模式-state">状态模式 State
+</h2><p>运行对象在内部状态变化时变更其行为，并且修改其类。
+优点：</p>
+<ul>
+<li>定位指定状态的行为，并根据不同状态来划分行为
+适用场景：</li>
+<li>对象行为依赖于其状态，且对象必须在运行时根据其状态修改行为</li>
+<li>操作具有大量以及多部分组成的取决于对象状态的条件语句</li>
+</ul>
+<h2 id="策略模式-strategy">策略模式 Strategy
+</h2><p>定义了一组用来表示可能行为集合的类。
+优点：</p>
+<ul>
+<li>另一种子类化方法</li>
+<li>在类自身中定义行为，减少条件语句</li>
+<li>更容易扩展模型
+适用场景：</li>
+<li>许多相关类只是在行为方面有所区别</li>
+<li>需要算法的不同变体</li>
+<li>算法使用客户端未知的数据</li>
+</ul>
+<h2 id="模板方法模式-template-method">模板方法模式 Template Method
+</h2><p>提供了在不重写方法的前提下运行子类重载部分方法的方法。
+优点：</p>
+<ul>
+<li>代码使用
+适用场景：</li>
+<li>想要一次实现算法的不变部分，使用子类实现算法的可变部分</li>
+<li>子类间通用行为需要分解，定位到通用类，可以避免代码重复问题</li>
+</ul>
+<h2 id="访问者模式-visitor">访问者模式 Visitor
+</h2><p>提供了一种方便的、可维护的方法来表示在对象结构元素上进行的操作。该模式允许在不改变操作元素的类的前提下定义一个新操作。
+优点：</p>
+<ul>
+<li>容易添加新操作</li>
+<li>集中相关操作并且排除不相关操作
+适用场景：</li>
+<li>定义对象结构的类很少被修改，但想要在此结构上定义新的操作</li>
+<li>对象结构包含许多具有不同接口的对象类，并且想要对这些依赖于具体类的对象进行操作</li>
+</ul>
+<h2 id="中介者模式-mediater">中介者模式 Mediater
+</h2><p>通过引入一个能够管理对象间消息分布的对象，简化了系统中对象的通信。
+优点：</p>
+<ul>
+<li>去除对象间的影响</li>
+<li>简化对象间的协议</li>
+<li>集中化了控制
+适用场景：</li>
+<li>对象集合需要以一个定义规范但复杂的方式进行通信</li>
+<li>想要在不使用子类的情况下自定义分布在几个对象之间的行为</li>
+</ul>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+        
+            <a href="/tags/%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84/">软件架构</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/8ztt3yfv/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">向量检索技术</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/cuu2edep/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">JingSLink</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/7ebpyzzl/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">ChromeDevTools调试备忘</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/gpmj4yqz/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">初涉Maven</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/prk4pmo2/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">测手速软件APMShow开发——佟年送给韩商言的礼物</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":"评论一句，好运+1！"},"requiredMeta":["name"],"serverURL":"https://zippy-halva-8e20f0.netlify.app/.netlify/functions/comment"});
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2015 - 
+        
+        2025 靖待
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

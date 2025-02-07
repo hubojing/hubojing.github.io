@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>LSTPM on 靖待</title>
+        <link>https://hubojing.github.io/tags/lstpm/</link>
+        <description>Recent content in LSTPM on 靖待</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>靖待</copyright>
+        <lastBuildDate>Fri, 25 Feb 2022 15:59:46 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/tags/lstpm/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>LSTPM</title>
+        <link>https://hubojing.github.io/mnykvgbq/</link>
+        <pubDate>Fri, 25 Feb 2022 15:59:46 +0000</pubDate>
+        
+        <guid>https://hubojing.github.io/mnykvgbq/</guid>
+        <description>&lt;div align=&#34;left&#34;&gt;
+&lt;img src=&#34;https://hubojing.github.io/images/LSTPM架构.png&#34; width=&#34;300&#34; height=&#34;180&#34; style=&#34;float:right;&#34;/&gt;
+&lt;p&gt;　　&lt;strong&gt;Where to Go Next: Modeling Long- and Short-Term User Preferences for Point-of-Interest Recommendation&lt;/strong&gt;
+　　下一步去哪儿：用户长短期偏好建模用于兴趣点推荐&lt;/p&gt;
+&lt;/div&gt;
+&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;　　Where to Go Next: Modeling Long- and Short-Term User Preferences for Point-of-Interest Recommendation
+　　下一步去哪儿：用户长短期偏好建模用于兴趣点推荐
+　　AAAI 2020
+　　&lt;a class=&#34;link&#34; href=&#34;https://ojs.aaai.org/index.php/AAAI/article/view/5353&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PDF&lt;/a&gt;
+　　&lt;a class=&#34;link&#34; href=&#34;https://github.com/NLPWM-WHU/LSTPM&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CODE&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;问题提出&#34;&gt;问题提出
+&lt;/h1&gt;&lt;p&gt;　　现有的基于RNN的方法在对用户的短期偏好建模时，要么忽略了用户的长期偏好，要么忽略了最近访问的兴趣点之间的地理关系，从而使得推荐结果不可靠。（所有基于RNN/LSTM的短期偏好建模方法都存在不能对两个非连续兴趣点之间的关系建模的缺点。）
+　　为此，提出LSTPM（Long- and Short-Term Preference Modeling）架构。&lt;/p&gt;
+&lt;h1 id=&#34;架构&#34;&gt;架构
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/images/LSTPM%e6%9e%b6%e6%9e%84.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;架构&#34;
+	
+	
+&gt;
+　　它包含三个部分：长期偏好建模、短期偏好建模和预测模块。&lt;/p&gt;
+&lt;h2 id=&#34;长期偏好建模&#34;&gt;长期偏好建模
+&lt;/h2&gt;&lt;p&gt;　　核心：使用非局部神经操作（nonlocal neural operation）建模长期偏好。
+　　以前的做法是直接用LSTM建模签到序列，但是对时间戳的认识不够深。比如人们会在中午时间去餐馆，在晚上去酒吧。所以本文提出了融合时间戳去捕捉时间敏感的属性。论文将一周分成48个段slot（24个工作日段和24个周末段）。计算每两个时间段之间用户签到的兴趣点集合相似性。重合的兴趣点越多，相似性越高。
+　　所以历史签到轨迹就可以用这些时间段的兴趣点来表示，从而可以给这些时间段加权重。时间越近影响越大。
+　　同时，地理方面计算了各轨迹的中心，计算中心与最近轨迹相似度，得出距离加权公式。&lt;/p&gt;
+$$y_i = \frac{1}{C(x)}\sum{_{\forall j}f(x_i, x_j)g(x_j)}$$&lt;p&gt;
+　　&lt;code&gt;f&lt;/code&gt;用来度量输出位置和周围其他位置的尺度（例如相似度），&lt;code&gt;g&lt;/code&gt;是在位置j对于输入信号的表示（如卷积操作）。对于non-local behaiver来说，上式中的&lt;code&gt;j&lt;/code&gt;是取遍所有可能的邻居，而对于local操作，如3*3的卷积来说，&lt;code&gt;j&lt;/code&gt;只是取了周围8个像素点。
+　　所以这里借鉴这个思想，将每个轨迹S都和历史轨迹和当前轨迹进行了分数计算，并除以标准化因素（全部特征求和）。&lt;/p&gt;
+&lt;h2 id=&#34;短期偏好建模&#34;&gt;短期偏好建模
+&lt;/h2&gt;&lt;p&gt;　　核心：使用联合方式的地理扩张LSTM建模短期偏好。
+　　RNN本身只能用于序列建模，所以有人提出了跳步RNN。但是跳步RNN总是事先定义好和固定好的。所以提出geo-dilated LSTM根据地理和时间因素，来自动决定使用哪些相关输入。
+&lt;img src=&#34;https://hubojing.github.io/images/LSTPM%e6%9e%b6%e6%9e%842.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;geo-dilated LSTM&#34;
+	
+	
+&gt;
+　　直观地，我们的地理扩张LSTM首先从当前轨迹中挑选poi作为输入，其具有由地理相关性确定的不同跳跃长度，然后通过扩展LSTM方案学习短期用户偏好。具体的算法论文给出了伪代码。&lt;/p&gt;
+&lt;p&gt;　　&lt;strong&gt;关键理解&lt;/strong&gt;：那它究竟是怎么自动确定跳跃长度的呢？
+　　如上图所示，标准的LSTM序列是从l1-&amp;gt;l2-&amp;gt;l3-&amp;gt;l4-&amp;gt;l5。但是加入地理距离后发现，对于l3的前面两个兴趣点l1和l2来说，l1到l3的距离比l1到l2的距离要近，所以留下{l1, l2}路径。依次类推，留下{l1, l2}{l2, l5}路径，也就是两跳。所以，将LSTM设计为两跳。&lt;/p&gt;
+&lt;p&gt;　　最后的表示，是标准LSTM和geo-dilated LSTM的平均向量。&lt;/p&gt;
+&lt;h2 id=&#34;预测&#34;&gt;预测
+&lt;/h2&gt;&lt;p&gt;　　将长短期偏好联结起来，设置一个W全部兴趣点的可训练投影矩阵参数。预测的是下一个时间段t内目标用户最可能访问的兴趣点。损失函数是负对数似然函数。&lt;/p&gt;
+&lt;h1 id=&#34;实验&#34;&gt;实验
+&lt;/h1&gt;&lt;h2 id=&#34;数据集&#34;&gt;数据集
+&lt;/h2&gt;&lt;p&gt;　　Foursqure, Gowalla&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/images/LSTPM_datasets.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;数据集&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;基线&#34;&gt;基线
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;LSTM&lt;/li&gt;
+&lt;li&gt;Time-LSTM&lt;/li&gt;
+&lt;li&gt;ST-RNN&lt;/li&gt;
+&lt;li&gt;TMCA&lt;/li&gt;
+&lt;li&gt;CARA&lt;/li&gt;
+&lt;li&gt;DCRF&lt;/li&gt;
+&lt;li&gt;DeepMove&lt;/li&gt;
+&lt;li&gt;STGN&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;评价指标&#34;&gt;评价指标
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;召回率Recall&lt;/li&gt;
+&lt;li&gt;NDCG&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;性能&#34;&gt;性能
+&lt;/h2&gt;&lt;h3 id=&#34;基线对比&#34;&gt;基线对比
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/images/LSTPM%e6%80%a7%e8%83%bd.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;性能&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;消融实验&#34;&gt;消融实验
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/images/LSTPM%e8%87%aa%e8%ba%ab%e5%af%b9%e6%af%94.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;消融实验&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;参数分析&#34;&gt;参数分析
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/images/LSTPM%e5%8f%82%e6%95%b0%e5%88%86%e6%9e%90.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;参数分析&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;跳数自动化&#34;&gt;跳数自动化
+&lt;/h3&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/images/LSTPM_LSTM%e5%af%b9%e6%af%94.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;LSTM对比&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h1 id=&#34;贡献点&#34;&gt;贡献点
+&lt;/h1&gt;&lt;ol&gt;
+&lt;li&gt;提出LSTPM框架解决上述存在的问题。&lt;/li&gt;
+&lt;li&gt;LSTPM受非局部操作（nonlocal operations）和dilated RNNs的启发，在构建长期偏好时，设计了非局部操作网络结构来探索历史和最近轨迹的时空联系。在克服RNN在短期用户偏好建模的限制时，提出geo-dilated RNN来全面探索非连续兴趣点间的地理联系。&lt;/li&gt;
+&lt;li&gt;在真实世界数据集上效果超过SOTA模型。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;参考资料&#34;&gt;参考资料
+&lt;/h1&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/py184473894/article/details/85322937&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://blog.csdn.net/py184473894/article/details/85322937&lt;/a&gt;
+&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/85776086&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://zhuanlan.zhihu.com/p/85776086&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>
