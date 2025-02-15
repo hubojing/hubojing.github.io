@@ -7,10 +7,94 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>靖待</copyright>
-        <lastBuildDate>Wed, 22 Nov 2023 22:20:55 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/categories/%E8%AE%BA%E6%96%87/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 15 Feb 2025 21:34:21 +0800</lastBuildDate><atom:link href="https://hubojing.github.io/categories/%E8%AE%BA%E6%96%87/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>DeepSeek系列论文笔记</title>
+        <link>https://hubojing.github.io/5a3f7d1e/</link>
+        <pubDate>Sat, 15 Feb 2025 21:34:21 +0800</pubDate>
+        
+        <guid>https://hubojing.github.io/5a3f7d1e/</guid>
+        <description>&lt;p&gt;未完待续..&lt;/p&gt;
+&lt;h1 id=&#34;deepseek-r1-incentivizing-reasoning-capability-in-llms-via-reinforcement-learning&#34;&gt;DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning
+&lt;/h1&gt;&lt;p&gt;DeepSeek-R1: 通过强化学习激励LLMs中的推理能力&lt;br&gt;
+DeepSeek 2025&lt;/p&gt;
+&lt;h2 id=&#34;摘要&#34;&gt;摘要
+&lt;/h2&gt;&lt;p&gt;本文介绍了我们第一代生成式推理模型，DeepSeek-R1-Zero和DeepSeek-R1。DeepSeek-R1-Zero是一个无需微调（SFT）作为初始步骤，只通过大规模强化学习（RL）来训练的模型，它展现出强大的推理能力。通过强化学习，DeepSeek-R1-Zero自然涌现出巨大能力和推理行为。然而，它存在可读性差和语言混淆的问题。为了解决这些问题并加强推理性能，我们提出DeepSeek-R1，它在强化学习前融合了多阶段训练和冷启动数据。DeepSeek-R1在推理任务上和OpenAI-o1-1217性能相当。&lt;br&gt;
+这两个模型已开源，并给出了从Qwen和Llama得到的6种尺寸蒸馏版本（1.5B、7B、8B、14B、32B、70B）。&lt;br&gt;
+&lt;img src=&#34;https://hubojing.github.io/R1%e6%80%a7%e8%83%bd.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;R1性能&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;引言&#34;&gt;引言
+&lt;/h2&gt;&lt;p&gt;贡献点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;后训练：在基座模型上大规模强化学习
+我们将RL直接用于基座模型，不用SFT，得到DeepSeek-R1-Zero。  &lt;br&gt;
+引入了一种流水线操作得到DeepSeek-R1。它包括两个强化学习阶段，用于发现增强推理模式并对齐人类偏好，同时有两阶段SFT，用来初始化模型推理以及获取非推理能力。&lt;/li&gt;
+&lt;li&gt;蒸馏：小模型也可以有很强的性能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;方法&#34;&gt;方法
+&lt;/h2&gt;&lt;h3 id=&#34;deepseek-r1-zero&#34;&gt;DeepSeek-R1-Zero
+&lt;/h3&gt;&lt;h4 id=&#34;强化学习算法&#34;&gt;强化学习算法
+&lt;/h4&gt;$$A_i = \frac{r_i-mean({r_1, r_2, ..., r_G})}{std({r_1, r_2, ..., r_G})}$$&lt;h4 id=&#34;奖励模型&#34;&gt;奖励模型
+&lt;/h4&gt;&lt;p&gt;奖励是训练信号的来源，它决定了RL的优化方向。&lt;br&gt;
+为了训练DeepSeek-R1-Zero，我们采用了一个基于规则的奖励系统，主要由两种类型的奖励组成：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;准确性奖励（Accuracy rewards）
+用于评价回复是否正确。例如，对于具有确定性结果的数学问题，模型需要以指定的格式（例如，在一个方框内）提供最终答案，从而实现可靠的基于规则的正确性验证。类似地，对于LeetCode问题，可以使用编译器来基于预定义的测试用例生成反馈。&lt;/li&gt;
+&lt;li&gt;格式奖励（Format rewards）
+除了准确性奖励模型外，我们还采用了一种格式奖励模型，强制该模型将其思维过程置于&lt;code&gt;&amp;lt;trink/&amp;gt;&lt;/code&gt;和&lt;code&gt;&amp;lt;/trink&amp;gt;&lt;/code&gt;标签之间。
+在训练DeepSeek-R1-Zero时，我们没有使用ORM或PRM模型，因为我们发现奖励模型在大规模强化学习过程中会出现reward hacking，并且它需要额外训练资源，会增加训练流程的复杂度。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;训练模板&#34;&gt;训练模板
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;A conversation between User and Assistant. The user asks a question, and the Assistant solves it.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;The assistant first thinks about the reasoning process in the mind and then provides the user
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;with the answer. The reasoning process and answer are enclosed within &amp;lt;think&amp;gt; &amp;lt;/think&amp;gt; and
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;lt;answer&amp;gt; &amp;lt;/answer&amp;gt; tags, respectively, i.e., &amp;lt;think&amp;gt; reasoning process here &amp;lt;/think&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;lt;answer&amp;gt; answer here &amp;lt;/answer&amp;gt;. User: prompt. Assistant:
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;prompt在训练时会被替换为特定的推理问题。&lt;br&gt;
+这个模板首先产生一个推理过程，然后是最终的答案。&lt;br&gt;
+我们的限制仅限于此，避免了特定内容偏差，让模型自然推理。&lt;/p&gt;
+&lt;h4 id=&#34;性能自我演化过程和顿悟时刻&#34;&gt;性能、自我演化过程和顿悟时刻
+&lt;/h4&gt;&lt;p&gt;（这个顿悟时刻写的是aha moment就很啊哈……）&lt;br&gt;
+&lt;img src=&#34;https://hubojing.github.io/%e8%ae%ad%e7%bb%83%e8%bf%87%e7%a8%8b.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;训练过程&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;deepseek-r1&#34;&gt;DeepSeek-R1
+&lt;/h3&gt;&lt;h4 id=&#34;冷启动&#34;&gt;冷启动
+&lt;/h4&gt;&lt;h4 id=&#34;基于推理的强化学习&#34;&gt;基于推理的强化学习
+&lt;/h4&gt;&lt;h4 id=&#34;拒绝采样和sft&#34;&gt;拒绝采样和SFT
+&lt;/h4&gt;&lt;h4 id=&#34;全场景强化学习&#34;&gt;全场景强化学习
+&lt;/h4&gt;&lt;h3 id=&#34;蒸馏小模型&#34;&gt;蒸馏小模型
+&lt;/h3&gt;</description>
+        </item>
+        <item>
         <title>大模型相关论文笔记</title>
         <link>https://hubojing.github.io/9ocgomtj/</link>
-        <pubDate>Wed, 22 Nov 2023 22:20:55 +0000</pubDate>
+        <pubDate>Wed, 22 Nov 2023 22:20:55 +0800</pubDate>
         
         <guid>https://hubojing.github.io/9ocgomtj/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -280,7 +364,7 @@ $$L_{ranking}=-log(\sigma(r_\theta(x, y_c)-r_\theta(x,y_r)))$$$$L_{ranking}=-log
         <item>
         <title>InstructGPT笔记</title>
         <link>https://hubojing.github.io/kte2ngfx/</link>
-        <pubDate>Tue, 14 Mar 2023 21:05:47 +0000</pubDate>
+        <pubDate>Tue, 14 Mar 2023 21:05:47 +0800</pubDate>
         
         <guid>https://hubojing.github.io/kte2ngfx/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -300,7 +384,7 @@ $$L_{ranking}=-log(\sigma(r_\theta(x, y_c)-r_\theta(x,y_r)))$$$$L_{ranking}=-log
         <item>
         <title>命名实体识别（NER）论文泛读</title>
         <link>https://hubojing.github.io/9tdsnz5r/</link>
-        <pubDate>Wed, 08 Mar 2023 23:54:02 +0000</pubDate>
+        <pubDate>Wed, 08 Mar 2023 23:54:02 +0800</pubDate>
         
         <guid>https://hubojing.github.io/9tdsnz5r/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -378,7 +462,7 @@ $$L_{ranking}=-log(\sigma(r_\theta(x, y_c)-r_\theta(x,y_r)))$$$$L_{ranking}=-log
         <item>
         <title>关系抽取（RE）论文泛读</title>
         <link>https://hubojing.github.io/nx3rj2gp/</link>
-        <pubDate>Tue, 16 Aug 2022 19:37:35 +0000</pubDate>
+        <pubDate>Tue, 16 Aug 2022 19:37:35 +0800</pubDate>
         
         <guid>https://hubojing.github.io/nx3rj2gp/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -481,7 +565,7 @@ Fangchao Liu, Hongyu Lin, Xianpei Han, Boxi Cao, Le Sun
         <item>
         <title>兴趣点推荐（POI Recommendation）论文泛读</title>
         <link>https://hubojing.github.io/adedun3u/</link>
-        <pubDate>Sun, 14 Aug 2022 22:34:04 +0000</pubDate>
+        <pubDate>Sun, 14 Aug 2022 22:34:04 +0800</pubDate>
         
         <guid>https://hubojing.github.io/adedun3u/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -514,7 +598,7 @@ Nicholas Lim, Bryan Hooi, See-Kiong Ng,Yong Liang Goh, Renrong Weng, Rui Tan
         <item>
         <title>实体链接（EL）论文泛读</title>
         <link>https://hubojing.github.io/7mjmdmcq/</link>
-        <pubDate>Sun, 14 Aug 2022 16:26:09 +0000</pubDate>
+        <pubDate>Sun, 14 Aug 2022 16:26:09 +0800</pubDate>
         
         <guid>https://hubojing.github.io/7mjmdmcq/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -564,7 +648,7 @@ Facebook AI
         <item>
         <title>BERT</title>
         <link>https://hubojing.github.io/nxk7vdtv/</link>
-        <pubDate>Tue, 09 Aug 2022 20:59:07 +0000</pubDate>
+        <pubDate>Tue, 09 Aug 2022 20:59:07 +0800</pubDate>
         
         <guid>https://hubojing.github.io/nxk7vdtv/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -634,7 +718,7 @@ NAACL-HLT会议-NLP顶会
         <item>
         <title>TEMN</title>
         <link>https://hubojing.github.io/wpzth4rk/</link>
-        <pubDate>Sun, 03 Jul 2022 13:03:28 +0000</pubDate>
+        <pubDate>Sun, 03 Jul 2022 13:03:28 +0800</pubDate>
         
         <guid>https://hubojing.github.io/wpzth4rk/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -720,7 +804,7 @@ NAACL-HLT会议-NLP顶会
         <item>
         <title>LSTPM</title>
         <link>https://hubojing.github.io/mnykvgbq/</link>
-        <pubDate>Fri, 25 Feb 2022 15:59:46 +0000</pubDate>
+        <pubDate>Fri, 25 Feb 2022 15:59:46 +0800</pubDate>
         
         <guid>https://hubojing.github.io/mnykvgbq/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -867,7 +951,7 @@ $$y_i = \frac{1}{C(x)}\sum{_{\forall j}f(x_i, x_j)g(x_j)}$$&lt;p&gt;
         <item>
         <title>ASGNN</title>
         <link>https://hubojing.github.io/gwmprssu/</link>
-        <pubDate>Sat, 29 Jan 2022 14:27:42 +0000</pubDate>
+        <pubDate>Sat, 29 Jan 2022 14:27:42 +0800</pubDate>
         
         <guid>https://hubojing.github.io/gwmprssu/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -1028,7 +1112,7 @@ $$y_i = \frac{1}{C(x)}\sum{_{\forall j}f(x_i, x_j)g(x_j)}$$&lt;p&gt;
         <item>
         <title>STAN</title>
         <link>https://hubojing.github.io/fhfxfwzp/</link>
-        <pubDate>Mon, 24 Jan 2022 11:20:37 +0000</pubDate>
+        <pubDate>Mon, 24 Jan 2022 11:20:37 +0800</pubDate>
         
         <guid>https://hubojing.github.io/fhfxfwzp/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -1137,7 +1221,7 @@ $$y_i = \frac{1}{C(x)}\sum{_{\forall j}f(x_i, x_j)g(x_j)}$$&lt;p&gt;
         <item>
         <title>CHAML</title>
         <link>https://hubojing.github.io/pd2tgrcn/</link>
-        <pubDate>Sat, 22 Jan 2022 18:02:37 +0000</pubDate>
+        <pubDate>Sat, 22 Jan 2022 18:02:37 +0800</pubDate>
         
         <guid>https://hubojing.github.io/pd2tgrcn/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -1237,7 +1321,7 @@ $$y_i = \frac{1}{C(x)}\sum{_{\forall j}f(x_i, x_j)g(x_j)}$$&lt;p&gt;
         <item>
         <title>【Paper】DIN模型</title>
         <link>https://hubojing.github.io/rup2htsf/</link>
-        <pubDate>Thu, 06 May 2021 10:55:35 +0000</pubDate>
+        <pubDate>Thu, 06 May 2021 10:55:35 +0800</pubDate>
         
         <guid>https://hubojing.github.io/rup2htsf/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -1451,7 +1535,7 @@ $$w_j\leftarrow w_j - \eta[\frac{1}{|B_m|}\sum_{(x,y)∈B_m}\frac{\partial L(p(x
         <item>
         <title>【Paper】Entire Space Multi-Task Model-An Effective Approach for Estimating Post-Click Conversion Rate</title>
         <link>https://hubojing.github.io/hpxssgui/</link>
-        <pubDate>Tue, 27 Apr 2021 10:23:10 +0000</pubDate>
+        <pubDate>Tue, 27 Apr 2021 10:23:10 +0800</pubDate>
         
         <guid>https://hubojing.github.io/hpxssgui/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -1521,7 +1605,7 @@ l(·)是交叉熵损失函数。&lt;/p&gt;
         <item>
         <title>【Paper】Wide &amp; Deep Learning for Recommender Systems</title>
         <link>https://hubojing.github.io/ux6wmeer/</link>
-        <pubDate>Tue, 02 Mar 2021 09:20:00 +0000</pubDate>
+        <pubDate>Tue, 02 Mar 2021 09:20:00 +0800</pubDate>
         
         <guid>https://hubojing.github.io/ux6wmeer/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -1655,7 +1739,7 @@ l(·)是交叉熵损失函数。&lt;/p&gt;
         <item>
         <title>【paper】AutoRec - Autoencoders Meet Collaborative Filtering</title>
         <link>https://hubojing.github.io/dapymrcc/</link>
-        <pubDate>Thu, 04 Feb 2021 10:19:03 +0000</pubDate>
+        <pubDate>Thu, 04 Feb 2021 10:19:03 +0800</pubDate>
         
         <guid>https://hubojing.github.io/dapymrcc/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -1754,7 +1838,7 @@ MF学习线性潜在表示，AutoRec可以通过激活函数学习非线性潜�
         <item>
         <title>【Paper】Deep Neural Networks for YouTube Recommendations</title>
         <link>https://hubojing.github.io/fqywpuls/</link>
-        <pubDate>Tue, 15 Dec 2020 14:24:54 +0000</pubDate>
+        <pubDate>Tue, 15 Dec 2020 14:24:54 +0800</pubDate>
         
         <guid>https://hubojing.github.io/fqywpuls/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -1888,7 +1972,7 @@ univalent例子：被评分的视频ID，multivalent例子：用户最近观看�
         <item>
         <title>【Paper】Factorization Machines</title>
         <link>https://hubojing.github.io/ucapbpue/</link>
-        <pubDate>Wed, 09 Dec 2020 11:18:31 +0000</pubDate>
+        <pubDate>Wed, 09 Dec 2020 11:18:31 +0800</pubDate>
         
         <guid>https://hubojing.github.io/ucapbpue/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -1985,7 +2069,7 @@ $$\hat{y}(x) = w_0 + \sqrt{2}(w_u + w_i) + w_{u,u}^{(2)} +  w_{i,i}^{(2)} + \sqr
         <item>
         <title>【Paper】Matrix Factorization Techniques for Recommender Systems</title>
         <link>https://hubojing.github.io/dvbvavgt/</link>
-        <pubDate>Mon, 07 Dec 2020 15:12:57 +0000</pubDate>
+        <pubDate>Mon, 07 Dec 2020 15:12:57 +0800</pubDate>
         
         <guid>https://hubojing.github.io/dvbvavgt/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -2062,7 +2146,7 @@ $$\hat{y}(x) = w_0 + \sqrt{2}(w_u + w_i) + w_{u,u}^{(2)} +  w_{i,i}^{(2)} + \sqr
         <item>
         <title>【Paper】Amazon.com Recommendations Item-to-Item Collaborative Filtering</title>
         <link>https://hubojing.github.io/h5bkenqv/</link>
-        <pubDate>Wed, 02 Dec 2020 14:40:23 +0000</pubDate>
+        <pubDate>Wed, 02 Dec 2020 14:40:23 +0800</pubDate>
         
         <guid>https://hubojing.github.io/h5bkenqv/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -2162,7 +2246,7 @@ $$\hat{y}(x) = w_0 + \sqrt{2}(w_u + w_i) + w_{u,u}^{(2)} +  w_{i,i}^{(2)} + \sqr
         <item>
         <title>【Paper】Using Collaborative Filtering to Weave an Information Tapestry</title>
         <link>https://hubojing.github.io/jaxyksgz/</link>
-        <pubDate>Wed, 15 Jul 2020 16:44:25 +0000</pubDate>
+        <pubDate>Wed, 15 Jul 2020 16:44:25 +0800</pubDate>
         
         <guid>https://hubojing.github.io/jaxyksgz/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;

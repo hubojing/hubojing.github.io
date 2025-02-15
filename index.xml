@@ -7,10 +7,94 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>靖待</copyright>
-        <lastBuildDate>Wed, 05 Feb 2025 22:01:18 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 15 Feb 2025 21:34:21 +0800</lastBuildDate><atom:link href="https://hubojing.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>DeepSeek系列论文笔记</title>
+        <link>https://hubojing.github.io/5a3f7d1e/</link>
+        <pubDate>Sat, 15 Feb 2025 21:34:21 +0800</pubDate>
+        
+        <guid>https://hubojing.github.io/5a3f7d1e/</guid>
+        <description>&lt;p&gt;未完待续..&lt;/p&gt;
+&lt;h1 id=&#34;deepseek-r1-incentivizing-reasoning-capability-in-llms-via-reinforcement-learning&#34;&gt;DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning
+&lt;/h1&gt;&lt;p&gt;DeepSeek-R1: 通过强化学习激励LLMs中的推理能力&lt;br&gt;
+DeepSeek 2025&lt;/p&gt;
+&lt;h2 id=&#34;摘要&#34;&gt;摘要
+&lt;/h2&gt;&lt;p&gt;本文介绍了我们第一代生成式推理模型，DeepSeek-R1-Zero和DeepSeek-R1。DeepSeek-R1-Zero是一个无需微调（SFT）作为初始步骤，只通过大规模强化学习（RL）来训练的模型，它展现出强大的推理能力。通过强化学习，DeepSeek-R1-Zero自然涌现出巨大能力和推理行为。然而，它存在可读性差和语言混淆的问题。为了解决这些问题并加强推理性能，我们提出DeepSeek-R1，它在强化学习前融合了多阶段训练和冷启动数据。DeepSeek-R1在推理任务上和OpenAI-o1-1217性能相当。&lt;br&gt;
+这两个模型已开源，并给出了从Qwen和Llama得到的6种尺寸蒸馏版本（1.5B、7B、8B、14B、32B、70B）。&lt;br&gt;
+&lt;img src=&#34;https://hubojing.github.io/R1%e6%80%a7%e8%83%bd.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;R1性能&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;引言&#34;&gt;引言
+&lt;/h2&gt;&lt;p&gt;贡献点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;后训练：在基座模型上大规模强化学习
+我们将RL直接用于基座模型，不用SFT，得到DeepSeek-R1-Zero。  &lt;br&gt;
+引入了一种流水线操作得到DeepSeek-R1。它包括两个强化学习阶段，用于发现增强推理模式并对齐人类偏好，同时有两阶段SFT，用来初始化模型推理以及获取非推理能力。&lt;/li&gt;
+&lt;li&gt;蒸馏：小模型也可以有很强的性能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;方法&#34;&gt;方法
+&lt;/h2&gt;&lt;h3 id=&#34;deepseek-r1-zero&#34;&gt;DeepSeek-R1-Zero
+&lt;/h3&gt;&lt;h4 id=&#34;强化学习算法&#34;&gt;强化学习算法
+&lt;/h4&gt;$$A_i = \frac{r_i-mean({r_1, r_2, ..., r_G})}{std({r_1, r_2, ..., r_G})}$$&lt;h4 id=&#34;奖励模型&#34;&gt;奖励模型
+&lt;/h4&gt;&lt;p&gt;奖励是训练信号的来源，它决定了RL的优化方向。&lt;br&gt;
+为了训练DeepSeek-R1-Zero，我们采用了一个基于规则的奖励系统，主要由两种类型的奖励组成：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;准确性奖励（Accuracy rewards）
+用于评价回复是否正确。例如，对于具有确定性结果的数学问题，模型需要以指定的格式（例如，在一个方框内）提供最终答案，从而实现可靠的基于规则的正确性验证。类似地，对于LeetCode问题，可以使用编译器来基于预定义的测试用例生成反馈。&lt;/li&gt;
+&lt;li&gt;格式奖励（Format rewards）
+除了准确性奖励模型外，我们还采用了一种格式奖励模型，强制该模型将其思维过程置于&lt;code&gt;&amp;lt;trink/&amp;gt;&lt;/code&gt;和&lt;code&gt;&amp;lt;/trink&amp;gt;&lt;/code&gt;标签之间。
+在训练DeepSeek-R1-Zero时，我们没有使用ORM或PRM模型，因为我们发现奖励模型在大规模强化学习过程中会出现reward hacking，并且它需要额外训练资源，会增加训练流程的复杂度。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;训练模板&#34;&gt;训练模板
+&lt;/h4&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;A conversation between User and Assistant. The user asks a question, and the Assistant solves it.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;The assistant first thinks about the reasoning process in the mind and then provides the user
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;with the answer. The reasoning process and answer are enclosed within &amp;lt;think&amp;gt; &amp;lt;/think&amp;gt; and
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;lt;answer&amp;gt; &amp;lt;/answer&amp;gt; tags, respectively, i.e., &amp;lt;think&amp;gt; reasoning process here &amp;lt;/think&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&amp;lt;answer&amp;gt; answer here &amp;lt;/answer&amp;gt;. User: prompt. Assistant:
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;prompt在训练时会被替换为特定的推理问题。&lt;br&gt;
+这个模板首先产生一个推理过程，然后是最终的答案。&lt;br&gt;
+我们的限制仅限于此，避免了特定内容偏差，让模型自然推理。&lt;/p&gt;
+&lt;h4 id=&#34;性能自我演化过程和顿悟时刻&#34;&gt;性能、自我演化过程和顿悟时刻
+&lt;/h4&gt;&lt;p&gt;（这个顿悟时刻写的是aha moment就很啊哈……）&lt;br&gt;
+&lt;img src=&#34;https://hubojing.github.io/%e8%ae%ad%e7%bb%83%e8%bf%87%e7%a8%8b.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;训练过程&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;deepseek-r1&#34;&gt;DeepSeek-R1
+&lt;/h3&gt;&lt;h4 id=&#34;冷启动&#34;&gt;冷启动
+&lt;/h4&gt;&lt;h4 id=&#34;基于推理的强化学习&#34;&gt;基于推理的强化学习
+&lt;/h4&gt;&lt;h4 id=&#34;拒绝采样和sft&#34;&gt;拒绝采样和SFT
+&lt;/h4&gt;&lt;h4 id=&#34;全场景强化学习&#34;&gt;全场景强化学习
+&lt;/h4&gt;&lt;h3 id=&#34;蒸馏小模型&#34;&gt;蒸馏小模型
+&lt;/h3&gt;</description>
+        </item>
+        <item>
         <title>从Hexo迁移到Hugo</title>
         <link>https://hubojing.github.io/siv7ubjs/</link>
-        <pubDate>Wed, 05 Feb 2025 22:01:18 +0000</pubDate>
+        <pubDate>Wed, 05 Feb 2025 22:01:18 +0800</pubDate>
         
         <guid>https://hubojing.github.io/siv7ubjs/</guid>
         <description>&lt;p&gt;　　&lt;strong&gt;重新出发就要换个新皮（哈哈哈）&lt;/strong&gt;&lt;br&gt;
@@ -304,7 +388,7 @@
         <item>
         <title>2024年终总结</title>
         <link>https://hubojing.github.io/cx9pj4us/</link>
-        <pubDate>Tue, 31 Dec 2024 23:12:26 +0000</pubDate>
+        <pubDate>Tue, 31 Dec 2024 23:12:26 +0800</pubDate>
         
         <guid>https://hubojing.github.io/cx9pj4us/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -374,7 +458,7 @@
         <item>
         <title>【大模型系列】指令微调</title>
         <link>https://hubojing.github.io/na527pxe/</link>
-        <pubDate>Wed, 24 Apr 2024 00:15:21 +0000</pubDate>
+        <pubDate>Wed, 24 Apr 2024 00:15:21 +0800</pubDate>
         
         <guid>https://hubojing.github.io/na527pxe/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -572,7 +656,7 @@ Prompt Tuning以前缀形式添加提示，直接在输入前拼接连续型向�
         <item>
         <title>【大模型系列】提示学习</title>
         <link>https://hubojing.github.io/s3h6op3z/</link>
-        <pubDate>Sun, 21 Apr 2024 12:39:43 +0000</pubDate>
+        <pubDate>Sun, 21 Apr 2024 12:39:43 +0800</pubDate>
         
         <guid>https://hubojing.github.io/s3h6op3z/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -677,7 +761,7 @@ KNN相似度检测算法，选出与目标任务实例相关的示例。具体�
         <item>
         <title>Hexo根据更新时间修改文章排序机制</title>
         <link>https://hubojing.github.io/dhygztfl/</link>
-        <pubDate>Fri, 12 Apr 2024 23:00:11 +0000</pubDate>
+        <pubDate>Fri, 12 Apr 2024 23:00:11 +0800</pubDate>
         
         <guid>https://hubojing.github.io/dhygztfl/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -753,7 +837,7 @@ KNN相似度检测算法，选出与目标任务实例相关的示例。具体�
         <item>
         <title>博客永久链接与计数</title>
         <link>https://hubojing.github.io/qzy8uvvh/</link>
-        <pubDate>Thu, 15 Feb 2024 16:42:03 +0000</pubDate>
+        <pubDate>Thu, 15 Feb 2024 16:42:03 +0800</pubDate>
         
         <guid>https://hubojing.github.io/qzy8uvvh/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -835,7 +919,7 @@ hexo-abbrlink生成的8位还挺好的&lt;/p&gt;
         <item>
         <title>2023年终总结</title>
         <link>https://hubojing.github.io/mzemm9rz/</link>
-        <pubDate>Sun, 31 Dec 2023 14:37:55 +0000</pubDate>
+        <pubDate>Sun, 31 Dec 2023 14:37:55 +0800</pubDate>
         
         <guid>https://hubojing.github.io/mzemm9rz/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -870,7 +954,7 @@ hexo-abbrlink生成的8位还挺好的&lt;/p&gt;
         <item>
         <title>大模型相关论文笔记</title>
         <link>https://hubojing.github.io/9ocgomtj/</link>
-        <pubDate>Wed, 22 Nov 2023 22:20:55 +0000</pubDate>
+        <pubDate>Wed, 22 Nov 2023 22:20:55 +0800</pubDate>
         
         <guid>https://hubojing.github.io/9ocgomtj/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -1140,7 +1224,7 @@ $$L_{ranking}=-log(\sigma(r_\theta(x, y_c)-r_\theta(x,y_r)))$$$$L_{ranking}=-log
         <item>
         <title>Hexo &#43; Github Action部署博客</title>
         <link>https://hubojing.github.io/6mk49uq9/</link>
-        <pubDate>Thu, 16 Nov 2023 22:20:55 +0000</pubDate>
+        <pubDate>Thu, 16 Nov 2023 22:20:55 +0800</pubDate>
         
         <guid>https://hubojing.github.io/6mk49uq9/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -1346,7 +1430,7 @@ $$L_{ranking}=-log(\sigma(r_\theta(x, y_c)-r_\theta(x,y_r)))$$$$L_{ranking}=-log
         <item>
         <title>InstructGPT笔记</title>
         <link>https://hubojing.github.io/kte2ngfx/</link>
-        <pubDate>Tue, 14 Mar 2023 21:05:47 +0000</pubDate>
+        <pubDate>Tue, 14 Mar 2023 21:05:47 +0800</pubDate>
         
         <guid>https://hubojing.github.io/kte2ngfx/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -1366,7 +1450,7 @@ $$L_{ranking}=-log(\sigma(r_\theta(x, y_c)-r_\theta(x,y_r)))$$$$L_{ranking}=-log
         <item>
         <title>命名实体识别（NER）论文泛读</title>
         <link>https://hubojing.github.io/9tdsnz5r/</link>
-        <pubDate>Wed, 08 Mar 2023 23:54:02 +0000</pubDate>
+        <pubDate>Wed, 08 Mar 2023 23:54:02 +0800</pubDate>
         
         <guid>https://hubojing.github.io/9tdsnz5r/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -1444,7 +1528,7 @@ $$L_{ranking}=-log(\sigma(r_\theta(x, y_c)-r_\theta(x,y_r)))$$$$L_{ranking}=-log
         <item>
         <title>向量检索技术</title>
         <link>https://hubojing.github.io/8ztt3yfv/</link>
-        <pubDate>Tue, 28 Feb 2023 21:48:28 +0000</pubDate>
+        <pubDate>Tue, 28 Feb 2023 21:48:28 +0800</pubDate>
         
         <guid>https://hubojing.github.io/8ztt3yfv/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -1501,7 +1585,7 @@ $$L_{ranking}=-log(\sigma(r_\theta(x, y_c)-r_\theta(x,y_r)))$$$$L_{ranking}=-log
         <item>
         <title>2022年终总结</title>
         <link>https://hubojing.github.io/lxx2ztkd/</link>
-        <pubDate>Sun, 01 Jan 2023 21:20:04 +0000</pubDate>
+        <pubDate>Sun, 01 Jan 2023 21:20:04 +0800</pubDate>
         
         <guid>https://hubojing.github.io/lxx2ztkd/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -1534,7 +1618,7 @@ $$L_{ranking}=-log(\sigma(r_\theta(x, y_c)-r_\theta(x,y_r)))$$$$L_{ranking}=-log
         <item>
         <title>Python深拷贝与浅拷贝bug实例浅析</title>
         <link>https://hubojing.github.io/tplcmqaz/</link>
-        <pubDate>Sat, 03 Dec 2022 23:26:08 +0000</pubDate>
+        <pubDate>Sat, 03 Dec 2022 23:26:08 +0800</pubDate>
         
         <guid>https://hubojing.github.io/tplcmqaz/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -1960,7 +2044,7 @@ A deep copy constructs a new compound object and then, recursively, inserts &lt;
         <item>
         <title>Python数据处理代码笔记</title>
         <link>https://hubojing.github.io/qxwfxnta/</link>
-        <pubDate>Thu, 06 Oct 2022 14:59:36 +0000</pubDate>
+        <pubDate>Thu, 06 Oct 2022 14:59:36 +0800</pubDate>
         
         <guid>https://hubojing.github.io/qxwfxnta/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -2142,7 +2226,7 @@ A deep copy constructs a new compound object and then, recursively, inserts &lt;
         <item>
         <title>Waline评论服务端转移至Deta</title>
         <link>https://hubojing.github.io/optrka3p/</link>
-        <pubDate>Mon, 12 Sep 2022 11:24:26 +0000</pubDate>
+        <pubDate>Mon, 12 Sep 2022 11:24:26 +0800</pubDate>
         
         <guid>https://hubojing.github.io/optrka3p/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -2205,7 +2289,7 @@ A deep copy constructs a new compound object and then, recursively, inserts &lt;
         <item>
         <title>关系抽取（RE）论文泛读</title>
         <link>https://hubojing.github.io/nx3rj2gp/</link>
-        <pubDate>Tue, 16 Aug 2022 19:37:35 +0000</pubDate>
+        <pubDate>Tue, 16 Aug 2022 19:37:35 +0800</pubDate>
         
         <guid>https://hubojing.github.io/nx3rj2gp/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -2308,7 +2392,7 @@ Fangchao Liu, Hongyu Lin, Xianpei Han, Boxi Cao, Le Sun
         <item>
         <title>兴趣点推荐（POI Recommendation）论文泛读</title>
         <link>https://hubojing.github.io/adedun3u/</link>
-        <pubDate>Sun, 14 Aug 2022 22:34:04 +0000</pubDate>
+        <pubDate>Sun, 14 Aug 2022 22:34:04 +0800</pubDate>
         
         <guid>https://hubojing.github.io/adedun3u/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -2341,7 +2425,7 @@ Nicholas Lim, Bryan Hooi, See-Kiong Ng,Yong Liang Goh, Renrong Weng, Rui Tan
         <item>
         <title>实体链接（EL）论文泛读</title>
         <link>https://hubojing.github.io/7mjmdmcq/</link>
-        <pubDate>Sun, 14 Aug 2022 16:26:09 +0000</pubDate>
+        <pubDate>Sun, 14 Aug 2022 16:26:09 +0800</pubDate>
         
         <guid>https://hubojing.github.io/7mjmdmcq/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -2391,7 +2475,7 @@ Facebook AI
         <item>
         <title>BERT</title>
         <link>https://hubojing.github.io/nxk7vdtv/</link>
-        <pubDate>Tue, 09 Aug 2022 20:59:07 +0000</pubDate>
+        <pubDate>Tue, 09 Aug 2022 20:59:07 +0800</pubDate>
         
         <guid>https://hubojing.github.io/nxk7vdtv/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -2461,7 +2545,7 @@ NAACL-HLT会议-NLP顶会
         <item>
         <title>samba映射</title>
         <link>https://hubojing.github.io/gwlxfwxf/</link>
-        <pubDate>Sun, 31 Jul 2022 18:02:47 +0000</pubDate>
+        <pubDate>Sun, 31 Jul 2022 18:02:47 +0800</pubDate>
         
         <guid>https://hubojing.github.io/gwlxfwxf/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -2555,7 +2639,7 @@ NAACL-HLT会议-NLP顶会
         <item>
         <title>JingSLink</title>
         <link>https://hubojing.github.io/cuu2edep/</link>
-        <pubDate>Sun, 03 Jul 2022 21:26:39 +0000</pubDate>
+        <pubDate>Sun, 03 Jul 2022 21:26:39 +0800</pubDate>
         
         <guid>https://hubojing.github.io/cuu2edep/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -2637,7 +2721,7 @@ NAACL-HLT会议-NLP顶会
         <item>
         <title>TEMN</title>
         <link>https://hubojing.github.io/wpzth4rk/</link>
-        <pubDate>Sun, 03 Jul 2022 13:03:28 +0000</pubDate>
+        <pubDate>Sun, 03 Jul 2022 13:03:28 +0800</pubDate>
         
         <guid>https://hubojing.github.io/wpzth4rk/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -2723,7 +2807,7 @@ NAACL-HLT会议-NLP顶会
         <item>
         <title>Office三件套笔记</title>
         <link>https://hubojing.github.io/gazuh6n5/</link>
-        <pubDate>Sat, 02 Jul 2022 09:42:53 +0000</pubDate>
+        <pubDate>Sat, 02 Jul 2022 09:42:53 +0800</pubDate>
         
         <guid>https://hubojing.github.io/gazuh6n5/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -2795,7 +2879,7 @@ NAACL-HLT会议-NLP顶会
         <item>
         <title>毕业</title>
         <link>https://hubojing.github.io/t5rf9jxu/</link>
-        <pubDate>Wed, 29 Jun 2022 10:29:24 +0000</pubDate>
+        <pubDate>Wed, 29 Jun 2022 10:29:24 +0800</pubDate>
         
         <guid>https://hubojing.github.io/t5rf9jxu/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -2833,7 +2917,7 @@ NAACL-HLT会议-NLP顶会
         <item>
         <title>《推荐系统：原理与实践》笔记</title>
         <link>https://hubojing.github.io/bxjrrhxn/</link>
-        <pubDate>Wed, 15 Jun 2022 10:41:55 +0000</pubDate>
+        <pubDate>Wed, 15 Jun 2022 10:41:55 +0800</pubDate>
         
         <guid>https://hubojing.github.io/bxjrrhxn/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -2948,7 +3032,7 @@ NAACL-HLT会议-NLP顶会
         <item>
         <title>2022年最新教程！Hexo &#43; GitLab搭建个人博客详细教程</title>
         <link>https://hubojing.github.io/rhvdojbx/</link>
-        <pubDate>Wed, 08 Jun 2022 10:19:16 +0000</pubDate>
+        <pubDate>Wed, 08 Jun 2022 10:19:16 +0800</pubDate>
         
         <guid>https://hubojing.github.io/rhvdojbx/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -3153,7 +3237,7 @@ NAACL-HLT会议-NLP顶会
         <item>
         <title>关于TensorFlow和Pytorch的GPU版本配置问题</title>
         <link>https://hubojing.github.io/nvygflvc/</link>
-        <pubDate>Mon, 18 Apr 2022 22:13:41 +0000</pubDate>
+        <pubDate>Mon, 18 Apr 2022 22:13:41 +0800</pubDate>
         
         <guid>https://hubojing.github.io/nvygflvc/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -3459,7 +3543,7 @@ cmd中在C:\Windows\System32下&lt;/p&gt;
         <item>
         <title>技术博客访问量超过十万</title>
         <link>https://hubojing.github.io/ptllcvzw/</link>
-        <pubDate>Wed, 13 Apr 2022 14:30:18 +0000</pubDate>
+        <pubDate>Wed, 13 Apr 2022 14:30:18 +0800</pubDate>
         
         <guid>https://hubojing.github.io/ptllcvzw/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -3488,7 +3572,7 @@ cmd中在C:\Windows\System32下&lt;/p&gt;
         <item>
         <title>LSTPM</title>
         <link>https://hubojing.github.io/mnykvgbq/</link>
-        <pubDate>Fri, 25 Feb 2022 15:59:46 +0000</pubDate>
+        <pubDate>Fri, 25 Feb 2022 15:59:46 +0800</pubDate>
         
         <guid>https://hubojing.github.io/mnykvgbq/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -3635,7 +3719,7 @@ $$y_i = \frac{1}{C(x)}\sum{_{\forall j}f(x_i, x_j)g(x_j)}$$&lt;p&gt;
         <item>
         <title>ASGNN</title>
         <link>https://hubojing.github.io/gwmprssu/</link>
-        <pubDate>Sat, 29 Jan 2022 14:27:42 +0000</pubDate>
+        <pubDate>Sat, 29 Jan 2022 14:27:42 +0800</pubDate>
         
         <guid>https://hubojing.github.io/gwmprssu/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -3796,7 +3880,7 @@ $$y_i = \frac{1}{C(x)}\sum{_{\forall j}f(x_i, x_j)g(x_j)}$$&lt;p&gt;
         <item>
         <title>STAN</title>
         <link>https://hubojing.github.io/fhfxfwzp/</link>
-        <pubDate>Mon, 24 Jan 2022 11:20:37 +0000</pubDate>
+        <pubDate>Mon, 24 Jan 2022 11:20:37 +0800</pubDate>
         
         <guid>https://hubojing.github.io/fhfxfwzp/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -3905,7 +3989,7 @@ $$y_i = \frac{1}{C(x)}\sum{_{\forall j}f(x_i, x_j)g(x_j)}$$&lt;p&gt;
         <item>
         <title>CHAML</title>
         <link>https://hubojing.github.io/pd2tgrcn/</link>
-        <pubDate>Sat, 22 Jan 2022 18:02:37 +0000</pubDate>
+        <pubDate>Sat, 22 Jan 2022 18:02:37 +0800</pubDate>
         
         <guid>https://hubojing.github.io/pd2tgrcn/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -4005,7 +4089,7 @@ $$y_i = \frac{1}{C(x)}\sum{_{\forall j}f(x_i, x_j)g(x_j)}$$&lt;p&gt;
         <item>
         <title>博客更换为Waline评论系统</title>
         <link>https://hubojing.github.io/gqfgyzbx/</link>
-        <pubDate>Fri, 14 Jan 2022 21:18:13 +0000</pubDate>
+        <pubDate>Fri, 14 Jan 2022 21:18:13 +0800</pubDate>
         
         <guid>https://hubojing.github.io/gqfgyzbx/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -4235,7 +4319,7 @@ $$y_i = \frac{1}{C(x)}\sum{_{\forall j}f(x_i, x_j)g(x_j)}$$&lt;p&gt;
         <item>
         <title>2021年终总结</title>
         <link>https://hubojing.github.io/jhaftkd3/</link>
-        <pubDate>Fri, 31 Dec 2021 13:00:59 +0000</pubDate>
+        <pubDate>Fri, 31 Dec 2021 13:00:59 +0800</pubDate>
         
         <guid>https://hubojing.github.io/jhaftkd3/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -4280,7 +4364,7 @@ $$y_i = \frac{1}{C(x)}\sum{_{\forall j}f(x_i, x_j)g(x_j)}$$&lt;p&gt;
         <item>
         <title>解决Valine评论不显示的问题</title>
         <link>https://hubojing.github.io/qqcurtcr/</link>
-        <pubDate>Tue, 07 Dec 2021 14:49:31 +0000</pubDate>
+        <pubDate>Tue, 07 Dec 2021 14:49:31 +0800</pubDate>
         
         <guid>https://hubojing.github.io/qqcurtcr/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -4411,7 +4495,7 @@ $$y_i = \frac{1}{C(x)}\sum{_{\forall j}f(x_i, x_j)g(x_j)}$$&lt;p&gt;
         <item>
         <title>迟到四年的评测——一加5T</title>
         <link>https://hubojing.github.io/3zsuzcfj/</link>
-        <pubDate>Tue, 16 Nov 2021 21:06:00 +0000</pubDate>
+        <pubDate>Tue, 16 Nov 2021 21:06:00 +0800</pubDate>
         
         <guid>https://hubojing.github.io/3zsuzcfj/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -4647,7 +4731,7 @@ $$y_i = \frac{1}{C(x)}\sum{_{\forall j}f(x_i, x_j)g(x_j)}$$&lt;p&gt;
         <item>
         <title>设计模式笔记</title>
         <link>https://hubojing.github.io/tbre6qau/</link>
-        <pubDate>Tue, 02 Nov 2021 09:18:50 +0000</pubDate>
+        <pubDate>Tue, 02 Nov 2021 09:18:50 +0800</pubDate>
         
         <guid>https://hubojing.github.io/tbre6qau/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -4983,7 +5067,7 @@ Windows的COM组件与MFC。&lt;/li&gt;
         <item>
         <title>靖靖的脑洞大开（3）——元宇宙</title>
         <link>https://hubojing.github.io/yor4smbe/</link>
-        <pubDate>Thu, 28 Oct 2021 15:01:45 +0000</pubDate>
+        <pubDate>Thu, 28 Oct 2021 15:01:45 +0800</pubDate>
         
         <guid>https://hubojing.github.io/yor4smbe/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -5049,7 +5133,7 @@ Windows的COM组件与MFC。&lt;/li&gt;
         <item>
         <title>写在实习之后</title>
         <link>https://hubojing.github.io/evjea2fg/</link>
-        <pubDate>Sun, 26 Sep 2021 16:17:17 +0000</pubDate>
+        <pubDate>Sun, 26 Sep 2021 16:17:17 +0800</pubDate>
         
         <guid>https://hubojing.github.io/evjea2fg/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -5095,7 +5179,7 @@ Windows的COM组件与MFC。&lt;/li&gt;
         <item>
         <title>浅析Pandas中append方法的效率问题</title>
         <link>https://hubojing.github.io/e9dwg9yy/</link>
-        <pubDate>Thu, 16 Sep 2021 17:08:06 +0000</pubDate>
+        <pubDate>Thu, 16 Sep 2021 17:08:06 +0800</pubDate>
         
         <guid>https://hubojing.github.io/e9dwg9yy/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -5466,7 +5550,7 @@ Windows的COM组件与MFC。&lt;/li&gt;
         <item>
         <title>Pandas自用笔记</title>
         <link>https://hubojing.github.io/wqyvsc8w/</link>
-        <pubDate>Sun, 11 Jul 2021 16:02:53 +0000</pubDate>
+        <pubDate>Sun, 11 Jul 2021 16:02:53 +0800</pubDate>
         
         <guid>https://hubojing.github.io/wqyvsc8w/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -5685,7 +5769,7 @@ Windows的COM组件与MFC。&lt;/li&gt;
         <item>
         <title>CRF&#43;&#43;</title>
         <link>https://hubojing.github.io/bmnfc4tc/</link>
-        <pubDate>Wed, 16 Jun 2021 22:31:37 +0000</pubDate>
+        <pubDate>Wed, 16 Jun 2021 22:31:37 +0800</pubDate>
         
         <guid>https://hubojing.github.io/bmnfc4tc/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -5756,7 +5840,7 @@ Windows的COM组件与MFC。&lt;/li&gt;
         <item>
         <title>【Paper】DIN模型</title>
         <link>https://hubojing.github.io/rup2htsf/</link>
-        <pubDate>Thu, 06 May 2021 10:55:35 +0000</pubDate>
+        <pubDate>Thu, 06 May 2021 10:55:35 +0800</pubDate>
         
         <guid>https://hubojing.github.io/rup2htsf/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -5970,7 +6054,7 @@ $$w_j\leftarrow w_j - \eta[\frac{1}{|B_m|}\sum_{(x,y)∈B_m}\frac{\partial L(p(x
         <item>
         <title>【Paper】Entire Space Multi-Task Model-An Effective Approach for Estimating Post-Click Conversion Rate</title>
         <link>https://hubojing.github.io/hpxssgui/</link>
-        <pubDate>Tue, 27 Apr 2021 10:23:10 +0000</pubDate>
+        <pubDate>Tue, 27 Apr 2021 10:23:10 +0800</pubDate>
         
         <guid>https://hubojing.github.io/hpxssgui/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -6040,7 +6124,7 @@ l(·)是交叉熵损失函数。&lt;/p&gt;
         <item>
         <title>多机共用一套键鼠方案</title>
         <link>https://hubojing.github.io/qzkdzchu/</link>
-        <pubDate>Fri, 05 Mar 2021 11:35:43 +0000</pubDate>
+        <pubDate>Fri, 05 Mar 2021 11:35:43 +0800</pubDate>
         
         <guid>https://hubojing.github.io/qzkdzchu/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -6084,7 +6168,7 @@ l(·)是交叉熵损失函数。&lt;/p&gt;
         <item>
         <title>【Paper】Wide &amp; Deep Learning for Recommender Systems</title>
         <link>https://hubojing.github.io/ux6wmeer/</link>
-        <pubDate>Tue, 02 Mar 2021 09:20:00 +0000</pubDate>
+        <pubDate>Tue, 02 Mar 2021 09:20:00 +0800</pubDate>
         
         <guid>https://hubojing.github.io/ux6wmeer/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -6218,7 +6302,7 @@ l(·)是交叉熵损失函数。&lt;/p&gt;
         <item>
         <title>【paper】AutoRec - Autoencoders Meet Collaborative Filtering</title>
         <link>https://hubojing.github.io/dapymrcc/</link>
-        <pubDate>Thu, 04 Feb 2021 10:19:03 +0000</pubDate>
+        <pubDate>Thu, 04 Feb 2021 10:19:03 +0800</pubDate>
         
         <guid>https://hubojing.github.io/dapymrcc/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -6317,7 +6401,7 @@ MF学习线性潜在表示，AutoRec可以通过激活函数学习非线性潜�
         <item>
         <title>打脸现场——2020年终总结</title>
         <link>https://hubojing.github.io/hcw7uuxx/</link>
-        <pubDate>Thu, 31 Dec 2020 15:51:31 +0000</pubDate>
+        <pubDate>Thu, 31 Dec 2020 15:51:31 +0800</pubDate>
         
         <guid>https://hubojing.github.io/hcw7uuxx/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -6445,7 +6529,7 @@ MF学习线性潜在表示，AutoRec可以通过激活函数学习非线性潜�
         <item>
         <title>【Paper】Deep Neural Networks for YouTube Recommendations</title>
         <link>https://hubojing.github.io/fqywpuls/</link>
-        <pubDate>Tue, 15 Dec 2020 14:24:54 +0000</pubDate>
+        <pubDate>Tue, 15 Dec 2020 14:24:54 +0800</pubDate>
         
         <guid>https://hubojing.github.io/fqywpuls/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -6579,7 +6663,7 @@ univalent例子：被评分的视频ID，multivalent例子：用户最近观看�
         <item>
         <title>【Paper】Factorization Machines</title>
         <link>https://hubojing.github.io/ucapbpue/</link>
-        <pubDate>Wed, 09 Dec 2020 11:18:31 +0000</pubDate>
+        <pubDate>Wed, 09 Dec 2020 11:18:31 +0800</pubDate>
         
         <guid>https://hubojing.github.io/ucapbpue/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -6676,7 +6760,7 @@ $$\hat{y}(x) = w_0 + \sqrt{2}(w_u + w_i) + w_{u,u}^{(2)} +  w_{i,i}^{(2)} + \sqr
         <item>
         <title>【Paper】Matrix Factorization Techniques for Recommender Systems</title>
         <link>https://hubojing.github.io/dvbvavgt/</link>
-        <pubDate>Mon, 07 Dec 2020 15:12:57 +0000</pubDate>
+        <pubDate>Mon, 07 Dec 2020 15:12:57 +0800</pubDate>
         
         <guid>https://hubojing.github.io/dvbvavgt/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -6753,7 +6837,7 @@ $$\hat{y}(x) = w_0 + \sqrt{2}(w_u + w_i) + w_{u,u}^{(2)} +  w_{i,i}^{(2)} + \sqr
         <item>
         <title>【Paper】Amazon.com Recommendations Item-to-Item Collaborative Filtering</title>
         <link>https://hubojing.github.io/h5bkenqv/</link>
-        <pubDate>Wed, 02 Dec 2020 14:40:23 +0000</pubDate>
+        <pubDate>Wed, 02 Dec 2020 14:40:23 +0800</pubDate>
         
         <guid>https://hubojing.github.io/h5bkenqv/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -6853,7 +6937,7 @@ $$\hat{y}(x) = w_0 + \sqrt{2}(w_u + w_i) + w_{u,u}^{(2)} +  w_{i,i}^{(2)} + \sqr
         <item>
         <title>关于RSS订阅</title>
         <link>https://hubojing.github.io/uwzd2h6h/</link>
-        <pubDate>Wed, 02 Dec 2020 09:57:14 +0000</pubDate>
+        <pubDate>Wed, 02 Dec 2020 09:57:14 +0800</pubDate>
         
         <guid>https://hubojing.github.io/uwzd2h6h/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -6886,7 +6970,7 @@ $$\hat{y}(x) = w_0 + \sqrt{2}(w_u + w_i) + w_{u,u}^{(2)} +  w_{i,i}^{(2)} + \sqr
         <item>
         <title>深度学习常用数学知识</title>
         <link>https://hubojing.github.io/kw4ffint/</link>
-        <pubDate>Sat, 15 Aug 2020 11:00:19 +0000</pubDate>
+        <pubDate>Sat, 15 Aug 2020 11:00:19 +0800</pubDate>
         
         <guid>https://hubojing.github.io/kw4ffint/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -7528,7 +7612,7 @@ $k$阶中心矩 $E\left{ {\lbrack X - E(X)\rbrack}^{k} \right}$&lt;/p&gt;
         <item>
         <title>Hulu AI Class Quiz</title>
         <link>https://hubojing.github.io/gqeubb8v/</link>
-        <pubDate>Thu, 23 Jul 2020 16:00:29 +0000</pubDate>
+        <pubDate>Thu, 23 Jul 2020 16:00:29 +0800</pubDate>
         
         <guid>https://hubojing.github.io/gqeubb8v/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -7633,7 +7717,7 @@ B.不合理，他应该花10天时间来调优模型&lt;/p&gt;
         <item>
         <title>【Paper】Using Collaborative Filtering to Weave an Information Tapestry</title>
         <link>https://hubojing.github.io/jaxyksgz/</link>
-        <pubDate>Wed, 15 Jul 2020 16:44:25 +0000</pubDate>
+        <pubDate>Wed, 15 Jul 2020 16:44:25 +0800</pubDate>
         
         <guid>https://hubojing.github.io/jaxyksgz/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -7655,7 +7739,7 @@ B.不合理，他应该花10天时间来调优模型&lt;/p&gt;
         <item>
         <title>新的迷茫</title>
         <link>https://hubojing.github.io/epfvuqhy/</link>
-        <pubDate>Tue, 30 Jun 2020 08:30:28 +0000</pubDate>
+        <pubDate>Tue, 30 Jun 2020 08:30:28 +0800</pubDate>
         
         <guid>https://hubojing.github.io/epfvuqhy/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -7701,7 +7785,7 @@ B.不合理，他应该花10天时间来调优模型&lt;/p&gt;
         <item>
         <title>【询问帖】</title>
         <link>https://hubojing.github.io/a5xz6lco/</link>
-        <pubDate>Sun, 14 Jun 2020 17:28:21 +0000</pubDate>
+        <pubDate>Sun, 14 Jun 2020 17:28:21 +0800</pubDate>
         
         <guid>https://hubojing.github.io/a5xz6lco/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -7721,7 +7805,7 @@ B.不合理，他应该花10天时间来调优模型&lt;/p&gt;
         <item>
         <title>靖靖的脑洞大开（2）</title>
         <link>https://hubojing.github.io/ofkscrob/</link>
-        <pubDate>Wed, 13 May 2020 13:28:28 +0000</pubDate>
+        <pubDate>Wed, 13 May 2020 13:28:28 +0800</pubDate>
         
         <guid>https://hubojing.github.io/ofkscrob/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -7748,7 +7832,7 @@ B.不合理，他应该花10天时间来调优模型&lt;/p&gt;
         <item>
         <title>ECharts笔记</title>
         <link>https://hubojing.github.io/v8fm4ml7/</link>
-        <pubDate>Wed, 08 Apr 2020 13:42:38 +0000</pubDate>
+        <pubDate>Wed, 08 Apr 2020 13:42:38 +0800</pubDate>
         
         <guid>https://hubojing.github.io/v8fm4ml7/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -13021,7 +13105,7 @@ X轴：xAxis
         <item>
         <title>词的向量表示方法</title>
         <link>https://hubojing.github.io/h7qeqvnf/</link>
-        <pubDate>Wed, 15 Jan 2020 20:14:49 +0000</pubDate>
+        <pubDate>Wed, 15 Jan 2020 20:14:49 +0800</pubDate>
         
         <guid>https://hubojing.github.io/h7qeqvnf/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -13104,7 +13188,7 @@ vector(&amp;lsquo;Paris&amp;rsquo;) - Vector(&amp;lsquo;France&amp;rsquo;) + Vec
         <item>
         <title>2020——新的启航</title>
         <link>https://hubojing.github.io/dzwpfsv9/</link>
-        <pubDate>Thu, 02 Jan 2020 21:42:00 +0000</pubDate>
+        <pubDate>Thu, 02 Jan 2020 21:42:00 +0800</pubDate>
         
         <guid>https://hubojing.github.io/dzwpfsv9/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -13193,7 +13277,7 @@ vector(&amp;lsquo;Paris&amp;rsquo;) - Vector(&amp;lsquo;France&amp;rsquo;) + Vec
         <item>
         <title>《推荐系统实践》笔记</title>
         <link>https://hubojing.github.io/leqnlq9y/</link>
-        <pubDate>Sat, 30 Nov 2019 18:45:33 +0000</pubDate>
+        <pubDate>Sat, 30 Nov 2019 18:45:33 +0800</pubDate>
         
         <guid>https://hubojing.github.io/leqnlq9y/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -13410,7 +13494,7 @@ $$d_i = {(e_1, w_1),(e_2,w_2),...}$$&lt;p&gt;
         <item>
         <title>注意力机制</title>
         <link>https://hubojing.github.io/ytpny8ez/</link>
-        <pubDate>Tue, 26 Nov 2019 14:08:38 +0000</pubDate>
+        <pubDate>Tue, 26 Nov 2019 14:08:38 +0800</pubDate>
         
         <guid>https://hubojing.github.io/ytpny8ez/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -13436,7 +13520,7 @@ Attention函数的本质可以被描述为一个查询（query）到一系列（
         <item>
         <title>一元线性回归</title>
         <link>https://hubojing.github.io/f9qaptva/</link>
-        <pubDate>Mon, 25 Nov 2019 15:31:46 +0000</pubDate>
+        <pubDate>Mon, 25 Nov 2019 15:31:46 +0800</pubDate>
         
         <guid>https://hubojing.github.io/f9qaptva/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -13849,7 +13933,7 @@ b: 1.0420128
         <item>
         <title>再学Java-基础</title>
         <link>https://hubojing.github.io/atjbhhgq/</link>
-        <pubDate>Sun, 27 Oct 2019 21:21:25 +0000</pubDate>
+        <pubDate>Sun, 27 Oct 2019 21:21:25 +0800</pubDate>
         
         <guid>https://hubojing.github.io/atjbhhgq/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -19505,7 +19589,7 @@ createNewFile,delete,exists, getAbsolutePath, getName, getParent,getPath, isDire
         <item>
         <title>在Eclipse中使用Weka</title>
         <link>https://hubojing.github.io/hzlhuprc/</link>
-        <pubDate>Thu, 17 Oct 2019 10:28:49 +0000</pubDate>
+        <pubDate>Thu, 17 Oct 2019 10:28:49 +0800</pubDate>
         
         <guid>https://hubojing.github.io/hzlhuprc/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -19563,7 +19647,7 @@ weka.gui下&lt;code&gt;GenericPropertiesCreator.props&lt;/code&gt;中添加创�
         <item>
         <title>ArcGIS操作备忘</title>
         <link>https://hubojing.github.io/khh4rncn/</link>
-        <pubDate>Wed, 09 Oct 2019 16:27:29 +0000</pubDate>
+        <pubDate>Wed, 09 Oct 2019 16:27:29 +0800</pubDate>
         
         <guid>https://hubojing.github.io/khh4rncn/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -19619,7 +19703,7 @@ weka.gui下&lt;code&gt;GenericPropertiesCreator.props&lt;/code&gt;中添加创�
         <item>
         <title>学习R语言</title>
         <link>https://hubojing.github.io/rgrfqag2/</link>
-        <pubDate>Fri, 27 Sep 2019 21:21:27 +0000</pubDate>
+        <pubDate>Fri, 27 Sep 2019 21:21:27 +0800</pubDate>
         
         <guid>https://hubojing.github.io/rgrfqag2/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -20442,7 +20526,7 @@ formula形如y~x1+x2+&amp;hellip;的公式框架，data数据框&lt;/p&gt;
         <item>
         <title>初涉Hadoop</title>
         <link>https://hubojing.github.io/kammayy2/</link>
-        <pubDate>Tue, 24 Sep 2019 18:45:27 +0000</pubDate>
+        <pubDate>Tue, 24 Sep 2019 18:45:27 +0800</pubDate>
         
         <guid>https://hubojing.github.io/kammayy2/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -20528,7 +20612,7 @@ HDFS文件交互：copyFromLocal, copyToLocal, get, put&lt;/p&gt;</description>
         <item>
         <title>Hexo博客进阶优化</title>
         <link>https://hubojing.github.io/nfw7y3bb/</link>
-        <pubDate>Sat, 14 Sep 2019 23:03:40 +0000</pubDate>
+        <pubDate>Sat, 14 Sep 2019 23:03:40 +0800</pubDate>
         
         <guid>https://hubojing.github.io/nfw7y3bb/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -20728,7 +20812,7 @@ HDFS文件交互：copyFromLocal, copyToLocal, get, put&lt;/p&gt;</description>
         <item>
         <title>SSD重装系统最简教程</title>
         <link>https://hubojing.github.io/srtnmlke/</link>
-        <pubDate>Thu, 12 Sep 2019 13:59:01 +0000</pubDate>
+        <pubDate>Thu, 12 Sep 2019 13:59:01 +0800</pubDate>
         
         <guid>https://hubojing.github.io/srtnmlke/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -20782,7 +20866,7 @@ SSD也有更便宜的，不过数据还是重要，买个适配好点的吧&amp;
         <item>
         <title>Github&#43;SSH就这么连</title>
         <link>https://hubojing.github.io/q4exeafp/</link>
-        <pubDate>Wed, 11 Sep 2019 21:06:02 +0000</pubDate>
+        <pubDate>Wed, 11 Sep 2019 21:06:02 +0800</pubDate>
         
         <guid>https://hubojing.github.io/q4exeafp/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -20829,7 +20913,7 @@ SSD也有更便宜的，不过数据还是重要，买个适配好点的吧&amp;
         <item>
         <title>ChromeDevTools调试备忘</title>
         <link>https://hubojing.github.io/7ebpyzzl/</link>
-        <pubDate>Wed, 14 Aug 2019 15:22:21 +0000</pubDate>
+        <pubDate>Wed, 14 Aug 2019 15:22:21 +0800</pubDate>
         
         <guid>https://hubojing.github.io/7ebpyzzl/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -20868,7 +20952,7 @@ SSD也有更便宜的，不过数据还是重要，买个适配好点的吧&amp;
         <item>
         <title>初涉Maven</title>
         <link>https://hubojing.github.io/gpmj4yqz/</link>
-        <pubDate>Sat, 10 Aug 2019 16:26:08 +0000</pubDate>
+        <pubDate>Sat, 10 Aug 2019 16:26:08 +0800</pubDate>
         
         <guid>https://hubojing.github.io/gpmj4yqz/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -21627,7 +21711,7 @@ Artifact Id:webdemo&lt;/p&gt;
         <item>
         <title>测手速软件APMShow开发——佟年送给韩商言的礼物</title>
         <link>https://hubojing.github.io/prk4pmo2/</link>
-        <pubDate>Mon, 22 Jul 2019 14:26:45 +0000</pubDate>
+        <pubDate>Mon, 22 Jul 2019 14:26:45 +0800</pubDate>
         
         <guid>https://hubojing.github.io/prk4pmo2/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -21806,7 +21890,7 @@ Artifact Id:webdemo&lt;/p&gt;
         <item>
         <title>推荐那些事儿</title>
         <link>https://hubojing.github.io/b9shtjnk/</link>
-        <pubDate>Wed, 17 Jul 2019 14:35:46 +0000</pubDate>
+        <pubDate>Wed, 17 Jul 2019 14:35:46 +0800</pubDate>
         
         <guid>https://hubojing.github.io/b9shtjnk/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -21905,7 +21989,7 @@ TrustSVD(加入社会化信任机制)&lt;/p&gt;
         <item>
         <title>微言笔记</title>
         <link>https://hubojing.github.io/4miygpce/</link>
-        <pubDate>Sun, 14 Jul 2019 12:11:34 +0000</pubDate>
+        <pubDate>Sun, 14 Jul 2019 12:11:34 +0800</pubDate>
         
         <guid>https://hubojing.github.io/4miygpce/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -21971,7 +22055,7 @@ order by OrderDate desc&lt;/p&gt;
         <item>
         <title>图</title>
         <link>https://hubojing.github.io/q58azm6e/</link>
-        <pubDate>Sat, 22 Jun 2019 15:12:35 +0000</pubDate>
+        <pubDate>Sat, 22 Jun 2019 15:12:35 +0800</pubDate>
         
         <guid>https://hubojing.github.io/q58azm6e/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -24649,7 +24733,7 @@ order by OrderDate desc&lt;/p&gt;
         <item>
         <title>线性表</title>
         <link>https://hubojing.github.io/y456dm9v/</link>
-        <pubDate>Wed, 12 Jun 2019 12:17:40 +0000</pubDate>
+        <pubDate>Wed, 12 Jun 2019 12:17:40 +0800</pubDate>
         
         <guid>https://hubojing.github.io/y456dm9v/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -26648,7 +26732,7 @@ order by OrderDate desc&lt;/p&gt;
         <item>
         <title>浅谈面向接口编程</title>
         <link>https://hubojing.github.io/3nfb9jnv/</link>
-        <pubDate>Tue, 11 Jun 2019 16:52:13 +0000</pubDate>
+        <pubDate>Tue, 11 Jun 2019 16:52:13 +0800</pubDate>
         
         <guid>https://hubojing.github.io/3nfb9jnv/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -26696,7 +26780,7 @@ order by OrderDate desc&lt;/p&gt;
         <item>
         <title>计算机图形学实验</title>
         <link>https://hubojing.github.io/ewpqxiwc/</link>
-        <pubDate>Sun, 12 May 2019 17:25:58 +0000</pubDate>
+        <pubDate>Sun, 12 May 2019 17:25:58 +0800</pubDate>
         
         <guid>https://hubojing.github.io/ewpqxiwc/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -27163,7 +27247,7 @@ categories: 互联网
         <item>
         <title>记一回失败的渲染操作</title>
         <link>https://hubojing.github.io/ubdgsyk7/</link>
-        <pubDate>Sat, 20 Apr 2019 22:43:56 +0000</pubDate>
+        <pubDate>Sat, 20 Apr 2019 22:43:56 +0800</pubDate>
         
         <guid>https://hubojing.github.io/ubdgsyk7/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -27210,7 +27294,7 @@ categories: 互联网
         <item>
         <title>小概念杂记</title>
         <link>https://hubojing.github.io/eic2xupc/</link>
-        <pubDate>Mon, 25 Feb 2019 20:42:15 +0000</pubDate>
+        <pubDate>Mon, 25 Feb 2019 20:42:15 +0800</pubDate>
         
         <guid>https://hubojing.github.io/eic2xupc/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -27235,7 +27319,7 @@ categories: 互联网
         <item>
         <title>JingPic——github图床外链小工具</title>
         <link>https://hubojing.github.io/gtexwcbw/</link>
-        <pubDate>Sun, 27 Jan 2019 19:28:55 +0000</pubDate>
+        <pubDate>Sun, 27 Jan 2019 19:28:55 +0800</pubDate>
         
         <guid>https://hubojing.github.io/gtexwcbw/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -27440,7 +27524,7 @@ categories: 互联网
         <item>
         <title>C&#43;&#43;程序设计之兼谈对象模型</title>
         <link>https://hubojing.github.io/4dwpgd3v/</link>
-        <pubDate>Tue, 22 Jan 2019 11:51:11 +0000</pubDate>
+        <pubDate>Tue, 22 Jan 2019 11:51:11 +0800</pubDate>
         
         <guid>https://hubojing.github.io/4dwpgd3v/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -29446,7 +29530,7 @@ int 4字节，long 4字节，string（里面是个指针）4字节
         <item>
         <title>Django博客demo</title>
         <link>https://hubojing.github.io/acuzxhyn/</link>
-        <pubDate>Fri, 11 Jan 2019 18:19:51 +0000</pubDate>
+        <pubDate>Fri, 11 Jan 2019 18:19:51 +0800</pubDate>
         
         <guid>https://hubojing.github.io/acuzxhyn/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -30708,7 +30792,7 @@ Django提供了许多针对Admin的定制功能&lt;/p&gt;
         <item>
         <title>新年Flag</title>
         <link>https://hubojing.github.io/uoiuoe5l/</link>
-        <pubDate>Tue, 01 Jan 2019 22:18:16 +0000</pubDate>
+        <pubDate>Tue, 01 Jan 2019 22:18:16 +0800</pubDate>
         
         <guid>https://hubojing.github.io/uoiuoe5l/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -30751,7 +30835,7 @@ Django提供了许多针对Admin的定制功能&lt;/p&gt;
         <item>
         <title>C&#43;&#43;面向对象程序设计（侯捷）笔记</title>
         <link>https://hubojing.github.io/hhksa2eh/</link>
-        <pubDate>Thu, 27 Dec 2018 18:27:25 +0000</pubDate>
+        <pubDate>Thu, 27 Dec 2018 18:27:25 +0800</pubDate>
         
         <guid>https://hubojing.github.io/hhksa2eh/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -33647,7 +33731,7 @@ pure virtual函数：希望derived class一定要重新定义(override)它，对
         <item>
         <title>linux C语言结构体</title>
         <link>https://hubojing.github.io/9gujtfmo/</link>
-        <pubDate>Sat, 21 Jul 2018 23:42:23 +0000</pubDate>
+        <pubDate>Sat, 21 Jul 2018 23:42:23 +0800</pubDate>
         
         <guid>https://hubojing.github.io/9gujtfmo/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -33915,7 +33999,7 @@ C++可以直接 weapon a;&lt;/p&gt;
         <item>
         <title>Linux C语言指针与内存</title>
         <link>https://hubojing.github.io/4volnfud/</link>
-        <pubDate>Fri, 20 Jul 2018 23:31:33 +0000</pubDate>
+        <pubDate>Fri, 20 Jul 2018 23:31:33 +0800</pubDate>
         
         <guid>https://hubojing.github.io/4volnfud/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -34002,7 +34086,7 @@ scanf(&amp;quot;%s&amp;quot;, str);
         <item>
         <title>Linux C语言编程基本原理与实践</title>
         <link>https://hubojing.github.io/ktun3oj3/</link>
-        <pubDate>Tue, 17 Jul 2018 22:10:51 +0000</pubDate>
+        <pubDate>Tue, 17 Jul 2018 22:10:51 +0800</pubDate>
         
         <guid>https://hubojing.github.io/ktun3oj3/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -34564,7 +34648,7 @@ ps查看当前的进程，当前操作系统是否开启ssh进程&lt;/p&gt;
         <item>
         <title>读取24位bmp像素数据（带透明通道）</title>
         <link>https://hubojing.github.io/jq5vrjw3/</link>
-        <pubDate>Sat, 26 May 2018 10:21:38 +0000</pubDate>
+        <pubDate>Sat, 26 May 2018 10:21:38 +0800</pubDate>
         
         <guid>https://hubojing.github.io/jq5vrjw3/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -34736,7 +34820,7 @@ ps查看当前的进程，当前操作系统是否开启ssh进程&lt;/p&gt;
         <item>
         <title>bmp保存和imagelist读取</title>
         <link>https://hubojing.github.io/w6gtxhcd/</link>
-        <pubDate>Mon, 21 May 2018 22:46:06 +0000</pubDate>
+        <pubDate>Mon, 21 May 2018 22:46:06 +0800</pubDate>
         
         <guid>https://hubojing.github.io/w6gtxhcd/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -35051,7 +35135,7 @@ ps查看当前的进程，当前操作系统是否开启ssh进程&lt;/p&gt;
         <item>
         <title>Python开发简单爬虫</title>
         <link>https://hubojing.github.io/nty8gkpw/</link>
-        <pubDate>Sun, 11 Mar 2018 15:42:37 +0000</pubDate>
+        <pubDate>Sun, 11 Mar 2018 15:42:37 +0800</pubDate>
         
         <guid>https://hubojing.github.io/nty8gkpw/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -35690,7 +35774,7 @@ eg.&lt;/p&gt;
         <item>
         <title>计算机图形学学习笔记</title>
         <link>https://hubojing.github.io/8wc9aab4/</link>
-        <pubDate>Mon, 05 Mar 2018 21:55:05 +0000</pubDate>
+        <pubDate>Mon, 05 Mar 2018 21:55:05 +0800</pubDate>
         
         <guid>https://hubojing.github.io/8wc9aab4/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -37038,7 +37122,7 @@ y = y1 + u·(y2 - y1)&lt;/p&gt;
         <item>
         <title>BCG网格控件增删移动</title>
         <link>https://hubojing.github.io/gebp9rn4/</link>
-        <pubDate>Sat, 03 Mar 2018 23:21:49 +0000</pubDate>
+        <pubDate>Sat, 03 Mar 2018 23:21:49 +0800</pubDate>
         
         <guid>https://hubojing.github.io/gebp9rn4/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -37317,7 +37401,7 @@ y = y1 + u·(y2 - y1)&lt;/p&gt;
         <item>
         <title>Android Studio配置JDK</title>
         <link>https://hubojing.github.io/c8shbuqx/</link>
-        <pubDate>Fri, 23 Feb 2018 23:18:25 +0000</pubDate>
+        <pubDate>Fri, 23 Feb 2018 23:18:25 +0800</pubDate>
         
         <guid>https://hubojing.github.io/c8shbuqx/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -37361,7 +37445,7 @@ y = y1 + u·(y2 - y1)&lt;/p&gt;
         <item>
         <title>递归中的return</title>
         <link>https://hubojing.github.io/46qhsdeg/</link>
-        <pubDate>Thu, 22 Feb 2018 16:38:03 +0000</pubDate>
+        <pubDate>Thu, 22 Feb 2018 16:38:03 +0800</pubDate>
         
         <guid>https://hubojing.github.io/46qhsdeg/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -37498,7 +37582,7 @@ y = y1 + u·(y2 - y1)&lt;/p&gt;
         <item>
         <title>ffmpeg开发环境搭建</title>
         <link>https://hubojing.github.io/tnzags96/</link>
-        <pubDate>Thu, 22 Feb 2018 10:23:51 +0000</pubDate>
+        <pubDate>Thu, 22 Feb 2018 10:23:51 +0800</pubDate>
         
         <guid>https://hubojing.github.io/tnzags96/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -37619,7 +37703,7 @@ swscale.lib&lt;/li&gt;
         <item>
         <title>联想Y400拆机</title>
         <link>https://hubojing.github.io/mx9ks959/</link>
-        <pubDate>Tue, 20 Feb 2018 15:48:29 +0000</pubDate>
+        <pubDate>Tue, 20 Feb 2018 15:48:29 +0800</pubDate>
         
         <guid>https://hubojing.github.io/mx9ks959/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -37739,7 +37823,7 @@ swscale.lib&lt;/li&gt;
         <item>
         <title>域名更换公告</title>
         <link>https://hubojing.github.io/bc22wmeu/</link>
-        <pubDate>Mon, 19 Feb 2018 00:40:50 +0000</pubDate>
+        <pubDate>Mon, 19 Feb 2018 00:40:50 +0800</pubDate>
         
         <guid>https://hubojing.github.io/bc22wmeu/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -37755,7 +37839,7 @@ swscale.lib&lt;/li&gt;
         <item>
         <title>OpenCV3.4.0编译</title>
         <link>https://hubojing.github.io/spuyglzb/</link>
-        <pubDate>Sun, 28 Jan 2018 22:18:39 +0000</pubDate>
+        <pubDate>Sun, 28 Jan 2018 22:18:39 +0800</pubDate>
         
         <guid>https://hubojing.github.io/spuyglzb/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -38422,7 +38506,7 @@ opencv_videostab340d.lib&lt;/p&gt;
         <item>
         <title>微信自动跳一跳</title>
         <link>https://hubojing.github.io/qwabswct/</link>
-        <pubDate>Sat, 06 Jan 2018 17:03:53 +0000</pubDate>
+        <pubDate>Sat, 06 Jan 2018 17:03:53 +0800</pubDate>
         
         <guid>https://hubojing.github.io/qwabswct/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -38721,7 +38805,7 @@ opencv_videostab340d.lib&lt;/p&gt;
         <item>
         <title>神转折2017</title>
         <link>https://hubojing.github.io/htsnrqsc/</link>
-        <pubDate>Sun, 31 Dec 2017 02:12:03 +0000</pubDate>
+        <pubDate>Sun, 31 Dec 2017 02:12:03 +0800</pubDate>
         
         <guid>https://hubojing.github.io/htsnrqsc/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -38751,7 +38835,7 @@ opencv_videostab340d.lib&lt;/p&gt;
         <item>
         <title>知识杂记</title>
         <link>https://hubojing.github.io/r4jjfhrr/</link>
-        <pubDate>Sat, 25 Nov 2017 21:49:36 +0000</pubDate>
+        <pubDate>Sat, 25 Nov 2017 21:49:36 +0800</pubDate>
         
         <guid>https://hubojing.github.io/r4jjfhrr/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -39221,7 +39305,7 @@ BST_INDETERMINATE 不确定，按钮灰显（只有button有BS_3STATE或BS_AUTO3
         <item>
         <title>PC评测</title>
         <link>https://hubojing.github.io/du54hskb/</link>
-        <pubDate>Tue, 21 Nov 2017 20:57:10 +0000</pubDate>
+        <pubDate>Tue, 21 Nov 2017 20:57:10 +0800</pubDate>
         
         <guid>https://hubojing.github.io/du54hskb/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -39403,7 +39487,7 @@ BST_INDETERMINATE 不确定，按钮灰显（只有button有BS_3STATE或BS_AUTO3
         <item>
         <title>Hexo多机同步</title>
         <link>https://hubojing.github.io/g5scbf67/</link>
-        <pubDate>Sun, 19 Nov 2017 23:03:40 +0000</pubDate>
+        <pubDate>Sun, 19 Nov 2017 23:03:40 +0800</pubDate>
         
         <guid>https://hubojing.github.io/g5scbf67/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -39532,7 +39616,7 @@ BST_INDETERMINATE 不确定，按钮灰显（只有button有BS_3STATE或BS_AUTO3
         <item>
         <title>栈</title>
         <link>https://hubojing.github.io/hpywthwp/</link>
-        <pubDate>Tue, 14 Nov 2017 22:50:51 +0000</pubDate>
+        <pubDate>Tue, 14 Nov 2017 22:50:51 +0800</pubDate>
         
         <guid>https://hubojing.github.io/hpywthwp/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -40919,7 +41003,7 @@ BST_INDETERMINATE 不确定，按钮灰显（只有button有BS_3STATE或BS_AUTO3
         <item>
         <title>windows软件使用小技巧</title>
         <link>https://hubojing.github.io/8htebm3h/</link>
-        <pubDate>Sun, 12 Nov 2017 18:19:56 +0000</pubDate>
+        <pubDate>Sun, 12 Nov 2017 18:19:56 +0800</pubDate>
         
         <guid>https://hubojing.github.io/8htebm3h/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -40976,7 +41060,7 @@ convert命令FAT32转NTFS（不影响硬盘数据）&lt;/p&gt;
         <item>
         <title>队列</title>
         <link>https://hubojing.github.io/kxgx3atc/</link>
-        <pubDate>Sun, 12 Nov 2017 16:39:06 +0000</pubDate>
+        <pubDate>Sun, 12 Nov 2017 16:39:06 +0800</pubDate>
         
         <guid>https://hubojing.github.io/kxgx3atc/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -41572,7 +41656,7 @@ convert命令FAT32转NTFS（不影响硬盘数据）&lt;/p&gt;
         <item>
         <title>WatchYourPC</title>
         <link>https://hubojing.github.io/kkvtowpf/</link>
-        <pubDate>Tue, 24 Oct 2017 23:22:20 +0000</pubDate>
+        <pubDate>Tue, 24 Oct 2017 23:22:20 +0800</pubDate>
         
         <guid>https://hubojing.github.io/kkvtowpf/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -41729,7 +41813,7 @@ convert命令FAT32转NTFS（不影响硬盘数据）&lt;/p&gt;
         <item>
         <title>C&#43;&#43;封装exe以及资源更新</title>
         <link>https://hubojing.github.io/jlaffzwe/</link>
-        <pubDate>Thu, 12 Oct 2017 22:46:29 +0000</pubDate>
+        <pubDate>Thu, 12 Oct 2017 22:46:29 +0800</pubDate>
         
         <guid>https://hubojing.github.io/jlaffzwe/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -42022,7 +42106,7 @@ ShellExecute(NULL,&amp;ldquo;open&amp;rdquo;,&amp;ldquo;NOTEPAD.EXE&amp;rdquo;,N
         <item>
         <title>Hexo搭建再记录</title>
         <link>https://hubojing.github.io/iyvf4scu/</link>
-        <pubDate>Sun, 08 Oct 2017 22:17:33 +0000</pubDate>
+        <pubDate>Sun, 08 Oct 2017 22:17:33 +0800</pubDate>
         
         <guid>https://hubojing.github.io/iyvf4scu/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -42210,7 +42294,7 @@ ShellExecute(NULL,&amp;ldquo;open&amp;rdquo;,&amp;ldquo;NOTEPAD.EXE&amp;rdquo;,N
         <item>
         <title>组装PC</title>
         <link>https://hubojing.github.io/lpt8cshm/</link>
-        <pubDate>Sun, 17 Sep 2017 23:52:22 +0000</pubDate>
+        <pubDate>Sun, 17 Sep 2017 23:52:22 +0800</pubDate>
         
         <guid>https://hubojing.github.io/lpt8cshm/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -42316,7 +42400,7 @@ CPU：
         <item>
         <title>网件R7000评测</title>
         <link>https://hubojing.github.io/nhj7ppqp/</link>
-        <pubDate>Tue, 12 Sep 2017 23:20:00 +0000</pubDate>
+        <pubDate>Tue, 12 Sep 2017 23:20:00 +0800</pubDate>
         
         <guid>https://hubojing.github.io/nhj7ppqp/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -42670,7 +42754,7 @@ MU-MIMO：“Multi-User Multiple-Input Multiple-Output”的缩写，“多用�
         <item>
         <title>魅蓝Note6评测</title>
         <link>https://hubojing.github.io/oe2xvfm8/</link>
-        <pubDate>Sun, 03 Sep 2017 15:41:50 +0000</pubDate>
+        <pubDate>Sun, 03 Sep 2017 15:41:50 +0800</pubDate>
         
         <guid>https://hubojing.github.io/oe2xvfm8/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -42892,7 +42976,7 @@ CPU想让625赶上820，还是不可能的。
         <item>
         <title>三维坐标旋转</title>
         <link>https://hubojing.github.io/yqoektny/</link>
-        <pubDate>Thu, 31 Aug 2017 23:53:44 +0000</pubDate>
+        <pubDate>Thu, 31 Aug 2017 23:53:44 +0800</pubDate>
         
         <guid>https://hubojing.github.io/yqoektny/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -42927,7 +43011,7 @@ CPU想让625赶上820，还是不可能的。
         <item>
         <title>三维坐标系变换</title>
         <link>https://hubojing.github.io/fkeliz4b/</link>
-        <pubDate>Tue, 29 Aug 2017 22:23:54 +0000</pubDate>
+        <pubDate>Tue, 29 Aug 2017 22:23:54 +0800</pubDate>
         
         <guid>https://hubojing.github.io/fkeliz4b/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -42965,7 +43049,7 @@ N^(-1)=(MK)^(-1)=K^(-1)M^(-1)
         <item>
         <title>古风自动造句器</title>
         <link>https://hubojing.github.io/75qsjbvh/</link>
-        <pubDate>Thu, 10 Aug 2017 22:56:49 +0000</pubDate>
+        <pubDate>Thu, 10 Aug 2017 22:56:49 +0800</pubDate>
         
         <guid>https://hubojing.github.io/75qsjbvh/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -43456,7 +43540,7 @@ N^(-1)=(MK)^(-1)=K^(-1)M^(-1)
         <item>
         <title>树</title>
         <link>https://hubojing.github.io/bnwjt34c/</link>
-        <pubDate>Sun, 23 Jul 2017 21:16:43 +0000</pubDate>
+        <pubDate>Sun, 23 Jul 2017 21:16:43 +0800</pubDate>
         
         <guid>https://hubojing.github.io/bnwjt34c/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -44671,7 +44755,7 @@ N^(-1)=(MK)^(-1)=K^(-1)M^(-1)
         <item>
         <title>树状控件与列表控件交互以及XML的解析</title>
         <link>https://hubojing.github.io/fgrl9cjx/</link>
-        <pubDate>Thu, 20 Jul 2017 23:04:43 +0000</pubDate>
+        <pubDate>Thu, 20 Jul 2017 23:04:43 +0800</pubDate>
         
         <guid>https://hubojing.github.io/fgrl9cjx/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -45396,7 +45480,7 @@ map-&amp;gt;分类节点-&amp;gt;vector-&amp;gt;n个小节点-&amp;gt;结构体-
         <item>
         <title>求购</title>
         <link>https://hubojing.github.io/biuyupny/</link>
-        <pubDate>Tue, 18 Jul 2017 22:55:44 +0000</pubDate>
+        <pubDate>Tue, 18 Jul 2017 22:55:44 +0800</pubDate>
         
         <guid>https://hubojing.github.io/biuyupny/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -45479,7 +45563,7 @@ map-&amp;gt;分类节点-&amp;gt;vector-&amp;gt;n个小节点-&amp;gt;结构体-
         <item>
         <title>一个MFC利用MSXML解析XML的最简例子</title>
         <link>https://hubojing.github.io/4nbzpd7n/</link>
-        <pubDate>Thu, 13 Jul 2017 21:14:26 +0000</pubDate>
+        <pubDate>Thu, 13 Jul 2017 21:14:26 +0800</pubDate>
         
         <guid>https://hubojing.github.io/4nbzpd7n/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -45753,7 +45837,7 @@ map-&amp;gt;分类节点-&amp;gt;vector-&amp;gt;n个小节点-&amp;gt;结构体-
         <item>
         <title>新闻杂谈</title>
         <link>https://hubojing.github.io/g2qxcsgc/</link>
-        <pubDate>Thu, 29 Jun 2017 23:26:53 +0000</pubDate>
+        <pubDate>Thu, 29 Jun 2017 23:26:53 +0800</pubDate>
         
         <guid>https://hubojing.github.io/g2qxcsgc/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -45782,7 +45866,7 @@ categories: 杂谈
         <item>
         <title>HOOPS记录</title>
         <link>https://hubojing.github.io/e8pmxuyc/</link>
-        <pubDate>Sun, 25 Jun 2017 22:54:44 +0000</pubDate>
+        <pubDate>Sun, 25 Jun 2017 22:54:44 +0800</pubDate>
         
         <guid>https://hubojing.github.io/e8pmxuyc/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -45879,7 +45963,7 @@ Selections can be made of all items inside and outside a drag box, inside arbitr
         <item>
         <title>MFC&#43;多线程&#43;进度条&#43;复制文件（夹）</title>
         <link>https://hubojing.github.io/rkmjbvmy/</link>
-        <pubDate>Thu, 15 Jun 2017 18:00:17 +0000</pubDate>
+        <pubDate>Thu, 15 Jun 2017 18:00:17 +0800</pubDate>
         
         <guid>https://hubojing.github.io/rkmjbvmy/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -47751,7 +47835,7 @@ Selections can be made of all items inside and outside a drag box, inside arbitr
         <item>
         <title>MFC网页分析程序</title>
         <link>https://hubojing.github.io/9a9iuxhr/</link>
-        <pubDate>Wed, 14 Jun 2017 22:45:38 +0000</pubDate>
+        <pubDate>Wed, 14 Jun 2017 22:45:38 +0800</pubDate>
         
         <guid>https://hubojing.github.io/9a9iuxhr/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -48946,7 +49030,7 @@ Source Code  sqlite-amalgamation-3200000.zip  有三个东西  shell.c  sqlite3.
         <item>
         <title>Socket点对点聊天&#43;文件传输</title>
         <link>https://hubojing.github.io/5gg34isc/</link>
-        <pubDate>Sun, 07 May 2017 22:58:30 +0000</pubDate>
+        <pubDate>Sun, 07 May 2017 22:58:30 +0800</pubDate>
         
         <guid>https://hubojing.github.io/5gg34isc/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -51569,7 +51653,7 @@ Source Code  sqlite-amalgamation-3200000.zip  有三个东西  shell.c  sqlite3.
         <item>
         <title>四大组件之ContentProvider记录</title>
         <link>https://hubojing.github.io/uy87oa7f/</link>
-        <pubDate>Fri, 05 May 2017 22:00:42 +0000</pubDate>
+        <pubDate>Fri, 05 May 2017 22:00:42 +0800</pubDate>
         
         <guid>https://hubojing.github.io/uy87oa7f/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -51966,7 +52050,7 @@ Source Code  sqlite-amalgamation-3200000.zip  有三个东西  shell.c  sqlite3.
         <item>
         <title>四大组件之Service记录</title>
         <link>https://hubojing.github.io/nzxo7pch/</link>
-        <pubDate>Mon, 01 May 2017 16:14:00 +0000</pubDate>
+        <pubDate>Mon, 01 May 2017 16:14:00 +0800</pubDate>
         
         <guid>https://hubojing.github.io/nzxo7pch/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -52999,7 +53083,7 @@ Source Code  sqlite-amalgamation-3200000.zip  有三个东西  shell.c  sqlite3.
         <item>
         <title>MFC绘制时钟</title>
         <link>https://hubojing.github.io/nmcsqtsh/</link>
-        <pubDate>Sun, 23 Apr 2017 16:14:07 +0000</pubDate>
+        <pubDate>Sun, 23 Apr 2017 16:14:07 +0800</pubDate>
         
         <guid>https://hubojing.github.io/nmcsqtsh/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -53552,7 +53636,7 @@ str是一个字符串对象，包含指定的字符。
         <item>
         <title>折腾才是人生</title>
         <link>https://hubojing.github.io/qnasaha4/</link>
-        <pubDate>Fri, 21 Apr 2017 00:02:54 +0000</pubDate>
+        <pubDate>Fri, 21 Apr 2017 00:02:54 +0800</pubDate>
         
         <guid>https://hubojing.github.io/qnasaha4/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -53575,7 +53659,7 @@ str是一个字符串对象，包含指定的字符。
         <item>
         <title>MFC傻瓜式教程</title>
         <link>https://hubojing.github.io/3jj8wnye/</link>
-        <pubDate>Thu, 13 Apr 2017 22:26:01 +0000</pubDate>
+        <pubDate>Thu, 13 Apr 2017 22:26:01 +0800</pubDate>
         
         <guid>https://hubojing.github.io/3jj8wnye/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -60501,7 +60585,7 @@ Build后生成最新Dll1.dll，利用Dumpbin的exports选项查看该动态链�
         <item>
         <title>多说关闭引发的麻烦</title>
         <link>https://hubojing.github.io/3yyh9pab/</link>
-        <pubDate>Wed, 05 Apr 2017 16:44:21 +0000</pubDate>
+        <pubDate>Wed, 05 Apr 2017 16:44:21 +0800</pubDate>
         
         <guid>https://hubojing.github.io/3yyh9pab/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -60564,7 +60648,7 @@ categories: 杂谈
         <item>
         <title>DigitalOcean购买服务器教程</title>
         <link>https://hubojing.github.io/gnvhn4kd/</link>
-        <pubDate>Tue, 28 Mar 2017 21:50:20 +0000</pubDate>
+        <pubDate>Tue, 28 Mar 2017 21:50:20 +0800</pubDate>
         
         <guid>https://hubojing.github.io/gnvhn4kd/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -60731,7 +60815,7 @@ puTTY
         <item>
         <title>更换为.me域名教程</title>
         <link>https://hubojing.github.io/3krscdun/</link>
-        <pubDate>Sun, 26 Mar 2017 21:01:21 +0000</pubDate>
+        <pubDate>Sun, 26 Mar 2017 21:01:21 +0800</pubDate>
         
         <guid>https://hubojing.github.io/3krscdun/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -60983,7 +61067,7 @@ puTTY
         <item>
         <title>Github教育礼包</title>
         <link>https://hubojing.github.io/i8tfyyr9/</link>
-        <pubDate>Sat, 25 Mar 2017 11:21:23 +0000</pubDate>
+        <pubDate>Sat, 25 Mar 2017 11:21:23 +0800</pubDate>
         
         <guid>https://hubojing.github.io/i8tfyyr9/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -61274,7 +61358,7 @@ A complete suite of game development tools for PC, console, mobile, web and VR
         <item>
         <title>简易计算器（Android）</title>
         <link>https://hubojing.github.io/jvwwnmk6/</link>
-        <pubDate>Wed, 22 Mar 2017 00:19:25 +0000</pubDate>
+        <pubDate>Wed, 22 Mar 2017 00:19:25 +0800</pubDate>
         
         <guid>https://hubojing.github.io/jvwwnmk6/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -62458,7 +62542,7 @@ activity_main.xml中，线性结构可以嵌套使用。&lt;/p&gt;
         <item>
         <title>模拟借书系统（Java异常机制实现）</title>
         <link>https://hubojing.github.io/wawjj9tf/</link>
-        <pubDate>Sun, 19 Mar 2017 17:09:12 +0000</pubDate>
+        <pubDate>Sun, 19 Mar 2017 17:09:12 +0800</pubDate>
         
         <guid>https://hubojing.github.io/wawjj9tf/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -62693,7 +62777,7 @@ activity_main.xml中，线性结构可以嵌套使用。&lt;/p&gt;
         <item>
         <title>达达租车系统（Java实现）</title>
         <link>https://hubojing.github.io/algsvshk/</link>
-        <pubDate>Sat, 18 Mar 2017 18:52:48 +0000</pubDate>
+        <pubDate>Sat, 18 Mar 2017 18:52:48 +0800</pubDate>
         
         <guid>https://hubojing.github.io/algsvshk/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -63132,7 +63216,7 @@ activity_main.xml中，线性结构可以嵌套使用。&lt;/p&gt;
         <item>
         <title>别做井底之蛙</title>
         <link>https://hubojing.github.io/t8i4y2yp/</link>
-        <pubDate>Mon, 06 Mar 2017 00:11:48 +0000</pubDate>
+        <pubDate>Mon, 06 Mar 2017 00:11:48 +0800</pubDate>
         
         <guid>https://hubojing.github.io/t8i4y2yp/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -63162,7 +63246,7 @@ activity_main.xml中，线性结构可以嵌套使用。&lt;/p&gt;
         <item>
         <title>虚拟实验平台比赛项目记录</title>
         <link>https://hubojing.github.io/b5vkxqzy/</link>
-        <pubDate>Fri, 10 Feb 2017 18:27:55 +0000</pubDate>
+        <pubDate>Fri, 10 Feb 2017 18:27:55 +0800</pubDate>
         
         <guid>https://hubojing.github.io/b5vkxqzy/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -63362,7 +63446,7 @@ BayesLeastRisk
         <item>
         <title>yelee --&gt; hueman主题更换</title>
         <link>https://hubojing.github.io/h3nxzsac/</link>
-        <pubDate>Tue, 03 Jan 2017 17:45:10 +0000</pubDate>
+        <pubDate>Tue, 03 Jan 2017 17:45:10 +0800</pubDate>
         
         <guid>https://hubojing.github.io/h3nxzsac/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -63469,7 +63553,7 @@ BayesLeastRisk
         <item>
         <title>一天一点linux</title>
         <link>https://hubojing.github.io/pg8jvzhp/</link>
-        <pubDate>Mon, 26 Dec 2016 23:31:29 +0000</pubDate>
+        <pubDate>Mon, 26 Dec 2016 23:31:29 +0800</pubDate>
         
         <guid>https://hubojing.github.io/pg8jvzhp/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -66604,7 +66688,7 @@ autoclean	移除已安装的软件的旧版本软件包
         <item>
         <title>回归</title>
         <link>https://hubojing.github.io/kh75awiz/</link>
-        <pubDate>Mon, 26 Dec 2016 21:16:07 +0000</pubDate>
+        <pubDate>Mon, 26 Dec 2016 21:16:07 +0800</pubDate>
         
         <guid>https://hubojing.github.io/kh75awiz/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -66618,7 +66702,7 @@ autoclean	移除已安装的软件的旧版本软件包
         <item>
         <title>上海决赛之旅 | the trip for contest in Shanghai</title>
         <link>https://hubojing.github.io/kr52zn63/</link>
-        <pubDate>Sat, 27 Aug 2016 15:43:53 +0000</pubDate>
+        <pubDate>Sat, 27 Aug 2016 15:43:53 +0800</pubDate>
         
         <guid>https://hubojing.github.io/kr52zn63/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -66656,7 +66740,7 @@ autoclean	移除已安装的软件的旧版本软件包
         <item>
         <title>说明</title>
         <link>https://hubojing.github.io/artks7zt/</link>
-        <pubDate>Sat, 16 Jul 2016 18:20:32 +0000</pubDate>
+        <pubDate>Sat, 16 Jul 2016 18:20:32 +0800</pubDate>
         
         <guid>https://hubojing.github.io/artks7zt/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -66671,7 +66755,7 @@ autoclean	移除已安装的软件的旧版本软件包
         <item>
         <title>P图集|PS picture album</title>
         <link>https://hubojing.github.io/uvtctddn/</link>
-        <pubDate>Wed, 29 Jun 2016 19:58:18 +0000</pubDate>
+        <pubDate>Wed, 29 Jun 2016 19:58:18 +0800</pubDate>
         
         <guid>https://hubojing.github.io/uvtctddn/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -66740,7 +66824,7 @@ I want to do it as Makoto Shinkai&amp;rsquo;s animation style,but my level just 
         <item>
         <title>Linux菜鸟初尝鲜 | First try on Linux</title>
         <link>https://hubojing.github.io/vftezp4s/</link>
-        <pubDate>Tue, 14 Jun 2016 23:10:30 +0000</pubDate>
+        <pubDate>Tue, 14 Jun 2016 23:10:30 +0800</pubDate>
         
         <guid>https://hubojing.github.io/vftezp4s/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -67235,7 +67319,7 @@ cd pwm_test&lt;/p&gt;
         <item>
         <title>将Hexo&#43;Github博客同步托管至coding</title>
         <link>https://hubojing.github.io/mnra3ukh/</link>
-        <pubDate>Wed, 06 Apr 2016 16:14:56 +0000</pubDate>
+        <pubDate>Wed, 06 Apr 2016 16:14:56 +0800</pubDate>
         
         <guid>https://hubojing.github.io/mnra3ukh/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -67371,7 +67455,7 @@ Both right!
         <item>
         <title>PPT动画制作之自定义动画</title>
         <link>https://hubojing.github.io/mbxhpoms/</link>
-        <pubDate>Tue, 22 Mar 2016 21:18:04 +0000</pubDate>
+        <pubDate>Tue, 22 Mar 2016 21:18:04 +0800</pubDate>
         
         <guid>https://hubojing.github.io/mbxhpoms/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -67420,7 +67504,7 @@ categories: 多媒体
         <item>
         <title>显示技术蹭课笔记 | Display Techique Learning Note</title>
         <link>https://hubojing.github.io/myske5ps/</link>
-        <pubDate>Thu, 17 Mar 2016 21:55:30 +0000</pubDate>
+        <pubDate>Thu, 17 Mar 2016 21:55:30 +0800</pubDate>
         
         <guid>https://hubojing.github.io/myske5ps/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -67680,7 +67764,7 @@ It was a pleasant trip to the class.
         <item>
         <title>java自学笔记</title>
         <link>https://hubojing.github.io/ccobhsnp/</link>
-        <pubDate>Mon, 14 Mar 2016 21:21:31 +0000</pubDate>
+        <pubDate>Mon, 14 Mar 2016 21:21:31 +0800</pubDate>
         
         <guid>https://hubojing.github.io/ccobhsnp/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -67802,7 +67886,7 @@ java HelloWorld&lt;/p&gt;
         <item>
         <title>靖靖的脑洞大开 | Jinger&#39;s Special Ideas</title>
         <link>https://hubojing.github.io/t2oxgw6v/</link>
-        <pubDate>Sat, 12 Mar 2016 14:23:00 +0000</pubDate>
+        <pubDate>Sat, 12 Mar 2016 14:23:00 +0800</pubDate>
         
         <guid>https://hubojing.github.io/t2oxgw6v/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -67911,7 +67995,7 @@ categories: 杂谈
         <item>
         <title>PPT动画制作之登录等待</title>
         <link>https://hubojing.github.io/w8dnola9/</link>
-        <pubDate>Tue, 08 Mar 2016 21:36:48 +0000</pubDate>
+        <pubDate>Tue, 08 Mar 2016 21:36:48 +0800</pubDate>
         
         <guid>https://hubojing.github.io/w8dnola9/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -67945,7 +68029,7 @@ categories: 杂谈
         <item>
         <title>Markdown语法简记</title>
         <link>https://hubojing.github.io/ffpy5d3r/</link>
-        <pubDate>Tue, 08 Mar 2016 16:10:49 +0000</pubDate>
+        <pubDate>Tue, 08 Mar 2016 16:10:49 +0800</pubDate>
         
         <guid>https://hubojing.github.io/ffpy5d3r/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -68213,7 +68297,7 @@ z &amp; = &amp; \frac 12
         <item>
         <title>1602&#43;24C08&#43;4X4键盘密码锁</title>
         <link>https://hubojing.github.io/nc9ex6hp/</link>
-        <pubDate>Mon, 07 Mar 2016 08:36:04 +0000</pubDate>
+        <pubDate>Mon, 07 Mar 2016 08:36:04 +0800</pubDate>
         
         <guid>https://hubojing.github.io/nc9ex6hp/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -69904,7 +69988,7 @@ z &amp; = &amp; \frac 12
         <item>
         <title>零碎知识记录</title>
         <link>https://hubojing.github.io/rrd2b2nv/</link>
-        <pubDate>Mon, 04 Jan 2016 21:42:08 +0000</pubDate>
+        <pubDate>Mon, 04 Jan 2016 21:42:08 +0800</pubDate>
         
         <guid>https://hubojing.github.io/rrd2b2nv/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -69948,7 +70032,7 @@ P2=0xff 对应 P2^7=1 与 P2^6=1、P2^5=1、P2^4=1、P2^3=1、P2^2=1、P2^1=1、
         <item>
         <title>Flash动画制作学习心得</title>
         <link>https://hubojing.github.io/4snbjzsu/</link>
-        <pubDate>Sun, 06 Dec 2015 11:26:33 +0000</pubDate>
+        <pubDate>Sun, 06 Dec 2015 11:26:33 +0800</pubDate>
         
         <guid>https://hubojing.github.io/4snbjzsu/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -69998,7 +70082,7 @@ F7插入空白关键帧&lt;/p&gt;</description>
         <item>
         <title>STC89C52RC单片机学习记录（1602篇）</title>
         <link>https://hubojing.github.io/cprxy7hn/</link>
-        <pubDate>Tue, 17 Nov 2015 20:53:47 +0000</pubDate>
+        <pubDate>Tue, 17 Nov 2015 20:53:47 +0800</pubDate>
         
         <guid>https://hubojing.github.io/cprxy7hn/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -70051,7 +70135,7 @@ F7插入空白关键帧&lt;/p&gt;</description>
         <item>
         <title>Matlab函数杂谈</title>
         <link>https://hubojing.github.io/m6anktkt/</link>
-        <pubDate>Tue, 10 Nov 2015 16:39:08 +0000</pubDate>
+        <pubDate>Tue, 10 Nov 2015 16:39:08 +0800</pubDate>
         
         <guid>https://hubojing.github.io/m6anktkt/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -70107,7 +70191,7 @@ step（）函数可绘出连续系统的阶跃响应 g(t)在指定时间范围�
         <item>
         <title>Hexo优化·年轻就是折腾 | Promotion of the Blog &amp; Young for Try</title>
         <link>https://hubojing.github.io/n64tshku/</link>
-        <pubDate>Tue, 10 Nov 2015 16:06:03 +0000</pubDate>
+        <pubDate>Tue, 10 Nov 2015 16:06:03 +0800</pubDate>
         
         <guid>https://hubojing.github.io/n64tshku/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -70529,7 +70613,7 @@ $ hexo new page about&lt;/p&gt;
         <item>
         <title>Hexo&#43;Github博客搭建中出现的问题及解决方法 | The Solution of Troubles in Establishing My Blog</title>
         <link>https://hubojing.github.io/95bvutw7/</link>
-        <pubDate>Fri, 06 Nov 2015 20:35:37 +0000</pubDate>
+        <pubDate>Fri, 06 Nov 2015 20:35:37 +0800</pubDate>
         
         <guid>https://hubojing.github.io/95bvutw7/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -70942,7 +71026,7 @@ The success sign,&lt;/p&gt;
         <item>
         <title>HelloWorld</title>
         <link>https://hubojing.github.io/fhkym7zi/</link>
-        <pubDate>Fri, 06 Nov 2015 13:23:40 +0000</pubDate>
+        <pubDate>Fri, 06 Nov 2015 13:23:40 +0800</pubDate>
         
         <guid>https://hubojing.github.io/fhkym7zi/</guid>
         <description>&lt;div align=&#34;left&#34;&gt;
@@ -70962,7 +71046,7 @@ Readers can commit on the bottom of the article,and contact with me.Welcome acad
         <item>
         <title>关于</title>
         <link>https://hubojing.github.io/about/</link>
-        <pubDate>Thu, 05 Nov 2015 22:20:55 +0000</pubDate>
+        <pubDate>Thu, 05 Nov 2015 22:20:55 +0800</pubDate>
         
         <guid>https://hubojing.github.io/about/</guid>
         <description>&lt;table&gt;
