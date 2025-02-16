@@ -45,7 +45,24 @@ DeepSeek 2025&lt;/p&gt;
 &lt;h2 id=&#34;方法&#34;&gt;方法
 &lt;/h2&gt;&lt;h3 id=&#34;deepseek-r1-zero在基座模型上强化学习&#34;&gt;DeepSeek-R1-Zero：在基座模型上强化学习
 &lt;/h3&gt;&lt;h4 id=&#34;强化学习算法&#34;&gt;强化学习算法
-&lt;/h4&gt;$$A_i = \frac{r_i-mean({r_1, r_2, ..., r_G})}{std({r_1, r_2, ..., r_G})}$$&lt;h4 id=&#34;奖励模型&#34;&gt;奖励模型
+&lt;/h4&gt;&lt;p&gt;GRPO（组相对策略优化）&lt;br&gt;
+为了节省强化学习的训练费用，我们采用了GRPO(Group Relative Policy Optimization)。它放弃了通常与策略模型大小相同的critic模型，而是从各组分数中估计基线。&lt;br&gt;
+对于每个问题q，GRPO从老策略$π_{θ_old}$中采样一组输出${o_1, o_2, &amp;hellip;, o_G}$，然后通过最大化下列目标来优化该策略模型$π_θ$：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/5a3f7d1e/GRPO.png&#34;
+	width=&#34;1022&#34;
+	height=&#34;225&#34;
+	srcset=&#34;https://hubojing.github.io/5a3f7d1e/GRPO_hu_cd7cae1cfc04fa4b.png 480w, https://hubojing.github.io/5a3f7d1e/GRPO_hu_9da92309fe980a23.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;GRPO&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;454&#34;
+		data-flex-basis=&#34;1090px&#34;
+	
+&gt;&lt;/p&gt;
+$$A_i = \frac{r_i-mean({r_1, r_2, ..., r_G})}{std({r_1, r_2, ..., r_G})}$$&lt;h4 id=&#34;奖励模型&#34;&gt;奖励模型
 &lt;/h4&gt;&lt;p&gt;奖励是训练信号的来源，它决定了RL的优化方向。&lt;br&gt;
 为了训练DeepSeek-R1-Zero，我们采用了一个基于规则的奖励系统，主要由两种类型的奖励组成：&lt;/p&gt;
 &lt;ul&gt;
