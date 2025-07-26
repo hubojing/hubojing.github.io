@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="概述 AI Agent：人类给予目标，AI自己想办法达成。 RL局限：需要为了每一个任务以RL训练模型。 现在直接用LLM。\n根据经验调整行为 从Agent的记忆（memory）中读取（read）相关的片段，对现在的action进行决策。 Read模组是一个检索系统（其实就是RAG）。不过一个是自己的经验一个是别人的经验。 StreamBench经验：负反馈没有帮助。（与其告诉LLM不要做什么，不如告诉LLM要做什么） Write模组判断什么需要被记下来。 Reflection模组对于记忆中的资讯做重新整理。\n">
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="概述 AI Agent：人类给予目标，AI自己想办法达成。\nRL局限：需要为了每一个任务以RL训练模型。\n现在直接用LLM。\n根据经验调整行为 从Agent的记忆（memory）中读取（read）相关的片段，对现在的action进行决策。\nRead模组是一个检索系统（其实就是RAG）。不过一个是自己的经验一个是别人的经验。\nStreamBench经验：负反馈没有帮助。（与其告诉LLM不要做什么，不如告诉LLM要做什么）\nWrite模组判断什么需要被记下来。\nReflection模组对于记忆中的资讯做重新整理。\n">
 <title>AI Agent笔记</title>
 
 <link rel='canonical' href='https://hubojing.github.io/qb6yvtic/'>
 
 <link rel="stylesheet" href="/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css"><meta property='og:title' content="AI Agent笔记">
-<meta property='og:description' content="概述 AI Agent：人类给予目标，AI自己想办法达成。 RL局限：需要为了每一个任务以RL训练模型。 现在直接用LLM。\n根据经验调整行为 从Agent的记忆（memory）中读取（read）相关的片段，对现在的action进行决策。 Read模组是一个检索系统（其实就是RAG）。不过一个是自己的经验一个是别人的经验。 StreamBench经验：负反馈没有帮助。（与其告诉LLM不要做什么，不如告诉LLM要做什么） Write模组判断什么需要被记下来。 Reflection模组对于记忆中的资讯做重新整理。\n">
+<meta property='og:description' content="概述 AI Agent：人类给予目标，AI自己想办法达成。\nRL局限：需要为了每一个任务以RL训练模型。\n现在直接用LLM。\n根据经验调整行为 从Agent的记忆（memory）中读取（read）相关的片段，对现在的action进行决策。\nRead模组是一个检索系统（其实就是RAG）。不过一个是自己的经验一个是别人的经验。\nStreamBench经验：负反馈没有帮助。（与其告诉LLM不要做什么，不如告诉LLM要做什么）\nWrite模组判断什么需要被记下来。\nReflection模组对于记忆中的资讯做重新整理。\n">
 <meta property='og:url' content='https://hubojing.github.io/qb6yvtic/'>
 <meta property='og:site_name' content='靖待'>
 <meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='LLM' /><meta property='article:tag' content='Agent' /><meta property='article:published_time' content='2025-07-26T21:45:18&#43;08:00'/>
 <meta name="twitter:title" content="AI Agent笔记">
-<meta name="twitter:description" content="概述 AI Agent：人类给予目标，AI自己想办法达成。 RL局限：需要为了每一个任务以RL训练模型。 现在直接用LLM。\n根据经验调整行为 从Agent的记忆（memory）中读取（read）相关的片段，对现在的action进行决策。 Read模组是一个检索系统（其实就是RAG）。不过一个是自己的经验一个是别人的经验。 StreamBench经验：负反馈没有帮助。（与其告诉LLM不要做什么，不如告诉LLM要做什么） Write模组判断什么需要被记下来。 Reflection模组对于记忆中的资讯做重新整理。\n">
+<meta name="twitter:description" content="概述 AI Agent：人类给予目标，AI自己想办法达成。\nRL局限：需要为了每一个任务以RL训练模型。\n现在直接用LLM。\n根据经验调整行为 从Agent的记忆（memory）中读取（read）相关的片段，对现在的action进行决策。\nRead模组是一个检索系统（其实就是RAG）。不过一个是自己的经验一个是别人的经验。\nStreamBench经验：负反馈没有帮助。（与其告诉LLM不要做什么，不如告诉LLM要做什么）\nWrite模组判断什么需要被记下来。\nReflection模组对于记忆中的资讯做重新整理。\n">
     <link rel="shortcut icon" href="/avatar.jpg" />
 
     </head>
@@ -396,26 +396,26 @@
     
     
     <h1 id="概述">概述
-</h1><p>AI Agent：人类给予目标，AI自己想办法达成。
-RL局限：需要为了每一个任务以RL训练模型。
+</h1><p>AI Agent：人类给予目标，AI自己想办法达成。<br>
+RL局限：需要为了每一个任务以RL训练模型。<br>
 现在直接用LLM。</p>
 <h1 id="根据经验调整行为">根据经验调整行为
-</h1><p>从Agent的记忆（memory）中读取（read）相关的片段，对现在的action进行决策。
-Read模组是一个检索系统（其实就是RAG）。不过一个是自己的经验一个是别人的经验。
-StreamBench经验：负反馈没有帮助。（与其告诉LLM不要做什么，不如告诉LLM要做什么）
-Write模组判断什么需要被记下来。
+</h1><p>从Agent的记忆（memory）中读取（read）相关的片段，对现在的action进行决策。<br>
+Read模组是一个检索系统（其实就是RAG）。不过一个是自己的经验一个是别人的经验。<br>
+StreamBench经验：负反馈没有帮助。（与其告诉LLM不要做什么，不如告诉LLM要做什么）<br>
+Write模组判断什么需要被记下来。<br>
 Reflection模组对于记忆中的资讯做重新整理。</p>
 <h1 id="工具使用">工具使用
-</h1><p>把成百上千的工具描述（工具包）放到agent的记忆（memory）中，通过工具选择模块挑选出工具，作为LLM的输入。
+</h1><p>把成百上千的工具描述（工具包）放到agent的记忆（memory）中，通过工具选择模块挑选出工具，作为LLM的输入。<br>
 LLM也可以自己做工具，放入它的工具包里。</p>
-<p>什么样的外部知识比较容易说服AI：
-（1）外部知识和内部知识差距较小时。
-（2）更详细AI同类的话（比如同一个问题有两篇解答，一篇是AI写的答案为A，一篇是人类写的答案为B，LLM倾向于回答答案为A）；
-（3）meta data会对AI有影响（比如同样两篇文章，A是2024年发布,B是2020年发布，模型会倾向于A，但若仅仅修改A、B的发布时间，其它完全不变，即A是2020年发布，B是2024年发布，此时模型会倾向于B）；
-（4）资料来源没有影响；
+<p>什么样的外部知识比较容易说服AI：<br>
+（1）外部知识和内部知识差距较小时；<br>
+（2）更详细AI同类的话（比如同一个问题有两篇解答，一篇是AI写的答案为A，一篇是人类写的答案为B，LLM倾向于回答答案为A）；<br>
+（3）meta data会对AI有影响（比如同样两篇文章，A是2024年发布,B是2020年发布，模型会倾向于A，但若仅仅修改A、B的发布时间，其它完全不变，即A是2020年发布，B是2024年发布，此时模型会倾向于B）；<br>
+（4）资料来源没有影响；<br>
 （5）模型倾向于好看的模板（内容一模一样）；（模型也看脸o_0)</p>
 <h1 id="做计划">做计划
-</h1><p>让LLM先产生计划（plan）再执行动作（action）。
+</h1><p>让LLM先产生计划（plan）再执行动作（action）。<br>
 每一次都需要重新想想计划是否需要修改（因为外部情况可能与预期不同）。</p>
 
 </section>
