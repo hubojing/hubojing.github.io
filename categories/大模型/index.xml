@@ -8,6 +8,45 @@
         <language>zh-cn</language>
         <copyright>靖待</copyright>
         <lastBuildDate>Mon, 01 Jan 0001 00:00:00 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>LLM数据合成方法</title>
+        <link>https://hubojing.github.io/tkuusvxe/</link>
+        <pubDate>Sun, 27 Jul 2025 16:25:14 +0800</pubDate>
+        
+        <guid>https://hubojing.github.io/tkuusvxe/</guid>
+        <description>&lt;h1 id=&#34;概述&#34;&gt;概述
+&lt;/h1&gt;&lt;p&gt;标注数据的获取通常都很贵，为此，需要一些方法来造数据，尽可能和真数据类似。以下是我看过的部分数据合成（Synthetic Data Generation）论文的简要总结。&lt;/p&gt;
+&lt;h1 id=&#34;方法&#34;&gt;方法
+&lt;/h1&gt;&lt;p&gt;基础：Zero-shot、Few-shot，让LLM直接从头开始生成实例。&lt;br&gt;
+主题/受控：使用LLM生成任务相关主题或场景的列表，然后用选定主题提示LLM生成特定的例子。优点：提高数据多样性 &lt;br&gt;
+迭代和反馈驱动：重点放在失败案例、难点例子和模型弱点上，比如Self-Instruct构造相关种子集）&lt;br&gt;
+自问：LLM递归将复杂问题分解为简单的子问题；
+反转：原文本作为答案，让LLM根据原文本生成指令（what kind of instruction could be the answer to?）。&lt;/p&gt;
+&lt;h1 id=&#34;数据质量如何保证&#34;&gt;数据质量如何保证
+&lt;/h1&gt;&lt;p&gt;思路：
+（1）将外部知识或约束整合到生成过程中&lt;br&gt;
+RAG，要求LLM试生成的答案包含在外部知识的段落里。&lt;br&gt;
+（2）后处理过滤&lt;br&gt;
+基础：删除完全重复的重复项、检查提示泄露（LLM逐字复制少量提示中的输入实例）、检查输出格式的正确性&lt;br&gt;
+升级：训练一个critic或分类器来评价数据质量：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;比如训练一个分类器来区分真实数据和合成数据，然后删除那些太容易被识别为假的合成数据；&lt;/li&gt;
+&lt;li&gt;只保留强模型（或LLM本身）以高置信度预测标签的合成数据，凭直觉认为明显或简单的合成数据是正确的；&lt;/li&gt;
+&lt;li&gt;多个模型输出一致性检查。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;参考资料&#34;&gt;参考资料
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2503.14023&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Synthetic Data Generation Using Large Language Models: Advances in Text and Code&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2212.10560&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Self-Instruct: Aligning Language Models with Self-Generated Instructions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2304.08460&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;LongForm: Effective Instruction Tuning with Reverse Instructions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/2308.06259&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Self-Alignment with Instruction Backtranslation&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>AI Agent笔记</title>
         <link>https://hubojing.github.io/qb6yvtic/</link>
         <pubDate>Sat, 26 Jul 2025 21:45:18 +0800</pubDate>
