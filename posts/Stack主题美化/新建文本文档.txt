@@ -1,0 +1,30 @@
+# 自动更新文章最后修改时间
+根目录配置hugo.yaml
+```
+frontmatter:
+  lastmod: ['lastmod', ':git', ':fileModTime', ':defalut']
+  
+```
+`lastmod`：文章里 lastmod 字段
+`:git`：git 文件提交修改时间
+`:fileModTime`：文件修改时间
+`:defalut`：默认时间
+# 加入字数统计
+主题文件里
+layouts\partials\article\components\details.html
+注释内是原代码
+```html
+        {{ if $showReadingTime }}
+            <div>
+                {{ partial "helper/icon" "clock" }}
+                <time class="article-words"> <!-- <time class="article-time--reading"> -->
+                    {{.WordCount}} 字 <!--{{ T "article.readingTime" .ReadingTime }} -->
+                </time>
+            </div>
+        {{ end }}
+    </footer>
+    {{ end }}
+```
+
+# 参考资料
+- https://bore.vip/archives/3bf3725e/index.html
