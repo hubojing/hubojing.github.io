@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="论文背景 标题: Native Sparse Attention: Hardware-Aligned and Natively Trainable Sparse Attention\n原生稀疏注意力：一种硬件对齐和原生可训练的稀疏注意力\n机构：DeepSeek、北大、华盛顿大学\n论文地址：https://arxiv.org/pdf/2502.11089\nACL 2025最佳论文\n">
+<title>【论文笔记】ACL2025最佳论文-NSA算法</title>
+
+<link rel='canonical' href='https://hubojing.github.io/7fab9gum/'>
+
+<link rel="stylesheet" href="/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css"><meta property='og:title' content="【论文笔记】ACL2025最佳论文-NSA算法">
+<meta property='og:description' content="论文背景 标题: Native Sparse Attention: Hardware-Aligned and Natively Trainable Sparse Attention\n原生稀疏注意力：一种硬件对齐和原生可训练的稀疏注意力\n机构：DeepSeek、北大、华盛顿大学\n论文地址：https://arxiv.org/pdf/2502.11089\nACL 2025最佳论文\n">
+<meta property='og:url' content='https://hubojing.github.io/7fab9gum/'>
+<meta property='og:site_name' content='靖待'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='大模型' /><meta property='article:tag' content='LLM' /><meta property='article:tag' content='NSA算法' /><meta property='article:tag' content='DeepSeek' /><meta property='article:published_time' content='2025-07-31T22:29:16&#43;08:00'/><meta property='article:modified_time' content='2025-07-31T14:45:15&#43;00:00'/>
+<meta name="twitter:title" content="【论文笔记】ACL2025最佳论文-NSA算法">
+<meta name="twitter:description" content="论文背景 标题: Native Sparse Attention: Hardware-Aligned and Natively Trainable Sparse Attention\n原生稀疏注意力：一种硬件对齐和原生可训练的稀疏注意力\n机构：DeepSeek、北大、华盛顿大学\n论文地址：https://arxiv.org/pdf/2502.11089\nACL 2025最佳论文\n">
+    <link rel="shortcut icon" href="/avatar.jpg" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_999351c94d8e06aa.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">靖待</a></h1>
+            <h2 class="site-description">创造是人生乐趣</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/hubojing'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="438.549px" height="438.549px" viewBox="0 0 438.549 438.549" style="enable-background:new 0 0 438.549 438.549;"
+	 xml:space="preserve">
+<g>
+	<path d="M409.132,114.573c-19.608-33.596-46.205-60.194-79.798-79.8C295.736,15.166,259.057,5.365,219.271,5.365
+		c-39.781,0-76.472,9.804-110.063,29.408c-33.596,19.605-60.192,46.204-79.8,79.8C9.803,148.168,0,184.854,0,224.63
+		c0,47.78,13.94,90.745,41.827,128.906c27.884,38.164,63.906,64.572,108.063,79.227c5.14,0.954,8.945,0.283,11.419-1.996
+		c2.475-2.282,3.711-5.14,3.711-8.562c0-0.571-0.049-5.708-0.144-15.417c-0.098-9.709-0.144-18.179-0.144-25.406l-6.567,1.136
+		c-4.187,0.767-9.469,1.092-15.846,1c-6.374-0.089-12.991-0.757-19.842-1.999c-6.854-1.231-13.229-4.086-19.13-8.559
+		c-5.898-4.473-10.085-10.328-12.56-17.556l-2.855-6.57c-1.903-4.374-4.899-9.233-8.992-14.559
+		c-4.093-5.331-8.232-8.945-12.419-10.848l-1.999-1.431c-1.332-0.951-2.568-2.098-3.711-3.429c-1.142-1.331-1.997-2.663-2.568-3.997
+		c-0.572-1.335-0.098-2.43,1.427-3.289c1.525-0.859,4.281-1.276,8.28-1.276l5.708,0.853c3.807,0.763,8.516,3.042,14.133,6.851
+		c5.614,3.806,10.229,8.754,13.846,14.842c4.38,7.806,9.657,13.754,15.846,17.847c6.184,4.093,12.419,6.136,18.699,6.136
+		c6.28,0,11.704-0.476,16.274-1.423c4.565-0.952,8.848-2.383,12.847-4.285c1.713-12.758,6.377-22.559,13.988-29.41
+		c-10.848-1.14-20.601-2.857-29.264-5.14c-8.658-2.286-17.605-5.996-26.835-11.14c-9.235-5.137-16.896-11.516-22.985-19.126
+		c-6.09-7.614-11.088-17.61-14.987-29.979c-3.901-12.374-5.852-26.648-5.852-42.826c0-23.035,7.52-42.637,22.557-58.817
+		c-7.044-17.318-6.379-36.732,1.997-58.24c5.52-1.715,13.706-0.428,24.554,3.853c10.85,4.283,18.794,7.952,23.84,10.994
+		c5.046,3.041,9.089,5.618,12.135,7.708c17.705-4.947,35.976-7.421,54.818-7.421s37.117,2.474,54.823,7.421l10.849-6.849
+		c7.419-4.57,16.18-8.758,26.262-12.565c10.088-3.805,17.802-4.853,23.134-3.138c8.562,21.509,9.325,40.922,2.279,58.24
+		c15.036,16.18,22.559,35.787,22.559,58.817c0,16.178-1.958,30.497-5.853,42.966c-3.9,12.471-8.941,22.457-15.125,29.979
+		c-6.191,7.521-13.901,13.85-23.131,18.986c-9.232,5.14-18.182,8.85-26.84,11.136c-8.662,2.286-18.415,4.004-29.263,5.146
+		c9.894,8.562,14.842,22.077,14.842,40.539v60.237c0,3.422,1.19,6.279,3.572,8.562c2.379,2.279,6.136,2.95,11.276,1.995
+		c44.163-14.653,80.185-41.062,108.068-79.226c27.88-38.161,41.825-81.126,41.825-128.906
+		C438.536,184.851,428.728,148.168,409.132,114.573z"/>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:hubojing@outlook.com'
+                        target="_blank"
+                        title="mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="512px" height="512px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+<g>
+	<path d="M448,64H64C28.656,64,0,92.656,0,128v256c0,35.344,28.656,64,64,64h384c35.344,0,64-28.656,64-64V128
+		C512,92.656,483.344,64,448,64z M342.656,234.781l135.469-116.094c0.938,3,1.875,6,1.875,9.313v256
+		c0,2.219-0.844,4.188-1.281,6.281L342.656,234.781z M448,96c2.125,0,4,0.813,6,1.219L256,266.938L58,97.219
+		C60,96.813,61.875,96,64,96H448z M33.266,390.25C32.828,388.156,32,386.219,32,384V128c0-3.313,0.953-6.313,1.891-9.313
+		L169.313,234.75L33.266,390.25z M64,416c-3.234,0-6.172-0.938-9.125-1.844l138.75-158.563l51.969,44.531
+		C248.578,302.719,252.297,304,256,304s7.422-1.281,10.406-3.875l51.969-44.531l138.75,158.563C454.188,415.062,451.25,416,448,416
+		H64z"/>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='/index.xml'
+                        target="_blank"
+                        title="rss"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" ?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'><svg enable-background="new 0 0 512 512" id="Layer_1" version="1.1" viewBox="0 0 512 512" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><path d="M415.7,508.2c-2-110.5-39.2-206.7-116-285.9c-76.9-79.3-171.6-119-282.4-121.2c0-31.9,0-63.7,0-95.7   c8.4,0,16.8-0.4,25.2,0.1c26.3,1.4,52.4,5,78.1,10.6c46.8,10.3,91.1,27.2,132.9,50.6c30.2,16.9,58.2,36.7,84.2,59.4   c20.8,18.2,39.9,38.1,57.5,59.5c20.2,24.7,38,50.9,53.2,78.9c20.1,36.8,35.3,75.6,45.8,116.2c10.3,39.9,15.4,80.4,16.4,121.5   c0.1,4.7-0.8,6.4-5.8,6.3c-27.8-0.2-55.6-0.1-83.5-0.1C419.4,508.5,417.7,508.3,415.7,508.2z"/><path d="M17.3,272.5c0-32.3,0-64.1,0-95.8c170.9-4,326.8,145.6,324.9,331.2c-31.4,0-62.7,0-94.5,0c-0.9-63.7-22.3-119.3-66.8-165.2   C136.3,296.7,81.6,273.6,17.3,272.5z"/><path d="M82.5,374.5c36.5-0.1,65.8,29.5,65.8,66.7c0,36.8-29.2,66.7-65.3,66.8c-36.6,0.1-66-29.5-66-66.5   C16.9,404.1,45.7,374.6,82.5,374.5z"/></g></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://music.163.com/#/user/home?id=92203594'
+                        target="_blank"
+                        title="netease"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g>
+        <path fill="none" d="M0 0h24v24H0z"/>
+        <path d="M10.421 11.375c-.294 1.028.012 2.064.784 2.653 1.061.81 2.565.3 2.874-.995.08-.337.103-.722.027-1.056-.23-1.001-.52-1.988-.792-2.996-1.33.154-2.543 1.172-2.893 2.394zm5.548-.287c.273 1.012.285 2.017-.127 3-1.128 2.69-4.721 3.14-6.573.826-1.302-1.627-1.28-3.961.06-5.734.78-1.032 1.804-1.707 3.048-2.054l.379-.104c-.084-.415-.188-.816-.243-1.224-.176-1.317.512-2.503 1.744-3.04 1.226-.535 2.708-.216 3.53.76.406.479.395 1.08-.025 1.464-.412.377-.996.346-1.435-.09-.247-.246-.51-.44-.877-.436-.525.006-.987.418-.945.937.037.468.173.93.3 1.386.022.078.216.135.338.153 1.334.197 2.504.731 3.472 1.676 2.558 2.493 2.861 6.531.672 9.44-1.529 2.032-3.61 3.168-6.127 3.409-4.621.44-8.664-2.53-9.7-7.058C2.515 10.255 4.84 5.831 8.795 4.25c.586-.234 1.143-.031 1.371.498.232.537-.019 1.086-.61 1.35-2.368 1.06-3.817 2.855-4.215 5.424-.533 3.433 1.656 6.776 5 7.72 2.723.77 5.658-.166 7.308-2.33 1.586-2.08 1.4-5.099-.427-6.873a3.979 3.979 0 0 0-1.823-1.013c.198.716.389 1.388.57 2.062z"/>
+    </g>
+</svg>
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://blog.csdn.net/hubojing/'
+                        target="_blank"
+                        title="csdn"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" ?><svg height="24px" version="1.1" viewBox="0 0 24 24" width="24px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><g fill="none" fill-rule="evenodd" id="Social-/-18---Social,-blog,-feed,-news,-paper,-website-icon" stroke="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"><path d="M2,19.98 L2,1.92 C2,1.68804041 2.18804041,1.5 2.42,1.5 L21.58,1.5 C21.8119596,1.5 22,1.68804041 22,1.92 L22,19.98 C22,21.3717576 20.8717576,22.5 19.48,22.5 L4.52,22.5 C3.12824243,22.5 2,21.3717576 2,19.98 Z" id="Path" stroke="#000000" stroke-width="2"/><path d="M6.4,5.5 C6.1790861,5.5 6,5.6790861 6,5.9 L6,10 L18,10 L18,5.9 C18,5.6790861 17.8209139,5.5 17.6,5.5 L6.4,5.5 Z" id="Path" stroke="#000000" stroke-width="2"/><line id="Path" stroke="#000000" stroke-width="2" x1="6" x2="12" y1="14" y2="14"/></g></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                <span>存档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friends/' >
+                
+                
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/comment/' >
+                
+                
+                
+                <span>留言板</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/littletalk/' >
+                
+                
+                
+                <span>自语</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#论文背景">论文背景</a></li>
+    <li><a href="#现有问题">现有问题</a></li>
+    <li><a href="#nsa">NSA</a>
+      <ol>
+        <li><a href="#背景">背景</a></li>
+        <li><a href="#整体框架">整体框架</a></li>
+        <li><a href="#内核设计">内核设计</a></li>
+      </ol>
+    </li>
+    <li><a href="#性能">性能</a></li>
+    <li><a href="#总结">总结</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E8%AE%BA%E6%96%87/" >
+                论文
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/7fab9gum/">【论文笔记】ACL2025最佳论文-NSA算法</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-07-31</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="论文背景">论文背景
+</h1><p>标题: Native Sparse Attention: Hardware-Aligned and Natively Trainable Sparse Attention<br>
+原生稀疏注意力：一种硬件对齐和原生可训练的稀疏注意力<br>
+机构：DeepSeek、北大、华盛顿大学<br>
+论文地址：https://arxiv.org/pdf/2502.11089<br>
+ACL 2025最佳论文</p>
+<h1 id="现有问题">现有问题
+</h1><ul>
+<li>阶段限制<br>
+现有大多数现代稀疏注意力方法主要在推理过程中使用，预训练/预填充阶段依然保留全注意力（例如注意力图计算、索引构建），比如H20算法。而MInference算法只关注预填充阶段的稀疏性，又无法在推理阶段实现加速。所以至少有一个阶段的计算成本仍与全注意力相当。</li>
+<li>与高级注意力架构不兼容<br>
+一些稀疏注意力方法无法适应现代高效解码架构，如多查询注意力（MQA）和分组查询注意力（GQA），他们在多个查询头间共享KV，显著减少了解码过程中的内存访问瓶颈。（例如，Quest算法中，每个注意力头独立选择其KV缓存子集。）虽然这些稀疏注意力算法可以减少计算，但它们分散的内存访问模式与先进架构的高效内存访问设计相冲突。现有的稀疏注意力方法专注于KV缓存减少或理论计算减少，但在高级框架难以实现显著的延迟减少。<br>
+两个动机：</li>
+<li>性能下降<br>
+事后应用稀疏性迫使模型偏离其预训练的优化轨迹。前20%的注意力只能覆盖总注意力分数的70%，这使得预训练模型中的检索头等结构在推理过程中容易被裁剪。</li>
+<li>训练效率需求<br>
+现有稀疏注意力方法主要针对推理，训练中的计算挑战在很大程度上没有得到解决。这种限制阻碍了通过高效训练开发更强大的长上下文模型。</li>
+<li>不可训练的组件<br>
+ClusterKV等方法中的离散运算和MagicPIG算法在计算图中产生不连续性，这些不可训练的组件阻止了token选择过程中的梯度流动，限制了模型学习最佳稀疏模式的能力。</li>
+<li>反向传播效率低下<br>
+一些理论上可训练的稀疏注意力方法实际训练时效率低下。比如HashAttention算法，使用token粒度筛选策略导致需要在注意力计算期间从KV缓存加载大量单个标记。这种非连续的内存访问阻碍了快速注意力技术（如FlashAttention）的有效适应，它依赖于连续内存访问和分块计算来实现高吞吐量。结果，被迫退回到低硬件利用率，从而显著降低训练效率。<br>
+为此，提出了NSA，这是一个原生稀疏注意力框架，可以同时满足计算效率和训练要求。</li>
+</ul>
+<h1 id="nsa">NSA
+</h1><h2 id="背景">背景
+</h2><ul>
+<li>随着序列长度增加，注意力计算在总体计算成本中变得越来越主导</li>
+<li>算术强度（Arithmetic Intensity）<br>
+算术强度=计算操作数/内存访问数。它从本质上塑造了硬件上的算法优化。每个GPU都有一个临界算术强度，由其峰值计算能力和内存带宽决定。对于计算任务，高于此临界阈值的算术强度将成为计算受限（受GPU FLOPS限制），而低于该阈值则成为内存受限（受内存带宽限制）。<br>
+具体到因果自注意力机制，在训练和预填充阶段，批量矩阵乘法和注意力计算表现出较高的算术强度，使得这些阶段在现代加速器上具有计算约束。相比之下，自回归解码变得内存带宽受限，因为它每次前向传递生成一个令牌，同时需要加载整个键值缓存，从而导致算术强度低。这导致了不同的优化目标——降低训练和预填充期间的计算成本，同时减少解码期间的内存访问。</li>
+</ul>
+<h2 id="整体框架">整体框架
+</h2><p><img src="/7fab9gum/%E6%9E%B6%E6%9E%84.png"
+	width="1661"
+	height="472"
+	srcset="/7fab9gum/%E6%9E%B6%E6%9E%84_hu_9498cbe6a85b4466.png 480w, /7fab9gum/%E6%9E%B6%E6%9E%84_hu_26ea0bff26762e8a.png 1024w"
+	loading="lazy"
+	
+		alt="架构"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="351"
+		data-flex-basis="844px"
+	
+><br>
+左图：框架通过三个并行注意力分支处理输入序列：对于给定的查询，前面的键和值被处理为粗粒度模式的压缩注意力，重要标记块的选择注意力，以及本地上下文的滑动注意力。右图：每个分支产生的不同注意力模式的可视化。绿色区域表示需要计算注意力分数的区域，而白色区域表示可以跳过的区域。</p>
+$$\~{k_t}={f_K(q_t,k_{:t},v_{:t})}, \~{V_t}={f_v(q_t,k_{:t},v_{:t})}$$$${o^*_t}=Attn(q_t,\~{K_t},\~{V_t})$$$${o^*_t}=\sum_{c∈𝒞}g^c_t·Attn(q_t,\~{k_t}^c, \~{V_t}^c)$$<p>
+目前NSA有三种映射策略𝒞={cmp,slc,win}，分别表示键和值的压缩、选择和滑动窗口。$g^c_t∈[0,1]$是相应策略c的门得分，输入特征通过MLP和sigmoid激活得出。用$N_t$表示重新映射的键/值的总数：<br>
+$N_t=\sum_{c∈𝒞}size[~{k_t}^c]$
+通过确保$N_t≪t$来保持高稀疏率。<br>
+每一种映射策略具体的算法设计请看原论文，因为我目前暂未研究该方向所以未精读。</p>
+<h2 id="内核设计">内核设计
+</h2><p>为了在训练和预填充过程中实现FlashAttention级别的加速，在Triton上实现了硬件对齐的稀疏注意力内核。鉴于MHA是内存密集型且解码效率低下的，本文专注于具有共享KV缓存的架构，如GQA和MQA，遵循当前最先进的LLM。虽然压缩和滑动窗口注意力计算很容易与现有的 FlashAttention-2内核兼容，但本文引入了稀疏选择注意力的专用内核设计。如果遵循FlashAttention 将时间连续查询块加载到SRAM中的策略，这将导致内存访问效率低下，因为块内的查询可能需要不相交的KV块。为了解决这个问题，关键优化在于不同的查询分组策略：对于查询序列上的每个位置，将GQA组中的所有查询头（它们共享相同的稀疏KV块）加载到SRAM中。 如图，说明了前向传递实现。
+<img src="/7fab9gum/%E5%86%85%E6%A0%B8%E8%AE%BE%E8%AE%A1.png"
+	width="830"
+	height="721"
+	srcset="/7fab9gum/%E5%86%85%E6%A0%B8%E8%AE%BE%E8%AE%A1_hu_291b28c9c7fc7a98.png 480w, /7fab9gum/%E5%86%85%E6%A0%B8%E8%AE%BE%E8%AE%A1_hu_c4de48da4fff622d.png 1024w"
+	loading="lazy"
+	
+		alt="内核设计"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="115"
+		data-flex-basis="276px"
+	
+><br>
+内核按GQA组加载查询（Grid Loop），获取相应的稀疏KV块（Inner Loop），并在SRAM上进行注意力计算。绿色块表示SRAM上的数据，而蓝色块表示HBM上的数据。</p>
+<h1 id="性能">性能
+</h1><p><img src="/7fab9gum/%E6%80%A7%E8%83%BD.png"
+	width="1163"
+	height="698"
+	srcset="/7fab9gum/%E6%80%A7%E8%83%BD_hu_604c6c50e679d8b8.png 480w, /7fab9gum/%E6%80%A7%E8%83%BD_hu_f9693de1378a01c8.png 1024w"
+	loading="lazy"
+	
+		alt="性能"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="166"
+		data-flex-basis="399px"
+	
+><br>
+左图：在一般、长上下文和推理任务中都比全注意力好。右图：在解码、前向传播和后向传播上都提速明显。</p>
+<h1 id="总结">总结
+</h1><p>本文提出了NSA，这是一种硬件对齐的稀疏注意力架构，用于高效的长上下文建模。通过在可训练架构中将分层token压缩与分块token选择集成在一起，架构实现了加速训练和推理，同时保持了全注意力性能。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">大模型</a>
+        
+            <a href="/tags/llm/">LLM</a>
+        
+            <a href="/tags/nsa%E7%AE%97%E6%B3%95/">NSA算法</a>
+        
+            <a href="/tags/deepseek/">DeepSeek</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-07-31 14:45 UTC
+        </span>
+    </section></footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/5a3f7d1e/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">DeepSeek系列论文笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/9ocgomtj/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大模型相关论文笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/tkuusvxe/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">LLM数据合成方法</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/kte2ngfx/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">InstructGPT笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/9tdsnz5r/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">命名实体识别（NER）论文泛读</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":"评论一句，好运+1！"},"requiredMeta":["name"],"serverURL":"https://zippy-halva-8e20f0.netlify.app/.netlify/functions/comment"});
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2015 - 
+        
+        2025 靖待
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

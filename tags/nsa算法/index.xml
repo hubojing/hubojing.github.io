@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>NSA算法 on 靖待</title>
+        <link>https://hubojing.github.io/tags/nsa%E7%AE%97%E6%B3%95/</link>
+        <description>Recent content in NSA算法 on 靖待</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <copyright>靖待</copyright>
+        <lastBuildDate>Thu, 31 Jul 2025 14:45:15 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/tags/nsa%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>【论文笔记】ACL2025最佳论文-NSA算法</title>
+        <link>https://hubojing.github.io/7fab9gum/</link>
+        <pubDate>Thu, 31 Jul 2025 22:29:16 +0800</pubDate>
+        
+        <guid>https://hubojing.github.io/7fab9gum/</guid>
+        <description>&lt;h1 id=&#34;论文背景&#34;&gt;论文背景
+&lt;/h1&gt;&lt;p&gt;标题: Native Sparse Attention: Hardware-Aligned and Natively Trainable Sparse Attention&lt;br&gt;
+原生稀疏注意力：一种硬件对齐和原生可训练的稀疏注意力&lt;br&gt;
+机构：DeepSeek、北大、华盛顿大学&lt;br&gt;
+论文地址：https://arxiv.org/pdf/2502.11089&lt;br&gt;
+ACL 2025最佳论文&lt;/p&gt;
+&lt;h1 id=&#34;现有问题&#34;&gt;现有问题
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;阶段限制&lt;br&gt;
+现有大多数现代稀疏注意力方法主要在推理过程中使用，预训练/预填充阶段依然保留全注意力（例如注意力图计算、索引构建），比如H20算法。而MInference算法只关注预填充阶段的稀疏性，又无法在推理阶段实现加速。所以至少有一个阶段的计算成本仍与全注意力相当。&lt;/li&gt;
+&lt;li&gt;与高级注意力架构不兼容&lt;br&gt;
+一些稀疏注意力方法无法适应现代高效解码架构，如多查询注意力（MQA）和分组查询注意力（GQA），他们在多个查询头间共享KV，显著减少了解码过程中的内存访问瓶颈。（例如，Quest算法中，每个注意力头独立选择其KV缓存子集。）虽然这些稀疏注意力算法可以减少计算，但它们分散的内存访问模式与先进架构的高效内存访问设计相冲突。现有的稀疏注意力方法专注于KV缓存减少或理论计算减少，但在高级框架难以实现显著的延迟减少。&lt;br&gt;
+两个动机：&lt;/li&gt;
+&lt;li&gt;性能下降&lt;br&gt;
+事后应用稀疏性迫使模型偏离其预训练的优化轨迹。前20%的注意力只能覆盖总注意力分数的70%，这使得预训练模型中的检索头等结构在推理过程中容易被裁剪。&lt;/li&gt;
+&lt;li&gt;训练效率需求&lt;br&gt;
+现有稀疏注意力方法主要针对推理，训练中的计算挑战在很大程度上没有得到解决。这种限制阻碍了通过高效训练开发更强大的长上下文模型。&lt;/li&gt;
+&lt;li&gt;不可训练的组件&lt;br&gt;
+ClusterKV等方法中的离散运算和MagicPIG算法在计算图中产生不连续性，这些不可训练的组件阻止了token选择过程中的梯度流动，限制了模型学习最佳稀疏模式的能力。&lt;/li&gt;
+&lt;li&gt;反向传播效率低下&lt;br&gt;
+一些理论上可训练的稀疏注意力方法实际训练时效率低下。比如HashAttention算法，使用token粒度筛选策略导致需要在注意力计算期间从KV缓存加载大量单个标记。这种非连续的内存访问阻碍了快速注意力技术（如FlashAttention）的有效适应，它依赖于连续内存访问和分块计算来实现高吞吐量。结果，被迫退回到低硬件利用率，从而显著降低训练效率。&lt;br&gt;
+为此，提出了NSA，这是一个原生稀疏注意力框架，可以同时满足计算效率和训练要求。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;nsa&#34;&gt;NSA
+&lt;/h1&gt;&lt;h2 id=&#34;背景&#34;&gt;背景
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;随着序列长度增加，注意力计算在总体计算成本中变得越来越主导&lt;/li&gt;
+&lt;li&gt;算术强度（Arithmetic Intensity）&lt;br&gt;
+算术强度=计算操作数/内存访问数。它从本质上塑造了硬件上的算法优化。每个GPU都有一个临界算术强度，由其峰值计算能力和内存带宽决定。对于计算任务，高于此临界阈值的算术强度将成为计算受限（受GPU FLOPS限制），而低于该阈值则成为内存受限（受内存带宽限制）。&lt;br&gt;
+具体到因果自注意力机制，在训练和预填充阶段，批量矩阵乘法和注意力计算表现出较高的算术强度，使得这些阶段在现代加速器上具有计算约束。相比之下，自回归解码变得内存带宽受限，因为它每次前向传递生成一个令牌，同时需要加载整个键值缓存，从而导致算术强度低。这导致了不同的优化目标——降低训练和预填充期间的计算成本，同时减少解码期间的内存访问。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;整体框架&#34;&gt;整体框架
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/7fab9gum/%E6%9E%B6%E6%9E%84.png&#34;
+	width=&#34;1661&#34;
+	height=&#34;472&#34;
+	srcset=&#34;https://hubojing.github.io/7fab9gum/%E6%9E%B6%E6%9E%84_hu_9498cbe6a85b4466.png 480w, https://hubojing.github.io/7fab9gum/%E6%9E%B6%E6%9E%84_hu_26ea0bff26762e8a.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;架构&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;351&#34;
+		data-flex-basis=&#34;844px&#34;
+	
+&gt;&lt;br&gt;
+左图：框架通过三个并行注意力分支处理输入序列：对于给定的查询，前面的键和值被处理为粗粒度模式的压缩注意力，重要标记块的选择注意力，以及本地上下文的滑动注意力。右图：每个分支产生的不同注意力模式的可视化。绿色区域表示需要计算注意力分数的区域，而白色区域表示可以跳过的区域。&lt;/p&gt;
+$$\~{k_t}={f_K(q_t,k_{:t},v_{:t})}, \~{V_t}={f_v(q_t,k_{:t},v_{:t})}$$$${o^*_t}=Attn(q_t,\~{K_t},\~{V_t})$$$${o^*_t}=\sum_{c∈𝒞}g^c_t·Attn(q_t,\~{k_t}^c, \~{V_t}^c)$$&lt;p&gt;
+目前NSA有三种映射策略𝒞={cmp,slc,win}，分别表示键和值的压缩、选择和滑动窗口。$g^c_t∈[0,1]$是相应策略c的门得分，输入特征通过MLP和sigmoid激活得出。用$N_t$表示重新映射的键/值的总数：&lt;br&gt;
+$N_t=\sum_{c∈𝒞}size[~{k_t}^c]$
+通过确保$N_t≪t$来保持高稀疏率。&lt;br&gt;
+每一种映射策略具体的算法设计请看原论文，因为我目前暂未研究该方向所以未精读。&lt;/p&gt;
+&lt;h2 id=&#34;内核设计&#34;&gt;内核设计
+&lt;/h2&gt;&lt;p&gt;为了在训练和预填充过程中实现FlashAttention级别的加速，在Triton上实现了硬件对齐的稀疏注意力内核。鉴于MHA是内存密集型且解码效率低下的，本文专注于具有共享KV缓存的架构，如GQA和MQA，遵循当前最先进的LLM。虽然压缩和滑动窗口注意力计算很容易与现有的 FlashAttention-2内核兼容，但本文引入了稀疏选择注意力的专用内核设计。如果遵循FlashAttention 将时间连续查询块加载到SRAM中的策略，这将导致内存访问效率低下，因为块内的查询可能需要不相交的KV块。为了解决这个问题，关键优化在于不同的查询分组策略：对于查询序列上的每个位置，将GQA组中的所有查询头（它们共享相同的稀疏KV块）加载到SRAM中。 如图，说明了前向传递实现。
+&lt;img src=&#34;https://hubojing.github.io/7fab9gum/%E5%86%85%E6%A0%B8%E8%AE%BE%E8%AE%A1.png&#34;
+	width=&#34;830&#34;
+	height=&#34;721&#34;
+	srcset=&#34;https://hubojing.github.io/7fab9gum/%E5%86%85%E6%A0%B8%E8%AE%BE%E8%AE%A1_hu_291b28c9c7fc7a98.png 480w, https://hubojing.github.io/7fab9gum/%E5%86%85%E6%A0%B8%E8%AE%BE%E8%AE%A1_hu_c4de48da4fff622d.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;内核设计&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;115&#34;
+		data-flex-basis=&#34;276px&#34;
+	
+&gt;&lt;br&gt;
+内核按GQA组加载查询（Grid Loop），获取相应的稀疏KV块（Inner Loop），并在SRAM上进行注意力计算。绿色块表示SRAM上的数据，而蓝色块表示HBM上的数据。&lt;/p&gt;
+&lt;h1 id=&#34;性能&#34;&gt;性能
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://hubojing.github.io/7fab9gum/%E6%80%A7%E8%83%BD.png&#34;
+	width=&#34;1163&#34;
+	height=&#34;698&#34;
+	srcset=&#34;https://hubojing.github.io/7fab9gum/%E6%80%A7%E8%83%BD_hu_604c6c50e679d8b8.png 480w, https://hubojing.github.io/7fab9gum/%E6%80%A7%E8%83%BD_hu_f9693de1378a01c8.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;性能&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;166&#34;
+		data-flex-basis=&#34;399px&#34;
+	
+&gt;&lt;br&gt;
+左图：在一般、长上下文和推理任务中都比全注意力好。右图：在解码、前向传播和后向传播上都提速明显。&lt;/p&gt;
+&lt;h1 id=&#34;总结&#34;&gt;总结
+&lt;/h1&gt;&lt;p&gt;本文提出了NSA，这是一种硬件对齐的稀疏注意力架构，用于高效的长上下文建模。通过在可训练架构中将分层token压缩与分块token选择集成在一起，架构实现了加速训练和推理，同时保持了全注意力性能。&lt;/p&gt;
+</description>
+        </item>
+        
+    </channel>
+</rss>
