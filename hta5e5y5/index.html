@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="论文背景 标题: A Theory of Response Sampling in LLMs: Part Descriptive and Part Prescriptive\n一种大模型响应采样理论：部分描述性和部分规范性\n机构：CISPA亥姆霍兹信息安全中心，TCS研究院，微软\nACL 2025最佳论文\n">
+<title>【论文笔记】ACL2025最佳论文-大模型响应采样理论</title>
+
+<link rel='canonical' href='https://hubojing.github.io/hta5e5y5/'>
+
+<link rel="stylesheet" href="/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css"><meta property='og:title' content="【论文笔记】ACL2025最佳论文-大模型响应采样理论">
+<meta property='og:description' content="论文背景 标题: A Theory of Response Sampling in LLMs: Part Descriptive and Part Prescriptive\n一种大模型响应采样理论：部分描述性和部分规范性\n机构：CISPA亥姆霍兹信息安全中心，TCS研究院，微软\nACL 2025最佳论文\n">
+<meta property='og:url' content='https://hubojing.github.io/hta5e5y5/'>
+<meta property='og:site_name' content='靖待'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='大模型' /><meta property='article:tag' content='LLM' /><meta property='article:tag' content='ACL2025' /><meta property='article:published_time' content='2025-08-02T11:15:25&#43;08:00'/><meta property='article:modified_time' content='2025-08-02T14:35:18&#43;00:00'/>
+<meta name="twitter:title" content="【论文笔记】ACL2025最佳论文-大模型响应采样理论">
+<meta name="twitter:description" content="论文背景 标题: A Theory of Response Sampling in LLMs: Part Descriptive and Part Prescriptive\n一种大模型响应采样理论：部分描述性和部分规范性\n机构：CISPA亥姆霍兹信息安全中心，TCS研究院，微软\nACL 2025最佳论文\n">
+    <link rel="shortcut icon" href="/avatar.jpg" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu_999351c94d8e06aa.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">靖待</a></h1>
+            <h2 class="site-description">创造是人生乐趣</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/hubojing'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="438.549px" height="438.549px" viewBox="0 0 438.549 438.549" style="enable-background:new 0 0 438.549 438.549;"
+	 xml:space="preserve">
+<g>
+	<path d="M409.132,114.573c-19.608-33.596-46.205-60.194-79.798-79.8C295.736,15.166,259.057,5.365,219.271,5.365
+		c-39.781,0-76.472,9.804-110.063,29.408c-33.596,19.605-60.192,46.204-79.8,79.8C9.803,148.168,0,184.854,0,224.63
+		c0,47.78,13.94,90.745,41.827,128.906c27.884,38.164,63.906,64.572,108.063,79.227c5.14,0.954,8.945,0.283,11.419-1.996
+		c2.475-2.282,3.711-5.14,3.711-8.562c0-0.571-0.049-5.708-0.144-15.417c-0.098-9.709-0.144-18.179-0.144-25.406l-6.567,1.136
+		c-4.187,0.767-9.469,1.092-15.846,1c-6.374-0.089-12.991-0.757-19.842-1.999c-6.854-1.231-13.229-4.086-19.13-8.559
+		c-5.898-4.473-10.085-10.328-12.56-17.556l-2.855-6.57c-1.903-4.374-4.899-9.233-8.992-14.559
+		c-4.093-5.331-8.232-8.945-12.419-10.848l-1.999-1.431c-1.332-0.951-2.568-2.098-3.711-3.429c-1.142-1.331-1.997-2.663-2.568-3.997
+		c-0.572-1.335-0.098-2.43,1.427-3.289c1.525-0.859,4.281-1.276,8.28-1.276l5.708,0.853c3.807,0.763,8.516,3.042,14.133,6.851
+		c5.614,3.806,10.229,8.754,13.846,14.842c4.38,7.806,9.657,13.754,15.846,17.847c6.184,4.093,12.419,6.136,18.699,6.136
+		c6.28,0,11.704-0.476,16.274-1.423c4.565-0.952,8.848-2.383,12.847-4.285c1.713-12.758,6.377-22.559,13.988-29.41
+		c-10.848-1.14-20.601-2.857-29.264-5.14c-8.658-2.286-17.605-5.996-26.835-11.14c-9.235-5.137-16.896-11.516-22.985-19.126
+		c-6.09-7.614-11.088-17.61-14.987-29.979c-3.901-12.374-5.852-26.648-5.852-42.826c0-23.035,7.52-42.637,22.557-58.817
+		c-7.044-17.318-6.379-36.732,1.997-58.24c5.52-1.715,13.706-0.428,24.554,3.853c10.85,4.283,18.794,7.952,23.84,10.994
+		c5.046,3.041,9.089,5.618,12.135,7.708c17.705-4.947,35.976-7.421,54.818-7.421s37.117,2.474,54.823,7.421l10.849-6.849
+		c7.419-4.57,16.18-8.758,26.262-12.565c10.088-3.805,17.802-4.853,23.134-3.138c8.562,21.509,9.325,40.922,2.279,58.24
+		c15.036,16.18,22.559,35.787,22.559,58.817c0,16.178-1.958,30.497-5.853,42.966c-3.9,12.471-8.941,22.457-15.125,29.979
+		c-6.191,7.521-13.901,13.85-23.131,18.986c-9.232,5.14-18.182,8.85-26.84,11.136c-8.662,2.286-18.415,4.004-29.263,5.146
+		c9.894,8.562,14.842,22.077,14.842,40.539v60.237c0,3.422,1.19,6.279,3.572,8.562c2.379,2.279,6.136,2.95,11.276,1.995
+		c44.163-14.653,80.185-41.062,108.068-79.226c27.88-38.161,41.825-81.126,41.825-128.906
+		C438.536,184.851,428.728,148.168,409.132,114.573z"/>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='mailto:hubojing@outlook.com'
+                        target="_blank"
+                        title="mail"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="512px" height="512px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+<g>
+	<path d="M448,64H64C28.656,64,0,92.656,0,128v256c0,35.344,28.656,64,64,64h384c35.344,0,64-28.656,64-64V128
+		C512,92.656,483.344,64,448,64z M342.656,234.781l135.469-116.094c0.938,3,1.875,6,1.875,9.313v256
+		c0,2.219-0.844,4.188-1.281,6.281L342.656,234.781z M448,96c2.125,0,4,0.813,6,1.219L256,266.938L58,97.219
+		C60,96.813,61.875,96,64,96H448z M33.266,390.25C32.828,388.156,32,386.219,32,384V128c0-3.313,0.953-6.313,1.891-9.313
+		L169.313,234.75L33.266,390.25z M64,416c-3.234,0-6.172-0.938-9.125-1.844l138.75-158.563l51.969,44.531
+		C248.578,302.719,252.297,304,256,304s7.422-1.281,10.406-3.875l51.969-44.531l138.75,158.563C454.188,415.062,451.25,416,448,416
+		H64z"/>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+<g>
+</g>
+</svg>
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='/index.xml'
+                        target="_blank"
+                        title="rss"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" ?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'><svg enable-background="new 0 0 512 512" id="Layer_1" version="1.1" viewBox="0 0 512 512" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><path d="M415.7,508.2c-2-110.5-39.2-206.7-116-285.9c-76.9-79.3-171.6-119-282.4-121.2c0-31.9,0-63.7,0-95.7   c8.4,0,16.8-0.4,25.2,0.1c26.3,1.4,52.4,5,78.1,10.6c46.8,10.3,91.1,27.2,132.9,50.6c30.2,16.9,58.2,36.7,84.2,59.4   c20.8,18.2,39.9,38.1,57.5,59.5c20.2,24.7,38,50.9,53.2,78.9c20.1,36.8,35.3,75.6,45.8,116.2c10.3,39.9,15.4,80.4,16.4,121.5   c0.1,4.7-0.8,6.4-5.8,6.3c-27.8-0.2-55.6-0.1-83.5-0.1C419.4,508.5,417.7,508.3,415.7,508.2z"/><path d="M17.3,272.5c0-32.3,0-64.1,0-95.8c170.9-4,326.8,145.6,324.9,331.2c-31.4,0-62.7,0-94.5,0c-0.9-63.7-22.3-119.3-66.8-165.2   C136.3,296.7,81.6,273.6,17.3,272.5z"/><path d="M82.5,374.5c36.5-0.1,65.8,29.5,65.8,66.7c0,36.8-29.2,66.7-65.3,66.8c-36.6,0.1-66-29.5-66-66.5   C16.9,404.1,45.7,374.6,82.5,374.5z"/></g></svg>
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://music.163.com/#/user/home?id=92203594'
+                        target="_blank"
+                        title="netease"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <g>
+        <path fill="none" d="M0 0h24v24H0z"/>
+        <path d="M10.421 11.375c-.294 1.028.012 2.064.784 2.653 1.061.81 2.565.3 2.874-.995.08-.337.103-.722.027-1.056-.23-1.001-.52-1.988-.792-2.996-1.33.154-2.543 1.172-2.893 2.394zm5.548-.287c.273 1.012.285 2.017-.127 3-1.128 2.69-4.721 3.14-6.573.826-1.302-1.627-1.28-3.961.06-5.734.78-1.032 1.804-1.707 3.048-2.054l.379-.104c-.084-.415-.188-.816-.243-1.224-.176-1.317.512-2.503 1.744-3.04 1.226-.535 2.708-.216 3.53.76.406.479.395 1.08-.025 1.464-.412.377-.996.346-1.435-.09-.247-.246-.51-.44-.877-.436-.525.006-.987.418-.945.937.037.468.173.93.3 1.386.022.078.216.135.338.153 1.334.197 2.504.731 3.472 1.676 2.558 2.493 2.861 6.531.672 9.44-1.529 2.032-3.61 3.168-6.127 3.409-4.621.44-8.664-2.53-9.7-7.058C2.515 10.255 4.84 5.831 8.795 4.25c.586-.234 1.143-.031 1.371.498.232.537-.019 1.086-.61 1.35-2.368 1.06-3.817 2.855-4.215 5.424-.533 3.433 1.656 6.776 5 7.72 2.723.77 5.658-.166 7.308-2.33 1.586-2.08 1.4-5.099-.427-6.873a3.979 3.979 0 0 0-1.823-1.013c.198.716.389 1.388.57 2.062z"/>
+    </g>
+</svg>
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://blog.csdn.net/hubojing/'
+                        target="_blank"
+                        title="csdn"
+                        rel="me"
+                    >
+                        
+                        
+                            <?xml version="1.0" ?><svg height="24px" version="1.1" viewBox="0 0 24 24" width="24px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><g fill="none" fill-rule="evenodd" id="Social-/-18---Social,-blog,-feed,-news,-paper,-website-icon" stroke="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"><path d="M2,19.98 L2,1.92 C2,1.68804041 2.18804041,1.5 2.42,1.5 L21.58,1.5 C21.8119596,1.5 22,1.68804041 22,1.92 L22,19.98 C22,21.3717576 20.8717576,22.5 19.48,22.5 L4.52,22.5 C3.12824243,22.5 2,21.3717576 2,19.98 Z" id="Path" stroke="#000000" stroke-width="2"/><path d="M6.4,5.5 C6.1790861,5.5 6,5.6790861 6,5.9 L6,10 L18,10 L18,5.9 C18,5.6790861 17.8209139,5.5 17.6,5.5 L6.4,5.5 Z" id="Path" stroke="#000000" stroke-width="2"/><line id="Path" stroke="#000000" stroke-width="2" x1="6" x2="12" y1="14" y2="14"/></g></svg>
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                <span>存档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/tags/' >
+                
+                
+                
+                <span>标签</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/about/' >
+                
+                
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/friends/' >
+                
+                
+                
+                <span>友链</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/comment/' >
+                
+                
+                
+                <span>留言板</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/littletalk/' >
+                
+                
+                
+                <span>自语</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#论文背景">论文背景</a></li>
+    <li><a href="#定义">定义</a></li>
+    <li><a href="#摘要">摘要</a></li>
+    <li><a href="#引言">引言</a></li>
+    <li><a href="#贡献点">贡献点</a></li>
+    <li><a href="#现有问题">现有问题</a></li>
+    <li><a href="#实验结论">实验结论</a></li>
+    <li><a href="#医疗案例">医疗案例</a></li>
+    <li><a href="#结论">结论</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/%E8%AE%BA%E6%96%87/" >
+                论文
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/hta5e5y5/">【论文笔记】ACL2025最佳论文-大模型响应采样理论</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2025-08-02</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 7 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="论文背景">论文背景
+</h1><p>标题: A Theory of Response Sampling in LLMs: Part Descriptive and Part Prescriptive<br>
+一种大模型响应采样理论：部分描述性和部分规范性<br>
+机构：CISPA亥姆霍兹信息安全中心，TCS研究院，微软<br>
+ACL 2025最佳论文</p>
+<h1 id="定义">定义
+</h1><p>首先弄明白标题里说的Descriptive和Prescriptive是什么。<br>
+论文附录的定义是这样写的。
+描述性成分（Descriptive component）：描述性是指观察到的模式，这些模式定义了给定概念中典型的或统计上频繁的内容。在LLM中，它对应于从每个概念的预训练数据中学习的底层统计概率分布，反映了常见的词序列和结构。<br>
+规范性成分（Prescriptive component）：概念的规范性反映了认知主体或模型中编码概念的隐含理想或规范标准。在人类认知中，它反映了概念的价值，可以表现为决策中的道德、文化或目标导向偏见。在LLM中，规范性成分似乎来自训练数据和RLHF的模式，影响输出以符合隐含的“理想”概念，而不仅仅是统计规范。LLM中的“理想”概念不必与人类价值观保持一致。</p>
+<h1 id="摘要">摘要
+</h1><p>大型语言模型（LLMs）在自主决策中应用日益广泛，它们从庞大的动作空间中采样选项。然而，指导这一采样过程的启发式方法仍缺乏深入研究。本文研究了这种采样行为，并表明其底层启发式方法类似于人类决策：包含一个描述性成分（反映统计规范）和一个规范性成分（LLM中编码的概念隐含理想）。我们证明，样本偏离统计规范朝向规范性成分的现象在公共卫生、经济趋势等不同现实领域中的概念中始终出现。为进一步说明该理论，本文展示了LLM中的概念原型受规范性规范影响，类似于人类中的常态概念。通过案例研究和与人类研究的比较，本文说明在现实应用中，LLM输出中样本向理想值转变会导致显著偏倚的决策，引发伦理问题。</p>
+<h1 id="引言">引言
+</h1><p>决策制定是一项具有挑战性的任务，通常需要从庞大的可能性集合中选择一个选项。在许多现实世界中，由于需要权衡这些数不胜数的选项来决定行动，这个过程在计算上是不可行的，因此，智能体采用启发式方法来采样它们的选项。例如，研究表明人类（和动物）通常只权衡少数选项，这些选项是基于由可能性（一个选项的统计可能性）和效用（与选项相关的价值）引导的启发式方法来选择的。尽管LLMs通常被描述为“系统-1”（System-1）智能体，其特点是依赖启发式方法，但控制它们响应采样的机制仍缺乏深入研究。<br>
+系统1即快思考，thinking。<br>
+系统2即慢思考，reasoning。<br>
+<img src="/hta5e5y5/%E5%9B%BE1.png"
+	width="2000"
+	height="652"
+	srcset="/hta5e5y5/%E5%9B%BE1_hu_5c0e0c9a0c3bfc00.png 480w, /hta5e5y5/%E5%9B%BE1_hu_924d177db86fa2fb.png 1024w"
+	loading="lazy"
+	
+		alt="图1"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="306"
+		data-flex-basis="736px"
+	
+><br>
+从左到右：当对一个概念进行采样时，LLM似乎考虑了该概念的统计可能性（
+A(C)）和规范性规范（I(C)）。因此，样本分布表现出向理想方向（最右侧图）偏移（以α表示），远离真实分布。<br>
+本文设计了一个关键实验来分离出所提出理论的效应。然后展示了这种启发式方法在不同现实世界领域中持续出现的效果。本文进行了涵盖不同LLMs、评估概念和消融实验的广泛实验，以展示观察结果的鲁棒性。本文展示了一个医疗案例研究，其中将LLM作为代理用于为患者分配恢复时间，以展示潜在的实践问题。如图1所示，所提出的理论表明，当LLM为某个概念挑选样本时，样本不仅反映了该概念的统计规律性（描述性规范），而且还系统地融入了该概念的理想化版本（规范性规范）。这些转变可能与人类理想不一致，当LLMs用于自主决策时，会引发伦理问题。</p>
+<h1 id="贡献点">贡献点
+</h1><ul>
+<li>通过人类认知研究的角度来研究LLMs中的采样机制。本文表明，驱动人类和LLMs采样过程的自助规则都包含描述性成分和规范性成分。构建了一个实验环境来隔离效应，并通过许多鲁棒性检验和与人类研究的比较来实证验证所提出的理论。</li>
+<li>评估了10个领域中500个现有概念的样本，以验证所提出的理论的有效性。在涵盖不同系列和规模的15个语言模型上发现结果具有统计学意义。展示了一个受现实应用启发的案例研究，其中这一规定性部分可能导致不期望的结果。</li>
+<li>证明LLMs对概念的原型表示系统地包含了规定性规范，显示出初步证据表明它们对“典型”示例的判断倾向于理想化的版本，类似于人类的原型概念。</li>
+</ul>
+<h1 id="现有问题">现有问题
+</h1><p>近期研究表明，尽管LLM agent理解概率的概念，但在概率采样方面存在困难。它们未能充分表征统计信息，即不擅长生成与预期概率模式相符的样本。本文提供了一个系统框架，解释了LLMs样本中的组成部分。这有可能解释LLMs表现出的不同偏差。<br>
+以往的研究主要使用抽样方法来处理行动生成和决策等任务，而不是明确研究LLM的抽样机制。本文旨在填补这一空白，通过研究驱动LLM响应抽样的启发式方法，从而更深入地理解它们的决策过程。</p>
+<h1 id="实验结论">实验结论
+</h1><p>论文进行了大量实验，得出一些结论。</p>
+<ul>
+<li>采样理论：LLM的抽样由描述性成分(概念的统计规范)和规定性成分(概念的理想概念)驱动。</li>
+<li>随着模型规模的增加，规范性成分的影响似乎会变大。</li>
+<li>规范性成分似乎源于预训练而非RLHF，尽管RLHF会加剧它。</li>
+<li>LLM的原型概念不仅受统计平均影响，还受潜在规范影响。这些发现表明，LLM对构成典型或原型例子的判断系统性地偏向理想化表征。（原型通常被理解为概念中最典型/代表性的成员。例如，“知更鸟”可能被认为是“鸟”概念的原型，因为它与大多数高频出现（统计）的鸟类有许多共同特征，并且具有飞行能力（鸟类所期望的值），使其成为“鸟”概念的原型例子。因此，“企鹅”——一种不会飞的鸟类——比“知更鸟”更不典型。典型性定义了概念的正常性，这会驱动采样。）</li>
+<li>对于包含规范性和描述性统计的新虚构概念，人类和LLM都能捕捉这些规范并使用它们来采样选项。还注意到LLM似乎像人类一样，对收益和损失存在非对称处理。观察到对负值场景的欠采样程度超过对正值场景的过采样程度，这可能指向一种共同的乐观偏见。这种非对称性，即两个系统都更强烈地回避负面而非追求正面。</li>
+<li>人类始终将理想概念化为对统计数据的适度改进（例如，理想的“每周含糖饮料数量”是2.41，而平均值是9.17），而LLM则经常默认采用绝对且更严格的标准（例如，含糖饮料为0，其他概念为18），这表明道德绝对主义。</li>
+</ul>
+<h1 id="医疗案例">医疗案例
+</h1><p>LLM agent被赋予医生的角色，并被要求根据一系列症状决定患者的出院时间。在此，动作空间是正有理数（周数）。一旦LLM给出康复时间，我们也会从LLM处获得自我报告的平均和理想康复时间。自我报告的平均值明确指的是当被提示报告平均值时，LLM直接提供的平均数值。<br>
+实验中提示LLM扮演医生角色，并根据给定的四个症状列表给出输出（以周为单位）。发现当假设（并且事实上在这个例子中确实要求）LLM仅使用统计规范时，LLM显著偏离了统计规范康复时间，趋向于一种理想概念。在35个症状批次（每个包含四个症状）中，样本26次落在平均值的理想一侧——这是一个具有统计学意义的显著变化（二项式p=0.003）。<br>
+LLM 给出的理想值低于35种症状中30种的平均值。这意味着样本经常被拉低至平均值以下。这一发现表明，LLM在关于患者康复时间方面的决策受到规范性成分的干扰，这对临床决策、医院资源分配以及患者安全潜在风险具有重大影响。</p>
+<h1 id="结论">结论
+</h1><p>本文旨在更深入地理解控制LLM可能性采样过程的启发式方法。基于人类认知研究提出了一种理论，该理论解释了采样启发式方法应兼具描述性和规范性。然而，精确的规范性成分可能与人类不完全一致。研究结果为评估LLM如何在统计概率结果与理想规范之间取得平衡提供了一个基础框架，并引发了关于其底层表示的有趣问题。本文旨在通过行为类比和性能评估来建立联系，本发现可能对下游任务产生影响。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">大模型</a>
+        
+            <a href="/tags/llm/">LLM</a>
+        
+            <a href="/tags/acl2025/">ACL2025</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    <section class="article-lastmod">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <span>
+            最后更新于 2025-08-02 14:35 UTC
+        </span>
+    </section></footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI&#43;WdtXRGWt2kTvGFasHpSy3SV"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG&#43;vnGctmUb0ZY0l8"crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"integrity="sha384-&#43;VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4&#43;/RRE05"crossorigin="anonymous"
+                defer
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+	const mainArticleElement = document.querySelector(".main-article");
+        renderMathInElement(mainArticleElement, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ],
+            ignoredClasses: ["gist"]
+        });})
+</script>
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/7fab9gum/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">【论文笔记】ACL2025最佳论文-NSA算法</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/5a3f7d1e/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">DeepSeek系列论文笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/9ocgomtj/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">大模型相关论文笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/tkuusvxe/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">LLM数据合成方法</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/kte2ngfx/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">InstructGPT笔记</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
+<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
+<div id="waline" class="waline-container"></div>
+<style>
+    .waline-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+        --waline-font-size: var(--article-font-size);
+    }
+    .waline-container .wl-count {
+        color: var(--card-text-color-main);
+    }
+</style><script>
+    
+    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":"评论一句，好运+1！"},"requiredMeta":["name"],"serverURL":"https://zippy-halva-8e20f0.netlify.app/.netlify/functions/comment"});
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2015 - 
+        
+        2025 靖待
+    </section>
+    
+    <section class="powerby">
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
