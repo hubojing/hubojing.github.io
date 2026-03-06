@@ -6,7 +6,8 @@
 
 <link rel='canonical' href='https://hubojing.github.io/cmdntrmk/'>
 
-<link rel="stylesheet" href="/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css"><meta property='og:title' content="2025年终总结">
+<link rel="preload" href="/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css"></noscript><meta property='og:title' content="2025年终总结">
 <meta property='og:description' content="此刻终于是打开了文稿，写写过去的那一年，关于技术向的思考。2025年我对自己挺满意的，克服了一些困难，依然认真搞技术。\n世界 2025年AI在全球继续保持火热的发展趋势，不断有新模型、新架构、新名词出现，更新换代跑步前进。我很喜欢这个快速发展的AI世界，小时候曾经当白日梦一样的想法，都会在有生之年甚至不远的未来就能看到，我太期待了！世界似乎正朝着我想要的趋势发展，大模型之后必然是机器人具身智能的奇点来临，那么AI养老、AI陪伴、AI家务等等都可以提上日程。我们正站在一个伟大变革的时代窗口，有幸见证并体验它从笨拙到远超人类的过程，想想还有点小激动呢~ 今年依然看好：机器人！ 而AI智能体的商业价值落地是否有更好的突破，现在的智能体还是感觉像个玩具，即使是openclaw用了之后也感觉差点意思。总觉得，依赖模型去扩展更多的上下文或者走知识检索这条路，不是真正解决模型长期记忆的那条明路。毕竟人类并没有那么多的知识库，但是在很多需要融合久远记忆的推理、共情能力上还是比AI好。 另外，表达能力将会成为更加重要的技能（首先是文字表达能力），所以读书时语文真的要好好学，不要以后写个prompt无法清晰表意。未来，不会表达的人也许会成为新世纪的文盲。个人观点，轻喷┗|｀O′|┛ 嗷~~\n">
 <meta property='og:url' content='https://hubojing.github.io/cmdntrmk/'>
 <meta property='og:site_name' content='靖待'>
@@ -654,7 +655,6 @@
     
 
     
-	
 
 </div>
 
@@ -709,7 +709,21 @@
 
         <span>Licensed under CC BY-NC-SA 4.0</span>
     </section>
-    </footer>
+    
+
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+        <span id="busuanzi_container_page_pv">
+            阅读量：<span id="busuanzi_value_page_pv"></span> 次
+        </span>
+    </section></footer>
 
 
     
@@ -822,9 +836,7 @@
      
     
         
-    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
-<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
-<div id="waline" class="waline-container"></div>
+    <div id="waline" class="waline-container"></div>
 <style>
     .waline-container {
         background-color: var(--card-background);
@@ -838,7 +850,35 @@
     }
 </style><script>
     
-    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":"评论一句，好运+1！"},"requiredMeta":["name"],"serverURL":"https://zippy-halva-8e20f0.netlify.app/.netlify/functions/comment"});
+    function loadWaline() {
+        const script = document.createElement('script');
+        script.src = '//unpkg.com/@waline/client@v2/dist/waline.js';
+        script.async = true;
+        script.onload = function() {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = '//unpkg.com/@waline/client@v2/dist/waline.css';
+            document.head.appendChild(link);
+            Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":"评论一句，好运+1！"},"requiredMeta":["name"],"serverURL":"https://zippy-halva-8e20f0.netlify.app/.netlify/functions/comment"});
+        };
+        document.head.appendChild(script);
+    }
+
+    
+    const walineContainer = document.getElementById('waline');
+    if (walineContainer) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    loadWaline();
+                    observer.disconnect();
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        observer.observe(walineContainer);
+    }
 </script>
 
     
@@ -853,10 +893,21 @@
     </section>
     
     <section class="powerby">
+        <div class="site-stats">
+            <span id="busuanzi_container_site_pv">
+                总访问量：<span id="busuanzi_value_site_pv"></span> 次
+            </span>
+            <span id="busuanzi_container_site_uv" style="margin-left: 15px;">
+                总访客数：<span id="busuanzi_value_site_uv"></span> 人
+            </span>
+            <br/>
+        </div>
         使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
         主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
     </section>
 </footer>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
     

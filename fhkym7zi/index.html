@@ -6,7 +6,8 @@
 
 <link rel='canonical' href='https://hubojing.github.io/fhkym7zi/'>
 
-<link rel="stylesheet" href="/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css"><meta property='og:title' content="HelloWorld">
+<link rel="preload" href="/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css"></noscript><meta property='og:title' content="HelloWorld">
 <meta property='og:description' content=" 利用一周零零碎碎的时间搭建起来，使用hexo在github上的个人独立博客初见雏形。\n">
 <meta property='og:url' content='https://hubojing.github.io/fhkym7zi/'>
 <meta property='og:site_name' content='靖待'>
@@ -484,7 +485,6 @@
     
 
     
-	
 
 </div>
 
@@ -530,7 +530,21 @@ Readers can commit on the bottom of the article, and contact with me. Welcome ac
 
         <span>Licensed under CC BY-NC-SA 4.0</span>
     </section>
-    <section class="article-lastmod">
+    
+
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+        <span id="busuanzi_container_page_pv">
+            阅读量：<span id="busuanzi_value_page_pv"></span> 次
+        </span>
+    </section><section class="article-lastmod">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="12" cy="12" r="9" />
@@ -655,9 +669,7 @@ Readers can commit on the bottom of the article, and contact with me. Welcome ac
      
     
         
-    <script src='//unpkg.com/@waline/client@v2/dist/waline.js'></script>
-<link href='//unpkg.com/@waline/client@v2/dist/waline.css' rel='stylesheet'/>
-<div id="waline" class="waline-container"></div>
+    <div id="waline" class="waline-container"></div>
 <style>
     .waline-container {
         background-color: var(--card-background);
@@ -671,7 +683,35 @@ Readers can commit on the bottom of the article, and contact with me. Welcome ac
     }
 </style><script>
     
-    Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":"评论一句，好运+1！"},"requiredMeta":["name"],"serverURL":"https://zippy-halva-8e20f0.netlify.app/.netlify/functions/comment"});
+    function loadWaline() {
+        const script = document.createElement('script');
+        script.src = '//unpkg.com/@waline/client@v2/dist/waline.js';
+        script.async = true;
+        script.onload = function() {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = '//unpkg.com/@waline/client@v2/dist/waline.css';
+            document.head.appendChild(link);
+            Waline.init({"dark":"html[data-scheme=\"dark\"]","el":"#waline","emoji":["https://unpkg.com/@waline/emojis@1.0.1/weibo"],"locale":{"admin":"Admin","placeholder":"评论一句，好运+1！"},"requiredMeta":["name"],"serverURL":"https://zippy-halva-8e20f0.netlify.app/.netlify/functions/comment"});
+        };
+        document.head.appendChild(script);
+    }
+
+    
+    const walineContainer = document.getElementById('waline');
+    if (walineContainer) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    loadWaline();
+                    observer.disconnect();
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        observer.observe(walineContainer);
+    }
 </script>
 
     
@@ -686,10 +726,21 @@ Readers can commit on the bottom of the article, and contact with me. Welcome ac
     </section>
     
     <section class="powerby">
+        <div class="site-stats">
+            <span id="busuanzi_container_site_pv">
+                总访问量：<span id="busuanzi_value_site_pv"></span> 次
+            </span>
+            <span id="busuanzi_container_site_uv" style="margin-left: 15px;">
+                总访客数：<span id="busuanzi_value_site_uv"></span> 人
+            </span>
+            <br/>
+        </div>
         使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
         主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.30.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
     </section>
 </footer>
+
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
     
