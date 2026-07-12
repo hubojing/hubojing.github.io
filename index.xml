@@ -7,7 +7,102 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>靖待</copyright>
-        <lastBuildDate>Sun, 03 May 2026 12:09:12 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 12 Jul 2026 10:46:44 +0000</lastBuildDate><atom:link href="https://hubojing.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>指令设计两种范式辨析</title>
+        <link>https://hubojing.github.io/cmdntrmk/</link>
+        <pubDate>Sun, 12 Jul 2026 15:24:15 +0800</pubDate>
+        
+        <guid>https://hubojing.github.io/cmdntrmk/</guid>
+        <description>&lt;h1 id=&#34;问题&#34;&gt;问题
+&lt;/h1&gt;&lt;p&gt;在一个垂类大模型任务上进行快思考模式的优化，指令设计一般有两种思路。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;详细指令，包括各种约束、具体推理步骤等。&lt;/li&gt;
+&lt;li&gt;抽象指令，只给出任务目的。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;举个栗子：
+假如需要通过sft微调营养方面垂类大模型，让它能生成个性化饮食方案。
+指令A：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;请根据以下需求生成饮食方案，必须包含：1. 每日总热量及三大营养素分配（碳水/蛋白/脂肪克数及占比）2. 三餐+两次加餐的具体食物清单（含分量克数）3. 烹饪方式建议 4. 水分摄入推荐 5. 营养素补充剂建议 6. 禁忌食物列表。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;指令B：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;请给我一份针对该需求的饮食方案。&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;哪种指令更好？&lt;/p&gt;
+&lt;p&gt;从SFT数据构造的角度，先思考一个问题：两种指令对SFT数据量分别要求多少？&lt;br&gt;
+我们假定营养饮食场景有八大分类：减脂、增肌、糖尿病、妊娠期、老年人流食、儿童、术后恢复、抗炎饮食。&lt;/p&gt;
+&lt;h1 id=&#34;详细指令&#34;&gt;详细指令
+&lt;/h1&gt;&lt;p&gt;详细指令会在Prompt中固化单品类场景专属的推理步骤、模块顺序、必填字段、行文规范、输出约束。 &lt;br&gt;
+模型学习的不是这种任务的通用能力，而是这一套固定步骤对应的文书模板填充规则。&lt;br&gt;
+如果SFT数据里缺少&amp;quot;妊娠期&amp;quot;样本，当用户输入孕产需求时，详细指令强制输出&amp;quot;三大营养素配比&amp;quot;。模型没有对应的训练记忆，只能在已有样本中找最像的，比如减脂样本最多，于是输出40:30:30。 &lt;br&gt;
+为了覆盖全部8个场景，每个场景200~500条高质量标注样本（精确克数、食物替换、烹饪方式）
+总数据量：8×500=4000条起步&lt;br&gt;
+缺任何一个场景，该场景的生成结果就是&amp;quot;格式正确但营养错误&amp;quot;。&lt;br&gt;
+详细指令SFT的优势是单品类输出非常标准、零错乱、高合规、格式统一。但代价是数据体量庞大、品类覆盖成本极高、新场景冷启动极慢。&lt;/p&gt;
+&lt;h1 id=&#34;抽象指令&#34;&gt;抽象指令
+&lt;/h1&gt;&lt;p&gt;抽象指令不固化任何文书品类的写作步骤与固定模板，仅定义顶层目标。根据用户提供的零散素材与核心信息，结合通用规范，生成结构完整、逻辑通顺、合规标准、贴合场景的专业内容。&lt;br&gt;
+抽象指令不强制输出配比数字，只要求&amp;quot;给一份方案&amp;quot;。
+当用户输入&amp;quot;怀孕22周&amp;quot;时，模型靠预训练阶段读过的营养学教材、膳食指南、孕妇饮食科普文章自动激活妊娠期相关知识——它不需要SFT数据教会它&amp;quot;孕妇吃多少碳水&amp;quot;，它只需要知道&amp;quot;哪些词指向哪类场景&amp;quot;。&lt;/p&gt;
+&lt;p&gt;SFT只需要教会模型三件事：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;用营养师的口吻说话（&amp;ldquo;建议&amp;quot;而非&amp;quot;你必须&amp;rdquo;）&lt;/li&gt;
+&lt;li&gt;方案的结构感（早餐/午餐/晚餐/加餐的区隔）&lt;/li&gt;
+&lt;li&gt;适度的专业度（提及GI值、DHA、膳食纤维等功能术语）
+只需要覆盖3种基础场景（比如减脂、糖尿病、老年人流食），共600~1500条数据，模型就能泛化到全部8类。未覆盖的妊娠期场景，模型输出可能没有&amp;quot;精确的配比百分比&amp;quot;，但食物选择方向完全正确：增加全谷物、搭配优质蛋白、补充叶酸铁剂、规避生食和酒精。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;抽象指令数据量级需求小、品类覆盖成本低、迭代速度快，但短板明显：单品类输出稳定性不足、细节可能不严谨、行文风格不统一，在高合规、强标准化的场景中存在落地风险，无法直接用于高精度正式输出。&lt;/p&gt;
+&lt;h1 id=&#34;对比&#34;&gt;对比
+&lt;/h1&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th&gt;对比维度&lt;/th&gt;
+          &lt;th&gt;详细指令&lt;/th&gt;
+          &lt;th&gt;抽象指令&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td&gt;文书品类覆盖要求&lt;/td&gt;
+          &lt;td&gt;必须全场景全覆盖，缺一不可&lt;/td&gt;
+          &lt;td&gt;只需核心场景，支持小众场景泛化&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;单品类样本量级&lt;/td&gt;
+          &lt;td&gt;大，需要高密度结构化样本拟合步骤&lt;/td&gt;
+          &lt;td&gt;小，少量差异化样本即可习得通用逻辑&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;跨品类迁移能力&lt;/td&gt;
+          &lt;td&gt;无，品类能力完全隔离&lt;/td&gt;
+          &lt;td&gt;强，通用场景能力全局复用&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;新增品类数据成本&lt;/td&gt;
+          &lt;td&gt;极高，需从零标注微调&lt;/td&gt;
+          &lt;td&gt;极低，多数场景无需新增数据&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;整体SFT数据体量&lt;/td&gt;
+          &lt;td&gt;极大，多场景叠加、同质化冗余多&lt;/td&gt;
+          &lt;td&gt;偏小，样本利用率高、无冗余&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td&gt;落地适配性&lt;/td&gt;
+          &lt;td&gt;合规稳定、制式标准、成本高、迭代慢&lt;/td&gt;
+          &lt;td&gt;泛化强、成本低、存在格式细节风险&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h1 id=&#34;结论&#34;&gt;结论
+&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;采用详细指令，没覆盖的场景错误率（无中生有概率）极高&lt;/li&gt;
+&lt;li&gt;为了保证模型在不同场景的泛化性，最好采用抽象指令&lt;/li&gt;
+&lt;li&gt;场景数量需求：详细指令远大于抽象指令&lt;/li&gt;
+&lt;li&gt;数据量级需求：详细指令远大于抽象指令&lt;/li&gt;
+&lt;li&gt;详细指令用数据量、场景覆盖度换稳定性与合规性；抽象指令用细节精度、输出稳定性换数据效率与泛化能力&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>关于</title>
         <link>https://hubojing.github.io/about/</link>
         <pubDate>Mon, 23 Feb 2026 18:20:55 +0800</pubDate>
