@@ -15,6 +15,7 @@
 <meta name="twitter:title" content="大模型相关论文笔记">
 <meta name="twitter:description" content=" **大模型相关论文阅读笔记。 ** **倒序排列论文，最新阅读的在最上面。** **2024年1月26日更新** ">
     <link rel="shortcut icon" href="/avatar.jpg" />
+<link rel="stylesheet" href="/css/home-thumb.css">
 
     </head>
     <body class="
@@ -725,9 +726,8 @@
 
     <section class="article-content">
     
-    
     <div align="left">
-<img src="\images\paper.png" width="300" height="180" style="float:right;"/>
+<img src="/images/paper.png" width="300" height="180" style="float:right;"/>
  　　
 　　**大模型相关论文阅读笔记。 **
 　　**倒序排列论文，最新阅读的在最上面。**
@@ -780,7 +780,7 @@ Fast Decoding</li>
 <h2 id="摘要">摘要
 </h2><p>　　自注意力的时间和空间复杂度在序列长度上是二次关系，近似注意力机制尝试在模型质量和复杂度计算中折中来解决该问题，但是经常不能实现wall-clock加速。本文认为，需要一种规范，可以根据GPU读写水平使注意力IO感知。为此，本文提出FLASHATTENTION，一种IO感知的精确注意力机制，它使用tiling技术来减少GPU HBM（high bandwidth memory）和GPU芯片内SRAM的存储读写次数。FLASHATTENTION相比标准注意力机制要减少这方面开销。</p>
 <h2 id="引言-1">引言
-</h2><p><img src="/%5cimages%5cFlashAttention.png"
+</h2><p><img src="/images/FlashAttention.png"
 	
 	
 	
@@ -827,7 +827,7 @@ Fast Decoding</li>
 softmax按行(row-wise)使用。
 　　标准注意力将S和P扔给HBM，这花费了$O(N^2)$存储。一般来说，N&raquo;d，比如GPT2里N=1024，d=64。大部分操作是存储密集型（比如softmax），大量的存储读写造成wall-clock时间变慢。
 　　其它操作更加加剧了这个问题，比如加在注意力矩阵的elementwise操作、加在S上的遮罩或者加在P上的dropout。为此，有很多融合几种elementwise操作的方法尝试，比如一些文献用softmax融合遮罩。
-<img src="/%5cimages%5cFlashAttention-StandardAttention%e4%bc%aa%e4%bb%a3%e7%a0%81.png"
+<img src="/images/FlashAttention-StandardAttention%e4%bc%aa%e4%bb%a3%e7%a0%81.png"
 	
 	
 	
@@ -844,7 +844,7 @@ softmax按行(row-wise)使用。
 <li>Tiling</li>
 <li>Recomputation
 　　我们的目标之一是不要存储反向传播中间过程值$O(N^2)$。反向传播需要矩阵$S,P∈\mathbb{R}^{N×N}$来计算Q、K、V的梯度。
-<img src="/%5cimages%5cFlashAttention%e4%bc%aa%e4%bb%a3%e7%a0%81.png"
+<img src="/images/FlashAttention%e4%bc%aa%e4%bb%a3%e7%a0%81.png"
 	
 	
 	
@@ -868,7 +868,7 @@ softmax按行(row-wise)使用。
 　　对比RoBERTa, DeBERTa, GPT-2, GPT-3，训练参数虽少，模型微调质量更好，更高的训练吞吐量，而且不像适配器，没有额外的推理延迟。</p>
 <h2 id="引言-2">引言
 </h2><p>　　微调会更新预训练模型的全部参数，下游任务的新模型和原模型参数一样多。许多研究者通过只更新部分参数或学习新任务的额外模块进行迁移，这样可以只保存和加载一小部分任务相关的参数即可，部署时提高了效率。但是现有方法通过延伸模型深度或者减少模型可用的序列长度会导致推理延迟。而且这些策略达不到微调的基线效果，在效率和模型质量上做了折中。<br>
-<img src="/%5cimages%5cLoRA.png"
+<img src="/images/LoRA.png"
 	
 	
 	

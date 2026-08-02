@@ -15,6 +15,7 @@
 <meta name="twitter:title" content="【Paper】Deep Neural Networks for YouTube Recommendations">
 <meta name="twitter:description" content=" YouTube经典推荐论文。\n">
     <link rel="shortcut icon" href="/avatar.jpg" />
+<link rel="stylesheet" href="/css/home-thumb.css">
 
     </head>
     <body class="
@@ -692,9 +693,8 @@
 
     <section class="article-content">
     
-    
     <div align="left">
-<img src="\images\Paper-YouTube-整体架构.png" width="300" height="180" style="float:right;"/>
+<img src="/images/Paper-YouTube-整体架构.png" width="300" height="180" style="float:right;"/>
 <p>　　<strong>YouTube经典推荐论文。</strong></p>
  </div>
 <h1 id="论文背景">论文背景
@@ -714,7 +714,7 @@
 <li>Noise 噪声-数据往往是隐式反馈</li>
 </ul>
 <h1 id="system-overview-系统概述">System Overview 系统概述
-</h1><p><img src="/%5cimages%5cPaper-YouTube-%e6%95%b4%e4%bd%93%e6%9e%b6%e6%9e%84.png"
+</h1><p><img src="/images/Paper-YouTube-%e6%95%b4%e4%bd%93%e6%9e%b6%e6%9e%84.png"
 	
 	
 	
@@ -743,7 +743,7 @@
 　　由于服务时不需要softmax输出层校准可能性（？有些不解），评分问题简化为在点积空间的最近邻搜索，在这个空间中，通用库可以使用。A/B结果对最近邻搜索算法的选择不是特别敏感。</p>
 <h2 id="model-architecture-模型架构">Model Architecture 模型架构
 </h2><p>　　学习每个视频的高维嵌入到固定词汇中，并将这些嵌入输入到前馈神经网络中。用户的观看历史记录由稀疏视频id的可变长度序列表示，该序列通过嵌入映射到稠密向量表示。该网络需要固定规模的密集输入，并简单地平均在不同策略中表现最好的嵌入。通过梯度下降反向传播更新，嵌入与所有其他模型参数联合学习。特征被连接成一个宽的第一层，然后是几层全连接的线性单元(ReLU)。如下图所示。
-<img src="/%5cimages%5cPaper-YouTube-%e5%80%99%e9%80%89%e7%94%9f%e6%88%90%e6%9e%b6%e6%9e%84.png"
+<img src="/images/Paper-YouTube-%e5%80%99%e9%80%89%e7%94%9f%e6%88%90%e6%9e%b6%e6%9e%84.png"
 	
 	
 	
@@ -757,7 +757,7 @@
 </h2><p>　　使用深度神经网络作为矩阵分解的推广的一个关键优点是任意连续和分类特征可以很容易地添加到模型中。</p>
 <h3 id="example-age-feature-示例年龄特征">“Example Age” Feature “示例年龄”特征
 </h3><p>　　用户往往喜欢新鲜的内容。除了简单地推荐用户想看的新视频的一级效应，还有一个重要的二级现象，即引导和传播病毒式内容。视频受欢迎程度是会变化的，但推荐系统反映的是几周内的平均观看可能性。为了纠正这一点，在训练期间将训练示例的年龄作为一个特征输入。在服务时间，这个特征被设置为零(或者稍微负一点)，以反映模型正在训练窗口的最后进行预测。
-<img src="/%5cimages%5cPaper-YouTube-with_example_age.png"
+<img src="/images/Paper-YouTube-with_example_age.png"
 	
 	
 	
@@ -772,7 +772,7 @@
 　　训练示例是从所有YouTube视频中生成的而不是仅仅依靠推荐。否则新内容的出现将会非常困难，而且推荐器会有过度偏向。如果用户是通过推荐以外的方式发现视频，希望能够通过协同过滤快速传播这个发现给其他人。改进实时指标的另一个关键见解是，为每个用户生成固定数量的训练样例，有效平等地在损失函数中权衡我们的用户。这避免了一小部分高活跃用户主导损失。
 　　必须非常小心地对分类器隐瞒信息，以防止模型利用站点的结构和过度拟合代理问题。
 　　预测用户下一个观看的性能要比预测随机留出的观看好得多。许多协同过滤系统隐式地选择标签和上下文，方法是取出一个随机的物品，并从用户历史记录中的其他物品中预测它。这泄露了未来信息并忽视了非对称消费模式。相反，本文“回滚”用户的历史记录，通过选择一个随机的观看记录，并且只输入用户留出的有标签的观看记录之前采取的动作。
-<img src="/%5cimages%5cPaper-YouTube-predict_future_watch.png"
+<img src="/images/Paper-YouTube-predict_future_watch.png"
 	
 	
 	
@@ -785,7 +785,7 @@
 <h2 id="experiments-with-features-and-depth-特征和深度实验">Experiments with Features and Depth 特征和深度实验
 </h2><p>　　添加特征和深度可以显著改善保持数据的精度，如图6所示。在这些实验中，一个包含100万个视频和100万个搜索令牌的词汇表中嵌入了256个浮点数，每个浮点数的最大包尺寸为50个最近的观看和50个最近的搜索。softmax层在相同的1M视频类上输出多项分布，维数为256(可以认为是单独的输出视频嵌入)。网络结构遵循一个常见的“塔”模式，其中网络的底部是最宽的，每个后续隐藏层的单位数量减半。</p>
 <h1 id="ranking-排序">Ranking 排序
-</h1><p><img src="/%5cimages%5cPaper-YouTube-%e6%8e%92%e5%ba%8f%e6%9e%b6%e6%9e%84.png"
+</h1><p><img src="/images/Paper-YouTube-%e6%8e%92%e5%ba%8f%e6%9e%b6%e6%9e%84.png"
 	
 	
 	

@@ -1,0 +1,50 @@
+/* 主页文章列表：元信息居左，缩略图居右 */
+.article-list > article {
+    display: flex;
+    /* 必须显式覆盖主题默认的 flex-direction: column，否则会变成上下堆叠 */
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    /* 给右侧缩略图留出呼吸空间，避免贴到卡片右边 */
+    padding-right: 32px;
+}
+
+.article-list > article .article-header {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* 主页不显示文章头部自带的封面大图，避免与右侧缩略图重复 */
+.article-list > article .article-header .article-image {
+    display: none;
+}
+
+.article-list > article .article-image.home-thumb {
+    flex: 0 0 auto;
+    width: 120px;
+    height: 120px;
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--card-border-radius, 12px);
+    /* 与卡片背景一致，contain 模式下图片四周的留白更自然 */
+    background: var(--card-background, #f2f2f2);
+}
+
+.article-list > article .article-image.home-thumb img {
+    width: 100%;
+    height: 100%;
+    /* contain：完整显示整张图，按比例缩放进方框（最多留透明/底色边） */
+    object-fit: contain;
+    border-radius: var(--card-border-radius, 12px);
+}
+
+@media (max-width: 480px) {
+    .article-list > article {
+        gap: 12px;
+        padding-right: 16px;
+    }
+    .article-list > article .article-image.home-thumb {
+        width: 80px;
+        height: 80px;
+    }
+}
