@@ -9,7 +9,9 @@
     padding-right: 32px;
 }
 
-.article-list > article .article-header {
+.article-list > article .article-details {
+    /* 文字块撑满剩余空间，把右侧缩略图统一推到右边框（padding-right 留白），
+       实现「图片距右边框等距」，而非紧跟文字 */
     flex: 1 1 auto;
     min-width: 0;
 }
@@ -36,6 +38,42 @@
     /* contain：完整显示整张图，按比例缩放进方框（最多留透明/底色边） */
     object-fit: contain;
     border-radius: var(--card-border-radius, 12px);
+}
+
+/* 主页文章元信息：日期 · 分类(小标签) · 字数 合并一行，分类放在字数之前 */
+.article-time.home-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    margin: 0;
+}
+
+/* 日期 / 字数 各自包一层，让图标与文字垂直居中对齐 */
+.article-time.home-meta > div {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 统一元信息里的图标尺寸（主题给日期图标 56px、时钟 24px，大小不一会显得错位） */
+.article-time.home-meta svg {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+}
+
+.article-time.home-meta .home-cat {
+    display: inline-flex;
+    align-items: center;
+    font-size: 1.4rem;
+    line-height: 1;
+    font-weight: 400;
+    color: var(--card-text-color-tertiary);
+}
+
+.article-time.home-meta .home-cat:hover {
+    color: var(--accent-color);
 }
 
 @media (max-width: 480px) {
