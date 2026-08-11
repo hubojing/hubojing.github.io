@@ -5,8 +5,17 @@
     flex-direction: row;
     align-items: center;
     gap: 16px;
-    /* 给右侧缩略图留出呼吸空间，避免贴到卡片右边 */
-    padding-right: 32px;
+    /* 内边距：让 hover 背景成为围绕内容的卡片形状；右侧 32px 给缩略图留白 */
+    padding: 16px 32px 16px 16px;
+    border-radius: var(--card-border-radius, 12px);
+    /* 平滑过渡：背景与阴影同时变化 */
+    transition: background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* hover 时明显着色：用强调色淡染背景（深浅色主题都自适），并加深阴影 */
+.article-list > article:hover {
+    background-color: color-mix(in srgb, var(--accent-color) 12%, var(--card-background));
+    box-shadow: var(--shadow-l2);
 }
 
 .article-list > article .article-details {
